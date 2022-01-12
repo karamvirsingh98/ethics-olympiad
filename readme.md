@@ -1,1 +1,1 @@
-#Ethics Olympiad
+# Ethics Olympiad
