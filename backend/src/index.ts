@@ -3,6 +3,7 @@ import express from "@feathersjs/express";
 import configuration from "@feathersjs/configuration"
 import { coreServices, customServices } from "./services";
 import mongoose from "mongoose";
+import cors from "cors"
 
 const app = express(feathers()).configure(configuration());
 
@@ -11,7 +12,7 @@ mongoose.connect(app.get("mongodb"))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.configure(express.rest());
-// app.use(cors(app.get("cors")));
+app.use(cors());
 
 app.configure(coreServices);
 app.configure(customServices)
