@@ -1,6 +1,7 @@
 export interface OlympiadEvent {
   _id?: string;
   owner: string;
+  passkey: string;
   numHeats: number;
   timers: number[];
   caseIDs: string[];

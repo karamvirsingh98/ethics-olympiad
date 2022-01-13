@@ -14,3 +14,8 @@ class SignupService {
   }
 
 }
+
+export default (app: Application) => {
+  app.use("/api/signup-service", new SignupService(app))
+}
+
