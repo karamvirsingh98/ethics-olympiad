@@ -1,6 +1,6 @@
 import { Application } from "@feathersjs/express";
 
-class SignupService {
+export class SignupService {
   app: Application 
   invites: Array<{ email: string }> = []
 
@@ -13,9 +13,5 @@ class SignupService {
     //send the invitation email
   }
 
-}
-
-export default (app: Application) => {
-  app.use("/api/signup-service", new SignupService(app))
 }
 
