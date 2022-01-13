@@ -25,11 +25,33 @@ button {
   border: none;
   font-size: 1.25rem;
 }
+input {
+  color: inherit;
+  padding: 0.25rem 0rem;
+  font-size: 1rem;
+  font-weight: 400;
+  padding-left: 0.5rem;
+  width: fit-content;
+  border: none;
+  border-bottom: solid 0.25rem transparent;
+}
+
+.input:focus {
+  outline: none;
+  border-bottom: solid 0.25rem;
+}
 
 .dark { 
   background-color: black;
   color: white;
   border-color: white;
+}
+
+
+.input.dark {
+  background-color: inherit;
+  color: inherit;
+  
 }
 
 .light {
@@ -73,7 +95,7 @@ button {
 .page-title {
   place-self: center start;
   font-size: 2rem;
-  border-bottom: 0.25rem solid;
+  /* border-bottom: 0.25rem solid; */
 }
 
 .page-content {
@@ -123,6 +145,23 @@ button {
 
 .assigned-case {
   display: grid;
-  grid-template-columns: auto 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  place-items: center start;
+}
+
+.event {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 100%;
+}
+
+.timers { 
+  display: grid;
+  gap: 1rem;
+}
+
+.timer-input {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
   place-items: center start;
 }

@@ -20,18 +20,21 @@ export interface Event {
   _id?: string;
   owner: string;
   title: string;
-  numHeats: number;
   timers: number[];
-  caseIDs: string[];
+  heats: Heats ;
 }
+
+export type Heats = Array<{ case1: CaseID, case2: CaseID }>
 
 export type Cases = Collection<Case>
 
 export interface Case {
-  _id?: string;
+  _id?: CaseID;
   owner: string;
   title: string;
   isVideo: boolean;
   videoURL?: string;
   bodyText?: string;
 }
+
+export type CaseID = string;
