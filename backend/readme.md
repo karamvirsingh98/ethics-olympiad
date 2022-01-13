@@ -1,1 +1,1 @@
-# Ethics Olympiad Backend
+# Ethics Olympiad Backend
