@@ -18,6 +18,6 @@ export interface OlympiadCase {
 export interface User {
   _id?: string,
   email: string,
-  password: string
-  
+  password: string 
+  admin: boolean
 }

@@ -14,6 +14,6 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "start": " tsc && node build/index.js -watch"
+    "start": " tsc && node build/index.js"
   }
 }

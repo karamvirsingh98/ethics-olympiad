@@ -12,6 +12,5 @@ export class SignupService {
     this.invites.push({email: data.email})
     //send the invitation email
   }
-
 }
 
