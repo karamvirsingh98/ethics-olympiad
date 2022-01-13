@@ -6,7 +6,7 @@ export default function Topbar({toggleDark}:{toggleDark: () => void}) {
   return (
     <div className="topbar">
       {TOPBAR_BUTTONS.map((text, i) => (
-        <TopbarButton text={text} active={i === current} onClick={() => set(i)} />
+        <TopbarButton key={text+i} text={text} active={i === current} onClick={() => set(i)} />
       ))}
       <button className="topbar-button" onClick={toggleDark}>Dark</button>
     </div>

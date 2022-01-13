@@ -1,3 +1,11 @@
+import { useAppState } from "./hooks";
+
+export type AppState = ReturnType<typeof useAppState>
+
+export interface Collection<T> {
+  [id: string]: T
+}
+
 export interface User {
   _id?: string;
   name: string;
@@ -6,11 +14,9 @@ export interface User {
   admin: boolean;
 }
 
-export interface OlympaidEvents {
-  [id: string]: OlympiadEvent;
-}
+export type Events = Collection<Event>;
 
-export interface OlympiadEvent {
+export interface Event {
   _id?: string;
   owner: string;
   title: string;
@@ -19,11 +25,9 @@ export interface OlympiadEvent {
   caseIDs: string[];
 }
 
-export interface OlympaidCases {
-  [id: string]: OlympiadCase;
-}
+export type Cases = Collection<Case>
 
-export interface OlympiadCase {
+export interface Case {
   _id?: string;
   owner: string;
   title: string;

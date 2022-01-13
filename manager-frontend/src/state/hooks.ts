@@ -1,31 +1,39 @@
 import { useEffect, useState } from "react";
 import { client } from "..";
 import { arrToKeyedObject } from "../util/helpers";
+import { Case, Collection, Event } from "./types";
 
 export function useAppState() {
-  const [events, setEvents] = useGenericFind('events')
-  const [cases, setCases] = useGenericFind('cases')
+  const [events, setEvents] = useCollection<Event>("events");
+  const [cases, setCases] = useCollection<Case>("cases");
 
   const state = {
-    events, 
-    setEvents, 
+    events,
+    setEvents,
     cases,
-    setCases
-  }
-  
-  return state
+    setCases,
+  };
+
+  return state;
 }
 
-export function useGenericFind(service: string, params?: any) {
-  const [items, set] = useState()
+export function useCollection<T, P = any>(
+  service: string,
+  params?: P
+): [
+  items: Collection<T> | undefined,
+  set: (collection: Collection<T>) => void
+] {
+  const [items, set] = useState<Collection<T>>();
 
   useEffect(() => {
-    async function getEvents() {
-      const events = await client.service(`/api/${service}`).find(params)
-      set(arrToKeyedObject(events, "_id"))
-    }
-    getEvents()
-  }, [])
+    client
+      .service(`/api/${service}`)
+      .find(params)
+      .then((res: T[]) => {
+        set(arrToKeyedObject(res, "_id"));
+      });
+  }, []);
 
-  return [items, set]
+  return [items, set];
 }
