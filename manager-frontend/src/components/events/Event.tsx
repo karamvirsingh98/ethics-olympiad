@@ -23,6 +23,12 @@ export default function EventCompnent({
             heats: [..._event.heats, { case1: "", case2: "" }],
           })
         }
+        onRemove={(index) => {
+          setEvent({
+            ..._event,
+            heats: _event.heats.filter((_, i) => i !== index),
+          });
+        }}
       />
       <Timers _timers={_event.timers} />
     </div>

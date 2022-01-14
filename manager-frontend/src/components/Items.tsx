@@ -16,14 +16,21 @@ export default function Items({
       {Object.keys(items).map((id) => (
         <Item item={items[id]} onClick={() => setCurrentID(id)} key={id} />
       ))}
-      <button className="green" onClick={onNewClick}> New {label} </button>
+      <button className="green" onClick={onNewClick}>
+        {" "}
+        New {label}{" "}
+      </button>
     </div>
   );
 }
 
 function Item({ item, onClick }: { item: Event | Case; onClick: () => void }) {
   return (
-    <button className="item" onClick={onClick}>
+    <button
+      className="grey"
+      onClick={onClick}
+      style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
+    >
       {item._id}
     </button>
   );
