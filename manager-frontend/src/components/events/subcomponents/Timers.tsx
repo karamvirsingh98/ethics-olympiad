@@ -1,5 +1,4 @@
-import { useState } from "react";
-import Input from "../../../pages/Input";
+import Input from "../../util/Input";
 
 const LABELS = [
   "First Conference",

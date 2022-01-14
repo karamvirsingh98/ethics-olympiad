@@ -7,7 +7,7 @@ import { getDefaultEvent } from "../state/defaults";
 import { AppState, Event } from "../state/types";
 import { filterOutFromObj } from "../util/helpers";
 import { useLocalStorage } from "../util/hooks";
-import Input from "./Input";
+import Input from "../components/util/Input";
 
 export default function Events({ state }: { state: AppState }) {
   const { cases, events, setEvents } = state;
@@ -41,11 +41,15 @@ export default function Events({ state }: { state: AppState }) {
     setEvents(filterOutFromObj(events, [events![currentID]._id!]));
   };
 
-  function getTitle() {
-    return events && events[currentID]
-      ? events[currentID].title
-      : "No Event Selected";
-  }
+  const getTitle = () =>
+    events && events[currentID] ? events[currentID].title : "No Event Selected";
+
+  const setTitle = (title: string) => {
+    setEvents({
+      ...events,
+      [currentID]: { ...events![currentID], title },
+    });
+  };
 
   return (
     <div className="page">
@@ -55,12 +59,7 @@ export default function Events({ state }: { state: AppState }) {
             <Input
               style={{ fontSize: "2rem", width: "fit-content" }}
               defaultValue={getTitle()}
-              onConfirm={(title) =>
-                setEvents({
-                  ...events,
-                  [currentID]: { ...events![currentID], title },
-                })
-              }
+              onConfirm={setTitle}
             />
           ) : (
             <div>{getTitle()}</div>
@@ -70,7 +69,7 @@ export default function Events({ state }: { state: AppState }) {
           events &&
           events[currentID] && (
             <Fragment>
-              <button className="blue" onClick={() => setEditing(!editing)}>
+              <button className={editing ? "brown" : "blue"} onClick={() => setEditing(!editing)}>
                 Edit
               </button>
               <button className="green" onClick={saveEvent}>
