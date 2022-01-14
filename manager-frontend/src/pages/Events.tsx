@@ -20,11 +20,17 @@ export default function Events({ state }: { state: AppState }) {
 
   return (
     <div className="page">
-      <PageTitle title={events ? events[currentID].title : "No Event Selected"}   />
+      <PageTitle
+        title={events ? events[currentID].title : "No Event Selected"}
+      />
       <div className="page-content">
-        <div style={{ borderRight: "solid 1px" }}>
-          { events && cases && currentID && events[currentID] && <EventCompnent event={events![currentID!]} cases={cases!} />}
-        </div>
+        {events && events[currentID] && (
+          <div style={{ borderRight: "solid 1px" }}>
+            {events && cases && currentID && events[currentID] && (
+              <EventCompnent event={events![currentID!]} cases={cases!} />
+            )}
+          </div>
+        )}
         {events && <Items items={events} setCurrentID={setID} />}
       </div>
     </div>

@@ -83,7 +83,7 @@ input:focus {
 
 .page {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 40px 1fr;
   gap: 2rem;
 }
 
