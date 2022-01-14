@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { client } from "..";
 import EventCompnent from "../components/events/Event";
 import Items from "../components/Items";
@@ -14,35 +15,62 @@ export default function Events({ state }: { state: AppState }) {
   );
   const { cases, events, setEvents } = state;
 
+  const createEvent = async () => {
+    const newEvent: Event = await client
+      .service("/api/events")
+      .create(getDefaultEvent());
+    setEvents({ ...events, [newEvent._id!]: newEvent });
+    setID(newEvent._id!);
+  };
+
+  const saveEvent = async () => {
+    const newItem = await client
+      .service("api/events")
+      .update(events![currentID]._id!, events![currentID]);
+    setEvents({
+      ...events,
+      [events![currentID]._id!]: newItem,
+    });
+  };
+
+  const deleteEvent = async () => {
+    await client.service("api/events").remove(events![currentID]._id!);
+    setEvents(filterOutFromObj(events, [events![currentID]._id!]));
+  };
+
+  function getTitle() {
+    return events && events[currentID]
+      ? events[currentID].title
+      : "No Event Selected";
+  }
+
   return (
     <div className="page">
       <PageTitle
-        title={
-          events && events[currentID]
-            ? events[currentID].title
-            : "No Event Selected"
-        }
+        title={getTitle()}
         element={
           events &&
           events[currentID] && (
-            <button
-              className="red"
-              onClick={async () => {
-                await client
-                  .service("api/events")
-                  .remove(events![currentID]._id!);
-                setEvents(filterOutFromObj(events, [events![currentID]._id!]));
-              }}
-            >
-              Delete Event
-            </button>
+            <Fragment>
+              <button className="green" onClick={saveEvent}>
+                Save
+              </button>
+              <button className="red" onClick={deleteEvent}>
+                Delete
+              </button>
+            </Fragment>
           )
         }
       />
       <div className="page-content">
         <div>
           {events && cases && currentID && events[currentID] && (
-            <EventCompnent event={events![currentID!]} cases={cases!} />
+            <EventCompnent
+              cases={cases!}
+              events={events}
+              event={events![currentID!]}
+              setEvents={setEvents}
+            />
           )}
         </div>
         {events && (
@@ -50,13 +78,7 @@ export default function Events({ state }: { state: AppState }) {
             label={"Event"}
             items={events}
             setCurrentID={setID}
-            onNewClick={async () => {
-              const newEvent: Event = await client
-                .service("/api/events")
-                .create(getDefaultEvent());
-              setEvents({ ...events, [newEvent._id!]: newEvent });
-              setID(newEvent._id!);
-            }}
+            onNewClick={createEvent}
           />
         )}
       </div>

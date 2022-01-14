@@ -10,9 +10,13 @@ const LABELS = [
   "Judge's Questions",
 ];
 
-export default function Timers({ _timers }: { _timers: number[] }) {
-  const [timers, set] = useState(_timers);
-
+export default function Timers({
+  timers,
+  onConfirm,
+}: {
+  timers: number[];
+  onConfirm: (value: string, index: number) => void;
+}) {
   return (
     <div className="timers">
       <div
@@ -23,18 +27,23 @@ export default function Timers({ _timers }: { _timers: number[] }) {
           fontSize: "1.5rem",
         }}
       >
-        <div style={{ placeSelf: "center start", borderBottom: "solid 0.25rem", width: "75%" }}>Timers</div>
-        <button className={timers !== _timers ?  "green" : "grey"} style={{ placeSelf: "center end" }}> Save </button>
+        <div
+          style={{
+            placeSelf: "center start",
+            borderBottom: "solid 0.25rem",
+            width: "5rem",
+          }}
+        >
+          Timers
+        </div>
       </div>
       {timers.map((time, i) => (
         <TimeInput
           key={i}
           time={time}
+          index={i}
           label={LABELS[i]}
-          onChange={(value) => {
-            timers.splice(i, 1, Number(value));
-            set([...timers]);
-          }}
+          onConfirm={onConfirm}
         />
       ))}
     </div>
@@ -43,12 +52,14 @@ export default function Timers({ _timers }: { _timers: number[] }) {
 
 function TimeInput({
   time,
+  index,
   label,
-  onChange,
+  onConfirm,
 }: {
   time: number;
+  index: number;
   label: string;
-  onChange: (input: string) => void;
+  onConfirm: (value: string, index: number) => void;
 }) {
   return (
     <div className="timer-input">
@@ -57,7 +68,9 @@ function TimeInput({
         <input
           style={{ width: "2rem" }}
           defaultValue={time.toString()}
-          onChange={(e) => onChange(e.currentTarget.value)}
+          onKeyDown={(e) =>
+            e.key === "Enter" && onConfirm(e.currentTarget.value, index)
+          }
         />
         min
       </div>

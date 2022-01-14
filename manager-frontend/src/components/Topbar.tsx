@@ -25,7 +25,7 @@ function TopbarButton({
   onClick: () => void;
 }) {
   return (
-    <button style={{ fontSize: "1.25rem"}} className={`topbar-button${active ? "-active" : ""}`} onClick={onClick}>
+    <button style={{ borderRadius: 0 }} className={`topbar-button${active ? "-active" : ""}`} onClick={onClick}>
       {text}
     </button>
   );

@@ -42,35 +42,50 @@ function HeatComponent({
 }) {
   return (
     <div className="heat">
-      <div> Heat {index + 1} </div>
-      <div> {case1 ? case1.title : "No Case Selected"} </div>
-      <div> {case2 ? case2.title : "No Case Selected"} </div>
-      <button className="red" onClick={() => onRemove(index)} style={{ placeSelf: "center" }}>
-        Remove
-      </button>
+      <div className="heat-header">
+        <div style={{ fontSize: "1.25rem" }}> Heat {index + 1} </div>
+        <button
+          className="red"
+          onClick={() => onRemove(index)}
+          style={{ placeSelf: "end" }}
+        >
+          Remove
+        </button>
+      </div>
+
+      <div style={{ display: "grid", width: "100%" }}>
+        <div className="heat-item">
+          Round 1
+          <div style={{ placeSelf: "end" }}>
+            {" "}
+            {case1 ? case1.title : "No Case Selected"}{" "}
+          </div>
+        </div>
+        <div className="heat-item">
+          Round 2
+          <div style={{ placeSelf: "end" }}>
+            {" "}
+            {case2 ? case2.title : "No Case Selected"}{" "}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
 function Header({ onAdd }: { onAdd: () => void }) {
   return (
-    <div className="heat">
+    <div className="heat-header">
       <div
         style={{
           fontSize: "1.5rem",
           borderBottom: "solid 0.25rem",
+          width: "5rem",
         }}
       >
         Heats
       </div>
-      {[1, 2].map((i) => (
-        <div className="heat-header-item" key={'round' + i}> Round {i} </div>
-      ))}
-      <button
-        className="green"
-        style={{ placeSelf: "end center" }}
-        onClick={onAdd}
-      >
+      <button className="green" style={{ placeSelf: "end" }} onClick={onAdd}>
         Add Heat
       </button>
     </div>

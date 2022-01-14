@@ -31,7 +31,7 @@ function Item({ item, onClick }: { item: Event | Case; onClick: () => void }) {
       onClick={onClick}
       style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
     >
-      {item._id}
+      {item.title}
     </button>
   );
 }
