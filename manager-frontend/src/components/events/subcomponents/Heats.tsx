@@ -1,11 +1,15 @@
-import { Case, Cases, Heats } from "../../../state/types";
+import { Case, Cases, Heat } from "../../../state/types";
 
-export default function AssignedCases({
+export default function HeatsComponent({
   cases,
   heats,
+  onAdd,
+  onRemove,
 }: {
   cases: Cases;
-  heats: Heats;
+  heats: Heat[];
+  onAdd: () => void;
+  onRemove?: () => void;
 }) {
   return (
     <div className="assigned-cases">
@@ -13,30 +17,35 @@ export default function AssignedCases({
       {cases &&
         heats &&
         heats.map((heat, i) => (
-          <AssignedCase
+          <HeatComponent
+            key={i}
             index={i + 1}
             case1={cases[heat.case1]}
             case2={cases[heat.case2]}
           />
         ))}
+      <button className="green" style={{ placeSelf: "center" }} onClick={onAdd}>
+        {" "}
+        Add Heat{" "}
+      </button>
     </div>
   );
 }
 
-function AssignedCase({
+function HeatComponent({
   index,
   case1,
   case2,
 }: {
   index: number;
-  case1: Case;
-  case2: Case;
+  case1?: Case;
+  case2?: Case;
 }) {
   return (
     <div className="assigned-case">
       <div> Heat {index} </div>
-      <div> {case1.title} </div>
-      <div> {case2.title} </div>
+      <div> {case1 ? case1.title : "No Case Selected"} </div>
+      <div> {case2 ? case2.title : "No Case Selected"} </div>
     </div>
   );
 }
@@ -44,7 +53,7 @@ function AssignedCase({
 function Header() {
   return (
     <div className="assigned-case">
-      <div style={{ fontSize: "1.25rem"}}> Heats </div>
+      <div style={{ fontSize: "1.25rem" }}> Heats </div>
       <div> Round 1 </div>
       <div> Round 2 </div>
     </div>

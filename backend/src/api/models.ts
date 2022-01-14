@@ -5,7 +5,7 @@ export const EventModel = mongoose.model(
   new mongoose.Schema({
     owner: String,
     title: String,
-    cases: [{ case1: String, case2: String }],
+    heats: [{ case1: String, case2: String }],
     timers: Array,
   })
 );

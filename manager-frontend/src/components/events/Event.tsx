@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Cases, Event } from "../../state/types";
-import AssignedCases from "./subcomponents/AssignedCases";
-import HeatsAndPassword from "./subcomponents/HeatsAndPassword";
+import Heats from "./subcomponents/Heats";
 import Timers from "./subcomponents/Timers";
 
 export default function EventCompnent({
@@ -11,12 +10,22 @@ export default function EventCompnent({
   event: Event;
   cases: Cases;
 }) {
-  const [_event, setEvent] = useState(event)
+  const [_event, setEvent] = useState(event);
 
+  console.log(_event);
 
   return (
     <div className="event">
-      <AssignedCases cases={cases} heats={_event.heats} />
+      <Heats
+        cases={cases}
+        heats={_event.heats}
+        onAdd={() =>
+          setEvent({
+            ..._event,
+            heats: [..._event.heats, { case1: "", case2: "" }],
+          })
+        }
+      />
       <div
         style={{
           borderLeft: "solid 1px",

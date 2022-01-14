@@ -7,7 +7,7 @@ export interface Collection<T> {
 }
 
 export interface User {
-  _id?: string;
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -18,19 +18,22 @@ export type Events = Collection<Event>;
 
 export interface Event {
   _id?: string;
-  owner: string;
+  // owner: string;
   title: string;
   timers: number[];
-  heats: Heats ;
+  heats: Heat[];
 }
 
-export type Heats = Array<{ case1: CaseID, case2: CaseID }>
+export interface Heat {
+  case1: CaseID,
+  case2: CaseID
+}
 
 export type Cases = Collection<Case>
 
 export interface Case {
   _id?: CaseID;
-  owner: string;
+  // owner: string;
   title: string;
   isVideo: boolean;
   videoURL?: string;
