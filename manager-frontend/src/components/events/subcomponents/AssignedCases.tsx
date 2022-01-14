@@ -44,7 +44,7 @@ function AssignedCase({
 function Header() {
   return (
     <div className="assigned-case">
-      <div />
+      <div style={{ fontSize: "1.25rem"}}> Heats </div>
       <div> Round 1 </div>
       <div> Round 2 </div>
     </div>

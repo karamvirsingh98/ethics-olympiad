@@ -17,9 +17,16 @@ export default function Timers() {
 
   return (
     <div className="timers">
-      <div>
-        Timers
-      <button className="add-item"> Save </button>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          placeItems: "center",
+          fontSize: "1.5rem",
+        }}
+      >
+        <div style={{ placeSelf: "center start", borderBottom: "solid 0.25rem", width: "75%" }}>Timers</div>
+        <button className="add-item"> Save </button>
       </div>
       {timers.map((time, i) => (
         <TimeInput
@@ -27,8 +34,8 @@ export default function Timers() {
           time={time}
           label={LABELS[i]}
           onChange={(value) => {
-            timers.splice(i, 1, Number(value))
-            set([ ...timers ])
+            timers.splice(i, 1, Number(value));
+            set([...timers]);
           }}
         />
       ))}
@@ -47,15 +54,13 @@ function TimeInput({
 }) {
   return (
     <div className="timer-input">
-      <div> {label}: </div>
-      <input
-        className="input"
-        style={{ width: '3rem' }}
-        type="number"
-        defaultValue={time.toString()}
-        onChange={(e) => onChange(e.currentTarget.value)}
-      />
-      <div>
+      <div style={{ placeSelf: "start" }}> {label}: </div>
+      <div style={{ placeSelf: "end" }}>
+        <input
+          style={{ width: "2rem" }}
+          defaultValue={time.toString()}
+          onChange={(e) => onChange(e.currentTarget.value)}
+        />
         min
       </div>
     </div>
