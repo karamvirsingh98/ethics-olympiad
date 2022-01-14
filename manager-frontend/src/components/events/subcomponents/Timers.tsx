@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Input from "../../../pages/Input";
 
 const LABELS = [
   "First Conference",
@@ -65,12 +66,10 @@ function TimeInput({
     <div className="timer-input">
       <div style={{ placeSelf: "start" }}> {label}: </div>
       <div style={{ placeSelf: "end" }}>
-        <input
+        <Input
           style={{ width: "2rem" }}
           defaultValue={time.toString()}
-          onKeyDown={(e) =>
-            e.key === "Enter" && onConfirm(e.currentTarget.value, index)
-          }
+          onConfirm={(value) => onConfirm(value, index)}
         />
         min
       </div>

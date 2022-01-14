@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Cases, Collection, Event, Events } from "../../state/types";
 import Divider from "../util/Divider";
 import Heats from "./subcomponents/Heats";
@@ -15,53 +14,49 @@ export default function EventCompnent({
   events: Events;
   setEvents: (collection: Collection<Event>) => void;
 }) {
+  const onAdd = () => {
+    setEvents({
+      ...events,
+      [event._id!]: {
+        ...event,
+        heats: [...event.heats, { case1: "", case2: "" }],
+      },
+    });
+  };
+
+  const onRemove = (index: number) => {
+    setEvents({
+      ...events,
+      [event._id!]: {
+        ...event,
+        heats: event.heats.filter((_, i) => i !== index),
+      },
+    });
+  };
+
+  const onTimerEdit = (value: string, i: number) => {
+    event.timers.splice(i, 1, Number(value));
+    setEvents({
+      ...events,
+      [event._id!]: {
+        ...event,
+        timers: [...event.timers],
+      },
+    });
+  };
+
   return (
     <div className="event">
       <Heats
         cases={cases}
         heats={event.heats}
-        onAdd={() =>
-          setEvents({
-            ...events,
-            [event._id!]: {
-              ...event,
-              heats: [...event.heats, { case1: "", case2: "" }],
-            },
-          })
-        }
-        onRemove={(index) => {
-          setEvents({
-            ...events,
-            [event._id!]: {
-              ...event,
-              heats: event.heats.filter((_, i) => i !== index),
-            },
-          });
-        }}
+        onAdd={onAdd}
+        onRemove={onRemove}
       />
       <Divider />
-      <Timers
-        timers={event.timers}
-        onConfirm={(value, i) => {
-          event.timers.splice(i, 1, Number(value));
-          setEvents({
-            ...events,
-            [event._id!]: {
-              ...event,
-              timers: [...event.timers],
-            },
-          });
-        }}
-      />
+      <Timers timers={event.timers} onConfirm={onTimerEdit} />
       <Divider />
-      <div
-        className="teams"
-        style={{
-          fontSize: "1.5rem",
-          // borderBottom: "solid 0.25rem",
-          // width: "5rem",
-        }}
-      >
+      <div className="teams" style={{ fontSize: "1.5rem" }}>
         Teams
       </div>
     </div>

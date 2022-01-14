@@ -26,6 +26,7 @@ button {
   border: none;
   width: fit-content;
   border-radius: 0.25rem;
+  font-family: inherit;
   /* font-size: 1rem; */
 }
 
@@ -39,6 +40,7 @@ input {
   border: none;
   background-color: inherit;
   color: inherit;
+  font-family: inherit;
 }
 
 button:focus {
@@ -84,6 +86,14 @@ input:focus {
 
 .grey:hover {
   background-color: rgba(112, 108, 87, 1);
+}
+
+.blue {
+  background-color: rgba(126, 189, 194, 0.5);
+}
+
+.blue:hover {
+  background-color: rgba(126, 189, 194, 1);
 }
 
 .app {
