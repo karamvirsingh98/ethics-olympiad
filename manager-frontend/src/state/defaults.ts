@@ -1,4 +1,4 @@
-import { Case, Event, User } from "./types";
+import { Case, Event } from "./types";
 
 export function getDefaultEvent(): Event {
   return {
