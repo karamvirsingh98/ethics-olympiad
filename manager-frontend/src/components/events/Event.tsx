@@ -12,8 +12,6 @@ export default function EventCompnent({
 }) {
   const [_event, setEvent] = useState(event);
 
-  console.log(_event);
-
   return (
     <div className="event">
       <Heats
@@ -26,15 +24,7 @@ export default function EventCompnent({
           })
         }
       />
-      <div
-        style={{
-          borderLeft: "solid 1px",
-          display: "grid",
-          placeItems: "center",
-        }}
-      >
-        <Timers />
-      </div>
+      <Timers _timers={_event.timers} />
     </div>
   );
 }

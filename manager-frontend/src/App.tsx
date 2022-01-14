@@ -9,8 +9,6 @@ export default function App() {
   const state = useAppState();
   const [dark, set] = useLocalStorage(false, "ethics-olympiad-manager-dark")
 
-  console.log(state)
-
   return (
     <div className={`app ${dark ? "dark" : "light"}`}>
       {state.events && state.cases && (

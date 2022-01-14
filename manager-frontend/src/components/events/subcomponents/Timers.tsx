@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-const DEFAULT_TIMERS = [2, 5, 1, 3, 1, 3, 7];
-
 const LABELS = [
   "First Conference",
   "Presentation",
@@ -12,8 +10,8 @@ const LABELS = [
   "Judge's Questions",
 ];
 
-export default function Timers() {
-  const [timers, set] = useState(DEFAULT_TIMERS);
+export default function Timers({ _timers }: { _timers: number[] }) {
+  const [timers, set] = useState(_timers);
 
   return (
     <div className="timers">
@@ -26,7 +24,7 @@ export default function Timers() {
         }}
       >
         <div style={{ placeSelf: "center start", borderBottom: "solid 0.25rem", width: "75%" }}>Timers</div>
-        <button className="add-item"> Save </button>
+        <button className={timers !== _timers ?  "green" : "grey"} style={{ placeSelf: "center end" }}> Save </button>
       </div>
       {timers.map((time, i) => (
         <TimeInput

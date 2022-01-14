@@ -26,6 +26,7 @@ export default function Events({ state }: { state: AppState }) {
           events &&
           events[currentID] && (
             <button
+              className="red"
               onClick={async () => {
                 await client
                   .service("api/events")
@@ -39,7 +40,7 @@ export default function Events({ state }: { state: AppState }) {
         }
       />
       <div className="page-content">
-        <div style={{ borderRight: "solid 1px" }}>
+        <div>
           {events && cases && currentID && events[currentID] && (
             <EventCompnent event={events![currentID!]} cases={cases!} />
           )}

@@ -4,9 +4,7 @@ export default function PageTitle({ title, element }: { title: string, element?:
   return (
     <div className="page-title">
       {title}
-      <div>
-        {element}
-      </div>
+      {element}
     </div>
-  )
+  );
 }

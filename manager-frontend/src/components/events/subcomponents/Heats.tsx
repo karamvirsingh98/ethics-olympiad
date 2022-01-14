@@ -12,7 +12,7 @@ export default function HeatsComponent({
   onRemove?: () => void;
 }) {
   return (
-    <div className="assigned-cases">
+    <div className="heats">
       <Header />
       {cases &&
         heats &&
@@ -25,8 +25,7 @@ export default function HeatsComponent({
           />
         ))}
       <button className="green" style={{ placeSelf: "center" }} onClick={onAdd}>
-        {" "}
-        Add Heat{" "}
+        Add Heat
       </button>
     </div>
   );
@@ -42,7 +41,7 @@ function HeatComponent({
   case2?: Case;
 }) {
   return (
-    <div className="assigned-case">
+    <div className="heat">
       <div> Heat {index} </div>
       <div> {case1 ? case1.title : "No Case Selected"} </div>
       <div> {case2 ? case2.title : "No Case Selected"} </div>
@@ -52,10 +51,19 @@ function HeatComponent({
 
 function Header() {
   return (
-    <div className="assigned-case">
-      <div style={{ fontSize: "1.25rem" }}> Heats </div>
-      <div> Round 1 </div>
-      <div> Round 2 </div>
+    <div className="heat">
+      <div
+        style={{
+          fontSize: "1.5rem",
+          borderBottom: "solid 0.25rem",
+          width: "75%",
+        }}
+      >
+        Heats
+      </div>
+      {[1, 2].map((i) => (
+        <div className="heat-header-item"> Round {i} </div>
+      ))}
     </div>
   );
 }
