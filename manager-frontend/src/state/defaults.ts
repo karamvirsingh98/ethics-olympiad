@@ -4,9 +4,10 @@ export function getDefaultEvent(): Event {
   return {
     // owner: user._id,
     title: "New Olympiad",
+    heats: [],
+    teams: [],
     timers: [3, 5, 1, 3, 1, 3, 7],
-    heats: []
-  }
+  };
 }
 
 export function getDefaultCase(): Case {

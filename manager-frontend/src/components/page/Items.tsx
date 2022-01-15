@@ -1,4 +1,4 @@
-import { Cases, Case, Events, Event } from "../state/types";
+import { Cases, Case, Events, Event } from "../../state/types";
 
 export default function Items({
   label,

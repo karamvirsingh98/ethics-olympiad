@@ -6,6 +6,7 @@ export const EventModel = mongoose.model(
     owner: String,
     title: String,
     heats: [{ case1: String, case2: String }],
+    teams: [{ name: String, present: Boolean }],
     timers: Array,
   })
 );

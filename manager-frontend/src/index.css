@@ -54,14 +54,14 @@ input:focus {
 }
 
 .dark { 
-  background-color: #2A2B2A;
+  background-color: #262726;
   color: #F8F4E3;
   border-color: #7C7955;
 }
 
 .light {
   background-color: #F8F4E3;
-  color: #2A2B2A;
+  color: #262726;
   border-color: #7C7955;
 }
 
@@ -110,6 +110,7 @@ input:focus {
   width: 100vw;
   height: 100vh;
   padding: 1rem;
+  overflow: hidden;
 }
 
 .topbar {
@@ -186,7 +187,7 @@ input:focus {
 
 .heat-item {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   width: 100%;
 }
 
@@ -216,4 +217,12 @@ input:focus {
 
 .teams {
   padding-left: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.teams {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  place-items: center start;
 }

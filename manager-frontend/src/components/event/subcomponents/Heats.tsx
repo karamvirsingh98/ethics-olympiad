@@ -1,6 +1,6 @@
 import { Case, Cases, Heat } from "../../../state/types";
 
-export default function HeatsComponent({
+export default function Heats({
   cases,
   heats,
   onAdd,
@@ -55,14 +55,14 @@ function HeatComponent({
 
       <div style={{ display: "grid", width: "100%" }}>
         <div className="heat-item">
-          Round 1
+          Round 1:
           <div style={{ placeSelf: "end" }}>
             {" "}
             {case1 ? case1.title : "No Case Selected"}{" "}
           </div>
         </div>
         <div className="heat-item">
-          Round 2
+          Round 2:
           <div style={{ placeSelf: "end" }}>
             {" "}
             {case2 ? case2.title : "No Case Selected"}{" "}
@@ -85,7 +85,11 @@ function Header({ onAdd }: { onAdd: () => void }) {
       >
         Heats
       </div>
-      <button className="green" style={{ placeSelf: "end" }} onClick={onAdd}>
+      <button 
+        className="green" 
+        style={{ placeSelf: "end" }} 
+        onClick={onAdd}
+      >
         Add Heat
       </button>
     </div>

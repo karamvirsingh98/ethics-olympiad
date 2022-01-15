@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { client } from "..";
-import EventCompnent from "../components/events/Event";
-import Items from "../components/Items";
+import EventCompnent from "../components/event/Event";
+import Items from "../components/page/Items";
 import PageTitle from "../components/page/PageTitle";
 import { getDefaultEvent } from "../state/defaults";
 import { AppState, Event } from "../state/types";

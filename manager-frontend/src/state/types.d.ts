@@ -20,13 +20,19 @@ export interface Event {
   _id?: string;
   // owner: string;
   title: string;
-  timers: number[];
   heats: Heat[];
+  teams: Team[];
+  timers: number[];
 }
 
 export interface Heat {
   case1: CaseID,
   case2: CaseID
+}
+
+export interface Team {
+  name: string,
+  present: boolean
 }
 
 export type Cases = Collection<Case>
