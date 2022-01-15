@@ -23,7 +23,13 @@ export default function Events({ state }: { state: AppState }) {
       .service("/api/events")
       .create(getDefaultEvent());
     setEvents({ ...events, [newEvent._id!]: newEvent });
+    console.log(newEvent);
     setID(newEvent._id!);
+  };
+
+  const deleteEvent = async () => {
+    await client.service("api/events").remove(events![currentID]._id!);
+    setEvents(filterOutFromObj(events, [events![currentID]._id!]));
   };
 
   const saveEvent = async () => {
@@ -36,10 +42,15 @@ export default function Events({ state }: { state: AppState }) {
     });
   };
 
-  const deleteEvent = async () => {
-    await client.service("api/events").remove(events![currentID]._id!);
-    setEvents(filterOutFromObj(events, [events![currentID]._id!]));
-  };
+  const cancelEdits = async () => {
+    setEvents({
+      ...events,
+      [events![currentID]._id!]: await client
+        .service("/api/events")
+        .get(currentID),
+    });
+    setEditing(false)
+  }
 
   const getTitle = () =>
     events && events[currentID] ? events[currentID].title : "No Event Selected";
@@ -57,27 +68,44 @@ export default function Events({ state }: { state: AppState }) {
         title={
           editing ? (
             <Input
-              style={{ fontSize: "2rem", width: "fit-content" }}
+              style={{
+                fontSize: "2rem",
+                width: "fit-content",
+              }}
               defaultValue={getTitle()}
               onConfirm={setTitle}
             />
           ) : (
-            <div>{getTitle()}</div>
+            <div style={{ borderBottom: "solid 0.25rem transparent" }}>{getTitle()}</div>
           )
         }
         element={
           events &&
           events[currentID] && (
             <Fragment>
-              <button className={editing ? "brown" : "blue"} onClick={() => setEditing(!editing)}>
-                Edit
-              </button>
-              <button className="green" onClick={saveEvent}>
-                Save
-              </button>
-              <button className="red" onClick={deleteEvent}>
-                Delete
-              </button>
+              {!editing && (
+                <Fragment>
+                  <button
+                    className="blue"
+                    onClick={() => setEditing(!editing)}
+                  >
+                    Edit
+                  </button>
+                  <button className="red" onClick={deleteEvent}>
+                    Delete
+                  </button>
+                </Fragment>
+              )}
+              {editing && (
+                <Fragment>
+                  <button className="green" onClick={saveEvent}>
+                    Save
+                  </button>
+                  <button className="orange" onClick={cancelEdits}>
+                    Cancel
+                  </button>
+                </Fragment>
+              )}
             </Fragment>
           )
         }
@@ -86,9 +114,9 @@ export default function Events({ state }: { state: AppState }) {
         <div>
           {events && cases && currentID && events[currentID] && (
             <EventCompnent
-              cases={cases!}
+              cases={cases}
               events={events}
-              event={events![currentID!]}
+              event={events[currentID]}
               setEvents={setEvents}
             />
           )}

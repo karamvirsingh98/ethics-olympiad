@@ -13,8 +13,8 @@ export default function Teams({
   onRemove: (index: number) => void;
 }) {
   return (
-    <div>
-      <div>
+    <div className="teams">
+      <div className="heat-header">
         <div
           style={{
             fontSize: "1.5rem",
@@ -28,7 +28,7 @@ export default function Teams({
           Add Team
         </button>
       </div>
-      <div>
+      <div style={{ display: 'grid', gap: "1rem" }}>
         {teams.map((team, i) => (
           <TeamComponent
             key={team.name}
@@ -52,8 +52,8 @@ export function TeamComponent({
   onRemove: () => void;
 }) {
   return (
-    <div>
-      <Input defaultValue={team.name} onConfirm={onRename} />
+    <div className="team">
+      <Input defaultValue={team.name} placeholder="New Team" onConfirm={onRename} />
       <button className="red" onClick={onRemove}>
         Remove
       </button>

@@ -81,14 +81,14 @@ export default function EventCompnent({
         onAdd={onAdd}
         onRemove={onRemove}
       />
-      <Divider />
+      {/* <Divider /> */}
       <Teams
         teams={event.teams}
         onAdd={onTeamAdd}
         onRename={onTeamRename}
         onRemove={onTeamRemove}
       />
-      <Divider />
+      {/* <Divider /> */}
       <Timers timers={event.timers} onConfirm={onTimerEdit} />
     </div>
   );
