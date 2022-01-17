@@ -5,11 +5,13 @@ import Teams from "./subcomponents/Teams";
 import Timers from "./subcomponents/Timers";
 
 export default function EventCompnent({
+  editing,
   cases,
   event,
   events,
   setEvents,
 }: {
+  editing: boolean;
   cases: Cases;
   event: Event;
   events: Events;
@@ -38,7 +40,7 @@ export default function EventCompnent({
        ...events,
        [event._id!]: {
          ...event,
-         timers: event.timers.map((time, i) => i === index ? Number(value) : time),
+         timers: [... event.timers.map((time, i) => i === index ? Number(value) : time)],
        },
      });
   }
@@ -76,20 +78,20 @@ export default function EventCompnent({
   return (
     <div className="event">
       <Heats
+        editing={editing}
         cases={cases}
         heats={event.heats}
         onAdd={onAdd}
         onRemove={onRemove}
       />
-      {/* <Divider /> */}
+      <Timers editing={editing} timers={event.timers} onConfirm={onTimerEdit} />
       <Teams
+        editing={editing}
         teams={event.teams}
         onAdd={onTeamAdd}
         onRename={onTeamRename}
         onRemove={onTeamRemove}
       />
-      {/* <Divider /> */}
-      <Timers timers={event.timers} onConfirm={onTimerEdit} />
     </div>
   );
 }

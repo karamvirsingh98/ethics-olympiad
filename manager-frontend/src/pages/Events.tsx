@@ -23,8 +23,8 @@ export default function Events({ state }: { state: AppState }) {
       .service("/api/events")
       .create(getDefaultEvent());
     setEvents({ ...events, [newEvent._id!]: newEvent });
-    console.log(newEvent);
     setID(newEvent._id!);
+    setEditing(true)
   };
 
   const deleteEvent = async () => {
@@ -40,6 +40,7 @@ export default function Events({ state }: { state: AppState }) {
       ...events,
       [events![currentID]._id!]: newItem,
     });
+    setEditing(false);
   };
 
   const cancelEdits = async () => {
@@ -49,11 +50,17 @@ export default function Events({ state }: { state: AppState }) {
         .service("/api/events")
         .get(currentID),
     });
-    setEditing(false)
-  }
+    setEditing(false);
+  };
 
   const getTitle = () =>
-    events && events[currentID] ? events[currentID].title : "No Event Selected";
+    events
+      ? events[currentID]
+        ? events[currentID].title
+        : Object.keys(events).length > 0
+        ? "Select an Event"
+        : "Create an Event"
+      : "Failed to Load Events";
 
   const setTitle = (title: string) => {
     setEvents({
@@ -68,15 +75,14 @@ export default function Events({ state }: { state: AppState }) {
         title={
           editing ? (
             <Input
-              style={{
-                fontSize: "2rem",
-                width: "fit-content",
-              }}
+              style={{ fontSize: "2rem" }}
               defaultValue={getTitle()}
               onConfirm={setTitle}
             />
           ) : (
-            <div style={{ borderBottom: "solid 0.25rem transparent" }}>{getTitle()}</div>
+            <div style={{ borderBottom: "solid 0.25rem transparent" }}>
+              {getTitle()}
+            </div>
           )
         }
         element={
@@ -85,10 +91,7 @@ export default function Events({ state }: { state: AppState }) {
             <Fragment>
               {!editing && (
                 <Fragment>
-                  <button
-                    className="blue"
-                    onClick={() => setEditing(!editing)}
-                  >
+                  <button className="blue" onClick={() => setEditing(!editing)}>
                     Edit
                   </button>
                   <button className="red" onClick={deleteEvent}>
@@ -114,6 +117,7 @@ export default function Events({ state }: { state: AppState }) {
         <div>
           {events && cases && currentID && events[currentID] && (
             <EventCompnent
+              editing={editing}
               cases={cases}
               events={events}
               event={events[currentID]}

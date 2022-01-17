@@ -11,9 +11,11 @@ const LABELS = [
 ];
 
 export default function Timers({
+  editing,
   timers,
   onConfirm,
 }: {
+  editing: boolean;
   timers: number[];
   onConfirm: (value: string, index: number) => void;
 }) {
@@ -21,41 +23,45 @@ export default function Timers({
     <div className="timers">
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          placeItems: "center",
-          fontSize: "1.5rem",
+          fontSize: "1.75rem",
+          // borderBottom: "solid 0.25rem",
+          width: "fit-content",
         }}
       >
-        <div
-          style={{
-            placeSelf: "center start",
-            borderBottom: "solid 0.25rem",
-            width: "5rem",
-          }}
-        >
-          Timers
-        </div>
+        Timers
       </div>
-      {timers.map((time, i) => (
-        <TimeInput
-          key={i}
-          time={time}
-          index={i}
-          label={LABELS[i]}
-          onConfirm={onConfirm}
-        />
-      ))}
+      <div
+        style={{
+          display: "grid",
+          gap: "0.5rem",
+          borderTop: "solid 1px",
+          borderBottom: "solid 1px",
+          padding: "1rem 0rem ",
+        }}
+      >
+        {timers.map((time, i) => (
+          <TimeInput
+            key={i * Math.random()}
+            editing={editing}
+            time={time}
+            index={i}
+            label={LABELS[i]}
+            onConfirm={onConfirm}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
 function TimeInput({
+  editing,
   time,
   index,
   label,
   onConfirm,
 }: {
+  editing: boolean;
   time: number;
   index: number;
   label: string;
@@ -64,12 +70,24 @@ function TimeInput({
   return (
     <div className="timer-input">
       <div style={{ placeSelf: "start" }}> {label}: </div>
-      <div style={{ placeSelf: "end" }}>
-        <Input
-          style={{ width: "2rem" }}
-          defaultValue={time.toString()}
-          onConfirm={(value) => onConfirm(value, index)}
-        />
+      <div
+        style={{
+          placeSelf: "end",
+          borderBottom: editing ? undefined : "solid 0.25rem transparent",
+          display: 'grid', 
+          gap: "0.5rem",
+          gridAutoFlow: "column"
+        }}
+      >
+        {editing ? (
+          <Input
+            style={{ width: "2rem", textAlign: "right"}}
+            defaultValue={time.toString()}
+            onConfirm={(value) => onConfirm(value, index)}
+          />
+        ) : (
+          <div>{time}</div>
+        )}
         min
       </div>
     </div>

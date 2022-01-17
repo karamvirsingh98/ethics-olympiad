@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useLocalStorage<T>(
   defaultStore: T,
@@ -15,4 +15,14 @@ export function useLocalStorage<T>(
       window.localStorage.setItem(key, JSON.stringify(newStore));
     },
   ];
+}
+
+export function useClientWidth() {
+  const [width, set] = useState(window.innerWidth);
+  useEffect(() => {
+    const updateWidth = () => set(window.innerWidth);
+    window.addEventListener("resize", updateWidth);
+    return () => window.removeEventListener("resize", updateWidth);
+  });
+  return width;
 }
