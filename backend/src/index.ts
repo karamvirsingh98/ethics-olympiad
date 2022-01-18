@@ -4,6 +4,7 @@ import configuration from "@feathersjs/configuration"
 import { coreServices, customServices } from "./services";
 import mongoose from "mongoose";
 import cors from "cors"
+import authentication from "./api/authentication";
 
 const app = express(feathers()).configure(configuration());
 
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.configure(express.rest());
 app.use(cors());
 
+app.configure(authentication)
 app.configure(coreServices);
 app.configure(customServices)
 

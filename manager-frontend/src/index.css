@@ -112,6 +112,12 @@ input:focus {
   overflow: hidden;
 }
 
+.login {
+  place-self: center;
+  display: grid;
+  place-items: center start;
+}
+
 .topbar {
   position: absolute;
   top: 1rem;

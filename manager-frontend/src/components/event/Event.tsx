@@ -1,5 +1,4 @@
 import { Cases, Collection, Event, Events } from "../../state/types";
-import Divider from "../util/Divider";
 import Heats from "./subcomponents/Heats";
 import Teams from "./subcomponents/Teams";
 import Timers from "./subcomponents/Timers";

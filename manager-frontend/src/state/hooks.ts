@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { client } from "..";
 import { arrToKeyedObject } from "../util/helpers";
-import { Case, Collection, Event } from "./types";
+import { Case, Collection, Event, User } from "./types";
 
 export function useAppState() {
+  const user = useAuth()
   const [events, setEvents] = useCollection<Event>("events");
   const [cases, setCases] = useCollection<Case>("cases");
 
@@ -15,6 +16,14 @@ export function useAppState() {
   };
 
   return state;
+}
+
+export function useAuth() {
+  const [user, set] = useState<User | false>()
+  useEffect(() => {
+    const user = client.reAuthenticate().then(console.log)
+  }, [])
+  return user
 }
 
 export function useCollection<T, P = any>(

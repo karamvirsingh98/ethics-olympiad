@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import { model, Schema } from "mongoose";
 
-export const EventModel = mongoose.model(
+export const EventModel = model(
   "olympiad-event",
-  new mongoose.Schema({
+  new Schema({
     owner: String,
     title: String,
     heats: [{ case1: String, case2: String }],
@@ -11,9 +11,9 @@ export const EventModel = mongoose.model(
   })
 );
 
-export const CaseModel = mongoose.model(
+export const CaseModel = model(
   "olympiad-case",
-  new mongoose.Schema({
+  new Schema({
     owner: String,
     title: String,
     isVideo: Boolean,
@@ -22,9 +22,9 @@ export const CaseModel = mongoose.model(
   })
 );
 
-export const UserModel = mongoose.model(
+export const UserModel = model(
   "users",
-  new mongoose.Schema({
+  new Schema({
     name: String,
     email: String,
     password: String,

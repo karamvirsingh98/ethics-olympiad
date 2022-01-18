@@ -1,5 +1,6 @@
 interface InputProps {
   placeholder?: string,
+  value?: string,
   defaultValue?: string,
   style?: React.CSSProperties
   onChange?: (value: string) => void
@@ -8,6 +9,7 @@ interface InputProps {
 
 export default function Input({
   placeholder,
+  value,
   defaultValue,
   style,
   onChange,
@@ -17,6 +19,7 @@ export default function Input({
     <input
       style={style}
       placeholder={placeholder}
+      value={value}
       defaultValue={defaultValue}
       onChange={(e) => onChange && onChange(e.currentTarget.value)}
       onBlur={(e) => onConfirm && onConfirm(e.currentTarget.value)}
