@@ -1,8 +1,13 @@
 import { authenticate } from "@feathersjs/authentication/lib/hooks";
 import hashPassword from "@feathersjs/authentication-local/lib/hooks/hash-password";
 import protect from "@feathersjs/authentication-local/lib/hooks/protect";
+import { Application } from "@feathersjs/express";
 
-export const USER_HOOKS = {
+export default function (app: Application) {
+  app.service("api/users").hooks(USER_HOOKS)
+}
+
+const USER_HOOKS = {
   before: {
     all: [],
     find: [authenticate("jwt")],

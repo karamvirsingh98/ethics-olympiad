@@ -18,7 +18,7 @@ export type Events = Collection<Event>;
 
 export interface Event {
   _id?: string;
-  // owner: string;
+  owner: string;
   title: string;
   heats: Heat[];
   teams: Team[];

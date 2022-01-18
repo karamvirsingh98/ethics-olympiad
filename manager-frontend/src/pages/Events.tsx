@@ -4,7 +4,7 @@ import EventCompnent from "../components/event/Event";
 import Items from "../components/page/Items";
 import PageTitle from "../components/page/PageTitle";
 import { getDefaultEvent } from "../state/defaults";
-import { AppState, Event } from "../state/types";
+import { AppState, Event, User } from "../state/types";
 import { filterOutFromObj } from "../util/helpers";
 import { useLocalStorage } from "../util/hooks";
 import Input from "../components/util/Input";
@@ -21,7 +21,7 @@ export default function Events({ state }: { state: AppState }) {
   const createEvent = async () => {
     const newEvent: Event = await client
       .service("/api/events")
-      .create(getDefaultEvent());
+      .create(getDefaultEvent(state.user as User));
     setEvents({ ...events, [newEvent._id!]: newEvent });
     setID(newEvent._id!);
     setEditing(true)

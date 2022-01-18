@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Topbar({toggleDark}:{toggleDark: () => void}) {
+export default function Topbar({toggleDark, logout}:{toggleDark: () => void, logout: () => void}) {
   const [current, set] = useState(0);
 
   return (
@@ -8,7 +8,8 @@ export default function Topbar({toggleDark}:{toggleDark: () => void}) {
       {TOPBAR_BUTTONS.map((text, i) => (
         <TopbarButton key={text+i} text={text} active={i === current} onClick={() => set(i)} />
       ))}
-      <button className="topbar-button" onClick={toggleDark}>Dark</button>
+      <button onClick={toggleDark}>Dark</button>
+      <button className="red" onClick={() => logout()}> Logout</button> 
     </div>
   );
 }

@@ -4,11 +4,16 @@ import { arrToKeyedObject } from "../util/helpers";
 import { Case, Collection, Event, User } from "./types";
 
 export function useAppState() {
-  const {user, login} = useAuth()
-  const [events, setEvents] = useCollection<Event>("events");
+  const { user, login, logout } = useAuth();
+  const [events, setEvents] = useCollection<Event>("events", {
+    query: { owner: user ? user._id : undefined },
+  });
   const [cases, setCases] = useCollection<Case>("cases");
 
   const state = {
+    user,
+    login,
+    logout,
     events,
     setEvents,
     cases,
@@ -19,19 +24,39 @@ export function useAppState() {
 }
 
 export function useAuth() {
-  const [user, set] = useState<User | false>()
+  const [user, setUser] = useState<User | false>();
   useEffect(() => {
-    const res = client.reAuthenticate().then(console.log)
-  }, [])
+    reAuth();
+  }, []);
+
+  const reAuth = async () => {
+    try {
+      const res = await client.reAuthenticate();
+      setUser(res.user);
+    } catch {
+      setUser(false);
+    }
+  };
 
   const login = async (email: string, password: string) => {
-    const res = await client.authenticate({ strategy: "local", email, password })
-    
-  }
+    try {
+      const res = await client.authenticate({
+        strategy: "local",
+        email,
+        password,
+      });
+      setUser(res.user);
+    } catch {
+      setUser(false);
+    }
+  };
 
+  const logout = async () => {
+    await client.logout();
+    setUser(false);
+  };
 
-
-  return {user, login}
+  return { user, login, logout };
 }
 
 export function useCollection<T, P = any>(
@@ -56,8 +81,8 @@ export function useCollection<T, P = any>(
   function setOne(id: string, item: T) {
     set({
       ...items,
-      [id]: item
-    })
+      [id]: item,
+    });
   }
 
   return [items, set, setOne];
