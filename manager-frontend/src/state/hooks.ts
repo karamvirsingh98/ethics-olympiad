@@ -4,7 +4,7 @@ import { arrToKeyedObject } from "../util/helpers";
 import { Case, Collection, Event, User } from "./types";
 
 export function useAppState() {
-  const user = useAuth()
+  const {user, login} = useAuth()
   const [events, setEvents] = useCollection<Event>("events");
   const [cases, setCases] = useCollection<Case>("cases");
 
@@ -21,9 +21,17 @@ export function useAppState() {
 export function useAuth() {
   const [user, set] = useState<User | false>()
   useEffect(() => {
-    const user = client.reAuthenticate().then(console.log)
+    const res = client.reAuthenticate().then(console.log)
   }, [])
-  return user
+
+  const login = async (email: string, password: string) => {
+    const res = await client.authenticate({ strategy: "local", email, password })
+    
+  }
+
+
+
+  return {user, login}
 }
 
 export function useCollection<T, P = any>(
