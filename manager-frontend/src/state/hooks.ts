@@ -22,7 +22,8 @@ export function useCollection<T, P = any>(
   params?: P
 ): [
   items: Collection<T> | undefined,
-  set: (collection: Collection<T>) => void
+  set: (collection: Collection<T>) => void,
+  setOne: (id: string, item: T) => void
 ] {
   const [items, set] = useState<Collection<T>>();
 
@@ -35,5 +36,12 @@ export function useCollection<T, P = any>(
       });
   }, []);
 
-  return [items, set];
+  function setOne(id: string, item: T) {
+    set({
+      ...items,
+      [id]: item
+    })
+  }
+
+  return [items, set, setOne];
 }
