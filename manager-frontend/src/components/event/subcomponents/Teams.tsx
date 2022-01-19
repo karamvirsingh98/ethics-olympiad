@@ -78,20 +78,28 @@ export function TeamComponent({
     <div className="team">
       {editing ? (
         <Input
-          style={{ fontSize: "1.25rem" }}
+          style={{ fontSize: "1rem", textOverflow: "ellipsis" }}
           defaultValue={team.name}
           placeholder="New Team"
           onConfirm={onRename}
         />
       ) : (
         <div
-          style={{ width: "100%", borderBottom: "solid 0.25rem transparent", fontSize: "1.25rem" }}
+          style={{
+            width: "100%",
+            borderBottom: "solid 0.25rem transparent",
+            textOverflow: "ellipsis",
+          }}
         >
           {team.name}
         </div>
       )}
       {editing && (
-        <button className="red" onClick={onRemove}>
+        <button
+          className="red"
+          onClick={onRemove}
+          style={{ fontSize: "0.8rem" }}
+        >
           Remove
         </button>
       )}

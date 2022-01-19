@@ -22,7 +22,7 @@ export default function Login({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "5fr 1fr",
+          gridTemplateColumns: "1fr auto",
           width: "100%",
           gap: "1rem",
         }}
@@ -36,6 +36,7 @@ export default function Login({
         />
         <button
           className={show ? "blue" : "orange"}
+          style={{ fontSize: "0.8rem", placeSelf: "end", width: '3rem' }}
           onClick={() => setShow(!show)}
         >
           {show ? "Hide" : "Show"}

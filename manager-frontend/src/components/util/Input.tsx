@@ -19,6 +19,7 @@ export default function Input({
 }: InputProps) {
   return (
     <input
+      id=""
       style={style}
       placeholder={placeholder}
       type={type}

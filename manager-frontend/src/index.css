@@ -6,7 +6,7 @@ html {
 
 * {
   box-sizing: inherit;
-  transition: border-color, background-color 250ms ease;
+  transition: background-color 250ms ease-in-out;
 }
 
 body {
@@ -238,4 +238,14 @@ input:focus {
   display: grid;
   grid-template-columns: 1fr auto;
   place-items: center start;
+  gap: 0.5rem;
+}
+
+.dark-icon {
+  opacity: 0.75;
+  transition: opacity 250ms;
+}
+
+.dark-icon:hover {
+  opacity: 1
 }

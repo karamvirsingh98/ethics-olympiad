@@ -78,6 +78,7 @@ export default function Events({ state }: { state: AppState }) {
               style={{ fontSize: "2rem" }}
               defaultValue={getTitle()}
               onConfirm={setTitle}
+              
             />
           ) : (
             <div style={{ borderBottom: "solid 0.25rem transparent" }}>

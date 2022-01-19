@@ -48,6 +48,7 @@ export function useAuth() {
       setUser(res.user);
     } catch {
       setUser(false);
+      window.alert('Invalid Login Credentials')
     }
   };
 
