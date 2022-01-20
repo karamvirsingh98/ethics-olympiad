@@ -3,6 +3,7 @@ import hashPassword from "@feathersjs/authentication-local/lib/hooks/hash-passwo
 import protect from "@feathersjs/authentication-local/lib/hooks/protect";
 import { Application } from "@feathersjs/express";
 import { HookContext } from "@feathersjs/feathers";
+import { BadRequest, Forbidden } from "@feathersjs/errors";
 
 export default function (app: Application) {
   app.service("api/users").hooks(USER_HOOKS)
@@ -11,8 +12,9 @@ export default function (app: Application) {
 const verifyInvite = () => {
   return async (context: HookContext) => {
     const inviteKey = context.data.inviteKey;
-    const verified = await context.app.service("signup").verify(inviteKey);
-    if (!verified) throw new Error("not verified");
+    if (!inviteKey) throw new BadRequest("No invite key provided.")
+    const verified = await context.app.service("api/invite").verify(inviteKey);
+    if (!verified) throw new Forbidden("Invite not accepted, could not create user.");
     return context;
   };
 };
@@ -38,4 +40,3 @@ const USER_HOOKS = {
     remove: [],
   },
 };
-

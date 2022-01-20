@@ -21,6 +21,8 @@ app.configure(coreServices);
 app.configure(customServices);
 app.configure(hooks);
 
+app.use(express.errorHandler())
+
 app.listen(3030).on("listening", () => {
   console.log("server on 3030");
 });

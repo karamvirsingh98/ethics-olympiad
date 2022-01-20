@@ -11,7 +11,7 @@ export function coreServices(app: Application) {
 }
 
 export function customServices(app: Application) {
-  app.use("/api/signup", new InviteService(app));
+  app.use("/api/invite", new InviteService(app));
   app.use("/api/unlock", new UnlockService(app));
 }
 

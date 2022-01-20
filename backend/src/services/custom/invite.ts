@@ -17,6 +17,11 @@ export class InviteService {
     return this.invites
   }
 
+  async remove(inviteKey: string) {
+    this.invites = this.invites.filter((key) => key !== inviteKey);
+    return this.invites
+  }
+
   async verify(inviteKey: string) {
     const verified = this.invites.includes(inviteKey)
     if (verified) this.invites = this.invites.filter(key => key !== inviteKey)
