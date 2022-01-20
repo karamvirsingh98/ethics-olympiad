@@ -28,3 +28,7 @@ const USER_HOOKS = {
     remove: [],
   },
 };
+
+const INVITE_HOOKS = {
+  
+}
