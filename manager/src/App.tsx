@@ -17,11 +17,14 @@ export default function App() {
     <div className={`app ${dark ? "dark" : "light"}`}>
       {state.user && state.user && state.events && state.cases && (
         <Fragment>
-          <Topbar dark={dark} toggleDark={() => set(!dark)} logout={state.logout} />
+          <Topbar
+            dark={dark}
+            toggleDark={() => set(!dark)}
+            logout={state.logout}
+          />
           <Routes>
-            <Route path="/" element={<Events state={state} />}>
-              <Route path='events' element={<Events state={state} />} />
-            </Route>
+            <Route path="/" element={"Hi"}></Route>
+            <Route path="/events" element={<Events state={state} />} />
           </Routes>
         </Fragment>
       )}
