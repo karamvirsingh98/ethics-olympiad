@@ -1,7 +1,7 @@
 import { Application } from "@feathersjs/express";
-import { OlympiadEvent } from "../types";
+import { OlympiadEvent } from "../../types";
 
-export class UnlockOlympiadService {
+export class UnlockService {
   app: Application;
 
   constructor(app: Application) {

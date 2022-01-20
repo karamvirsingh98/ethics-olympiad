@@ -4,8 +4,8 @@ import configuration from "@feathersjs/configuration";
 import { coreServices, customServices } from "./services";
 import mongoose from "mongoose";
 import cors from "cors";
-import authentication from "./api/authentication";
-import hooks from "./api/hooks";
+import authentication from "./services/core/authentication";
+import hooks from "./services/hooks";
 
 const app = express(feathers()).configure(configuration());
 

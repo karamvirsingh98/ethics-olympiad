@@ -1,8 +1,8 @@
 import { Application } from "@feathersjs/express";
 import { Service } from "feathers-mongoose";
-import { CaseModel, EventModel, UserModel } from "./api/models";
-import { SignupService } from "./api/signup-service";
-import { UnlockOlympiadService } from "./api/unlock-olympiad-service";
+import { CaseModel, EventModel, UserModel } from "./services/core/database-models";
+import { SignupService } from "./services/custom/invite-service";
+import { UnlockOlympiadService } from "./services/custom/unlock-service";
 
 export function coreServices(app: Application) {
   app.use("/api/events", new Service({ Model: EventModel }));
