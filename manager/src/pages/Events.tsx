@@ -8,6 +8,7 @@ import { AppState, Event, User } from "../state/types";
 import { filterOutFromObj } from "../util/helpers";
 import { useLocalStorage } from "../util/hooks";
 import Input from "../components/util/Input";
+import Conditional from "../components/util/Conditional";
 
 export default function Events({ state }: { state: AppState }) {
   const { cases, events, setEvents } = state;
@@ -24,7 +25,7 @@ export default function Events({ state }: { state: AppState }) {
       .create(getDefaultEvent(state.user as User));
     setEvents({ ...events, [newEvent._id!]: newEvent });
     setID(newEvent._id!);
-    setEditing(true)
+    setEditing(true);
   };
 
   const deleteEvent = async () => {
@@ -73,18 +74,21 @@ export default function Events({ state }: { state: AppState }) {
     <div className="page">
       <PageTitle
         title={
-          editing ? (
-            <Input
-              style={{ fontSize: "2rem" }}
-              defaultValue={getTitle()}
-              onConfirm={setTitle}
-              
-            />
-          ) : (
-            <div style={{ borderBottom: "solid 0.25rem transparent" }}>
-              {getTitle()}
-            </div>
-          )
+          <Conditional
+            condition={editing}
+            showTrue={
+              <Input
+                style={{ fontSize: "2rem" }}
+                defaultValue={getTitle()}
+                onConfirm={setTitle}
+              />
+            }
+            showFalse={
+              <div style={{ borderBottom: "solid 0.25rem transparent" }}>
+                {getTitle()}
+              </div>
+            }
+          />
         }
         element={
           events &&
