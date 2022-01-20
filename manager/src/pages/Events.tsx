@@ -10,7 +10,7 @@ import { useLocalStorage } from "../util/hooks";
 import Input from "../components/util/Input";
 import Conditional from "../components/util/Conditional";
 
-export default function Events({ state }: { state: AppState }) {
+export default function Events({ user, state }: { user: User, state: AppState }) {
   const { cases, events, setEvents } = state;
   const [currentID, setID] = useLocalStorage(
     "",
@@ -22,7 +22,7 @@ export default function Events({ state }: { state: AppState }) {
   const createEvent = async () => {
     const newEvent: Event = await client
       .service("/api/events")
-      .create(getDefaultEvent(state.user as User));
+      .create(getDefaultEvent(user._id!));
     setEvents({ ...events, [newEvent._id!]: newEvent });
     setID(newEvent._id!);
     setEditing(true);

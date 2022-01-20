@@ -1,8 +1,8 @@
 import { Case, Event, User } from "./types";
 
-export function getDefaultEvent(user: User): Event {
+export function getDefaultEvent(userID: string): Event {
   return {
-    owner: user!._id!,
+    owner: userID,
     title: "New Olympiad",
     heats: [],
     teams: [],

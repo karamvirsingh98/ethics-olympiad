@@ -3,17 +3,13 @@ import { client } from "..";
 import { arrToKeyedObject } from "../util/helpers";
 import { Case, Collection, Event, User } from "./types";
 
-export function useAppState() {
-  const { user, login, logout } = useAuth();
+export function useAppState(user: User) {
   const [events, setEvents] = useCollection<Event>("events", {
-    query: { owner: user ? user._id : undefined },
+    query: { owner: user._id },
   });
   const [cases, setCases] = useCollection<Case>("cases");
 
   const state = {
-    user,
-    login,
-    logout,
     events,
     setEvents,
     cases,
