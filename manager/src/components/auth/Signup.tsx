@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { client } from "..";
-import Input from "../components/util/Input";
+import { client } from "../..";
+import Input from "../util/Input";
 
 export default function Signup() {
   const [credentials, set] = useState({ name: "", username: "", password: "" })
   const [show, setShow] = useState(false)
-
-  const createAccount = async () => {
-    await client.service("api/users").create({ ...credentials, inviteKey: "" })
-  }
 
   return (
     <div className="login">
@@ -50,7 +46,7 @@ export default function Signup() {
       <button
         className="green"
         style={{ width: "100%" }}
-        onClick={createAccount}
+        onClick={() => {}}
       >
         Create Account
       </button>

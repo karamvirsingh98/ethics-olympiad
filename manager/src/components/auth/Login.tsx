@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Input from "../components/util/Input";
+import Input from "../util/Input";
 
 export default function Login({
   login,

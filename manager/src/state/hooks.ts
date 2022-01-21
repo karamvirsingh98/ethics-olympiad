@@ -21,18 +21,14 @@ export function useAppState(user: User) {
 
 export function useAuth() {
   const [user, setUser] = useState<User | false>();
+   
   useEffect(() => {
-    reAuth();
-  }, []);
-
-  const reAuth = async () => {
     try {
-      const res = await client.reAuthenticate();
-      setUser(res.user);
+      client.reAuthenticate().then(({ user }) => setUser(user))
     } catch {
-      setUser(false);
+      setUser(false)
     }
-  };
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
@@ -44,7 +40,7 @@ export function useAuth() {
       setUser(res.user);
     } catch {
       setUser(false);
-      window.alert('Invalid Login Credentials')
+      window.alert("Invalid Login Credentials");
     }
   };
 
@@ -53,7 +49,22 @@ export function useAuth() {
     setUser(false);
   };
 
-  return { user, login, logout };
+  const createUser = async (
+    credentials: { name: string; email: string; password: string },
+    inviteKey: string
+  ) => {
+    try {
+      const user = await client
+        .service("api/users")
+        .create({ ...credentials, inviteKey });
+      setUser(user);
+    } catch (err: any) {
+      setUser(false);
+      window.alert(err.message);
+    }
+  };
+
+  return { user, login, logout, createUser };
 }
 
 export function useCollection<T, P = any>(
@@ -68,7 +79,7 @@ export function useCollection<T, P = any>(
 
   useEffect(() => {
     client
-      .service(`/api/${service}`)
+      .service(`api/${service}`)
       .find(params)
       .then((res: T[]) => {
         set(arrToKeyedObject(res, "_id"));
@@ -79,7 +90,7 @@ export function useCollection<T, P = any>(
     set({
       ...items,
       [id]: item,
-    });
+    }); 
   }
 
   return [items, set, setOne];

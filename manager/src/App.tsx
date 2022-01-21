@@ -1,11 +1,10 @@
 import { useAuth } from "./state/hooks";
 import Topbar from "./components/Topbar";
 import { useLocalStorage } from "./util/hooks";
-import Events from "./pages/Events";
 import { Fragment } from "react";
-import Login from "./pages/Login";
 import { Routes, Route } from "react-router-dom"
 import AuthManager from "./components/util/AuthManager";
+import Login from "./components/auth/Login";
 
 export default function App() {
   const { user, login, logout } = useAuth()

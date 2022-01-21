@@ -8,7 +8,7 @@ import auth from "@feathersjs/authentication-client"
 import { BrowserRouter } from 'react-router-dom'
 
 export const client = feathers()
-const restClient = rest("http://localhost:3030")
+const restClient = rest("http://10.0.0.101:3030")
 client.configure(restClient.fetch(window.fetch));
 client.configure(auth())
 

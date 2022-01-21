@@ -1,14 +1,14 @@
 import { Fragment, useState } from "react";
-import { client } from "..";
-import EventCompnent from "../components/event/Event";
-import Items from "../components/page/Items";
-import PageTitle from "../components/page/PageTitle";
-import { getDefaultEvent } from "../state/defaults";
-import { AppState, Event, User } from "../state/types";
-import { filterOutFromObj } from "../util/helpers";
-import { useLocalStorage } from "../util/hooks";
-import Input from "../components/util/Input";
-import Conditional from "../components/util/Conditional";
+import { client } from "../..";
+import EventCompnent from "../event/Event";
+import Items from "./page/Items";
+import PageTitle from "./page/PageTitle";
+import { getDefaultEvent } from "../../state/defaults";
+import { AppState, Event, User } from "../../state/types";
+import { filterOutFromObj } from "../../util/helpers";
+import { useLocalStorage } from "../../util/hooks";
+import Input from "../util/Input";
+import Conditional from "../util/Conditional";
 
 export default function Events({ user, state }: { user: User, state: AppState }) {
   const { cases, events, setEvents } = state;
