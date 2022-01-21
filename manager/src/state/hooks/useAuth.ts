@@ -30,7 +30,7 @@ export default function useAuth() {
     setUser(false);
   };
 
-  const createUser = async (
+  const createAccount = async (
     credentials: { name: string; email: string; password: string },
     inviteKey: string
   ) => {
@@ -45,5 +45,5 @@ export default function useAuth() {
     }
   };
 
-  return { user, login, logout, createUser };
+  return { user, login, logout, createAccount };
 }

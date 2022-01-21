@@ -1,10 +1,10 @@
-import { useLocalStorage, useTheme } from "./util/hooks";
+import { useTheme } from "./util/hooks";
 import useAuth from "./state/hooks/useAuth";
 import Auth from "./components/auth/Auth";
 import AuthHandler from "./components/handlers/AuthHandler";
 
 export default function App() {
-  const { user, login, logout, createUser } = useAuth();
+  const { user, login, logout, createAccount } = useAuth();
   const [dark, set] = useTheme()
 
   return (
@@ -20,7 +20,7 @@ export default function App() {
           //   toggleDark={() => set(!dark)}
           // />
         }
-        notAuth={<Auth login={login} createAccount={createUser} />}
+        notAuth={<Auth login={login} createAccount={createAccount} />}
       />
     </div>
   );

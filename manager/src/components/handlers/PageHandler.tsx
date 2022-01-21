@@ -21,7 +21,7 @@ export default function PageHandler({
 
   return (
     <div className="page">
-      <Topbar logout={logout} dark={dark} toggleDark={toggleDark} />
+      <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <Routes>
         <Route path="/" element={"Hi"}></Route>
         <Route path="/events" element={<Events user={user} state={state} />} />

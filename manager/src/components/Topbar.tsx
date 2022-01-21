@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { User } from "../state/types";
 import DarkIcon from "./util/DarkIcon";
 
 export default function Topbar({
   dark,
+  user,
   toggleDark,
   logout,
 }: {
   dark: boolean;
+  user: User
   toggleDark: () => void;
   logout: () => void;
 }) {
@@ -27,6 +30,16 @@ export default function Topbar({
           }}
         />
       ))}
+      {user.admin && (
+        <TopbarButton
+          text="Users"
+          active={current === 3}
+          onClick={() => {
+            set(3);
+            navigate('/users');
+          }}
+        />
+      )}
       <button onClick={toggleDark}>
         <DarkIcon dark={dark} />
       </button>
