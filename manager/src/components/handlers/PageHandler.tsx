@@ -2,9 +2,9 @@ import { Route, Routes } from "react-router-dom";
 import { useAppState } from "../../state/hooks/useAppState";
 import { User } from "../../state/types";
 import Topbar from "../Topbar";
-import Events from "./Events";
+import Events from "../pages/Events";
 
-export default function PageManager({
+export default function PageHandler({
   user,
   logout,
   dark,

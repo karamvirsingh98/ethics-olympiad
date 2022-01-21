@@ -1,18 +1,15 @@
-import { useLocalStorage } from "./util/hooks";
-import AuthManager from "./components/util/AuthManager";
-import Login from "./components/auth/Login";
-import PageManager from "./components/pages/PageManager";
-import { User } from "./state/types";
+import { useLocalStorage, useTheme } from "./util/hooks";
 import useAuth from "./state/hooks/useAuth";
 import Auth from "./components/auth/Auth";
+import AuthHandler from "./components/handlers/AuthHandler";
 
 export default function App() {
   const { user, login, logout, createUser } = useAuth();
-  const [dark, set] = useLocalStorage(false, "ethics-olympiad-manager-dark");
+  const [dark, set] = useTheme()
 
   return (
     <div className={`app ${dark ? "dark" : "light"}`}>
-      <AuthManager
+      <AuthHandler
         user={user}
         isAuth={
           "hi"

@@ -26,3 +26,8 @@ export function useClientWidth() {
   });
   return width;
 }
+
+export function useTheme() {
+  const [dark, set] = useLocalStorage(false, "ethics-olympiad-manager-dark");
+  return [dark, set]
+}
