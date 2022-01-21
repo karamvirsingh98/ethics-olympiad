@@ -38,8 +38,8 @@ export interface Team {
 export type Cases = Collection<Case>
 
 export interface Case {
-  _id?: CaseID;
-  // owner: string;
+  _id?: CaseID = string;
+  owner: string;
   title: string;
   isVideo: boolean;
   videoURL?: string;
