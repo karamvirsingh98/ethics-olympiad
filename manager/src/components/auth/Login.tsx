@@ -10,7 +10,7 @@ export default function Login({
   const [show, setShow] = useState(false);
 
   return (
-    <div className="login">
+    <div className="auth-window">
       <div style={{ fontSize: "2rem", borderBottom: "solid 1px" }}>
         Ethics Olympiad Manager
       </div>

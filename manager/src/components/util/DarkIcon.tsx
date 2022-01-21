@@ -7,7 +7,7 @@ export default function DarkIcon({ dark }: { dark: boolean }) {
       x="0px"
       y="0px"
       viewBox="0 0 500.345 500.345"
-      enable-background="new 0 0 500.345 500.345"
+      enableBackground="new 0 0 500.345 500.345"
       width="1.5rem"
       height="1.5rem"
       className="dark-icon"

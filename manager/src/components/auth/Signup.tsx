@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { client } from "../..";
 import Input from "../util/Input";
 
 export default function Signup() {
@@ -7,7 +6,7 @@ export default function Signup() {
   const [show, setShow] = useState(false)
 
   return (
-    <div className="login">
+    <div className="auth-window">
       <div style={{ fontSize: "2rem", borderBottom: "solid 1px" }}>
         Ethics Olympiad Manager
       </div>
