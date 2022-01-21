@@ -4,9 +4,9 @@ import Input from "../util/Input";
 export default function Login({
   login,
 }: {
-  login: (email: string, password: string) => void;
+  login: (credentials: {email: string, password: string}) => void;
 }) {
-  const [credentials, set] = useState({ username: "", password: "" });
+  const [credentials, set] = useState({ email: "", password: "" });
   const [show, setShow] = useState(false);
 
   return (
@@ -16,8 +16,8 @@ export default function Login({
       </div>
       <Input
         placeholder="email"
-        value={credentials.username}
-        onChange={(username) => set({ ...credentials, username })}
+        value={credentials.email}
+        onChange={(email) => set({ ...credentials, email })}
       />
       <div
         style={{
@@ -32,7 +32,7 @@ export default function Login({
           placeholder="password"
           value={credentials.password}
           onChange={(password) => set({ ...credentials, password })}
-          onConfirm={() => login(credentials.username, credentials.password)}
+          onConfirm={() => login(credentials)}
         />
         <button
           className={show ? "blue" : "orange"}
@@ -45,7 +45,7 @@ export default function Login({
       <button
         className="green"
         style={{ width: "100%" }}
-        onClick={() => login(credentials.username, credentials.password)}
+        onClick={() => login(credentials)}
       >
         Login
       </button>

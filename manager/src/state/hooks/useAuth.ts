@@ -6,19 +6,17 @@ export default function useAuth() {
   const [user, setUser] = useState<User | false>();
 
   useEffect(() => {
-    try {
-      client.reAuthenticate().then(({ user }) => setUser(user));
-    } catch {
-      setUser(false);
-    }
+    client
+      .reAuthenticate()
+      .then(({ user }) => setUser(user))
+      .catch(() => setUser(false));
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (credentials: {email: string, password: string}) => {
     try {
       const res = await client.authenticate({
         strategy: "local",
-        email,
-        password,
+        ...credentials,
       });
       setUser(res.user);
     } catch {

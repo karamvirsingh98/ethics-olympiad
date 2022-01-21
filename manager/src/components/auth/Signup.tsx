@@ -1,9 +1,19 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import Input from "../util/Input";
 
-export default function Signup() {
-  const [credentials, set] = useState({ name: "", username: "", password: "" })
-  const [show, setShow] = useState(false)
+export default function Signup({
+  createAccount,
+}: {
+  createAccount: (
+    credentials: { name: string; email: string; password: string },
+    inviteKey: string
+  ) => void;
+}) {
+  const [credentials, set] = useState({ name: "", email: "", password: "" });
+  const [show, setShow] = useState(false);
+
+  const { inviteKey } = useParams()
 
   return (
     <div className="auth-window">
@@ -17,8 +27,8 @@ export default function Signup() {
       />
       <Input
         placeholder="email"
-        value={credentials.username}
-        onChange={(username) => set({ ...credentials, username })}
+        value={credentials.email}
+        onChange={(email) => set({ ...credentials, email })}
       />
       <div
         style={{
@@ -42,11 +52,7 @@ export default function Signup() {
           {show ? "Hide" : "Show"}
         </button>
       </div>
-      <button
-        className="green"
-        style={{ width: "100%" }}
-        onClick={() => {}}
-      >
+      <button className="green" style={{ width: "100%" }} onClick={() => createAccount(credentials, inviteKey!)}>
         Create Account
       </button>
     </div>
