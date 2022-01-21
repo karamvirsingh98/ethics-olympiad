@@ -1,4 +1,6 @@
 interface InputProps {
+  id?: string,
+  className?: string,
   placeholder?: string,
   type?: string,
   value?: string,
@@ -9,6 +11,8 @@ interface InputProps {
 }
 
 export default function Input({
+  id,
+  className,
   placeholder,
   type,
   value,
@@ -19,7 +23,8 @@ export default function Input({
 }: InputProps) {
   return (
     <input
-      // id=""
+      id={id}
+      className={className}
       style={style}
       placeholder={placeholder}
       type={type}

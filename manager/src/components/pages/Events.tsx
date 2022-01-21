@@ -1,57 +1,59 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { client } from "../..";
 import EventCompnent from "../event/Event";
 import Items from "./page/Items";
 import PageTitle from "./page/PageTitle";
 import { getDefaultEvent } from "../../state/defaults";
 import { AppState, Event, User } from "../../state/types";
-import { filterOutFromObj } from "../../util/helpers";
 import { useLocalStorage } from "../../util/hooks";
 import Input from "../util/Input";
 import Conditional from "../util/Conditional";
+import TitleButtons from "../event/subcomponents/TitleButtons";
 
-export default function Events({ user, state }: { user: User, state: AppState }) {
-  const { cases, events, setEvents } = state;
+export default function Events({
+  user,
+  state,
+}: {
+  user: User;
+  state: AppState;
+}) {
+  const {
+    events: [events, { setOne, setOneField, removeOne }],
+    cases: [cases],
+  } = state;
   const [currentID, setID] = useLocalStorage(
     "",
     "ethics-olympiad-selected-event"
   );
-
   const [editing, setEditing] = useState(false);
 
   const createEvent = async () => {
     const newEvent: Event = await client
       .service("/api/events")
       .create(getDefaultEvent(user._id!));
-    setEvents({ ...events, [newEvent._id!]: newEvent });
+    setOne(newEvent._id!, newEvent);
     setID(newEvent._id!);
     setEditing(true);
+    document.getElementById("event-title")?.focus()
   };
 
   const deleteEvent = async () => {
-    await client.service("api/events").remove(events![currentID]._id!);
-    setEvents(filterOutFromObj(events, [events![currentID]._id!]));
+    await client.service("api/events").remove(currentID);
+    removeOne(currentID);
+    setID("");
   };
 
-  const saveEvent = async () => {
-    const newItem = await client
+  const saveEdits = async () => {
+    const updatedEvent = await client
       .service("api/events")
-      .update(events![currentID]._id!, events![currentID]);
-    setEvents({
-      ...events,
-      [events![currentID]._id!]: newItem,
-    });
+      .update(currentID, events![currentID]);
+    setOne(currentID, updatedEvent);
     setEditing(false);
   };
 
   const cancelEdits = async () => {
-    setEvents({
-      ...events,
-      [events![currentID]._id!]: await client
-        .service("/api/events")
-        .get(currentID),
-    });
-    setEditing(false);
+    setOne(currentID, await client.service("/api/events").get(currentID));
+    setEditing(false)
   };
 
   const getTitle = () =>
@@ -64,10 +66,7 @@ export default function Events({ user, state }: { user: User, state: AppState })
       : "Failed to Load Events";
 
   const setTitle = (title: string) => {
-    setEvents({
-      ...events,
-      [currentID]: { ...events![currentID], title },
-    });
+    setOneField(currentID, "title", title);
   };
 
   return (
@@ -78,6 +77,7 @@ export default function Events({ user, state }: { user: User, state: AppState })
             condition={editing}
             showTrue={
               <Input
+                id="event-title"
                 style={{ fontSize: "2rem" }}
                 defaultValue={getTitle()}
                 onConfirm={setTitle}
@@ -91,42 +91,25 @@ export default function Events({ user, state }: { user: User, state: AppState })
           />
         }
         element={
-          events &&
-          events[currentID] && (
-            <Fragment>
-              {!editing && (
-                <Fragment>
-                  <button className="blue" onClick={() => setEditing(!editing)}>
-                    Edit
-                  </button>
-                  <button className="red" onClick={deleteEvent}>
-                    Delete
-                  </button>
-                </Fragment>
-              )}
-              {editing && (
-                <Fragment>
-                  <button className="green" onClick={saveEvent}>
-                    Save
-                  </button>
-                  <button className="orange" onClick={cancelEdits}>
-                    Cancel
-                  </button>
-                </Fragment>
-              )}
-            </Fragment>
+          events && (
+            <TitleButtons
+              editing={editing}
+              toggleEditing={() => setEditing(!editing)}
+              onDelete={deleteEvent}
+              onSave={saveEdits}
+              onCancel={cancelEdits}
+            />
           )
         }
       />
       <div className="page-content">
         <div>
-          {events && cases && currentID && events[currentID] && (
+          { events && events![currentID] && (
             <EventCompnent
               editing={editing}
-              cases={cases}
-              events={events}
-              event={events[currentID]}
-              setEvents={setEvents}
+              cases={cases!}
+              event={events![currentID]}
+              setOneField={setOneField}
             />
           )}
         </div>

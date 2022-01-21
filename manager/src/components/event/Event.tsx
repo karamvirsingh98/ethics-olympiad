@@ -7,71 +7,52 @@ export default function EventCompnent({
   editing,
   cases,
   event,
-  events,
-  setEvents,
+  setOneField,
 }: {
   editing: boolean;
   cases: Cases;
   event: Event;
-  events: Events;
-  setEvents: (collection: Collection<Event>) => void;
+  setOneField: (id: string, field: string, item: any) => void;
 }) {
-  const onAdd = () =>
-    setEvents({
-      ...events,
-      [event._id!]: {
-        ...event,
-        heats: [...event.heats, { case1: "", case2: "" }],
-      },
-    });
 
-  const onRemove = (index: number) =>
-    setEvents({
-      ...events,
-      [event._id!]: {
-        ...event,
-        heats: event.heats.filter((_, i) => i !== index),
-      },
-    });
+  const addHeat = () =>
+    setOneField(event._id!, "heats", [
+      ...event.heats,
+      { case1: "", case2: "" },
+    ]);
 
-  const onTimerEdit = (value: string, index: number) => {
-     setEvents({
-       ...events,
-       [event._id!]: {
-         ...event,
-         timers: [... event.timers.map((time, i) => i === index ? Number(value) : time)],
-       },
-     });
-  }
-   
-  const onTeamAdd = () =>
-    setEvents({
-      ...events,
-      [event._id!]: {
-        ...event,
-        teams: [...event.teams, { name: "", present: false }],
-      },
-    });
+  const removeHeat = (index: number) =>
+    setOneField(
+      event._id!,
+      "heats",
+      event.heats.filter((_, i) => i !== index)
+    );
 
-  const onTeamRename = (name: string, index: number) =>
-    setEvents({
-      ...events,
-      [event._id!]: {
-        ...event,
-        teams: event.teams.map((team, i) =>
-          i === index ? { ...team, name } : team
-        ),
-      },
-    });
+  const editTimer = (value: string, index: number) => {
+    setOneField(event._id!, "timers", [
+      ...event.timers.map((time, i) => (i === index ? Number(value) : time)),
+    ]);
+  };
 
-  const onTeamRemove = (index: number) => {
-    setEvents({
-      ...events,
-      [event._id!]: {
-        ...event,
-        teams: event.teams.filter((_, i) => i !== index),
-      },
-    });
+  const addTeam = () =>
+    setOneField(event._id!, "teams", [
+      ...event.teams,
+      { name: "", present: false },
+    ]);
+
+  const renameTeam = (name: string, index: number) =>
+    setOneField(
+      event._id!,
+      "teams",
+      event.teams.map((team, i) => (i === index ? { ...team, name } : team))
+    );
+
+  const removeTeam = (index: number) => {
+    setOneField(
+      event._id!,
+      "teams",
+      event.teams.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -80,16 +61,16 @@ export default function EventCompnent({
         editing={editing}
         cases={cases}
         heats={event.heats}
-        onAdd={onAdd}
-        onRemove={onRemove}
+        onAdd={addHeat}
+        onRemove={removeHeat}
       />
-      <Timers editing={editing} timers={event.timers} onConfirm={onTimerEdit} />
+      <Timers editing={editing} timers={event.timers} onConfirm={editTimer} />
       <Teams
         editing={editing}
         teams={event.teams}
-        onAdd={onTeamAdd}
-        onRename={onTeamRename}
-        onRemove={onTeamRemove}
+        onAdd={addTeam}
+        onRename={renameTeam}
+        onRemove={removeTeam}
       />
     </div>
   );

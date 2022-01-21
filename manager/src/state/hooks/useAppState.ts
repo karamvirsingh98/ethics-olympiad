@@ -1,4 +1,4 @@
-import { Case, User } from "../types";
+import { Case, Event, User } from "../types";
 import useCollection from "./useCollection";
 
 export function useAppState(user: User) {

@@ -27,7 +27,10 @@ export function useClientWidth() {
   return width;
 }
 
-export function useTheme() {
+export function useTheme(): [dark: boolean, toggle: () => void] {
   const [dark, set] = useLocalStorage(false, "ethics-olympiad-manager-dark");
-  return [dark, set]
+  function toggle() {
+    set(!dark)
+  }
+  return [dark, toggle]
 }
