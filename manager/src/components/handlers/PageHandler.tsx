@@ -25,6 +25,7 @@ export default function PageHandler({
       <Routes>
         <Route path="/" element={"Hi"}></Route>
         <Route path="/events" element={<Events user={user} state={state} />} />
+        <Route path="/users" />
       </Routes>
     </div>
   );

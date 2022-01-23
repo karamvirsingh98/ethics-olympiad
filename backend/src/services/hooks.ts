@@ -6,15 +6,17 @@ import { HookContext } from "@feathersjs/feathers";
 import { BadRequest, Forbidden } from "@feathersjs/errors";
 
 export default function (app: Application) {
-  app.service("api/users").hooks(USER_HOOKS)
+  app.service("api/users").hooks(USER_HOOKS);
+  app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
 }
 
 const verifyInvite = () => {
   return async (context: HookContext) => {
     const inviteKey = context.data.inviteKey;
-    if (!inviteKey) throw new BadRequest("No invite key provided.")
+    if (!inviteKey) throw new BadRequest("No invite key provided.");
     const verified = await context.app.service("api/invite").verify(inviteKey);
-    if (!verified) throw new Forbidden("Invite not accepted, could not create user.");
+    if (!verified)
+      throw new Forbidden("Invite not accepted, could not create user.");
     return context;
   };
 };
