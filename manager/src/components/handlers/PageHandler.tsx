@@ -3,6 +3,7 @@ import { useAppState } from "../../state/hooks/useAppState";
 import { User } from "../../state/types";
 import Topbar from "../Topbar";
 import Events from "../pages/Events";
+import Users from "../users/Users";
 
 export default function PageHandler({
   user,
@@ -17,15 +18,15 @@ export default function PageHandler({
 }) {
   const state = useAppState(user);
 
-  console.log('state', state)
-
   return (
     <div className="page">
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <Routes>
         <Route path="/" element={"Hi"}></Route>
         <Route path="/events" element={<Events user={user} state={state} />} />
-        <Route path="/users" />
+        {user.admin && (
+          <Route path="/users" element={<Users currentUserID={user._id!} />} />
+        )}
       </Routes>
     </div>
   );
