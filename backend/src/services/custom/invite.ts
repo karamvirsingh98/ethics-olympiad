@@ -10,7 +10,7 @@ export class InviteService {
 
   constructor(app: Application) {
     this.app = app;
-    setInterval(this.clean, HOUR_IN_MS);
+    setInterval(() => this.clean(), HOUR_IN_MS);
   }
 
   async find() {
