@@ -46,7 +46,7 @@ export default function Events({
 
   return (
     <div className="page">
-      <div className={`page-content ${events![currentID] ? "grey-flat" : ""}`}>
+      <div className={`page-content ${ events && events[currentID] ? "grey-flat" : ""}`}>
         {events && events[currentID] && (
           <Fragment>
             <PageTitle
@@ -55,9 +55,9 @@ export default function Events({
               rename={setTitle}
               element={
                 <div
-                  style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+                  style={{ display: "grid", gridTemplateColumns: "1fr 1fr", width: "100%", placeSelf: 'start end'}}
                 >
-                  <div>
+                  <div style={{ placeSelf: "center", display: 'flex', alignItems: "flex-end", fontSize: "1rem"}}>
                     Password:
                     <Input
                       value={events[currentID].password}

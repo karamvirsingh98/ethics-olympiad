@@ -6,13 +6,13 @@ import { Collection } from "../types";
 export type BaseSet<T> = (collection: Collection<T>) => void;
 export type SetOne<T> = (id: string, item: T) => void;
 export type SetOneField<T> = (id: string, field: string, item: T) => void;
-export type RemoveOne<T> = (id: string) => void
+export type RemoveOne = (id: string) => void
 
 export interface CollectionFunctions<T> {
   set: BaseSet<T>;
   setOne: SetOne<T>;
   setOneField: SetOneField<T>;
-  removeOne: RemoveOne<T>;
+  removeOne: RemoveOne;
 } 
 
 export default function useCollection<T, P = any>(

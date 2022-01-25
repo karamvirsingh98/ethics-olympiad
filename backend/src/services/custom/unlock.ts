@@ -1,5 +1,5 @@
 import { Application } from "@feathersjs/express";
-import { OlympiadEvent } from "../../types";
+import { Event } from "../../types";
 
 export class UnlockService {
   app: Application;
@@ -9,10 +9,10 @@ export class UnlockService {
   }
 
   async create(data: { id?: string; passkey?: string }) {
-    const event: OlympiadEvent = this.app
+    const event: Event = this.app
       .service("api/events")
       .get({ _id: data.id });
-    if (data.passkey === event.passkey) return "unlocked";
+    if (data.passkey === event.password) return "unlocked";
     else return "unlock failed";
   }
 }
