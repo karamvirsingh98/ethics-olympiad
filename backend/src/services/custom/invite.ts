@@ -1,7 +1,7 @@
 import { Application } from "@feathersjs/express";
 import crypto from "crypto";
 
-const MONTH_IN_MS = 2592000000;
+const MONTH_IN_SECS = 2592000;
 const HOUR_IN_MS = 3600000;
 
 export class InviteService {
@@ -19,7 +19,7 @@ export class InviteService {
 
   async create(data: { name: string }) {
     const key = crypto.randomBytes(16).toString("hex");
-    const expiry = Date.now() + MONTH_IN_MS;
+    const expiry = Math.floor(Date.now() / 1000) + MONTH_IN_SECS;
     this.invites.push({ name: data.name, key, expiry });
     return this.invites;
   }
@@ -40,7 +40,7 @@ export class InviteService {
   }
 
   clean() {
-    const now = Date.now();
+    const now = Math.floor(Date.now() / 1000);
     const filtered = this.invites.filter((invite) => invite.expiry < now);
     if (filtered.length > 0) {
       console.log(
