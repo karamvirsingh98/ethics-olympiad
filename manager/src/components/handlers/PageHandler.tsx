@@ -4,6 +4,7 @@ import { User } from "../../state/types";
 import Topbar from "../Topbar";
 import Events from "../pages/Events";
 import Users from "../users/Users";
+import { Fragment } from "react";
 
 export default function PageHandler({
   user,
@@ -19,7 +20,7 @@ export default function PageHandler({
   const state = useAppState(user);
 
   return (
-    <div className="page">
+    <Fragment>
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <Routes>
         <Route path="/" element={"Hi"}></Route>
@@ -28,6 +29,6 @@ export default function PageHandler({
           <Route path="/users" element={<Users currentUserID={user._id!} />} />
         )}
       </Routes>
-    </div>
+    </Fragment>
   );
 }

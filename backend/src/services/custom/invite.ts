@@ -6,11 +6,11 @@ const HOUR_IN_MS = 3600000;
 
 export class InviteService {
   app: Application;
-  invites: Array<{ name: string; key: string, expiry: number }> = [];
+  invites: Array<{ name: string; key: string; expiry: number }> = [];
 
   constructor(app: Application) {
     this.app = app;
-    setInterval(this.clean, HOUR_IN_MS)
+    setInterval(this.clean, HOUR_IN_MS);
   }
 
   async find() {
@@ -19,13 +19,13 @@ export class InviteService {
 
   async create(data: { name: string }) {
     const key = crypto.randomBytes(16).toString("hex");
-    const expiry = Date.now() + MONTH_IN_MS
+    const expiry = Date.now() + MONTH_IN_MS;
     this.invites.push({ name: data.name, key, expiry });
     return this.invites;
   }
 
   async remove(inviteKey: string) {
-    this.clear(inviteKey)
+    this.clear(inviteKey);
     return this.invites;
   }
 
@@ -40,9 +40,13 @@ export class InviteService {
   }
 
   clean() {
-    const now = Date.now()
-    const filtered = this.invites.filter((invite) => invite.expiry < now)
-    console.log(`Cleared ${this.invites.length - filtered.length} stale invites.`)
-    this.invites = filtered
+    const now = Date.now();
+    const filtered = this.invites.filter((invite) => invite.expiry < now);
+    if (filtered.length > 0) {
+      console.log(
+        `Cleared ${this.invites.length - filtered.length} stale invites.`
+      );
+      this.invites = filtered;
+    }
   }
 }

@@ -19,33 +19,36 @@ export default function Topbar({
 
   return (
     <div className="topbar">
-      {TOPBAR_BUTTONS.map((text, i) => (
-        <TopbarButton
-          key={text + i}
-          text={text}
-          active={i === current}
-          onClick={() => {
-            set(i);
-            navigate(text === "Home" ? "/" : `/${text.toLowerCase()}`);
-          }}
-        />
-      ))}
-      {user.admin && (
-        <TopbarButton
-          text="Users"
-          active={current === 3}
-          onClick={() => {
-            set(3);
-            navigate('/users');
-          }}
-        />
-      )}
-      <button onClick={toggleDark}>
-        <DarkIcon dark={dark} />
-      </button>
-      <button className="red" onClick={() => logout()}>
-        Logout
-      </button>
+      <div style={{ fontSize: '2rem' }}>Ethics Olympiad Manager</div>
+      <div className="topbar-buttons">
+        {TOPBAR_BUTTONS.map((text, i) => (
+          <TopbarButton
+            key={text + i}
+            text={text}
+            active={i === current}
+            onClick={() => {
+              set(i);
+              navigate(text === "Home" ? "/" : `/${text.toLowerCase()}`);
+            }}
+          />
+        ))}
+        {user.admin && (
+          <TopbarButton
+            text="Users"
+            active={current === 3}
+            onClick={() => {
+              set(3);
+              navigate("/users");
+            }}
+          />
+        )}
+        <button onClick={toggleDark}>
+          <DarkIcon dark={dark} />
+        </button>
+        <button className="red" onClick={() => logout()}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 }
@@ -64,7 +67,7 @@ function TopbarButton({
   return (
     <button
       style={{ borderRadius: 0 }}
-      className={`topbar-button${active ? "-active" : ""}`}
+      className={`topbar-button ${active ? "active" : ""}`}
       onClick={onClick}
     >
       {text}

@@ -1,17 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import feathers from "@feathersjs/feathers"
-import rest from "@feathersjs/rest-client"
-import auth from "@feathersjs/authentication-client"
-import { BrowserRouter } from 'react-router-dom'
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import { setupClient } from "./util/helpers";
 
-export const client = feathers()
-const restClient = rest("http://10.0.0.101:3030")
-client.configure(restClient.fetch(window.fetch));
-client.configure(auth())
+//
+import App from "./App";
+import "./index.css";
+import "./app.css";
 
+export const client = setupClient("http://10.0.0.101:3030")
 
 ReactDOM.render(
   <React.StrictMode>

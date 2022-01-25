@@ -1,23 +1,35 @@
-export interface OlympiadEvent {
-  _id?: string;
-  owner: string;
-  passkey: string;
-  numHeats: number;
-  timers: number[];
-  caseIDs: string[];
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  admin: boolean;
 }
 
-export interface OlympiadCase {
+export interface Event {
+  _id?: string;
+  password?: string;
+  owner: string;
+  title: string;
+  timers: number[];
+  heats: Heat[];
+  teams: Team[];
+}
+
+export interface Heat {
+  case1: caseID;
+  case2: caseID;
+}
+
+export interface Team {
+  name: string;
+  present: boolean;
+}
+
+export interface Case {
   _id?: string;
   owner: string;
+  title: string;
   isVideo: boolean;
   videoURL?: string;
   bodyText?: string;
-}
-
-export interface User {
-  _id?: string,
-  email: string,
-  password: string 
-  admin: boolean
 }

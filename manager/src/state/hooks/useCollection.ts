@@ -3,11 +3,16 @@ import { client } from "../..";
 import { arrToKeyedObject, filterOutFromObj } from "../../util/helpers";
 import { Collection } from "../types";
 
+export type BaseSet<T> = (collection: Collection<T>) => void;
+export type SetOne<T> = (id: string, item: T) => void;
+export type SetOneField<T> = (id: string, field: string, item: T) => void;
+export type RemoveOne<T> = (id: string) => void
+
 export interface CollectionFunctions<T> {
-  set: (collection: Collection<T>) => void;
-  setOne: (id: string, item: T) => void;
-  setOneField: (id: string, field: string, item: any) => void;
-  removeOne: (id: string) => void;
+  set: BaseSet<T>;
+  setOne: SetOne<T>;
+  setOneField: SetOneField<T>;
+  removeOne: RemoveOne<T>;
 } 
 
 export default function useCollection<T, P = any>(

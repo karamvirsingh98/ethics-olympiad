@@ -14,7 +14,7 @@ export default function TitleButtons({
   onCancel: () => void;
 }) {
   return (
-    <Fragment>
+    <div style={{ display: "grid", gridAutoFlow: "column", placeSelf: "center end", gap: "1rem" }}>
       {!editing && (
         <Fragment>
           <button className="blue" onClick={toggleEditing}>
@@ -35,6 +35,6 @@ export default function TitleButtons({
           </button>
         </Fragment>
       )}
-    </Fragment>
+    </div>
   );
 }

@@ -8,6 +8,7 @@ export const EventModel = model(
     heats: [{ case1: String, case2: String }],
     teams: [{ name: String, present: Boolean }],
     timers: Array,
+    password: String,
   })
 );
 
