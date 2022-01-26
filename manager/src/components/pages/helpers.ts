@@ -1,14 +1,15 @@
 import { client } from "../..";
 import { getDefaultEvent } from "../../state/defaults";
+import { RemoveOne, SetOne, SetOneField } from "../../state/hooks/useCollection";
 import { Event, Events } from "../../state/types";
 
 export function eventsHelpers(
   userID: string,
   currentID: string,
   events: Events,
-  setOne: (id: string, item: Event) => void,
-  removeOne: (id: string) => void,
-  setOneField: (id: string, field: string, item: any) => void,
+  setOne: SetOne<Event>,
+  setOneField: SetOneField<Event>,
+  removeOne: RemoveOne,
   setID: (id: string) => void,
   setEditing: (editing: boolean) => void
 ) {
@@ -55,8 +56,8 @@ export function eventsHelpers(
   };
 
   const setPassword = (id: string) => (password: string) => {
-    setOneField(id, 'password', password)
-  }
+    setOneField(id, "password", password);
+  };
 
   return {
     createEvent,
@@ -65,6 +66,6 @@ export function eventsHelpers(
     cancelEdits,
     getTitle,
     setTitle,
-    setPassword
+    setPassword,
   };
 }

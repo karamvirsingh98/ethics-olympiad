@@ -1,8 +1,9 @@
+import { SetOneField } from "../../state/hooks/useCollection";
 import { Event } from "../../state/types";
 
 export default function eventHelpers(
   event: Event,
-  setOneField: (id: string, field: string, item: any) => void
+  setOneField: SetOneField<Event>
 ) {
   const addHeat = () =>
     setOneField(event._id!, "heats", [

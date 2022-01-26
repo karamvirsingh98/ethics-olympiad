@@ -15,14 +15,17 @@ export default function Events({
   user: User;
   state: AppState;
 }) {
+
   const {
     events: [events, { setOne, setOneField, removeOne }],
     cases: [cases],
   } = state;
+
   const [currentID, setID] = useLocalStorage(
     "",
     "ethics-olympiad-selected-event"
   );
+  
   const [editing, setEditing] = useState(false);
 
   const {
@@ -38,15 +41,19 @@ export default function Events({
     currentID,
     events!,
     setOne,
-    removeOne,
     setOneField,
+    removeOne,
     setID,
     setEditing
   );
 
   return (
     <div className="page">
-      <div className={`page-content ${ events && events[currentID] ? "grey-flat" : ""}`}>
+      <div
+        className={`page-content ${
+          events && events[currentID] ? "grey-flat" : ""
+        }`}
+      >
         {events && events[currentID] && (
           <Fragment>
             <PageTitle
@@ -55,9 +62,21 @@ export default function Events({
               rename={setTitle}
               element={
                 <div
-                  style={{ display: "grid", gridTemplateColumns: "1fr 1fr", width: "100%", placeSelf: 'start end'}}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    width: "100%",
+                    placeSelf: "start end",
+                  }}
                 >
-                  <div style={{ placeSelf: "center", display: 'flex', alignItems: "flex-end", fontSize: "1rem"}}>
+                  <div
+                    style={{
+                      placeSelf: "center",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      fontSize: "1rem",
+                    }}
+                  >
                     Password:
                     <Input
                       value={events[currentID].password}

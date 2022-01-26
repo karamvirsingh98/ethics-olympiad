@@ -41,6 +41,7 @@ export interface Case {
   _id?: string;
   owner: string;
   title: string;
+  question: string;
   isVideo: boolean;
   videoURL?: string;
   bodyText?: string;

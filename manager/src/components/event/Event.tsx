@@ -1,3 +1,4 @@
+import { SetOneField } from "../../state/hooks/useCollection";
 import { Cases, Event } from "../../state/types";
 import eventHelpers from "./helpers";
 import Heats from "./subcomponents/Heats";
@@ -13,7 +14,7 @@ export default function EventCompnent({
   editing: boolean;
   cases: Cases;
   event: Event;
-  setOneField: (id: string, field: string, item: any) => void;
+  setOneField: SetOneField<Event>;
 }) {
   const { addHeat, removeHeat, editTimer, addTeam, renameTeam, removeTeam } =
     eventHelpers(event, setOneField);
