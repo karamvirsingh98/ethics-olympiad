@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { client } from "../../..";
-import { getDefaultCase } from "../../../state/defaults";
-import { RemoveOne, SetOne, SetOneField } from "../../../state/hooks/useCollection";
-import { Case, User } from "../../../state/types";
+import { RemoveOne, SetOneField } from "../../../state/hooks/useCollection";
+import { Case } from "../../../state/types";
 import ToggleInput from "../../util/ToggleInput";
 import CaseHeader from "./CaseHeader";
 
