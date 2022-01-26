@@ -14,6 +14,7 @@ export function getDefaultCase(userID: string): Case {
   return {
     owner: userID,
     title: "New Case",
+    question: "",
     isVideo: false
   }
 }
