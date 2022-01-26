@@ -17,6 +17,7 @@ export const CaseModel = model(
   new Schema({
     owner: String,
     title: String,
+    question: String,
     isVideo: Boolean,
     videoURL: String,
     bodyText: String,
