@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { client } from "../../..";
 import {
   RemoveOne,
   SetOne,
@@ -8,6 +7,7 @@ import {
 import { Case } from "../../../state/types";
 import Conditional from "../../util/Conditional";
 import ToggleInput from "../../util/ToggleInput";
+import caseHelpers from "../helpers";
 import CaseHeader from "./CaseHeader";
 import TextArea from "./MultilineInput";
 
@@ -25,21 +25,11 @@ export default function CaseComponent({
   const { _id, title, question, isVideo, videoURL, bodyText } = _case;
   const [editing, setEditing] = useState(false);
 
-  const deleteCase = (id: string) => async () => {
-    await client.service("api/cases").remove(id);
-    removeOne(id);
-  };
-
-  const saveEdits = (id: string) => async () => {
-    const updated = await client.service("/api/cases").update(id, _case);
-    setOne(updated._id, updated);
-    setEditing(false);
-  };
-
-  const cancelEdits = (id: string) => async () => {
-    setOne(id, await client.service("/api/cases").get(id));
-    setEditing(false);
-  };
+  const { saveEdits, cancelEdits, deleteCase } = caseHelpers(
+    setOne,
+    removeOne,
+    setEditing
+  );
 
   return (
     <div
@@ -56,7 +46,7 @@ export default function CaseComponent({
         editing={editing}
         toggleEditing={() => setEditing(true)}
         onRename={(title) => setOneField(_id!, "title", title)}
-        onSave={saveEdits(_id!)}
+        onSave={saveEdits(_id!, _case)}
         onCancel={cancelEdits(_id!)}
         onDelete={deleteCase(_id!)}
       />
@@ -99,11 +89,10 @@ export default function CaseComponent({
               />
             }
             showFalse={
-              <div> {bodyText} </div>
-              // <TextArea
-              //   value={bodyText}
-              //   onChange={(bodyText) => setOneField(_id!, "bodyText", bodyText)}
-              // />
+              <TextArea
+                value={bodyText}
+                onChange={(bodyText) => setOneField(_id!, "bodyText", bodyText)}
+              />
             }
           />
         </div>

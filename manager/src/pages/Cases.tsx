@@ -3,6 +3,7 @@ import { AppState, Case, User } from "../state/types";
 import { getDefaultCase } from "../state/defaults";
 import { client } from "..";
 import CaseGroup from "../components/case/CaseGroup";
+import Divider from "../components/util/Divider";
 
 export default function Cases({
   user,
@@ -29,6 +30,7 @@ export default function Cases({
         gridTemplateColumns: "1fr auto 1fr",
         gap: "2rem",
         marginTop: "2rem",
+        overflow: "hidden",
       }}
     >
       {cases && (
@@ -42,22 +44,18 @@ export default function Cases({
             removeOne={removeOne}
             onNewClick={createCase(true)}
           />
-          <div
-            style={{
-              border: "solid 1px",
-              opacity: "0.25",
-              borderRadius: "0.25rem",
-            }}
-          />
-          <CaseGroup
-            title="Text Cases"
-            cases={cases}
-            sortCondition={(caseID) => !cases[caseID].isVideo}
-            setOne={setOne}
-            setOneField={setOneField}
-            removeOne={removeOne}
-            onNewClick={createCase(false)}
-          />
+          <Divider vertical />
+          <div style={{ overflow: "scroll" }}>
+            <CaseGroup
+              title="Text Cases"
+              cases={cases}
+              sortCondition={(caseID) => !cases[caseID].isVideo}
+              setOne={setOne}
+              setOneField={setOneField}
+              removeOne={removeOne}
+              onNewClick={createCase(false)}
+            />
+          </div>
         </Fragment>
       )}
     </div>

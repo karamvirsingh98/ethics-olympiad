@@ -54,7 +54,7 @@ export default function Topbar({
         <button onClick={toggleDark}>
           <DarkIcon dark={dark} />
         </button>
-        <button className="red" onClick={() => logout()}>
+        <button className="red" onClick={() => { logout(); navigate("/")}}>
           Logout
         </button>
       </div>

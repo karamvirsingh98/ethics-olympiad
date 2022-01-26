@@ -1,4 +1,6 @@
 import { Case, Cases, Heat } from "../../../state/types";
+import Conditional from "../../util/Conditional";
+import CaseSelector from "../../util/Selector";
 
 export default function Heats({
   editing,
@@ -49,7 +51,7 @@ function HeatComponent({
   return (
     <div className="heat">
       <div className="heat-header">
-        <div style={{ fontSize: "1.5rem" }}> Heat {index + 1} </div>
+        <div style={{ fontSize: "1.25rem" }}> Heat {index + 1} </div>
         {editing && (
           <button
             className="red"
@@ -81,12 +83,50 @@ function HeatComponent({
   );
 }
 
+function HeatCases({
+  cases,
+  case1,
+  case2,
+}: {
+  cases: Cases;
+  case1: Case;
+  case2: Case;
+}) {
+  return (
+    <div style={{ display: "grid", width: "100%", gap: "0.5rem" }}>
+      
+      <div className="heat-item">
+        Round 2:
+        <div style={{ placeSelf: "end" }}>
+          {" "}
+          {case2 ? case2.title : "No Case Selected"}{" "}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HeatCase({ editing, cases, _case }: { editing: boolean, cases: Cases, _case: Case}) {
+  return (
+    <div className="heat-item">
+      Round 1:
+      <div style={{ placeSelf: "end" }}>
+        <Conditional 
+        condition={editing}
+        showTrue={<CaseSelector cases={cases} onSelect={() => {}}/>}
+        showFalse={_case ? _case.title : "No Case Selected"}
+      />
+      </div>
+    </div>
+  )
+}
+
 function Header({ editing, onAdd }: { editing: boolean; onAdd: () => void }) {
   return (
     <div className="heat-header">
       <div
         style={{
-          fontSize: "1.75rem",
+          fontSize: "1.5rem",
           // borderBottom: "solid 0.25rem",
           width: "fit-content",
         }}

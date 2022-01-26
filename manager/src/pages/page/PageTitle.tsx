@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Conditional from "../../components/util/Conditional";
 import Input from "../../components/util/Input";
+import ToggleInput from "../../components/util/ToggleInput";
 
 export default function PageTitle({
   editing,
@@ -15,22 +16,7 @@ export default function PageTitle({
 }) {
   return (
     <div className="page-title">
-      <Conditional
-        condition={editing}
-        showTrue={
-          <Input
-            id="event-title"
-            style={{ fontSize: "2rem" }}
-            defaultValue={title}
-            onConfirm={rename}
-          />
-        }
-        showFalse={
-          <div style={{ borderBottom: "solid 0.25rem transparent" }}>
-            {title}
-          </div>
-        }
-      />
+      <ToggleInput editing={editing} value={title} fontSize="1.75rem" onEdit={rename} />
       {element}
     </div>
   );

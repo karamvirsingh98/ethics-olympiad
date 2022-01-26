@@ -21,7 +21,13 @@ export default function CaseGroup({
   onNewClick: () => void;
 }) {
   return (
-    <div style={{ display: "grid", gap: "1rem", height: "fit-content"}}>
+    <div
+      style={{
+        display: "grid",
+        gap: "1rem",
+        gridTemplateRows: "auto 100%",
+      }}
+    >
       <div
         style={{
           display: "flex",
@@ -35,17 +41,19 @@ export default function CaseGroup({
           New Case
         </button>
       </div>
-      <ArrayMap
-        array={Object.keys(cases).filter(sortCondition)}
-        map={(id) => (
-          <CaseComponent
-            _case={cases![id]}
-            setOne={setOne}
-            setOneField={setOneField}
-            removeOne={removeOne}
-          />
-        )}
-      />
+      <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
+        <ArrayMap
+          array={Object.keys(cases).filter(sortCondition)}
+          map={(id) => (
+            <CaseComponent
+              _case={cases![id]}
+              setOne={setOne}
+              setOneField={setOneField}
+              removeOne={removeOne}
+            />
+          )}
+        />
+      </div>
     </div>
   );
 }

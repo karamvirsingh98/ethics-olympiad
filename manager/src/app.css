@@ -1,10 +1,10 @@
 .app {
   display: grid;
   grid-template-rows: auto 1fr;
+  gap: 2rem;
   width: 100vw;
   height: 100vh;
   padding: 1rem;
-  overflow: hidden;
 }
 
 .auth-window {
@@ -24,6 +24,9 @@
 
 .topbar-buttons {
   place-self: center end;
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1rem;
 }
 
 .topbar-button {
@@ -37,9 +40,8 @@
 }
 
 .page {
-  margin-top: 2rem;
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 4fr auto 1fr;
   gap: 2rem;
   width: 100%;
 }
@@ -48,7 +50,7 @@
   place-self: center start;
   font-size: 2rem;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 3fr 2fr;
   gap: 1rem;
   place-items: center start;
   width: 100%;
@@ -58,8 +60,6 @@
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 2rem;
-  border-radius: 0.25rem;
-  padding: 1rem;
 }
 
 .items {

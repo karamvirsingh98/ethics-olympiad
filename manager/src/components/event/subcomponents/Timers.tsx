@@ -23,7 +23,7 @@ export default function Timers({
     <div className="timers">
       <div
         style={{
-          fontSize: "1.75rem",
+          fontSize: "1.5rem",
           // borderBottom: "solid 0.25rem",
           width: "fit-content",
         }}

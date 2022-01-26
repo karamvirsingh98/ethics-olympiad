@@ -48,10 +48,7 @@ export default function Events({
 
   return (
     <div className="page">
-      <div
-        className="page-content"
-        style={{ borderRight: "solid 1px", borderRadius: 0 }}
-      >
+      <div className="page-content">
         {events && events[currentID] && (
           <Fragment>
             <PageTitle
@@ -62,9 +59,9 @@ export default function Events({
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
+                    gridTemplateColumns: "1fr auto",
                     width: "100%",
-                    placeSelf: "start end",
+                    placeSelf: "start",
                   }}
                 >
                   <div
@@ -73,11 +70,11 @@ export default function Events({
                       display: "flex",
                       alignItems: "flex-end",
                       fontSize: "1rem",
-                      gap: "1rem"
+                      gap: "1rem",
                     }}
                   >
                     <div style={{ borderBottom: "solid 0.25rem transparent" }}>
-                      Password: 
+                      Password:
                     </div>
                     <Input
                       value={events[currentID].password}
@@ -103,6 +100,7 @@ export default function Events({
           </Fragment>
         )}
       </div>
+      <div style={{ border: "solid 1px", height: "100%", opacity: 0.25, borderRadius:"100%"}} /> 
       {events && (
         <Items
           label={"Event"}
