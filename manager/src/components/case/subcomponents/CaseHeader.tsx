@@ -26,7 +26,7 @@ export default function CaseHeader({
         alignItems: "center",
       }}
     >
-      <ToggleInput text={title} editing={editing} onEdit={onRename} />
+      <ToggleInput fontSize="1.25rem" text={title} editing={editing} onEdit={onRename} />
       <TitleButtons
         editing={editing}
         toggleEditing={toggleEditing}

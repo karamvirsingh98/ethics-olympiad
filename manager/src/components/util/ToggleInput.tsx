@@ -4,10 +4,12 @@ import Input from "./Input";
 export default function ToggleInput({
   text,
   editing,
+  fontSize = "1rem",
   onEdit,
 }: {
   text: string;
   editing: boolean;
+  fontSize?: string | number;
   onEdit: (value: string) => void;
 }) {
   return (
@@ -15,14 +17,23 @@ export default function ToggleInput({
       condition={editing}
       showTrue={
         <Input
+          value={text}
           onChange={onEdit}
           style={{
-            borderBottom: "solid 0.25rem transparent",
-            fontSize: "1rem",
+            fontSize: fontSize,
           }}
         />
       }
-      showFalse={<div style={{ fontSize: "1rem" }}> {text} </div>}
+      showFalse={
+        <div
+          style={{
+            fontSize: fontSize,
+            borderBottom: "solid 0.25rem transparent",
+          }}
+        >
+          {text}
+        </div>
+      }
     />
   );
 }

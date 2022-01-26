@@ -21,7 +21,7 @@ export default function CaseGroup({
   onNewClick: () => void;
 }) {
   return (
-    <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
+    <div style={{ display: "grid", gap: "1rem", height: "fit-content"}}>
       <div
         style={{
           display: "flex",

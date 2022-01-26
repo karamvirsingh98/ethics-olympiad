@@ -25,29 +25,29 @@ export default function CaseComponent({
   };
 
   const saveEdits = (id: string) => async () => {
-    const updated = await client.service("/api/cases").update(_id, _case)
+    const updated = await client.service("/api/cases").update(id, _case)
     setOne(updated._id, updated)
     setEditing(false)
   }
 
   const cancelEdits = (id: string) => async () => {
-    setOne(id, await client.service("/api/events").get(id));
+    setOne(id, await client.service("/api/cases").get(id));
     setEditing(false);
   };
 
   return (
-    <div style={{ display: "grid" }}>
+    <div style={{ display: "grid", gap: "1rem", padding: "1rem", borderRadius: "0.25rem" }} className="grey-flat">
       <CaseHeader
         title={title}
         editing={editing}
-        toggleEditing={() => setEditing(!editing)}
+        toggleEditing={() => setEditing(true)}
         onRename={(title) => setOneField(_id!, "title", title)}
         onSave={saveEdits(_id!)}
         onCancel={cancelEdits(_id!)}
         onDelete={deleteCase(_id!)}
       />
       <div style={{ display: "flex", fontSize: "1rem", gap: "1rem" }}>
-        <div>Question</div>
+        <div style={{ borderBottom: "solid 0.25rem transparent" }}>Question</div>
         <ToggleInput
           text={question}
           editing={editing}

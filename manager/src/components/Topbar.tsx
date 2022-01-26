@@ -17,6 +17,8 @@ export default function Topbar({
   const [current, set] = useState(0);
   const navigate = useNavigate();
 
+  console.log(window.location)
+
   return (
     <div className="topbar">
       <div style={{ fontSize: '2rem' }}>Ethics Olympiad Manager</div>

@@ -4,7 +4,13 @@ import { getDefaultCase } from "../state/defaults";
 import { client } from "..";
 import CaseGroup from "../components/case/CaseGroup";
 
-export default function Cases({ user, state }: { user: User, state: AppState }) {
+export default function Cases({
+  user,
+  state,
+}: {
+  user: User;
+  state: AppState;
+}) {
   const {
     cases: [cases, { setOne, setOneField, removeOne }],
   } = state;
@@ -22,6 +28,7 @@ export default function Cases({ user, state }: { user: User, state: AppState }) 
         display: "grid",
         gridTemplateColumns: "1fr auto 1fr",
         gap: "2rem",
+        marginTop: "2rem",
       }}
     >
       {cases && (
@@ -49,7 +56,7 @@ export default function Cases({ user, state }: { user: User, state: AppState }) 
             setOne={setOne}
             setOneField={setOneField}
             removeOne={removeOne}
-            onNewClick={createCase(true)}
+            onNewClick={createCase(false)}
           />
         </Fragment>
       )}
