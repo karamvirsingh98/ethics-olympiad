@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { client } from "../../..";
-import { RemoveOne, SetOneField } from "../../../state/hooks/useCollection";
+import { RemoveOne, SetOne, SetOneField } from "../../../state/hooks/useCollection";
 import { Case } from "../../../state/types";
 import ToggleInput from "../../util/ToggleInput";
 import CaseHeader from "./CaseHeader";
 
 export default function CaseComponent({
-  Case,
+  _case,
+  setOne,
   setOneField,
   removeOne,
 }: {
-  Case: Case;
+  _case: Case;
+  setOne: SetOne<Case>
   setOneField: SetOneField<Case>;
   removeOne: RemoveOne;
 }) {
-  const { _id, title, question, isVideo, videoURL, bodyText } = Case;
+  const { _id, title, question, isVideo, videoURL, bodyText } = _case;
   const [editing, setEditing] = useState(false);
 
   const deleteCase = (id: string) => async () => {
@@ -22,13 +24,26 @@ export default function CaseComponent({
     removeOne(id);
   };
 
+  const saveEdits = (id: string) => async () => {
+    const updated = await client.service("/api/cases").update(_id, _case)
+    setOne(updated._id, updated)
+    setEditing(false)
+  }
+
+  const cancelEdits = (id: string) => async () => {
+    setOne(id, await client.service("/api/events").get(id));
+    setEditing(false);
+  };
+
   return (
     <div style={{ display: "grid" }}>
       <CaseHeader
         title={title}
         editing={editing}
-        onEdit={() => setEditing(!editing)}
+        toggleEditing={() => setEditing(!editing)}
         onRename={(title) => setOneField(_id!, "title", title)}
+        onSave={saveEdits(_id!)}
+        onCancel={cancelEdits(_id!)}
         onDelete={deleteCase(_id!)}
       />
       <div style={{ display: "flex", fontSize: "1rem", gap: "1rem" }}>

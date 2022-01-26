@@ -30,6 +30,7 @@ export default function Cases({ user, state }: { user: User, state: AppState }) 
             title="Video Cases"
             cases={cases}
             sortCondition={(caseID) => cases[caseID].isVideo}
+            setOne={setOne}
             setOneField={setOneField}
             removeOne={removeOne}
             onNewClick={createCase(true)}
@@ -45,6 +46,7 @@ export default function Cases({ user, state }: { user: User, state: AppState }) 
             title="Text Cases"
             cases={cases}
             sortCondition={(caseID) => !cases[caseID].isVideo}
+            setOne={setOne}
             setOneField={setOneField}
             removeOne={removeOne}
             onNewClick={createCase(true)}

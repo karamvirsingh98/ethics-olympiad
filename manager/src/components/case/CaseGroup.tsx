@@ -1,4 +1,4 @@
-import { RemoveOne, SetOneField } from "../../state/hooks/useCollection";
+import { RemoveOne, SetOne, SetOneField } from "../../state/hooks/useCollection";
 import { Case, Cases } from "../../state/types";
 import ArrayMap from "../util/ArrayMap";
 import CaseComponent from "./subcomponents/Case";
@@ -7,6 +7,7 @@ export default function CaseGroup({
   title,
   cases,
   sortCondition,
+  setOne,
   setOneField,
   removeOne,
   onNewClick,
@@ -14,6 +15,7 @@ export default function CaseGroup({
   title: string;
   cases: Cases;
   sortCondition: (id: string) => void;
+  setOne: SetOne<Case>
   setOneField: SetOneField<Case>;
   removeOne: RemoveOne;
   onNewClick: () => void;
@@ -37,7 +39,8 @@ export default function CaseGroup({
         array={Object.keys(cases).filter(sortCondition)}
         map={(id) => (
           <CaseComponent
-            Case={cases![id]}
+            _case={cases![id]}
+            setOne={setOne}
             setOneField={setOneField}
             removeOne={removeOne}
           />

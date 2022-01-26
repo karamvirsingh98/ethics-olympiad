@@ -5,14 +5,18 @@ export default function CaseHeader({
   editing,
   title,
   onRename,
-  onEdit,
+  toggleEditing,
   onDelete,
+  onSave,
+  onCancel,
 }: {
   editing: boolean;
   title: string;
   onRename: (title: string) => void;
-  onEdit: () => void;
+  toggleEditing: () => void;
   onDelete: () => void;
+  onSave: () => void;
+  onCancel: () => void
 }) {
   return (
     <div
@@ -25,10 +29,10 @@ export default function CaseHeader({
       <ToggleInput text={title} editing={editing} onEdit={onRename} />
       <TitleButtons
         editing={editing}
-        toggleEditing={onEdit}
-        onDelete={deleteEvent}
-        onSave={saveEdits}
-        onCancel={cancelEdits}
+        toggleEditing={toggleEditing}
+        onDelete={onDelete}
+        onSave={onSave}
+        onCancel={onCancel}
       />
     </div>
   );
