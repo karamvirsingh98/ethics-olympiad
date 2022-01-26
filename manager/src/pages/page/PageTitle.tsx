@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import Conditional from "../../util/Conditional";
-import Input from "../../util/Input";
+import Conditional from "../../components/util/Conditional";
+import Input from "../../components/util/Input";
 
 export default function PageTitle({
   editing,

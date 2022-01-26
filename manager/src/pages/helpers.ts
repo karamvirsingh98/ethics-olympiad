@@ -1,7 +1,7 @@
-import { client } from "../..";
-import { getDefaultEvent } from "../../state/defaults";
-import { RemoveOne, SetOne, SetOneField } from "../../state/hooks/useCollection";
-import { Event, Events } from "../../state/types";
+import { client } from "..";
+import { getDefaultEvent } from "../state/defaults";
+import { RemoveOne, SetOne, SetOneField } from "../state/hooks/useCollection";
+import { Event, Events } from "../state/types";
 
 export function eventsHelpers(
   userID: string,

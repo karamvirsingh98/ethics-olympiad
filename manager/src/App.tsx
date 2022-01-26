@@ -1,8 +1,8 @@
 import { useTheme } from "./util/hooks";
 import useAuth from "./state/hooks/useAuth";
-import Auth from "./components/auth/Auth";
-import AuthHandler from "./components/handlers/AuthHandler";
-import PageHandler from "./components/handlers/PageHandler";
+import Auth from "./pages/Auth";
+import AuthHandler from "./handlers/AuthHandler";
+import PageHandler from "./handlers/PageHandler";
 import { User } from "./state/types";
 
 export default function App() {

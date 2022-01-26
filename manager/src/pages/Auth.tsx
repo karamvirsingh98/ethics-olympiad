@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./Login";
-import Signup from "./Signup";
+import Login from "../components/auth/Login";
+import Signup from "../components/auth/Signup";
 
 export default function Auth({
   login,

@@ -1,12 +1,12 @@
 import { Fragment, useState } from "react";
-import EventCompnent from "../event/Event";
+import EventCompnent from "../components/event/Event";
 import Items from "./page/Items";
 import PageTitle from "./page/PageTitle";
-import { AppState, User } from "../../state/types";
-import { useLocalStorage } from "../../util/hooks";
-import TitleButtons from "../event/subcomponents/TitleButtons";
+import { AppState, User } from "../state/types";
+import { useLocalStorage } from "../util/hooks";
+import TitleButtons from "../components/event/subcomponents/TitleButtons";
 import { eventsHelpers } from "./helpers";
-import Input from "../util/Input";
+import Input from "../components/util/Input";
 
 export default function Events({
   user,

@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from "react";
-import { User } from "../../state/types";
+import { User } from "../state/types";
 
 export default function AuthHandler({
   user,

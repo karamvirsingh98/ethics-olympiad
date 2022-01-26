@@ -10,11 +10,11 @@ export function getDefaultEvent(userID: string): Event {
   };
 }
 
-export function getDefaultCase(userID: string): Case {
+export function getDefaultCase(userID: string, isVideo: boolean): Case {
   return {
     owner: userID,
     title: "New Case",
     question: "",
-    isVideo: false
+    isVideo: isVideo
   }
 }
