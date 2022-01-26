@@ -1,3 +1,4 @@
+import TitleButtons from "../../event/subcomponents/TitleButtons";
 import ToggleInput from "../../util/ToggleInput";
 
 export default function CaseHeader({
@@ -22,14 +23,13 @@ export default function CaseHeader({
       }}
     >
       <ToggleInput text={title} editing={editing} onEdit={onRename} />
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <button className="blue" onClick={onEdit}>
-          Edit
-        </button>
-        <button className="red" onClick={onDelete}>
-          Delete
-        </button>
-      </div>
+      <TitleButtons
+        editing={editing}
+        toggleEditing={onEdit}
+        onDelete={deleteEvent}
+        onSave={saveEdits}
+        onCancel={cancelEdits}
+      />
     </div>
   );
 }
