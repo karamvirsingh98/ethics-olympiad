@@ -45,7 +45,7 @@ export default function Cases({
           <div
             style={{
               border: "solid 1px",
-              opacity: "0.5",
+              opacity: "0.25",
               borderRadius: "0.25rem",
             }}
           />

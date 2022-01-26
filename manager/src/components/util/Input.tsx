@@ -5,6 +5,7 @@ interface InputProps {
   type?: string,
   value?: string,
   defaultValue?: string,
+  autofocus?: boolean,
   style?: React.CSSProperties
   onChange?: (value: string) => void
   onConfirm?: (value: string) => void
@@ -17,6 +18,7 @@ export default function Input({
   type,
   value,
   defaultValue,
+  autofocus,
   style,
   onChange,
   onConfirm
@@ -30,6 +32,7 @@ export default function Input({
       type={type}
       value={value}
       defaultValue={defaultValue}
+      autoFocus={autofocus}
       onChange={(e) => onChange && onChange(e.currentTarget.value)}
       onBlur={(e) => onConfirm && onConfirm(e.currentTarget.value)}
       onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}

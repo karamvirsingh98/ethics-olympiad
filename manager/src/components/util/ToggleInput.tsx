@@ -2,14 +2,18 @@ import Conditional from "./Conditional";
 import Input from "./Input";
 
 export default function ToggleInput({
-  text,
+  value,
   editing,
   fontSize = "1rem",
+  placeholder,
+  autofocus,
   onEdit,
 }: {
-  text: string;
   editing: boolean;
+  value: string | undefined;
   fontSize?: string | number;
+  placeholder?: string;
+  autofocus?: boolean;
   onEdit: (value: string) => void;
 }) {
   return (
@@ -17,8 +21,10 @@ export default function ToggleInput({
       condition={editing}
       showTrue={
         <Input
-          value={text}
+          autofocus={autofocus}
+          value={value}
           onChange={onEdit}
+          placeholder={placeholder}
           style={{
             fontSize: fontSize,
           }}
@@ -31,7 +37,7 @@ export default function ToggleInput({
             borderBottom: "solid 0.25rem transparent",
           }}
         >
-          {text}
+          {value}
         </div>
       }
     />

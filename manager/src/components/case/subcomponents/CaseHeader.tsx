@@ -16,7 +16,7 @@ export default function CaseHeader({
   toggleEditing: () => void;
   onDelete: () => void;
   onSave: () => void;
-  onCancel: () => void
+  onCancel: () => void;
 }) {
   return (
     <div
@@ -24,9 +24,17 @@ export default function CaseHeader({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        gap: "2rem",
       }}
     >
-      <ToggleInput fontSize="1.25rem" text={title} editing={editing} onEdit={onRename} />
+      <ToggleInput
+        autofocus
+        placeholder="New Case"
+        fontSize="1.25rem"
+        value={title}
+        editing={editing}
+        onEdit={onRename}
+      />
       <TitleButtons
         editing={editing}
         toggleEditing={toggleEditing}
@@ -37,4 +45,3 @@ export default function CaseHeader({
     </div>
   );
 }
-

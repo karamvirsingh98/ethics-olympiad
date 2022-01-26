@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../state/types";
 import DarkIcon from "./util/DarkIcon";
@@ -10,18 +10,25 @@ export default function Topbar({
   logout,
 }: {
   dark: boolean;
-  user: User
+  user: User;
   toggleDark: () => void;
   logout: () => void;
 }) {
   const [current, set] = useState(0);
   const navigate = useNavigate();
 
-  console.log(window.location)
+  useEffect(() => {
+    const pathName = window.location.pathname;
+    set(
+      TOPBAR_BUTTONS.findIndex(
+        (t) => t.toLowerCase() === pathName.slice(1, pathName.length)
+      )
+    );
+  }, []);
 
   return (
     <div className="topbar">
-      <div style={{ fontSize: '2rem' }}>Ethics Olympiad Manager</div>
+      <div style={{ fontSize: "2rem" }}>Ethics Olympiad Manager</div>
       <div className="topbar-buttons">
         {TOPBAR_BUTTONS.map((text, i) => (
           <TopbarButton

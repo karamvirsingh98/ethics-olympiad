@@ -15,7 +15,6 @@ export default function Events({
   user: User;
   state: AppState;
 }) {
-
   const {
     events: [events, { setOne, setOneField, removeOne }],
     cases: [cases],
@@ -25,7 +24,7 @@ export default function Events({
     "",
     "ethics-olympiad-selected-event"
   );
-  
+
   const [editing, setEditing] = useState(false);
 
   const {
@@ -50,9 +49,8 @@ export default function Events({
   return (
     <div className="page">
       <div
-        className={`page-content ${
-          events && events[currentID] ? "grey-flat" : ""
-        }`}
+        className="page-content"
+        style={{ borderRight: "solid 1px", borderRadius: 0 }}
       >
         {events && events[currentID] && (
           <Fragment>
@@ -75,9 +73,12 @@ export default function Events({
                       display: "flex",
                       alignItems: "flex-end",
                       fontSize: "1rem",
+                      gap: "1rem"
                     }}
                   >
-                    Password:
+                    <div style={{ borderBottom: "solid 0.25rem transparent" }}>
+                      Password: 
+                    </div>
                     <Input
                       value={events[currentID].password}
                       onChange={setPassword(currentID)}
