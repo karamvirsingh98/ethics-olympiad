@@ -3,9 +3,9 @@ import { useAppState } from "../state/hooks/useAppState";
 import { User } from "../state/types";
 import Topbar from "../components/Topbar";
 import Events from "../pages/Events";
-import Users from "../components/users/Users";
 import { Fragment } from "react";
 import Cases from "../pages/Cases";
+import Users from "../pages/Users";
 
 export default function PageRoutes({
   user,
@@ -24,7 +24,7 @@ export default function PageRoutes({
     <Fragment>
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <Routes>
-        <Route path="/" element={"Hi"}></Route>
+        <Route path="/" element={<div style={{ fontSize: '2rem' }}> Hello {user.name} </div>}></Route>
         <Route path="/events" element={<Events user={user} state={state} />} />
         <Route path="/cases" element={<Cases user={user} state={state} />} />
         {user.admin && (

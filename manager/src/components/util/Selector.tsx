@@ -24,12 +24,15 @@ export default function CaseSelector({ cases, selected, onSelect }: { cases: Cas
         <div
           style={{
             position: "absolute",
-            top: "100%",
+            top: "calc(100% + 0.5rem)",
             left: "0",
             display: "grid",
             width: "100%",
             alignSelf: "center",
             zIndex: 2,
+            borderRadius: "0.25rem",
+            overflow: "hidden",
+            backgroundColor: "black",
           }}
         >
           {Object.keys(cases).map((id) => (
@@ -42,6 +45,7 @@ export default function CaseSelector({ cases, selected, onSelect }: { cases: Cas
                 borderRadius: "0",
                 border: "none",
                 width: "100%",
+                fontSize: "1rem",
               }}
             >
               {cases[id].title}

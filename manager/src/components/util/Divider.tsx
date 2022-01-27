@@ -1,4 +1,4 @@
-export default function Divider({ vertical }: { vertical: boolean }) {
+export default function Divider({ vertical }: { vertical?: boolean }) {
   return (
     <div
       style={{

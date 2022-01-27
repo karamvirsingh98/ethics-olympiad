@@ -6,7 +6,7 @@ html {
 
 * {
   box-sizing: inherit;
-  transition: background-color 250ms ease-in-out;
+  transition: background-color 250ms ease-in-out, border-color 250ms ease-in-out;
 }
 
 body {
@@ -42,7 +42,6 @@ input {
   color: inherit;
   font-family: inherit;
   border-bottom: solid 0.25rem transparent;
-  transition: border-bottom 250ms;
 }
 
 textarea {

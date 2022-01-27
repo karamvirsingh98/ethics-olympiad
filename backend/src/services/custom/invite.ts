@@ -1,12 +1,13 @@
 import { Application } from "@feathersjs/express";
 import crypto from "crypto";
+import { Invite } from "../../types";
 
 const MONTH_IN_SECS = 2592000;
 const HOUR_IN_MS = 3600000;
 
 export class InviteService {
   app: Application;
-  invites: Array<{ name: string; key: string; expiry: number }> = [];
+  invites: Invite[] = [];
 
   constructor(app: Application) {
     this.app = app;
@@ -17,10 +18,10 @@ export class InviteService {
     return this.invites;
   }
 
-  async create(data: { name: string }) {
+  async create(data: { name: string; email: string }) {
     const key = crypto.randomBytes(16).toString("hex");
     const expiry = Math.floor(Date.now() / 1000) + MONTH_IN_SECS;
-    this.invites.push({ name: data.name, key, expiry });
+    this.invites.push({ ...data, key, expiry });
     return this.invites;
   }
 
@@ -41,7 +42,7 @@ export class InviteService {
 
   clean() {
     const now = Math.floor(Date.now() / 1000);
-    const filtered = this.invites.filter((invite) => invite.expiry < now);
+    const filtered = this.invites.filter((invite) => invite.expiry! < now);
     if (filtered.length > 0) {
       console.log(
         `Cleared ${this.invites.length - filtered.length} stale invites.`

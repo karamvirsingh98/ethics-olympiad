@@ -17,6 +17,13 @@ export interface User {
   admin: boolean;
 }
 
+export interface Invite {
+  name: string;
+  email: string;
+  key?: string;
+  expiry?: number;
+}
+
 export interface Event {
   _id?: string;
   password?: string;

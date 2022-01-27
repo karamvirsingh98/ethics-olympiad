@@ -20,7 +20,6 @@ export default function Heats({
   onAdd: () => void;
   onRemove: (index: number) => void;
 }) {
-
   return (
     <div className="heats">
       <Header onAdd={onAdd} editing={editing} />
@@ -59,10 +58,10 @@ function HeatComponent({
   cases: Cases;
   heats: Heat[];
   heat: Heat;
-  setOneField: SetOneField<Event>
+  setOneField: SetOneField<Event>;
   onRemove: (index: number) => void;
 }) {
-  const { case1, case2 } = heat
+  const { case1, case2 } = heat;
 
   const updateCase =
     (heatIndex: number, case1: boolean) => (caseID: string) => {
@@ -88,7 +87,7 @@ function HeatComponent({
         )}
       </div>
 
-      <div style={{ display: "grid", width: "100%", gap: "1rem" }}>
+      <div style={{ display: "grid", width: "100%" }}>
         <HeatCase
           editing={editing}
           cases={cases}
@@ -119,14 +118,19 @@ function HeatCase({
 }) {
   return (
     <div className="heat-item">
-      <div style={{ padding: "0.5rem" }} >Round 1:</div>
+      <div style={{ padding: "0.5rem" }}>Round 1:</div>
       <Conditional
         condition={editing}
         showTrue={
           <CaseSelector cases={cases} selected={caseID} onSelect={onSelect} />
         }
         showFalse={
-          <div style={{ alignSelf: "center" }}> {caseID ? cases[caseID].title : "No Case Selected"} </div>
+          <div style={{ alignSelf: "center" }}>
+            {" "}
+            {caseID && cases[caseID]
+              ? cases[caseID].title
+              : "No Case Selected"}{" "}
+          </div>
         }
       />
     </div>
