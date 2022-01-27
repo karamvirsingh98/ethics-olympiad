@@ -26,7 +26,6 @@ button {
   border: none;
   width: fit-content;
   border-radius: 0.25rem;
-  font-family: inherit;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -112,6 +111,14 @@ textarea:focus {
 }
 
 .blue:hover {
+  background-color: rgba(126, 189, 194, 0.8);
+}
+
+.blue.hover {
+  background-color: transparent;
+}
+
+.blue.hover:hover {
   background-color: rgba(126, 189, 194, 0.8);
 }
 

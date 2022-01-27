@@ -88,7 +88,7 @@ function HeatComponent({
         )}
       </div>
 
-      <div style={{ display: "grid", width: "100%", gap: "0.5rem" }}>
+      <div style={{ display: "grid", width: "100%", gap: "1rem" }}>
         <HeatCase
           editing={editing}
           cases={cases}
@@ -119,14 +119,16 @@ function HeatCase({
 }) {
   return (
     <div className="heat-item">
-      Round 1:
-      <div style={{ placeSelf: "end" }}>
-        <Conditional
-          condition={editing}
-          showTrue={<CaseSelector cases={cases} selected={caseID}  onSelect={onSelect} />}
-          showFalse={caseID ? cases[caseID].title : "No Case Selected"}
-        />
-      </div>
+      <div style={{ padding: "0.5rem" }} >Round 1:</div>
+      <Conditional
+        condition={editing}
+        showTrue={
+          <CaseSelector cases={cases} selected={caseID} onSelect={onSelect} />
+        }
+        showFalse={
+          <div style={{ alignSelf: "center" }}> {caseID ? cases[caseID].title : "No Case Selected"} </div>
+        }
+      />
     </div>
   );
 }

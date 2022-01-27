@@ -47,6 +47,7 @@ export default function CaseGroup({
           map={(id) => (
             <CaseComponent
               _case={cases![id]}
+              key={id}
               setOne={setOne}
               setOneField={setOneField}
               removeOne={removeOne}
