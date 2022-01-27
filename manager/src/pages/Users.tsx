@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { client } from "..";
 import UserComponent from "../components/users/User";
 import Conditional from "../components/util/Conditional";
@@ -16,7 +16,7 @@ export default function Users({ currentUserID }: { currentUserID: string }) {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "2fr auto 1fr",
+        gridTemplateColumns: "1fr auto 1fr",
         gap: "2rem",
       }}
     >

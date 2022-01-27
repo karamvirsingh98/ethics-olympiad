@@ -32,7 +32,14 @@ export class InviteService {
 
   async verify(inviteKey: string) {
     const verified = this.invites.some((invite) => invite.key === inviteKey);
-    if (verified) this.clear(inviteKey);
+    if (verified) {
+      console.log(
+        `${
+          this.invites[this.invites.findIndex((i) => i.key === inviteKey)].name
+        } Signed Up`
+      );
+      this.clear(inviteKey);
+    }
     return verified;
   }
 

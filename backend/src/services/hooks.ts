@@ -4,11 +4,21 @@ import protect from "@feathersjs/authentication-local/lib/hooks/protect";
 import { Application } from "@feathersjs/express";
 import { HookContext } from "@feathersjs/feathers";
 import { BadRequest, Forbidden } from "@feathersjs/errors";
+import { Event } from "../types"
 
 export default function (app: Application) {
   app.service("api/users").hooks(USER_HOOKS);
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
+  app.service("api/")
 }
+
+const protectEvents = () => {
+  return async (context: HookContext) => {
+    console.log(context.params.user)
+    // context.data = context.data.map(({ _id, title }: Event) => ({ _id, title }))
+  }
+}
+
 
 const verifyInvite = () => {
   return async (context: HookContext) => {
