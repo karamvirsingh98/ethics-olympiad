@@ -1,20 +1,21 @@
 import { useTheme } from "./util/hooks";
 import useAuth from "./state/hooks/useAuth";
 import Auth from "./pages/Auth";
-import AuthHandler from "./handlers/AuthHandler";
-import PageHandler from "./handlers/PageHandler";
+import AuthRoutes from "./routes/AuthRoutes";
+import PageRoutes from "./routes/PageRoutes";
 import { User } from "./state/types";
+import { Route } from "react-router-dom";
 
 export default function App() {
   const { user, login, logout, createAccount } = useAuth();
-  const [dark, toggle] = useTheme()
+  const [dark, toggle] = useTheme();
 
   return (
     <div className={`app ${dark ? "dark" : "light"}`}>
-      <AuthHandler
+      <AuthRoutes
         user={user}
         isAuth={
-          <PageHandler
+          <PageRoutes
             user={user as User}
             logout={logout}
             dark={dark}

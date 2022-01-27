@@ -25,6 +25,8 @@ export default function EventCompnent({
         editing={editing}
         cases={cases}
         heats={event.heats}
+        eventID={event._id!}
+        setOneField={setOneField}
         onAdd={addHeat}
         onRemove={removeHeat}
       />

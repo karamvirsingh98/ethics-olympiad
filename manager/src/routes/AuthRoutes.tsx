@@ -1,7 +1,7 @@
-import React, { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import { User } from "../state/types";
 
-export default function AuthHandler({
+export default function AuthRoutes({
   user,
   isAuth,
   notAuth,

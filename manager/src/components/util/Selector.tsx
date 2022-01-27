@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Case, Cases } from "../../state/types";
 
-export default function CaseSelector({ cases, onSelect }: { cases: Cases, onSelect: (id: string) => void }) {
-  const [selected, setSelected] = useState("");
+export default function CaseSelector({ cases, selected, onSelect }: { cases: Cases, selected: string, onSelect: (id: string) => void }) {
   const [show, setShow] = useState(false);
 
   return (
-    <div style={{ position: "absolute", width: "fit-content", boxSizing: "border-box" }}>
+    <div style={{ position: "absolute", width: "100%", boxSizing: "border-box" }}>
       <button onClick={() => setShow(!show)}>
         {selected === "" ? "No Case Selected" : cases[selected].title}
       </button>
@@ -22,7 +21,9 @@ export default function CaseSelector({ cases, onSelect }: { cases: Cases, onSele
       >
         {Object.keys(cases).map((id) => (
           <button
-            onClick={() => setSelected(id)}
+            onClick={() => {
+              onSelect(id);
+            }}
             className="blue"
             style={{ borderRadius: 0, border: "none" }}
           >

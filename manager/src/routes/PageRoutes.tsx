@@ -7,7 +7,7 @@ import Users from "../components/users/Users";
 import { Fragment } from "react";
 import Cases from "../pages/Cases";
 
-export default function PageHandler({
+export default function PageRoutes({
   user,
   logout,
   dark,
@@ -26,7 +26,7 @@ export default function PageHandler({
       <Routes>
         <Route path="/" element={"Hi"}></Route>
         <Route path="/events" element={<Events user={user} state={state} />} />
-        <Route path='/cases' element={<Cases user={user} state={state} />} />
+        <Route path="/cases" element={<Cases user={user} state={state} />} />
         {user.admin && (
           <Route path="/users" element={<Users currentUserID={user._id!} />} />
         )}

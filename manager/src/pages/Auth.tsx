@@ -17,7 +17,10 @@ export default function Auth({
     <Fragment>
       <Routes>
         <Route path="/" element={<Login login={login} />} />
-        <Route path="/signup/:inviteKey" element={<Signup createAccount={createAccount} />} />
+        <Route
+          path="/signup/:inviteKey"
+          element={<Signup createAccount={createAccount} />}
+        />
       </Routes>
     </Fragment>
   );

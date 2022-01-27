@@ -1,4 +1,5 @@
-import { Case, Cases, Heat } from "../../../state/types";
+import { SetOneField } from "../../../state/hooks/useCollection";
+import { Cases, Event, Heat } from "../../../state/types";
 import Conditional from "../../util/Conditional";
 import CaseSelector from "../../util/Selector";
 
@@ -6,15 +7,20 @@ export default function Heats({
   editing,
   cases,
   heats,
+  eventID,
+  setOneField,
   onAdd,
   onRemove,
 }: {
   editing: boolean;
   cases: Cases;
   heats: Heat[];
+  eventID: string;
+  setOneField: SetOneField<Event>;
   onAdd: () => void;
   onRemove: (index: number) => void;
 }) {
+
   return (
     <div className="heats">
       <Header onAdd={onAdd} editing={editing} />
@@ -24,9 +30,12 @@ export default function Heats({
           <HeatComponent
             key={i + Math.random()}
             editing={editing}
+            eventID={eventID}
             index={i}
-            case1={cases[heat.case1]}
-            case2={cases[heat.case2]}
+            cases={cases}
+            heat={heat}
+            heats={heats}
+            setOneField={setOneField}
             onRemove={onRemove}
           />
         ))}
@@ -37,17 +46,33 @@ export default function Heats({
 function HeatComponent({
   editing,
   index,
-  case1,
-  case2,
+  eventID,
+  cases,
+  heats,
+  heat,
+  setOneField,
   onRemove,
 }: {
   editing: boolean;
-
   index: number;
-  case1?: Case;
-  case2?: Case;
+  eventID: string;
+  cases: Cases;
+  heats: Heat[];
+  heat: Heat;
+  setOneField: SetOneField<Event>
   onRemove: (index: number) => void;
 }) {
+  const { case1, case2 } = heat
+
+  const updateCase =
+    (heatIndex: number, case1: boolean) => (caseID: string) => {
+      const _heats = heats;
+      if (case1)
+        _heats.splice(heatIndex, 1, { ..._heats[heatIndex], case1: caseID });
+      else _heats.splice(heatIndex, 1, { ..._heats[heatIndex], case2: caseID });
+      setOneField(eventID, "heats", _heats);
+    };
+
   return (
     <div className="heat">
       <div className="heat-header">
@@ -64,61 +89,46 @@ function HeatComponent({
       </div>
 
       <div style={{ display: "grid", width: "100%", gap: "0.5rem" }}>
-        <div className="heat-item">
-          Round 1:
-          <div style={{ placeSelf: "end" }}>
-            {" "}
-            {case1 ? case1.title : "No Case Selected"}{" "}
-          </div>
-        </div>
-        <div className="heat-item">
-          Round 2:
-          <div style={{ placeSelf: "end" }}>
-            {" "}
-            {case2 ? case2.title : "No Case Selected"}{" "}
-          </div>
-        </div>
+        <HeatCase
+          editing={editing}
+          cases={cases}
+          caseID={case1}
+          onSelect={updateCase(index, true)}
+        />
+        <HeatCase
+          editing={editing}
+          cases={cases}
+          caseID={case2}
+          onSelect={updateCase(index, false)}
+        />
       </div>
     </div>
   );
 }
 
-function HeatCases({
+function HeatCase({
+  editing,
   cases,
-  case1,
-  case2,
+  caseID,
+  onSelect,
 }: {
+  editing: boolean;
   cases: Cases;
-  case1: Case;
-  case2: Case;
+  caseID: string;
+  onSelect: (id: string) => void;
 }) {
-  return (
-    <div style={{ display: "grid", width: "100%", gap: "0.5rem" }}>
-      
-      <div className="heat-item">
-        Round 2:
-        <div style={{ placeSelf: "end" }}>
-          {" "}
-          {case2 ? case2.title : "No Case Selected"}{" "}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HeatCase({ editing, cases, _case }: { editing: boolean, cases: Cases, _case: Case}) {
   return (
     <div className="heat-item">
       Round 1:
       <div style={{ placeSelf: "end" }}>
-        <Conditional 
-        condition={editing}
-        showTrue={<CaseSelector cases={cases} onSelect={() => {}}/>}
-        showFalse={_case ? _case.title : "No Case Selected"}
-      />
+        <Conditional
+          condition={editing}
+          showTrue={<CaseSelector cases={cases} selected={caseID}  onSelect={onSelect} />}
+          showFalse={caseID ? cases[caseID].title : "No Case Selected"}
+        />
       </div>
     </div>
-  )
+  );
 }
 
 function Header({ editing, onAdd }: { editing: boolean; onAdd: () => void }) {
@@ -127,7 +137,6 @@ function Header({ editing, onAdd }: { editing: boolean; onAdd: () => void }) {
       <div
         style={{
           fontSize: "1.5rem",
-          // borderBottom: "solid 0.25rem",
           width: "fit-content",
         }}
       >
