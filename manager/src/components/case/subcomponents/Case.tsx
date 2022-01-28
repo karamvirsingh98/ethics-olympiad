@@ -89,7 +89,7 @@ export default function CaseComponent({
               />
             }
             showFalse={
-              <Fragment>
+              <div style={{ display: "grid", gap: " 1rem "}}> 
                 <TextArea
                   value={bodyText}
                   onChange={(bodyText) =>
@@ -97,7 +97,7 @@ export default function CaseComponent({
                   }
                 />
                 {bodyText}
-              </Fragment>
+              </div> 
             }
           />
         </div>
