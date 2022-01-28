@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   RemoveOne,
   SetOne,
@@ -89,10 +89,15 @@ export default function CaseComponent({
               />
             }
             showFalse={
-              <TextArea
-                value={bodyText}
-                onChange={(bodyText) => setOneField(_id!, "bodyText", bodyText)}
-              />
+              <Fragment>
+                <TextArea
+                  value={bodyText}
+                  onChange={(bodyText) =>
+                    setOneField(_id!, "bodyText", bodyText)
+                  }
+                />
+                {bodyText}
+              </Fragment>
             }
           />
         </div>
