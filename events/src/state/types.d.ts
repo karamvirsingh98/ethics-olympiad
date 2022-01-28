@@ -1,3 +1,11 @@
+// export type Events = Collection<Event>;
+// export type Cases = Collection<Case>;
+// export type Users = Collection<Users>;
+
+// export interface Collection<T> {
+//   [id: string]: T;
+// }
+
 export interface User {
   _id: string;
   name: string;
@@ -10,6 +18,15 @@ export interface Invite {
   email: string;
   key?: string;
   expiry?: number;
+}
+
+export interface BaseEvent {
+  _id: string;
+  title: string;
+}
+
+export interface Event extends BaseEvent {
+  
 }
 
 export interface Event {
