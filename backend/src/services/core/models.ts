@@ -9,7 +9,7 @@ export const EventModel = model(
     teams: [{ name: String, present: Boolean }],
     timers: Array,
     password: String,
-  })
+  }, { timestamps: true })
 );
 
 export const CaseModel = model(

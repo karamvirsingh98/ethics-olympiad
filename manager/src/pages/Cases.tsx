@@ -33,31 +33,29 @@ export default function Cases({
         overflow: "hidden",
       }}
     >
-      {cases && (
-        <Fragment>
-          <CaseGroup
-            title="Video Cases"
-            cases={cases}
-            sortCondition={(caseID) => cases[caseID].isVideo}
-            setOne={setOne}
-            setOneField={setOneField}
-            removeOne={removeOne}
-            onNewClick={createCase(true)}
-          />
-          <Divider vertical />
-          <div style={{ overflow: "scroll" }}>
-            <CaseGroup
-              title="Text Cases"
-              cases={cases}
-              sortCondition={(caseID) => !cases[caseID].isVideo}
-              setOne={setOne}
-              setOneField={setOneField}
-              removeOne={removeOne}
-              onNewClick={createCase(false)}
-            />
-          </div>
-        </Fragment>
-      )}
+      <div style={{ overflow: "scroll" }}>
+        <CaseGroup
+          title="Video Cases"
+          cases={cases}
+          sortCondition={(caseID) => cases && cases[caseID].isVideo}
+          setOne={setOne}
+          setOneField={setOneField}
+          removeOne={removeOne}
+          onNewClick={createCase(true)}
+        />
+      </div>
+      <Divider vertical />
+      <div style={{ overflow: "scroll" }}>
+        <CaseGroup
+          title="Text Cases"
+          cases={cases}
+          sortCondition={(caseID) => cases && !cases[caseID].isVideo}
+          setOne={setOne}
+          setOneField={setOneField}
+          removeOne={removeOne}
+          onNewClick={createCase(false)}
+        />
+      </div>
     </div>
   );
 }

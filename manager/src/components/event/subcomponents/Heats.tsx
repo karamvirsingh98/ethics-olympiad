@@ -1,7 +1,7 @@
 import { SetOneField } from "../../../state/hooks/useCollection";
 import { Cases, Event, Heat } from "../../../state/types";
 import Conditional from "../../util/Conditional";
-import CaseSelector from "../../case/subcomponents/Selector";
+import CaseSelector from "./Selector";
 
 export default function Heats({
   editing,
@@ -80,7 +80,7 @@ function HeatComponent({
           <button
             className="red"
             onClick={() => onRemove(index)}
-            style={{ placeSelf: "end" }}
+            style={{ placeSelf: "end", fontSize: "0.8rem" }}
           >
             Remove
           </button>

@@ -37,7 +37,7 @@ export default function Teams({
         )}
       </div>
       <div>
-        {teams.length > 0 && (
+        {teams && teams.length > 0 && (
           <div
             style={{
               display: "grid",
@@ -47,7 +47,7 @@ export default function Teams({
               padding: "1rem 0rem ",
             }}
           >
-            {teams.map((team, i) => (
+            {teams && teams.map((team, i) => (
               <TeamComponent
                 editing={editing}
                 key={team.name + Math.random()}

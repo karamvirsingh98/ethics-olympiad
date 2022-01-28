@@ -7,6 +7,7 @@ export default function ToggleInput({
   fontSize = "1rem",
   placeholder,
   autofocus,
+  id,
   onEdit,
 }: {
   editing: boolean;
@@ -14,6 +15,7 @@ export default function ToggleInput({
   fontSize?: string | number;
   placeholder?: string;
   autofocus?: boolean;
+  id?: string;
   onEdit: (value: string) => void;
 }) {
   return (
@@ -21,6 +23,7 @@ export default function ToggleInput({
       condition={editing}
       showTrue={
         <Input
+          id={id}
           autofocus={autofocus}
           value={value}
           onChange={onEdit}

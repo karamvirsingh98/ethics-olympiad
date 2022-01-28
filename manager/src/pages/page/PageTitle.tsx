@@ -16,7 +16,7 @@ export default function PageTitle({
 }) {
   return (
     <div className="page-title">
-      <ToggleInput editing={editing} value={title} fontSize="1.75rem" onEdit={rename} />
+      <ToggleInput id="event-title" editing={editing} value={title} fontSize="1.75rem" onEdit={rename} />
       {element}
     </div>
   );

@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Cases } from "../../../state/types";
 
-export default function CaseSelector({ cases, selected, onSelect }: { cases: Cases, selected: string, onSelect: (id: string) => void }) {
+export default function CaseSelector({
+  cases,
+  selected,
+  onSelect,
+}: {
+  cases: Cases;
+  selected: string;
+  onSelect: (id: string) => void;
+}) {
   const [show, setShow] = useState(false);
 
   return (
@@ -14,11 +22,11 @@ export default function CaseSelector({ cases, selected, onSelect }: { cases: Cas
       }}
     >
       <button
-        className="blue hover"
+        className="blue"
         onClick={() => setShow(!show)}
         style={{ width: "100%", textAlign: "start" }}
       >
-        {selected === "" ? "No Case Selected" : cases[selected].title}
+        {cases[selected] ? cases[selected].title : "No Case Selected"}
       </button>
       {show && (
         <div
@@ -33,10 +41,11 @@ export default function CaseSelector({ cases, selected, onSelect }: { cases: Cas
             borderRadius: "0.25rem",
             overflow: "hidden",
           }}
-          className="blue-flat"
+          className="light"
         >
           {Object.keys(cases).map((id) => (
             <button
+              key={id}
               onClick={() => {
                 onSelect(id);
               }}

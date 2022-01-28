@@ -29,7 +29,7 @@ const protectEvents = () => {
 
 const protectCases = () => {
   return async (context: HookContext) => {
-    if (!context.params.user) throw new Forbidden("Cannot get all Cases, must provide a valid Case ID");
+    if (!context.params.user) context.result = [];
     return context;
   };
 };
@@ -70,7 +70,7 @@ const EVENT_HOOKS = {
   },
 
   after: {
-    find: [protect("password")],
+    find: [protectEvents()],
   },
 };
 
@@ -81,8 +81,8 @@ const CASE_HOOKS = {
     patch: [authenticate("jwt")],
     remove: [authenticate("jwt")],
   },
-  
+
   after: {
-    find: [protectCases()]
-  }
+    find: [protectCases()],
+  },
 };

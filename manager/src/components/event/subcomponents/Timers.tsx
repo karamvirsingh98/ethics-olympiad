@@ -39,7 +39,7 @@ export default function Timers({
           padding: "1rem 0rem ",
         }}
       >
-        {timers.map((time, i) => (
+        {timers && timers.map((time, i) => (
           <TimeInput
             key={i * Math.random()}
             editing={editing}

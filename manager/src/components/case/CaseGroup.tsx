@@ -13,7 +13,7 @@ export default function CaseGroup({
   onNewClick,
 }: {
   title: string;
-  cases: Cases;
+  cases?: Cases;
   sortCondition: (id: string) => void;
   setOne: SetOne<Case>
   setOneField: SetOneField<Case>;
@@ -42,18 +42,20 @@ export default function CaseGroup({
         </button>
       </div>
       <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
-        <ArrayMap
-          array={Object.keys(cases).filter(sortCondition)}
-          map={(id) => (
-            <CaseComponent
-              _case={cases![id]}
-              key={id}
-              setOne={setOne}
-              setOneField={setOneField}
-              removeOne={removeOne}
-            />
-          )}
-        />
+        {cases && (
+          <ArrayMap
+            array={Object.keys(cases).filter(sortCondition)}
+            map={(id) => (
+              <CaseComponent
+                _case={cases![id]}
+                key={id}
+                setOne={setOne}
+                setOneField={setOneField}
+                removeOne={removeOne}
+              />
+            )}
+          />
+        )}
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import { useLocalStorage } from "../util/hooks";
 import TitleButtons from "../components/event/subcomponents/TitleButtons";
 import { eventsHelpers } from "./helpers";
 import Input from "../components/util/Input";
+import ToggleInput from "../components/util/ToggleInput";
 
 export default function Events({
   user,
@@ -66,7 +67,7 @@ export default function Events({
                 >
                   <div
                     style={{
-                      placeSelf: "center",
+                      placeSelf: "start",
                       display: "flex",
                       alignItems: "flex-end",
                       fontSize: "1rem",
@@ -76,9 +77,10 @@ export default function Events({
                     <div style={{ borderBottom: "solid 0.25rem transparent" }}>
                       Password:
                     </div>
-                    <Input
+                    <ToggleInput
+                      editing={editing}
                       value={events[currentID].password}
-                      onChange={setPassword(currentID)}
+                      onEdit={setPassword(currentID)}
                     />
                   </div>
                   <TitleButtons
