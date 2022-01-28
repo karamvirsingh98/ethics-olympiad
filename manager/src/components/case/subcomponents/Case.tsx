@@ -89,15 +89,15 @@ export default function CaseComponent({
               />
             }
             showFalse={
-              <div style={{ display: "grid", gap: " 1rem "}}> 
+              <div style={{ display: "grid", gap: " 1rem " }}>
                 <TextArea
                   value={bodyText}
                   onChange={(bodyText) =>
                     setOneField(_id!, "bodyText", bodyText)
                   }
                 />
-                {bodyText}
-              </div> 
+                <div style={{ whiteSpace: "pre-line" }}> {bodyText} </div>
+              </div>
             }
           />
         </div>
