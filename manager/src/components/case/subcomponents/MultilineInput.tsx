@@ -8,6 +8,12 @@ export default function TextArea({
   return (
     <textarea
       onChange={(e) => onChange(e.target.value)}
+      onKeyDown={({ key, currentTarget }) => {
+        if (key === "Enter") {
+          onChange(currentTarget.value + "\n")
+        }
+      }}
+      style={{ whiteSpace: "pre-line" }}
       value={value}
     />
   );
