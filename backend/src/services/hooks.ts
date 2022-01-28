@@ -4,20 +4,35 @@ import protect from "@feathersjs/authentication-local/lib/hooks/protect";
 import { Application } from "@feathersjs/express";
 import { HookContext } from "@feathersjs/feathers";
 import { BadRequest, Forbidden } from "@feathersjs/errors";
+import { Event } from "../types";
 
 export default function (app: Application) {
   app.service("api/users").hooks(USER_HOOKS);
+  app.service("api/events").hooks(EVENT_HOOKS);
+  app.service("api/cases").hooks(CASE_HOOKS);
+
+  //custom
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
-  // app.service("api/events").hooks({ before: { get: [protectEvents()] } });
+
 }
 
-// const protectEvents = () => {
-//   return async (context: HookContext) => {
-//     if (!context.params.user) throw new Forbidden("No User")
-//     return context
-//     // context.data = context.data.map(({ _id, title }: Event) => ({ _id, title }))
-//   };
-// };
+const protectEvents = () => {
+  return async (context: HookContext) => {
+    if (!context.params.user)
+      context.result = context.result.map(({ _id, title }: Event) => ({
+        _id,
+        title,
+      }));
+    return context;
+  };
+};
+
+const protectCases = () => {
+  return async (context: HookContext) => {
+    if (!context.params.user) throw new Forbidden("Cannot get all Cases, must provide a valid Case ID");
+    return context;
+  };
+};
 
 const verifyInvite = () => {
   return async (context: HookContext) => {
@@ -32,7 +47,6 @@ const verifyInvite = () => {
 
 const USER_HOOKS = {
   before: {
-    all: [],
     find: [authenticate("jwt")],
     get: [authenticate("jwt")],
     create: [verifyInvite(), hashPassword("password")],
@@ -43,11 +57,32 @@ const USER_HOOKS = {
 
   after: {
     all: [protect("password")],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: [],
   },
+};
+
+const EVENT_HOOKS = {
+  before: {
+    get: [authenticate("jwt")],
+    create: [authenticate("jwt")],
+    update: [authenticate("jwt")],
+    patch: [authenticate("jwt")],
+    remove: [authenticate("jwt")],
+  },
+
+  after: {
+    find: [protect("password")],
+  },
+};
+
+const CASE_HOOKS = {
+  before: {
+    create: [authenticate("jwt")],
+    update: [authenticate("jwt")],
+    patch: [authenticate("jwt")],
+    remove: [authenticate("jwt")],
+  },
+  
+  after: {
+    find: [protectCases()]
+  }
 };

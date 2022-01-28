@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Cases } from "../../state/types";
+import { Cases } from "../../../state/types";
 
 export default function CaseSelector({ cases, selected, onSelect }: { cases: Cases, selected: string, onSelect: (id: string) => void }) {
   const [show, setShow] = useState(false);
@@ -32,8 +32,8 @@ export default function CaseSelector({ cases, selected, onSelect }: { cases: Cas
             zIndex: 2,
             borderRadius: "0.25rem",
             overflow: "hidden",
-            backgroundColor: "black",
           }}
+          className="blue-flat"
         >
           {Object.keys(cases).map((id) => (
             <button

@@ -182,7 +182,7 @@ function InviteComponent({
     <div>
       <div>{invite.name}</div>
       <div>{invite.email}</div>
-      <div>Invite URL: http://localhost:3030/signup/{invite.key}</div>
+      <div>Invite URL: http://localhost:3000/signup/{invite.key}</div>
     </div>
   );
 }

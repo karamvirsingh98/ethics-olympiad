@@ -12,7 +12,6 @@ export class UnlockService {
     const event: Event = this.app
       .service("api/events")
       .get({ _id: data.id });
-    if (data.passkey === event.password) return "unlocked";
-    else return "unlock failed";
+    if (data.passkey === event.password) return event;
   }
 }

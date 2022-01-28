@@ -1,7 +1,7 @@
 import { SetOneField } from "../../../state/hooks/useCollection";
 import { Cases, Event, Heat } from "../../../state/types";
 import Conditional from "../../util/Conditional";
-import CaseSelector from "../../util/Selector";
+import CaseSelector from "../../case/subcomponents/Selector";
 
 export default function Heats({
   editing,
