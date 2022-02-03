@@ -26,18 +26,20 @@ export interface BaseEvent {
 }
 
 export interface Event extends BaseEvent {
-  
-}
-
-export interface Event {
-  _id?: string;
-  password?: string;
-  owner: string;
-  title: string;
   timers: number[];
   heats: Heat[];
   teams: Team[];
 }
+
+// export interface Event {
+//   _id?: string;
+//   password?: string;
+//   owner: string;
+//   title: string;
+//   timers: number[];
+//   heats: Heat[];
+//   teams: Team[];
+// }
 
 export interface Heat {
   case1: string;

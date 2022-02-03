@@ -2,4 +2,37 @@
   display: grid;
   width: 100vw;
   height: 100vh;
+  padding: 1rem;
+}
+
+.auth-window {
+  place-self: center;
+  display: grid;
+  place-items: center start;
+  gap: 2rem;
+}
+
+.home {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 2rem;
+}
+
+.events {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30vw, 1fr));
+  gap: 2rem;
+  font-size: 1.5rem;
+  height: fit-content;
+}
+
+.base-event {
+  border-radius: 0.25rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: box-shadow 250ms ease-in-out, background-color 250ms ease-in-out;
+}
+
+.base-event:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }

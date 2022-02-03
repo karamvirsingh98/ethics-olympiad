@@ -85,6 +85,14 @@ textarea:focus {
   background-color: rgba(86, 193, 140, 0.8);
 }
 
+.green.hover {
+  background-color: transparent;
+}
+
+.green.hover:hover {
+  background-color: rgba(86, 193, 140, 0.8);
+}
+
 .red {
   background-color: rgba(255, 90, 95, 0.4);
 }
