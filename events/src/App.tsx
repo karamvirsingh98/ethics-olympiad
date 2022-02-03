@@ -1,4 +1,4 @@
-import { Routes, Route, useParams } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import Event from "./components/event/Event";
 import Home from "./components/pages/Home";
 

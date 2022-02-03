@@ -9,10 +9,9 @@ export class UnlockService {
   }
 
   async create(data: { id: string; password: string }) {
-    const event: Event = this.app
+    const { _id, title, heats, timers, teams, password }: Event = await this.app
       .service("api/events")
       .get({ _id: data.id });
-    delete event.password
-    if (data.password === event.password) return event;
+    if (data.password === password) return { _id, title, heats, timers, teams };
   }
 }

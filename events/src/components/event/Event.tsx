@@ -1,17 +1,19 @@
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { useParams } from "react-router-dom";
-import useUnlock from "../../state/hooks/useUnlock";
+import useUnlock, { useUnlockedEvent } from "../../state/hooks/useUnlock";
+import { Event } from "../../state/types";
 import Unlock from "./Unlock";
 
-export default function Event() {
+export default function EventComponent() {
   const { eventID } = useParams();
   const { unlocked, unlock } = useUnlock(eventID!);
-  
+  const { event, set } = useUnlockedEvent(eventID!)
+
   return (
     <UnlockManager
       unlocked={unlocked}
-      isUnlocked={<div> </div>}
-      notUnlocked={<Unlock eventID={eventID!} onUnlock={(event) => unlock(eventID!)} />}
+      isUnlocked={<div> {event?.title} </div>}
+      notUnlocked={<Unlock eventID={eventID!} onUnlock={set} />}
     />
   );
 }

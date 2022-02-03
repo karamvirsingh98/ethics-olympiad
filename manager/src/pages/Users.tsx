@@ -37,7 +37,7 @@ function Invites() {
     client
       .service("api/invite")
       .find()
-      .then(console.log);
+      .then(set);
   }, []);
 
   return (

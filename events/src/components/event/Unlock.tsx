@@ -3,22 +3,33 @@ import { useState } from "react";
 import { Event } from "../../state/types";
 import Input from "../util/Input";
 
-export default function Unlock({ eventID, onUnlock }: { eventID: string, onUnlock: (event: Event) => void }) {
+export default function Unlock({
+  eventID,
+  onUnlock,
+}: {
+  eventID: string;
+  onUnlock: (event: Event) => void;
+}) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
 
   const unlock = async () => {
-    const res = await axios({
+    try {
+      await axios({
       method: "post",
       url: "http://localhost:3030/api/unlock",
-      data: { eventID, password }
-    }).then(({ data }) => onUnlock(data));
+      data: { id: eventID, password },
+      }).then(({ data }) => onUnlock(data));
+    } catch {
+      window.alert('Invalid Password.')
+    }
   };
-
 
   return (
     <div className="auth-window">
-      <div style={{ fontSize: "2rem", borderBottom: "solid 1px", width: "100%" }}>
+      <div
+        style={{ fontSize: "2rem", borderBottom: "solid 1px", width: "100%" }}
+      >
         Unlock Event
       </div>
       <div
@@ -39,16 +50,12 @@ export default function Unlock({ eventID, onUnlock }: { eventID: string, onUnloc
         <button
           className={show ? "blue" : "orange"}
           style={{ fontSize: "0.8rem", placeSelf: "end", width: "3rem" }}
-          onClick={() => setShow(s => !s)}
+          onClick={() => setShow((s) => !s)}
         >
           {show ? "Hide" : "Show"}
         </button>
       </div>
-      <button
-        className="green"
-        style={{ width: "100%" }}
-        onClick={unlock}
-      >
+      <button className="green" style={{ width: "100%" }} onClick={unlock}>
         Login
       </button>
     </div>
