@@ -4,10 +4,10 @@ import Home from "./components/pages/Home";
 
 export default function App() {
   return (
-    <div className="app light">
+    <div className="app dark">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path=":eventID" element={<Event />} />
+        <Route path="/:eventID" element={<Event />} />
       </Routes>
     </div>
   );

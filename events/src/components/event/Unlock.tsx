@@ -5,21 +5,26 @@ import Input from "../util/Input";
 
 export default function Unlock({
   eventID,
+  unlock,
   onUnlock,
 }: {
   eventID: string;
+  unlock: (eventID: string, password: string) => void;
   onUnlock: (event: Event) => void;
 }) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
 
-  const unlock = async () => {
+  const doUnlock = async () => {
     try {
       await axios({
       method: "post",
       url: "http://localhost:3030/api/unlock",
       data: { id: eventID, password },
-      }).then(({ data }) => onUnlock(data));
+      }).then(({ data }) => {
+        unlock(eventID,  password)
+        onUnlock(data);
+      });
     } catch {
       window.alert('Invalid Password.')
     }
@@ -45,7 +50,7 @@ export default function Unlock({
           placeholder="password"
           value={password}
           onChange={setPassword}
-          onConfirm={unlock}
+          onConfirm={doUnlock}
         />
         <button
           className={show ? "blue" : "orange"}
@@ -55,7 +60,7 @@ export default function Unlock({
           {show ? "Hide" : "Show"}
         </button>
       </div>
-      <button className="green" style={{ width: "100%" }} onClick={unlock}>
+      <button className="green" style={{ width: "100%" }} onClick={doUnlock}>
         Login
       </button>
     </div>
