@@ -34,5 +34,14 @@
 }
 
 .base-event:hover {
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(86, 193, 140, 0.2) 0px 7px 29px 0px;
+}
+
+.dark-icon {
+  opacity: 0.75;
+  transition: opacity 250ms;
+}
+
+.dark-icon:hover {
+  opacity: 1
 }

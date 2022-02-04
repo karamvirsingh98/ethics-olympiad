@@ -50,52 +50,57 @@ export default function CaseComponent({
         onCancel={cancelEdits(_id!)}
         onDelete={deleteCase(_id!)}
       />
-      <div style={{ display: "flex", fontSize: "1rem", gap: "1rem" }}>
-        <div style={{ borderBottom: "solid 0.25rem transparent" }}>
-          Question:
-        </div>
-        <ToggleInput
-          placeholder="Question"
-          value={question}
-          editing={editing}
-          onEdit={(question) => setOneField(_id!, "question", question)}
-        />
-      </div>
+
       {editing && (
-        <div
-          style={{
-            display: "flex",
-            fontSize: "1rem",
-            gap: "1rem",
-            width: "100%",
-          }}
-        >
+        <Fragment>
+          <div style={{ display: "flex", fontSize: "1rem", gap: "1rem" }}>
+            <div style={{ borderBottom: "solid 0.25rem transparent" }}>
+              Question:
+            </div>
+            <ToggleInput
+              placeholder="Question"
+              value={question}
+              editing={editing}
+              onEdit={(question) => setOneField(_id!, "question", question)}
+            />
+          </div>
           <div
             style={{
-              borderBottom: "solid 0.25rem transparent",
-              whiteSpace: "nowrap",
+              display: "flex",
+              fontSize: "1rem",
+              gap: "1rem",
+              width: "100%",
             }}
           >
-            {isVideo ? "Video URL: " : "Case Body: "}
+            <div
+              style={{
+                borderBottom: "solid 0.25rem transparent",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {isVideo ? "Video URL: " : "Case Body: "}
+            </div>
+            <Conditional
+              condition={isVideo}
+              showTrue={
+                <ToggleInput
+                  placeholder="Video URL"
+                  editing={editing}
+                  value={videoURL}
+                  onEdit={() => {}}
+                />
+              }
+              showFalse={
+                <TextArea
+                  value={bodyText}
+                  onChange={(bodyText) =>
+                    setOneField(_id!, "bodyText", bodyText)
+                  }
+                />
+              }
+            />
           </div>
-          <Conditional
-            condition={isVideo}
-            showTrue={
-              <ToggleInput
-                placeholder="Video URL"
-                editing={editing}
-                value={videoURL}
-                onEdit={() => {}}
-              />
-            }
-            showFalse={
-              <TextArea
-                value={bodyText}
-                onChange={(bodyText) => setOneField(_id!, "bodyText", bodyText)}
-              />
-            }
-          />
-        </div>
+        </Fragment>
       )}
     </div>
   );

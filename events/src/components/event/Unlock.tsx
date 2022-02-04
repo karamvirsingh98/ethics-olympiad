@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { Event } from "../../state/types";
+import { Event, Olympaid } from "../../state/types";
 import Input from "../util/Input";
 
 export default function Unlock({
@@ -10,7 +10,7 @@ export default function Unlock({
 }: {
   eventID: string;
   unlock: (eventID: string, password: string) => void;
-  onUnlock: (event: Event) => void;
+  onUnlock: (olympiad: Olympaid) => void;
 }) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);

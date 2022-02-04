@@ -72,8 +72,8 @@
 
 .heats {
   display: grid;
-  gap: 2rem;
   height: fit-content;
+  gap: 2rem;
 }
 
 .heat {
@@ -102,6 +102,7 @@
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   gap: 1rem;
   height: 100%;
+  overflow: scroll;
 }
 
 .timers {

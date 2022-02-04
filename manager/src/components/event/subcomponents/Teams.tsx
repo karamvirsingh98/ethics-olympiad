@@ -17,15 +17,7 @@ export default function Teams({
   return (
     <div className="teams">
       <div className="heat-header">
-        <div
-          style={{
-            fontSize: "1.5rem",
-            // borderBottom: "solid 0.25rem",
-            width: "fit-content",
-          }}
-        >
-          Teams
-        </div>
+        <div style={{ fontSize: "1.5rem", width: "fit-content" }}>Teams</div>
         {editing && (
           <button
             className="green"
@@ -45,17 +37,20 @@ export default function Teams({
               borderTop: "solid 1px",
               borderBottom: "solid 1px",
               padding: "1rem 0rem ",
+              maxHeight: "70vh",
+              overflow: "scroll",
             }}
           >
-            {teams && teams.map((team, i) => (
-              <TeamComponent
-                editing={editing}
-                key={team.name + Math.random()}
-                team={team}
-                onRename={(name) => onRename(name, i)}
-                onRemove={() => onRemove(i)}
-              />
-            ))}
+            {teams &&
+              teams.map((team, i) => (
+                <TeamComponent
+                  editing={editing}
+                  key={team.name + Math.random()}
+                  team={team}
+                  onRename={(name) => onRename(name, i)}
+                  onRemove={() => onRemove(i)}
+                />
+              ))}
           </div>
         )}
       </div>

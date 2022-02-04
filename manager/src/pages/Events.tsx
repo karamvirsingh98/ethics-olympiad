@@ -63,6 +63,7 @@ export default function Events({
                     gridTemplateColumns: "1fr auto",
                     width: "100%",
                     placeSelf: "start",
+                    gap: "2rem",
                   }}
                 >
                   <div
@@ -102,7 +103,14 @@ export default function Events({
           </Fragment>
         )}
       </div>
-      <div style={{ border: "solid 1px", height: "100%", opacity: 0.25, borderRadius:"100%"}} /> 
+      <div
+        style={{
+          border: "solid 1px",
+          height: "100%",
+          opacity: 0.25,
+          borderRadius: "100%",
+        }}
+      />
       {events && (
         <Items
           label={"Event"}

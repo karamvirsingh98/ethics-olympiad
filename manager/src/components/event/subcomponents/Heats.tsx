@@ -23,21 +23,30 @@ export default function Heats({
   return (
     <div className="heats">
       <Header onAdd={onAdd} editing={editing} />
-      {cases &&
-        heats &&
-        heats.map((heat, i) => (
-          <HeatComponent
-            key={i + Math.random()}
-            editing={editing}
-            eventID={eventID}
-            index={i}
-            cases={cases}
-            heat={heat}
-            heats={heats}
-            setOneField={setOneField}
-            onRemove={onRemove}
-          />
-        ))}
+      <div
+        style={{
+          maxHeight: "70vh",
+          overflow: "scroll",
+          display: "grid",
+          gap: "2rem",
+        }}
+      >
+        {cases &&
+          heats &&
+          heats.map((heat, i) => (
+            <HeatComponent
+              key={i + Math.random()}
+              editing={editing}
+              eventID={eventID}
+              index={i}
+              cases={cases}
+              heat={heat}
+              heats={heats}
+              setOneField={setOneField}
+              onRemove={onRemove}
+            />
+          ))}
+      </div>
     </div>
   );
 }
@@ -75,7 +84,9 @@ function HeatComponent({
   return (
     <div className="heat">
       <div className="heat-header">
-        <div style={{ fontSize: "1.25rem" }}> Heat {index + 1} </div>
+        <div style={{ fontSize: "1.25rem", paddingLeft: "0.5rem" }}>
+          Heat {index + 1}
+        </div>
         {editing && (
           <button
             className="red"

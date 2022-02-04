@@ -13,12 +13,10 @@ export class UnlockService {
       .service("api/events")
       .get({ _id: data.id });
     if (data.password === password) {
-      const caseIDs = heats.map((heat) => [heat.case1, heat.case2]).flat();
-      const cases: Case[] = await this.app.service("api/cases").find({
-        query: {
-          _id: { $in: [caseIDs] },
-        },
-      });
+      const caseIDs = heats.map((heat) => [heat.case1 !== "" && heat.case1, heat.case2 !== "" && heat.case2]).flat();
+      const cases = await this.app
+        .service("api/cases")
+        .find({ query: { _id: { $in: caseIDs } } });
       return {
         event: { _id, title, heats, timers, teams },
         cases: arrToKeyedObject(cases),
