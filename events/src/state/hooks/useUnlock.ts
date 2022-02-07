@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Cases, Event, Olympaid } from "../types";
+import { Olympaid } from "../types";
 
 export default (eventID: string) => {
   return {

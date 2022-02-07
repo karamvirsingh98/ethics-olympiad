@@ -43,5 +43,45 @@
 }
 
 .dark-icon:hover {
-  opacity: 1
+  opacity: 1;
+}
+
+.coin {
+  display: grid;
+  place-items: center;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 10rem;
+  background-color: silver;
+  color: black;
+  font-size: 2rem;
+}
+
+.coin.flipping {
+  animation: flip 250ms linear infinite;
+}
+
+.rise {
+  animation: rise 2s ease-in-out;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes flip {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(360deg);
+  }
 }

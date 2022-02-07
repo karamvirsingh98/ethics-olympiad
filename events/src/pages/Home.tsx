@@ -1,6 +1,6 @@
-import ArrayMap from "../util/ArrayMap";
-import BaseEventComponent from "../event/BaseEvent";
-import useBaseEvents from "../../state/hooks/useBaseEvents";
+import ArrayMap from "../components/util/ArrayMap";
+import BaseEventComponent from "../components/home/BaseEvent";
+import useBaseEvents from "../state/hooks/useBaseEvents";
 
 export default function Home() {
   const events = useBaseEvents()

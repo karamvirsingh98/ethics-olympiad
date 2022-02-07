@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import Event from "./components/event/Event";
-import Home from "./components/pages/Home";
+import Event from "./pages/Event";
+import Home from "./pages/Home";
 import DarkIcon from "./components/util/DarkIcon";
 import { useTheme } from "./util/hooks";
 
