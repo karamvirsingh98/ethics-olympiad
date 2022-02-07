@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import IfElse from "../../util/IfElse";
 
 export default function Flip() {
   const [flipping, set] = useState(false);
@@ -21,7 +22,7 @@ export default function Flip() {
         display: "grid",
         gap: "2rem",
         placeItems: "center",
-        gridTemplateRows: "1fr 1fr"
+        gridTemplateRows: "1fr 1fr",
       }}
     >
       <div
@@ -34,16 +35,17 @@ export default function Flip() {
             transform: flipping ? "translateY(-100%)" : "translateY(0%)",
             transition: "transform 2s ease",
           }}
-          onClick={() => set(true)}
         >
           {res}
         </div>
       </div>
-      {res && (
-        <button className="green" onClick={() => navigate("./round1")}>
-          Start Heat
-        </button>
-      )}
+      <button
+        className="green"
+        onClick={() => (res ? navigate("../round1") : set(true))}
+        style={{ fontSize: "1.5rem", padding: "0.25rem 1rem" }}
+      >
+        {res ? "Start Heat" : "Flip Coin"}
+      </button>
     </div>
   );
 }

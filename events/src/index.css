@@ -27,7 +27,6 @@ button {
   width: fit-content;
   border-radius: 0.25rem;
   font-size: 1rem;
-  font-weight: 500;
 }
 
 input {
@@ -114,11 +113,11 @@ textarea:focus {
 }
 
 .blue {
-  background-color: rgba(126, 189, 194, 0.4);
+  background-color: rgba(126, 189, 194, 0.3);
 }
 
 .blue:hover {
-  background-color: rgba(126, 189, 194, 0.8);
+  background-color: rgba(126, 189, 194, 0.6);
 }
 
 .blue.hover {

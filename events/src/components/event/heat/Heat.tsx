@@ -5,7 +5,6 @@ import Topbar from "../Topbar";
 import Flip from "./Flip";
 
 export default function Heat({ event, cases }: { event: Event; cases: Cases }) {
-  const navigate = useNavigate();
   const { case1, case2 } = useHeatNumber(event.heats);
 
   return (
