@@ -9,7 +9,7 @@ export default function Heat({ event, cases }: { event: Event; cases: Cases }) {
   const { case1, case2 } = useHeatNumber(event.heats);
 
   return (
-    <div style={{ display: "grid", gap: "2rem", gridTemplateRows: "auto 1fr" }}>
+    <div style={{ display: "grid", gap: "2rem", gridTemplateRows: "auto 1fr", overflow: "hidden" }}>
       <Topbar event={event} />
       <Routes>
         <Route path="/" element={<Flip />} />

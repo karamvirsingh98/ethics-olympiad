@@ -13,21 +13,24 @@ export default function Round({
   timers: number[];
 }) {
   const { roundNumber } = useParams();
+  const round = Number(roundNumber);
 
   return (
-    <div style={{ display: "grid", gap: "1rem" }}>
+    <div style={{ overflow: "hidden"}}>
       <Routes>
         <Route
           path="/"
-          element={
-            <CaseOverview
-              _case={roundNumber && Number(roundNumber) === 1 ? case1 : case2}
-            />
-          }
+          element={<CaseOverview _case={round === 1 ? case1 : case2} />}
         />
         <Route
           path="/stage:stageNumber"
-          element={<Stage roundNumber={Number(roundNumber)} />}
+          element={
+            <Stage
+              roundNumber={Number(roundNumber)}
+              question={round === 1 ? case1.question : case2.question}
+              timers={timers}
+            />
+          }
         />
       </Routes>
     </div>
