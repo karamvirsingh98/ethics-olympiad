@@ -77,11 +77,11 @@ textarea:focus {
 }
 
 .green {
-  background-color: rgba(86, 193, 140, 0.4);
+  background-color: rgba(86, 193, 140, 0.3);
 }
 
 .green:hover {
-  background-color: rgba(86, 193, 140, 0.8);
+  background-color: rgba(86, 193, 140, 0.6);
 }
 
 .green.hover {
@@ -89,27 +89,27 @@ textarea:focus {
 }
 
 .green.hover:hover {
-  background-color: rgba(86, 193, 140, 0.8);
+  background-color: rgba(86, 193, 140, 0.6);
 }
 
 .red {
-  background-color: rgba(255, 90, 95, 0.4);
+  background-color: rgba(255, 90, 95, 0.3);
 }
 
 .red:hover {
-  background-color: rgba(255, 90, 95, 0.8);
+  background-color: rgba(255, 90, 95, 0.6);
 }
 
 .grey {
-  background-color: rgba(112, 108, 87, 0.4);
+  background-color: rgba(112, 108, 87, 0.3);
 }
 
 .grey-flat {
-  background-color: rgba(112, 108, 97, 0.4);
+  background-color: rgba(112, 108, 97, 0.3);
 }
 
 .grey:hover {
-  background-color: rgba(112, 108, 87, 0.8);
+  background-color: rgba(112, 108, 87, 0.6);
 }
 
 .blue {
@@ -125,13 +125,13 @@ textarea:focus {
 }
 
 .blue.hover:hover {
-  background-color: rgba(126, 189, 194, 0.8);
+  background-color: rgba(126, 189, 194, 0.6);
 }
 
 .orange {
-  background-color: rgba(250, 131, 33, 0.4);
+  background-color: rgba(250, 131, 33, 0.3);
 }
 
 .orange:hover {
-  background-color: rgba(250, 131, 33, 0.8);
+  background-color: rgba(250, 131, 33, 0.6);
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IfElse from "../../util/IfElse";
 
 export default function Flip() {
   const [flipping, set] = useState(false);
@@ -20,13 +19,13 @@ export default function Flip() {
       style={{
         placeSelf: "center",
         display: "grid",
-        gap: "2rem",
         placeItems: "center",
-        gridTemplateRows: "1fr 1fr",
+        gap: "2rem",
+        gridTemplateRows: "1fr auto",
       }}
     >
       <div
-        style={{ width: "fit-content", height: "fit-content" }}
+        style={{ width: "10rem", height: "10rem" }}
         className={flipping ? "rise" : undefined}
       >
         <div
@@ -36,16 +35,33 @@ export default function Flip() {
             transition: "transform 2s ease",
           }}
         >
-          {res}
+          <div className="coin-inner">
+            {res}
+          </div>
         </div>
       </div>
-      <button
-        className="green"
-        onClick={() => (res ? navigate("../round1") : set(true))}
-        style={{ fontSize: "1.5rem", padding: "0.25rem 1rem" }}
-      >
-        {res ? "Start Heat" : "Flip Coin"}
-      </button>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        {res && (
+          <button
+            className="orange"
+            onClick={() => setRes(undefined)}
+            style={{
+              fontSize: "0.8rem",
+              padding: "0.25rem 1rem",
+              placeSelf: "end",
+            }}
+          >
+            Reset
+          </button>
+        )}
+        <button
+          className="green"
+          onClick={() => (res ? navigate("../round1") : set(true))}
+          style={{ fontSize: "1.5rem", padding: "0.25rem 1rem" }}
+        >
+          {res ? "Start Heat" : "Flip The Coin! "}
+        </button>
+      </div>
     </div>
   );
 }

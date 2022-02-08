@@ -10,6 +10,8 @@ export default function Topbar({ event }: { event: Event }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        borderBottom: "solid 1px",
+        paddingBottom: "2rem"
       }}
     >
       <div style={{ fontSize: "2rem" }}> {event.title} </div>
