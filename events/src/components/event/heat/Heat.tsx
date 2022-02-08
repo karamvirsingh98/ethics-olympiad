@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Cases, Event } from "../../../state/types";
 import { useHeatNumber } from "../../../util/hooks";
 import Topbar from "../Topbar";
-import Flip from "./Flip";
+import Flip from "../util/Flip";
 import Round from "./Round";
 
 export default function Heat({ event, cases }: { event: Event; cases: Cases }) {

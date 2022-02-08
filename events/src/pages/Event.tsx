@@ -1,6 +1,5 @@
 import { Route, Routes, useParams } from "react-router-dom";
 import useUnlock, { useFullEvent } from "../state/hooks/useUnlock";
-import { Olympaid } from "../state/types";
 import UnlockManager from "../components/util/UnlockManager";
 import EventSplash from "../components/event/EventSplash";
 import Heat from "../components/event/heat/Heat";

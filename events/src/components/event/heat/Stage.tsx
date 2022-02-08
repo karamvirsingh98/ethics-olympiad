@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import RoundTracker from "./RoundTracker";
+import RoundTracker from "../util/RoundTracker";
 
 export default function Stage({ roundNumber }: { roundNumber: number }) {
   const { stageNumber } = useParams();
