@@ -7,17 +7,28 @@ export default function useTimer(duration: number) {
   const ref: any = useRef(null);
 
   useEffect(() => {
-    console.log("s")
-    clearInterval(ref.current)
+    clearInterval(ref.current);
     setTime(duration * 60);
     setActive(false);
     setPaused(false);
-  }, [duration])
+  }, [duration]);
+
+  useEffect(() => {
+    const listner = (e: KeyboardEvent) => {
+      if (e.key === " ") {
+        if (paused) resume()
+        else if (active) pause()
+        else if (!active && !paused) start()
+      }
+    };
+    window.addEventListener("keydown", listner);
+    return () => window.removeEventListener("keydown", listner);
+  }, [active, paused, time]);
 
   const start = () => {
     setActive(true);
     ref.current = setInterval(() => {
-      if (time > 0) setTime(timer => timer - 1);
+      if (time > 0) setTime((timer) => timer - 1);
     }, 1000);
   };
 

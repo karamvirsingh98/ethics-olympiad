@@ -66,6 +66,16 @@ textarea:focus {
   outline: none;
 }
 
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+}
+
 .dark {
   background-color: #262726;
   color: #f8f4e3;

@@ -5,14 +5,7 @@ export default function Timer({ duration }: { duration: number }) {
     useTimer(duration);
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gap: "2rem",
-        width: "100%",
-        placeItems: "center end",
-      }}
-    >
+    <div className="timer-container">
       <div style={{ fontSize: "15vw", fontWeight: 500 }}> {time()} </div>
       <div style={{ display: "flex", gap: "2rem" }}>
         {!active && <TimerButton text="Start" onClick={start} color="blue" />}

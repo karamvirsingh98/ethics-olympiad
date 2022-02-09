@@ -1,11 +1,14 @@
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Case } from "../../../state/types";
+import { generateEmbed } from "../../../util/helpers";
+import IfElse from "../../util/IfElse";
 
 export default function CaseOverview({ _case }: { _case: Case }) {
   const navigate = useNavigate();
 
   return (
-    <div style={{ display: "grid" }}>
+    <div className="case-overview">
       <div className="case-title">
         {_case.title}
         <button
@@ -16,10 +19,36 @@ export default function CaseOverview({ _case }: { _case: Case }) {
           Start Round
         </button>
       </div>
-      <div style={{ width: "100%", overflow: "scroll" }}>
-        <div style={{ whiteSpace: "pre-line", fontSize: "1.25rem" }}>
-          {_case.bodyText}
-        </div>
+      <IfElse
+        showIf={_case.isVideo}
+        showTrue={<Video url={_case.videoURL!} />}
+        showFalse={<Text text={_case.bodyText!} />}
+      />
+    </div>
+  );
+}
+
+function Video({ url }: { url: string }) {
+  const [loading, set] = useState(true)
+
+  return (
+    <Fragment>
+      {loading && <div className="spinner" />}
+      <iframe
+        frameBorder="0"
+        src={generateEmbed(url)}
+        style={{ width: "100%", height: "100%" }}
+        onLoad={() => set(false)}
+      />
+    </Fragment>
+  );
+}
+
+function Text({ text }: { text: string}) {
+  return (
+    <div style={{ width: "100%", overflowY: "scroll" }}>
+      <div className="text-case">
+        {text}
       </div>
     </div>
   );

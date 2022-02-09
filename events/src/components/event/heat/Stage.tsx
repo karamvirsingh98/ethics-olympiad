@@ -23,7 +23,7 @@ export default function Stage({
     <div className="stage">
       {roundNumber && <RoundTracker stage={stage} />}
       <div className="stage-content">
-        <div style={{ fontSize: "3.5rem"}}>{question}</div>
+        <div style={{ fontSize: "3rem"}}>{question}</div>
         <Timer duration={timers[stage - 1]} />
       </div>
     </div>

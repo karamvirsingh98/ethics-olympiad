@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import useStage from "../../../state/hooks/useStage";
 import IfElse from "../../util/IfElse";
 
 const arr = [
@@ -12,7 +12,7 @@ const arr = [
 ];
 
 export default function RoundTracker({ stage }: { stage: number }) {
-  const navigate = useNavigate();
+  const { navigate, next, back } = useStage(stage)
 
   return (
     <div
@@ -22,13 +22,10 @@ export default function RoundTracker({ stage }: { stage: number }) {
         placeSelf: "center",
         placeItems: "center",
         width: "75%",
+        gap: "2rem"
       }}
     >
-      <button
-        className="blue"
-        onClick={() => navigate(`../stage${stage === 1 ? 1 : stage - 1}`)}
-        style={{ placeSelf: "end" }}
-      >
+      <button className="blue" onClick={back} style={{ placeSelf: "end" }}>
         Back
       </button>
       <div
@@ -61,7 +58,7 @@ export default function RoundTracker({ stage }: { stage: number }) {
         showFalse={
           <button
             className="blue"
-            onClick={() => navigate(`../stage${stage + 1}`)}
+            onClick={next}
             style={{ placeSelf: "end start" }}
           >
             Next
@@ -71,9 +68,6 @@ export default function RoundTracker({ stage }: { stage: number }) {
     </div>
   );
 }
-
-
-
 
 function Circle({
   text,
