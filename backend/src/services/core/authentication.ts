@@ -1,6 +1,6 @@
 import { LocalStrategy } from "@feathersjs/authentication-local/lib";
 import { AuthenticationService, JWTStrategy } from "@feathersjs/authentication/lib";
-import { Application } from "@feathersjs/express";
+import { Application } from "@feathersjs/feathers";
 
 export default function (app: Application): void {
   const auth = new AuthenticationService(app);

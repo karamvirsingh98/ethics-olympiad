@@ -1,4 +1,4 @@
-import { Application } from "@feathersjs/express";
+import { Application } from "@feathersjs/feathers";
 import crypto from "crypto";
 import { Invite } from "../../types";
 

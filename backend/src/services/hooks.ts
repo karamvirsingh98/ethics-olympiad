@@ -1,7 +1,7 @@
 import { authenticate } from "@feathersjs/authentication/lib/hooks";
 import hashPassword from "@feathersjs/authentication-local/lib/hooks/hash-password";
 import protect from "@feathersjs/authentication-local/lib/hooks/protect";
-import { Application } from "@feathersjs/express";
+import { Application } from "@feathersjs/feathers";
 import { HookContext } from "@feathersjs/feathers";
 import { BadRequest, Forbidden } from "@feathersjs/errors";
 import { Event } from "../types";

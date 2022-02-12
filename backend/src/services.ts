@@ -1,4 +1,4 @@
-import { Application } from "@feathersjs/express";
+import { Application } from "@feathersjs/feathers";
 import { Service } from "feathers-mongoose";
 import { CaseModel, EventModel, UserModel } from "./services/core/models";
 import { InviteService } from "./services/custom/invite";

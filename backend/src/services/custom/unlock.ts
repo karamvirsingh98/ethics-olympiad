@@ -1,5 +1,5 @@
-import { Application } from "@feathersjs/express";
-import { Case, Event } from "../../types";
+import { Application } from "@feathersjs/feathers";
+import { Event } from "../../types";
 
 export class UnlockService {
   app: Application;
