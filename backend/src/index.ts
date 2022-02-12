@@ -5,12 +5,13 @@ import mongoose from "mongoose";
 import { coreServices, customServices } from "./services";
 import hooks from "./services/hooks";
 import authentication from "./services/core/authentication";
+import client from "./client";
 
 const app = feathers().configure(configuration());
 app.configure(
   primus({ transformer: "websockets" }, (primus: any) => {
     primus.library();
-    primus.save(__dirname + "/client.js");
+    primus.save(__dirname + "/primus.js");
   })
 );
 
@@ -22,5 +23,6 @@ app.configure(customServices);
 app.configure(hooks);
 
 app.listen(3030).on("listening", () => {
-  console.log("server on 3030");
+  console.log("server on port 3031");
+  client();
 });
