@@ -1,5 +1,5 @@
 import feathers from "@feathersjs/feathers";
-import rest from "@feathersjs/rest-client";
+import primus from "@feathersjs/primus-client";
 import auth from "@feathersjs/authentication-client";
 import { Collection } from "../state/types";
 
@@ -20,9 +20,11 @@ export function stringIn(str: string, ar: any[]) {
 }
 
 export function setupClient(baseURL: string) {
+  const { Primus } = window as any;
+  const socket = new Primus("http://10.0.0.101:3030");
+
   const client = feathers();
-  const restClient = rest(baseURL);
-  client.configure(restClient.fetch(window.fetch));
+  client.configure(primus(socket));
   client.configure(auth());
-  return client
+  return client;
 }
