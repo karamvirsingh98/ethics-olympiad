@@ -1128,6 +1128,13 @@
     events "^3.3.0"
     uberproto "^2.0.6"
 
+"@feathersjs/primus-client@^4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@feathersjs/primus-client/-/primus-client-4.5.12.tgz#b832ce4d57c015b37921455107bf192397a6d945"
+  integrity sha512-65QGsD/nrNruSCW2F8+xpHpGFxNxjzR4LyNzQgB7tuLbgJUsc2pT/6iqiBFZPtXlgZm0b6HB2o9v55nKgWWMQQ==
+  dependencies:
+    "@feathersjs/transport-commons" "^4.5.12"
+
 "@feathersjs/rest-client@^4.5.12":
   version "4.5.12"
   resolved "https://registry.yarnpkg.com/@feathersjs/rest-client/-/rest-client-4.5.12.tgz#402e6eea0c752166de21611dd8e9a44dcb783317"
