@@ -29,3 +29,4 @@ export default function Heat({ event, cases }: { event: Event; cases: Cases }) {
     </div>
   );
 }
+  

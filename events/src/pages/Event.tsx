@@ -15,9 +15,7 @@ export default function EventComponent() {
   const { olympiad, set } = useFullEvent(eventID!);
   const { user, login, logout } = useAuth();
 
-  useEffect(() => {
-    client.service("api/channel").create({ eventID });
-  }, []);
+  useEffect(() => { client.service("api/channel").create({ eventID }) }, []);
 
   return (
     <UnlockManager
