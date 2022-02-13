@@ -14,6 +14,7 @@ export default function Unlock({
 }) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const [admin, set] = useState(false)
 
   const doUnlock = async () => {
     try {
@@ -34,33 +35,54 @@ export default function Unlock({
       <div
         style={{ fontSize: "2rem", borderBottom: "solid 1px", width: "100%" }}
       >
-        Unlock Event
+        Login as Judge
       </div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr auto",
-          width: "100%",
-          gap: "1rem",
-        }}
-      >
-        <Input
-          type={show ? undefined : "password"}
-          placeholder="password"
-          value={password}
-          onChange={setPassword}
-          onConfirm={doUnlock}
-        />
-        <button
-          className={show ? "blue" : "orange"}
-          style={{ fontSize: "0.8rem", placeSelf: "end", width: "3rem" }}
-          onClick={() => setShow((s) => !s)}
-        >
-          {show ? "Hide" : "Show"}
+      
+      <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+        <button className="green" onClick={doUnlock}>
+          Login
+        </button>
+        <button className="blue" onClick={doUnlock} style={{ fontSize: '0.8rem' }}>
+          Login as Admin
         </button>
       </div>
-      <button className="green" style={{ width: "100%" }} onClick={doUnlock}>
-        Login
+    </div>
+  );
+}
+
+function AdminLogin() {
+  return (
+    <div>
+
+    </div>
+  )
+}
+
+function JudgeLogin() {
+  const [show, setShow] = useState(false)
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto",
+        width: "100%",
+        gap: "1rem",
+      }}
+    >
+      <Input
+        type={show ? undefined : "password"}
+        placeholder="password"
+        value={password}
+        onChange={setPassword}
+        // onConfirm={doUnlock}
+      />
+      <button
+        className={show ? "blue" : "orange"}
+        style={{ fontSize: "0.8rem", placeSelf: "end", width: "3rem" }}
+        onClick={() => setShow((s) => !s)}
+      >
+        {show ? "Hide" : "Show"}
       </button>
     </div>
   );

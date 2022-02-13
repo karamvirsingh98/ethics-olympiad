@@ -4,11 +4,17 @@ import UnlockManager from "../components/util/UnlockManager";
 import EventSplash from "../components/event/EventSplash";
 import Heat from "../components/event/heat/Heat";
 import Unlock from "../components/event/Unlock";
+import { useEffect } from "react";
+import { client } from "..";
 
 export default function EventComponent() {
   const { eventID } = useParams();
   const { unlocked, unlock } = useUnlock(eventID!);
   const { olympiad, set } = useFullEvent(eventID!);
+
+  useEffect(() => {
+    client.service('api/channel').create({ eventID })
+  }, [])
 
   return (
     <UnlockManager

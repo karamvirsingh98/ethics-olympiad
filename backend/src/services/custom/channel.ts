@@ -11,17 +11,18 @@ export class ChannelService {
     { eventID }: { eventID: string },
     { connection }: { connection: any }
   ) {
-    if (connection) {
-      this.app.channel(`events/${eventID}`).join(connection);
+    const channel = this.app.channel(`events/${eventID}`);
+    if (connection && !channel.connections.includes(connection)) {
+      channel.join(connection);
     }
-    return `joined channel ${eventID}`
+    return `joined channel ${eventID}`;
   }
 
   async remove(eventID: string, { connection }: { connection: any }) {
-     if (connection) {
-       this.app.channel(`events/${eventID}`).leave(connection);
-     }
+    if (connection) {
+      this.app.channel(`events/${eventID}`).leave(connection);
+    }
 
-     return `left channel ${eventID}`;
+    return `left channel ${eventID}`;
   }
 }
