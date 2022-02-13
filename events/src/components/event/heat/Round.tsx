@@ -4,10 +4,12 @@ import CaseOverview from "./CaseOverview";
 import Stage from "./Stage";
 
 export default function Round({
+  heatNumber,
   case1,
   case2,
   timers,
 }: {
+  heatNumber: number;
   case1: Case;
   case2: Case;
   timers: number[];

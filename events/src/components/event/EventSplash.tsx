@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { Event } from "../../state/types";
+import { Event, User } from "../../state/types";
 
-export default function EventSplash({ event }: { event: Event }) {
+export default function EventSplash({ event, user }: { event: Event, user: User | undefined | false }) {
   const navigate = useNavigate();
 
   return (
@@ -15,13 +15,22 @@ export default function EventSplash({ event }: { event: Event }) {
       }}
     >
       {event.title}
-      <button
-        className="green"
-        style={{ fontSize: "2rem", padding: "0.5rem 2rem" }}
-        onClick={() => navigate("./heat1")}
-      >
-        Begin!
-      </button>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <button
+          className="green"
+          style={{ fontSize: "2rem", padding: "0.5rem 2rem" }}
+          onClick={() => navigate("./heat1")}
+        >
+          Begin!
+        </button>
+        <button
+          className="green"
+          style={{ fontSize: "2rem", padding: "0.5rem 2rem" }}
+          onClick={() => navigate("./admin")}
+        >
+          Go to Admin Page
+        </button>
+      </div>
     </div>
   );
 }

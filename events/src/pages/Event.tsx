@@ -13,7 +13,7 @@ export default function EventComponent() {
   const { eventID } = useParams();
   const { unlocked, unlock } = useUnlock(eventID!);
   const { olympiad, set } = useFullEvent(eventID!);
-  const { user, login } = useAuth();
+  const { user, login, logout } = useAuth();
 
   useEffect(() => {
     client.service("api/channel").create({ eventID });
@@ -44,7 +44,7 @@ function OlympiadRoutes({
 }) {
   return (
     <Routes>
-      <Route path="/" element={<EventSplash event={olympiad.event} />} />
+      <Route path="/" element={<EventSplash event={olympiad.event} user={user} />} />
       <Route
         path="/heat:heatNumber/*"
         element={<Heat event={olympiad.event} cases={olympiad.cases} />}
