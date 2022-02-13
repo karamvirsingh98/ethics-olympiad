@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { client } from "../..";
 import { User } from "../types";
 
 export default function useAuth() {
   const [user, setUser] = useState<User | false>();
-  const navigate = useNavigate();
 
   useEffect(() => {
     client
@@ -32,21 +30,5 @@ export default function useAuth() {
     setUser(false);
   };
 
-  const createAccount = async (
-    credentials: { name: string; email: string; password: string },
-    inviteKey: string
-  ) => {
-    try {
-      const user = await client
-        .service("api/users")
-        .create({ ...credentials, inviteKey });
-      setUser(user);
-      navigate("/")
-    } catch (err: any) {
-      setUser(false);
-      window.alert(err.message);
-    }
-  };
-
-  return { user, login, logout, createAccount };
+  return { user, login, logout };
 }
