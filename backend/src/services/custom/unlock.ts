@@ -8,7 +8,7 @@ export class UnlockService {
     this.app = app;
   }
 
-  async create(data: { id: string; password: string }, { user }:{ user: any } ) {
+  async create(data: { id: string; password?: string }, { user }:{ user: any } ) {
     const { _id, title, heats, timers, teams, password }: Event = await this.app
       .service("api/events")
       .get({ _id: data.id });

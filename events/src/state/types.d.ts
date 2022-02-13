@@ -5,7 +5,7 @@ export interface User {
   admin: boolean;
 }
 
-export interface Olympaid {
+export interface Olympiad {
   event: Event;
   cases: Cases;
 }

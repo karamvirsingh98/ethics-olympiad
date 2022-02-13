@@ -7,6 +7,7 @@ import Unlock from "../components/unlock/Unlock";
 import { useEffect } from "react";
 import { client } from "..";
 import useAuth from "../state/hooks/useAuth";
+import { Olympiad, User } from "../state/types";
 
 export default function EventComponent() {
   const { eventID } = useParams();
@@ -27,22 +28,29 @@ export default function EventComponent() {
           unlock={unlock}
           onUnlock={set}
           login={login}
-          onLogin={() => {}}
         />
       }
-      isUnlocked={
-        olympiad && (
-          <Routes>
-            <Route path="/" element={<EventSplash event={olympiad.event} />} />
-            <Route
-              path="/heat:heatNumber/*"
-              element={<Heat event={olympiad.event} cases={olympiad.cases} />}
-            />
-            <Route path="/scores" />
-            {user && <Route path="/admin" element={"Hi"} />}
-          </Routes>
-        )
-      }
+      isUnlocked={olympiad && <OlympiadRoutes user={user} olympiad={olympiad}  />}
     />
+  );
+}
+
+function OlympiadRoutes({
+  user,
+  olympiad,
+}: {
+  user: User | undefined | false;
+  olympiad: Olympiad;
+}) {
+  return (
+    <Routes>
+      <Route path="/" element={<EventSplash event={olympiad.event} />} />
+      <Route
+        path="/heat:heatNumber/*"
+        element={<Heat event={olympiad.event} cases={olympiad.cases} />}
+      />
+      <Route path="/scores" />
+      {user && <Route path="/admin" element={"Hi"} />}
+    </Routes>
   );
 }

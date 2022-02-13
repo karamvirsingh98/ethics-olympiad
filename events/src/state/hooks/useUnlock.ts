@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { client } from "../..";
-import { Olympaid } from "../types";
+import { Olympiad } from "../types";
 
 export default function useUnlock(eventID: string) {
   return {
@@ -11,7 +11,7 @@ export default function useUnlock(eventID: string) {
 };
 
 export function useFullEvent(eventID: string) {
-  const [olympiad, set] = useState<Olympaid>();
+  const [olympiad, set] = useState<Olympiad>();
 
   useEffect(() => {
     if (!olympiad) {

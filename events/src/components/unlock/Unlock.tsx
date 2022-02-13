@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { client } from "../..";
-import { Olympaid } from "../../state/types";
+import { Olympiad } from "../../state/types";
 import IfElse from "../util/IfElse";
 import AdminLogin from "./AdminLogin";
 import JudgeLogin from "./JudgeLogin";
@@ -10,13 +10,11 @@ export default function Unlock({
   unlock,
   onUnlock,
   login,
-  onLogin,
 }: {
   eventID: string;
   unlock: (eventID: string, password: string) => void;
-  onUnlock: (olympiad: Olympaid) => void;
-  login: (credentials: { email: string; password: string }) => void;
-  onLogin: () => void;
+  onUnlock: (olympiad: Olympiad) => void;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
 }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,8 +24,8 @@ export default function Unlock({
     try {
       await client
         .service("api/unlock")
-        .create({ id: eventID, password })
-        .then((olympiad: Olympaid) => {
+        .create(admin ? { id: eventID, password } : { id: eventID })
+        .then((olympiad: Olympiad) => {
           unlock(eventID, password);
           onUnlock(olympiad);
         });
@@ -64,9 +62,11 @@ export default function Unlock({
       >
         <button
           className="green"
-          onClick={() => {
-            if (admin) login({ email, password });
-            else doUnlock();
+          onClick={async () => {
+            if (admin) {
+              await login({ email, password });
+              doUnlock();
+            } else doUnlock();
           }}
         >
           Login
@@ -76,7 +76,7 @@ export default function Unlock({
           onClick={() => setAdmin(!admin)}
           style={{ fontSize: "0.8rem" }}
         >
-          Login as {admin ? 'Judge' : 'Admin'}
+          Login as {admin ? "Judge" : "Admin"}
         </button>
       </div>
     </div>
