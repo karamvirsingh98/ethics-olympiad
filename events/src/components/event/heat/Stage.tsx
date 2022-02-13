@@ -17,7 +17,7 @@ export default function Stage({
   
   useEffect(() => {
     if (stage !== Number(stageNumber)) set(Number(stageNumber))
-  }, [stageNumber])
+  }, [stage, stageNumber])
 
   return (
     <div className="stage">

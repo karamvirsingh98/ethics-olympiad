@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
-import { Event, Olympaid } from "../../state/types";
+import { client } from "../..";
+import { Olympaid } from "../../state/types";
 import Input from "../util/Input";
 
 export default function Unlock({
@@ -17,16 +17,15 @@ export default function Unlock({
 
   const doUnlock = async () => {
     try {
-      await axios({
-      method: "post",
-      url: "http://localhost:3030/api/unlock",
-      data: { id: eventID, password },
-      }).then(({ data }) => {
-        unlock(eventID,  password)
-        onUnlock(data);
-      });
+      await client
+        .service("api/unlock")
+        .create({ id: eventID, password })
+        .then((olympiad: Olympaid) => {
+          unlock(eventID, password);
+          onUnlock(olympiad);
+        });
     } catch {
-      window.alert('Invalid Password.')
+      window.alert("Invalid Password.");
     }
   };
 

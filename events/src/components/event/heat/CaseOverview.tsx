@@ -29,27 +29,37 @@ export default function CaseOverview({ _case }: { _case: Case }) {
 }
 
 function Video({ url }: { url: string }) {
-  const [loading, set] = useState(true)
+  const [loading, set] = useState(true);
 
   return (
     <Fragment>
       {loading && <div className="spinner" />}
-      <iframe
-        frameBorder="0"
-        src={generateEmbed(url)}
-        style={{ width: "100%", height: "100%" }}
-        onLoad={() => set(false)}
+      <IfElse
+        showIf={generateEmbed(url) ? true : false}
+        showTrue={
+          <iframe
+            frameBorder="0"
+            src={generateEmbed(url)}
+            style={{ width: "100%", height: "100%" }}
+            onLoad={() => set(false)}
+            title="Case Video"
+          />
+        }
+        showFalse={
+          <div style={{ placeSelf: "center", fontSize: "2rem" }}>
+            {" "}
+            Error Loading Video...{" "}
+          </div>
+        }
       />
     </Fragment>
   );
 }
 
-function Text({ text }: { text: string}) {
+function Text({ text }: { text: string }) {
   return (
     <div style={{ width: "100%", overflowY: "scroll" }}>
-      <div className="text-case">
-        {text}
-      </div>
+      <div className="text-case">{text}</div>
     </div>
   );
 }
