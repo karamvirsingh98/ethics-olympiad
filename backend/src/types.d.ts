@@ -43,7 +43,7 @@ export interface Case {
 }
 
 export interface ActiveEvents {
-  [eventID: string]: ActiveEvent
+  [eventID: string]: ActiveEvent;
 }
 
 export interface ActiveEvent {
@@ -53,9 +53,14 @@ export interface ActiveEvent {
 }
 
 export interface EventStatus {
-  [judgeName: string]: number
+  [judgeName: string]: Status;
 }
 
+export interface Status {
+    heatNumber: number;
+    roundNumber: number;
+    stageNumber: number;
+  }
 export interface ScoreStatus {
-  [judgeName: string]: boolean[]
+  [judgeName: string]: boolean[];
 }

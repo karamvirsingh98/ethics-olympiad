@@ -1,5 +1,5 @@
 import { Application } from "@feathersjs/feathers";
-import { ActiveEvents } from "../../types";
+import { ActiveEvents, Status } from "../../types";
 
 export class ActiveEventService {
   app: Application;
@@ -10,7 +10,7 @@ export class ActiveEventService {
   }
 
   async get(eventID: string) {
-    return this.state[eventID]
+    return this.state[eventID];
   }
 
   //sets or resets the event
@@ -22,11 +22,11 @@ export class ActiveEventService {
   //uses put requests to update the stage for each judge
   async update(
     eventID: string,
-    { judgeName, stage }: { judgeName: string; stage: number }
+    { judgeName, status }: { judgeName: string; status: Status }
   ) {
     this.state[eventID] = {
       ...this.state[eventID],
-      status: { ...this.state[eventID].status, [judgeName]: stage },
+      status: { ...this.state[eventID].status, [judgeName]: status },
     };
     return this.state[eventID];
   }
@@ -40,6 +40,6 @@ export class ActiveEventService {
       ...this.state[eventID],
       scores: { ...this.state[eventID].scores, [judgeName]: scored },
     };
-    return this.state[eventID]
+    return this.state[eventID];
   }
 }

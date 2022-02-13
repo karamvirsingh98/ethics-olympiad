@@ -22,9 +22,9 @@ app.configure(coreServices);
 app.configure(customServices);
 app.configure(hooks);
 
-app.listen(3030).on("listening", () => {
+app.listen(3030).on("listening", async () => {
   console.log("websocket server on port 3030");
-  client();
+  await client();
   console.log("======================");
   console.log("====Setup Complete====");
   console.log("======================");

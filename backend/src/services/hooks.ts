@@ -10,7 +10,7 @@ export default function (app: Application) {
   //core service hooks
   app.service("api/users").hooks(USER_HOOKS);
   app.service("api/events").hooks(EVENT_HOOKS);
-  app.service("api/cases").hooks(CASE_HOOKS);
+  app.service("api/cases").hooks({ before: { all: [authenticate("jwt")] } });
 
   //custom service hooks
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
@@ -18,7 +18,7 @@ export default function (app: Application) {
 
 const protectEvents = () => {
   return async (context: HookContext) => {
-    if (context.params.headers && !context.params.headers.authorization)
+    if (!context.params.user)
       context.result = context.result.map(({ _id, title }: Event) => ({
         _id,
         title,
@@ -67,6 +67,3 @@ const EVENT_HOOKS = {
   },
 };
 
-const CASE_HOOKS = {
-  before: { all: [authenticate("jwt")] },
-};

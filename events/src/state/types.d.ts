@@ -1,6 +1,13 @@
+export interface User {
+  _id: string;
+  name: string;
+  email: string;
+  admin: boolean;
+}
+
 export interface Olympaid {
-  event: Event,
-  cases: Cases
+  event: Event;
+  cases: Cases;
 }
 
 export interface BaseEvent {

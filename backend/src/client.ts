@@ -1,7 +1,7 @@
 import fs from "fs";
 import http from "http";
 
-export default () =>
+export default async () =>
   http
     .createServer(function (req, res) {
       fs.readFile(__dirname + "/primus.js", function (err, data) {
