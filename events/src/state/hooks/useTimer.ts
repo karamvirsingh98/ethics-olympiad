@@ -16,9 +16,9 @@ export default function useTimer(duration: number) {
   useEffect(() => {
     const listner = (e: KeyboardEvent) => {
       if (e.key === " ") {
-        if (paused) resume()
-        else if (active) pause()
-        else if (!active && !paused) start()
+        if (paused) resume();
+        else if (active) pause();
+        else if (!active && !paused) start();
       }
     };
     window.addEventListener("keydown", listner);
@@ -40,7 +40,7 @@ export default function useTimer(duration: number) {
   const resume = () => {
     setPaused(false);
     ref.current = setInterval(() => {
-      if (ref.current > 0) setTime((timer) => timer - 1);
+      if (ref.current) setTime((timer) => timer - 1);
     }, 1000);
   };
 
