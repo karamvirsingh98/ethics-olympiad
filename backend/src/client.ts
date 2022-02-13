@@ -15,4 +15,4 @@ export default () =>
       });
     })
     .listen(3031)
-    .on("listening", () => console.log('client on port 3031'));
+    .on("listening", () => console.log('client hosted on port 3031'));

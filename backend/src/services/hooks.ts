@@ -7,11 +7,12 @@ import { BadRequest, Forbidden } from "@feathersjs/errors";
 import { Event } from "../types";
 
 export default function (app: Application) {
+  //core service hooks
   app.service("api/users").hooks(USER_HOOKS);
   app.service("api/events").hooks(EVENT_HOOKS);
   app.service("api/cases").hooks(CASE_HOOKS);
 
-  //custom
+  //custom service hooks
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
 }
 

@@ -1,7 +1,7 @@
 import { Application } from "@feathersjs/feathers";
 import { ActiveEvents } from "../../types";
 
-export class Current {
+export class ActiveEventService {
   app: Application;
   state: ActiveEvents = {};
 
@@ -13,9 +13,10 @@ export class Current {
     return this.state[eventID]
   }
 
+  //sets or resets the event
   async create({ eventID }: { eventID: string }) {
     const event = await this.app.service("api/events").get(eventID);
-    this.state[eventID] = { status: {}, scores: {} };
+    this.state[eventID] = { eventID, status: {}, scores: {} };
   }
 
   //uses put requests to update the stage for each judge

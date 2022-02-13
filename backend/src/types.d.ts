@@ -47,6 +47,7 @@ export interface ActiveEvents {
 }
 
 export interface ActiveEvent {
+  eventID: string;
   status: EventStatus;
   scores: ScoreStatus;
 }

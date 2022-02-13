@@ -23,6 +23,19 @@ app.configure(customServices);
 app.configure(hooks);
 
 app.listen(3030).on("listening", () => {
-  console.log("server on port 3031");
+  console.log("websocket server on port 3030");
   client();
+  console.log("======================");
+  console.log("====Setup Complete====");
+  console.log("======================");
 });
+
+app.on("connection", (c: any) => app.channel("general").join(c));
+
+app
+  .service("api/active")
+  .publish((data: any, { params }: any) =>
+    app
+      .channel(`events/${data.eventID}`)
+      .filter((c: any) => c !== params.connection)
+  );
