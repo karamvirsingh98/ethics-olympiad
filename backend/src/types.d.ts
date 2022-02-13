@@ -41,3 +41,20 @@ export interface Case {
   videoURL?: string;
   bodyText?: string;
 }
+
+export interface ActiveEvents {
+  [eventID: string]: ActiveEvent
+}
+
+export interface ActiveEvent {
+  status: EventStatus;
+  scores: ScoreStatus;
+}
+
+export interface EventStatus {
+  [judgeName: string]: number
+}
+
+export interface ScoreStatus {
+  [judgeName: string]: boolean[]
+}
