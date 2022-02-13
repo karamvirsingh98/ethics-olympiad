@@ -9,14 +9,14 @@ import Unlock from "../event/Unlock";
 export default function EventComponent() {
   const { eventID } = useParams();
   const { unlocked, unlock } = useUnlock(eventID!);
-  const { olympiad, setOlympiad } = useFullEvent(eventID!);
+  const { olympiad, set } = useFullEvent(eventID!);
 
   return (
     <UnlockManager
       unlocked={unlocked}
       isUnlocked={olympiad && <OlympiadRoutes olympiad={olympiad} />}
       notUnlocked={
-        <Unlock eventID={eventID!} unlock={unlock} onUnlock={setOlympiad} />
+        <Unlock eventID={eventID!} unlock={unlock} onUnlock={set} />
       }
     />
   );

@@ -1,13 +1,11 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { client } from "../..";
 import { BaseEvent } from "../types";
 
 export default () => {
   const [events, set] = useState<BaseEvent[]>([]);
   useEffect(() => {
-    axios({ method: "get", url: "http://localhost:3030/api/events" }).then(
-      ({ data }) => set(data)
-    );
+    client.service("api/events").find().then(set)
   }, []);
   return events
 }

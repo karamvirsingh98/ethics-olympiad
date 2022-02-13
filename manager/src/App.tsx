@@ -4,7 +4,6 @@ import Auth from "./pages/Auth";
 import AuthRoutes from "./routes/AuthRoutes";
 import PageRoutes from "./routes/PageRoutes";
 import { User } from "./state/types";
-import { Route } from "react-router-dom";
 
 export default function App() {
   const { user, login, logout, createAccount } = useAuth();

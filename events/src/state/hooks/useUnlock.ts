@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { client } from "../..";
 import { Olympaid } from "../types";
 
 export default (eventID: string) => {
@@ -11,22 +11,18 @@ export default (eventID: string) => {
 };
 
 export function useFullEvent(eventID: string) {
-  const [olympiad, setOlympiad] = useState<Olympaid>();
+  const [olympiad, set] = useState<Olympaid>();
 
   useEffect(() => {
     if (!olympiad) {
       try {
         const password = window.localStorage.getItem(`event_${eventID}`);
-        axios({
-          method: "post",
-          url: "http://localhost:3030/api/unlock",
-          data: { id: eventID, password },
-        }).then(({ data }) => setOlympiad(data));
+        client.service('api/unlock').create({ id: eventID, password }).then(set)
       } catch {}
     }
   }, []);
 
-  return { olympiad, setOlympiad };
+  return { olympiad, set };
 }
 
 

@@ -21,8 +21,7 @@ export function stringIn(str: string, ar: any[]) {
 
 export function setupClient(baseURL: string) {
   const { Primus } = window as any;
-  const socket = new Primus("http://10.0.0.101:3030");
-
+  const socket = new Primus(baseURL);
   const client = feathers();
   client.configure(primus(socket));
   client.configure(auth());
