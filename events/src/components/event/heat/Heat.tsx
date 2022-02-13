@@ -6,8 +6,7 @@ import Flip from "../util/Flip";
 import Round from "./Round";
 
 export default function Heat({ event, cases }: { event: Event; cases: Cases }) {
-    const { heatNumber } = useParams();
-    const { case1, case2 } = event.heats[Number(heatNumber) - 1];
+  const { case1, case2 } = useHeatNumber( event.heats )
 
   return (
     <div style={{ display: "grid", gap: "2rem", gridTemplateRows: "auto 1fr", overflow: "hidden" }}>
@@ -18,7 +17,6 @@ export default function Heat({ event, cases }: { event: Event; cases: Cases }) {
           path="/round:roundNumber/*"
           element={
             <Round
-              heatNumber={Number(heatNumber)}
               case1={cases[case1]}
               case2={cases[case2]}
               timers={event.timers}

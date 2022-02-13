@@ -38,7 +38,7 @@ export default function Teams({
               borderBottom: "solid 1px",
               padding: "1rem 0rem ",
               maxHeight: "70vh",
-              overflow: "scroll",
+              overflowY: "auto",
             }}
           >
             {teams &&

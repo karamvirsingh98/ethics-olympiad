@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { client } from "..";
 import useAuth from "../state/hooks/useAuth";
 import { Olympiad, User } from "../state/types";
+import Admin from "../components/event/Admin";
 
 export default function EventComponent() {
   const { eventID } = useParams();
@@ -48,7 +49,7 @@ function OlympiadRoutes({
         element={<Heat event={olympiad.event} cases={olympiad.cases} />}
       />
       <Route path="/scores" />
-      {user && <Route path="/admin" element={"Hi"} />}
+      {user && <Route path="/admin" element={<Admin event={olympiad.event} />} />}
     </Routes>
   );
 }

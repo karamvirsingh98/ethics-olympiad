@@ -102,7 +102,7 @@
   grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
   gap: 1rem;
   height: 100%;
-  overflow: scroll;
+  overflow-y: auto;
 }
 
 .timers {

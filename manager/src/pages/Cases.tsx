@@ -33,7 +33,7 @@ export default function Cases({
         overflow: "hidden",
       }}
     >
-      <div style={{ overflow: "scroll" }}>
+      <div style={{ overflowY: "auto" }}>
         <CaseGroup
           title="Video Cases"
           cases={cases}
@@ -45,7 +45,7 @@ export default function Cases({
         />
       </div>
       <Divider vertical />
-      <div style={{ overflow: "scroll" }}>
+      <div style={{ overflowY: "auto" }}>
         <CaseGroup
           title="Text Cases"
           cases={cases}

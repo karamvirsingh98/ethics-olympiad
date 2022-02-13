@@ -26,7 +26,7 @@ export default function Heats({
       <div
         style={{
           maxHeight: "70vh",
-          overflow: "scroll",
+          overflowY: "auto",
           display: "grid",
           gap: "2rem",
         }}

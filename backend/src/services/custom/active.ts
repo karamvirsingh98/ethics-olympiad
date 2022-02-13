@@ -1,4 +1,5 @@
 import { Application } from "@feathersjs/feathers";
+import { filterOutFromObj } from "../../helpers";
 import { ActiveEvents, Status } from "../../types";
 
 export class ActiveEventService {
@@ -24,6 +25,7 @@ export class ActiveEventService {
     eventID: string,
     { judgeName, status }: { judgeName: string; status: Status }
   ) {
+    if (!this.state[eventID]) return 'event inactive'
     this.state[eventID] = {
       ...this.state[eventID],
       status: { ...this.state[eventID].status, [judgeName]: status },
@@ -36,10 +38,17 @@ export class ActiveEventService {
     eventID: string,
     { judgeName, scored }: { judgeName: string; scored: boolean[] }
   ) {
+    if (!this.state[eventID]) return "event inactive";
     this.state[eventID] = {
       ...this.state[eventID],
       scores: { ...this.state[eventID].scores, [judgeName]: scored },
     };
     return this.state[eventID];
   }
+
+  async remove(eventID: string) {
+    this.state = filterOutFromObj(this.state, [eventID])
+  }
+
 }
+

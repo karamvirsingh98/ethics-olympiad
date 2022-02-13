@@ -1,4 +1,5 @@
 import { Application } from "@feathersjs/feathers";
+import { arrToKeyedObject } from "../../helpers";
 import { Event } from "../../types";
 
 export class UnlockService {
@@ -28,8 +29,4 @@ export class UnlockService {
       };
     }
   }
-}
-
-function arrToKeyedObject<T>(arr: T[], idField = "_id"): { [key: string]: T } {
-  return Object.fromEntries(arr.map((obj: any) => [obj[idField], obj]));
 }

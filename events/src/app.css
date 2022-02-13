@@ -18,6 +18,7 @@
   gap: 2rem;
 }
 
+
 .events {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(30vw, 1fr));
@@ -33,6 +34,7 @@
   transition: box-shadow 250ms ease-in-out, background-color 250ms ease-in-out;
 }
 
+
 .base-event:hover {
   box-shadow: rgba(86, 193, 140, 0.2) 0px 7px 29px 0px;
 }
@@ -44,6 +46,14 @@
 
 .dark-icon:hover {
   opacity: 1;
+}
+
+
+
+.admin {
+  display: grid;
+  gap: 2rem;
+  grid-template-rows: auto 1fr;
 }
 
 .coin {

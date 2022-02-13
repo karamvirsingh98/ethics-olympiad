@@ -11,7 +11,7 @@ const arr = [
   "Judge Q&A",
 ];
 
-export default function RoundTracker({ stage }: { stage: number }) {
+export default function RoundTracker({ stage, showButtons }: { stage: number, showButtons?: boolean }) {
   const { navigate, next, back } = useStage(stage)
 
   return (
@@ -21,13 +21,15 @@ export default function RoundTracker({ stage }: { stage: number }) {
         gridAutoFlow: "column",
         placeSelf: "center",
         placeItems: "center",
-        width: "75%",
-        gap: "2rem"
+        maxWidth: "100%",
+        gap: "2rem",
       }}
     >
-      <button className="blue" onClick={back} style={{ placeSelf: "end" }}>
-        Back
-      </button>
+      {showButtons && (
+        <button className="blue" onClick={back} style={{ placeSelf: "end" }}>
+          Back
+        </button>
+      )}
       <div
         style={{
           display: "flex",
@@ -44,27 +46,29 @@ export default function RoundTracker({ stage }: { stage: number }) {
           />
         ))}
       </div>
-      <IfElse
-        showIf={stage === 7}
-        showTrue={
-          <button
-            className="green"
-            onClick={() => navigate("../../round2")}
-            style={{ placeSelf: "end start" }}
-          >
-            Next Round
-          </button>
-        }
-        showFalse={
-          <button
-            className="blue"
-            onClick={next}
-            style={{ placeSelf: "end start" }}
-          >
-            Next
-          </button>
-        }
-      />
+      {showButtons && (
+        <IfElse
+          showIf={stage === 7}
+          showTrue={
+            <button
+              className="green"
+              onClick={() => navigate("../../round2")}
+              style={{ placeSelf: "end start" }}
+            >
+              Next Round
+            </button>
+          }
+          showFalse={
+            <button
+              className="blue"
+              onClick={next}
+              style={{ placeSelf: "end start" }}
+            >
+              Next
+            </button>
+          }
+        />
+      )}
     </div>
   );
 }
