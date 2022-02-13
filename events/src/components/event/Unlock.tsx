@@ -14,7 +14,7 @@ export default function Unlock({
 }) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const [admin, set] = useState(false)
+  const [admin, setAdmin] = useState(false)
 
   const doUnlock = async () => {
     try {
@@ -35,14 +35,14 @@ export default function Unlock({
       <div
         style={{ fontSize: "2rem", borderBottom: "solid 1px", width: "100%" }}
       >
-        Login as Judge
+        Login as {admin ? 'Admin' : 'Judge'}
       </div>
-      
+      <JudgeLogin password={password} set={setPassword} />
       <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
         <button className="green" onClick={doUnlock}>
           Login
         </button>
-        <button className="blue" onClick={doUnlock} style={{ fontSize: '0.8rem' }}>
+        <button className="blue" onClick={() => setAdmin(!admin)} style={{ fontSize: '0.8rem' }}>
           Login as Admin
         </button>
       </div>
@@ -58,7 +58,7 @@ function AdminLogin() {
   )
 }
 
-function JudgeLogin() {
+function JudgeLogin({ password, set }: { password: string, set: (p: string) => void}) {
   const [show, setShow] = useState(false)
 
   return (
@@ -74,7 +74,7 @@ function JudgeLogin() {
         type={show ? undefined : "password"}
         placeholder="password"
         value={password}
-        onChange={setPassword}
+        onChange={set}
         // onConfirm={doUnlock}
       />
       <button
