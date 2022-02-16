@@ -1,4 +1,4 @@
-import { client } from "../..";
+import { client } from "../../main";
 import { RemoveOne, SetOne } from "../../state/hooks/useCollection";
 import { Case } from "../../state/types";
 

@@ -1,0 +1,13 @@
+{
+  "name": "@ethics-olympiad/shared",
+  "version": "1.0.0",
+  "main": "types.d.ts",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}

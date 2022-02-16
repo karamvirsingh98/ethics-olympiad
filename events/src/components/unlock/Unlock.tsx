@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { client } from "../..";
+import { client } from "../../main";
 import { Olympiad } from "../../state/types";
 import IfElse from "../util/IfElse";
 import AdminLogin from "./AdminLogin";

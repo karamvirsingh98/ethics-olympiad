@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { AppState, Case, User } from "../state/types";
 import { getDefaultCase } from "../state/defaults";
-import { client } from "..";
+import { client } from "../main";
 import CaseGroup from "../components/case/CaseGroup";
 import Divider from "../components/util/Divider";
 

@@ -1,9 +1,4 @@
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  admin: boolean;
-}
+import { Heat, Team } from "@ethics-olympiad/shared"
 
 export interface Olympiad {
   event: Event;
@@ -19,16 +14,6 @@ export interface Event extends BaseEvent {
   timers: number[];
   heats: Heat[];
   teams: Team[];
-}
-
-export interface Heat {
-  case1: string;
-  case2: string;
-}
-
-export interface Team {
-  name: string;
-  present: boolean;
 }
 
 export interface Cases {

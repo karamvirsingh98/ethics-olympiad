@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { client } from "../..";
+import { client } from "../../main";
 import { arrToKeyedObject, filterOutFromObj } from "../../util/helpers";
 import { Collection } from "../types";
 

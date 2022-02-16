@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { client } from "../..";
+import { client } from "../../main";
 
 export default function useActiveStage() {
   const { eventID, heatNumber, roundNumber, stageNumber } = useParams();

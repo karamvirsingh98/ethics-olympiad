@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { client } from "../..";
+import { client } from "../../main";
 import { User } from "../types";
 
 export default function useAuth() {

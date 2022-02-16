@@ -5,7 +5,7 @@ import EventSplash from "../components/event/EventSplash";
 import Heat from "../components/event/heat/Heat";
 import Unlock from "../components/unlock/Unlock";
 import { useEffect } from "react";
-import { client } from "..";
+import { client } from "../main";
 import useAuth from "../state/hooks/useAuth";
 import { Olympiad, User } from "../state/types";
 import Admin from "../components/event/Admin";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { client } from "../..";
+import { client } from "../../main";
 import { ActiveEvent, Event, Team } from "../../state/types";
 import IfElse from "../util/IfElse";
 import Topbar from "./Topbar";

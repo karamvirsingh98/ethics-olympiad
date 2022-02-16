@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { client } from "../../..";
 import useActiveStage from "../../../state/hooks/useActiveStage";
 import RoundTracker from "../util/RoundTracker";
 import Timer from "../util/Timer";

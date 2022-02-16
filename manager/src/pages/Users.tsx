@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { client } from "..";
+import { client } from "../main";
 import UserComponent from "../components/users/User";
 import Conditional from "../components/util/Conditional";
 import Divider from "../components/util/Divider";

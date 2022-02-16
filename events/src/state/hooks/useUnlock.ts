@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { client } from "../..";
+import { client } from "../../main";
 import { Olympiad } from "../types";
 
 export default function useUnlock(eventID: string) {

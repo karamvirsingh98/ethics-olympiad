@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { client } from "../.."
+import { client } from "../../main"
 import { useLocalStorage } from "../../util/hooks"
 import useJudgeName from "./useJudgeName"
 
