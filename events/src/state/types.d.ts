@@ -1,4 +1,4 @@
-import { Heat, Team } from "@ethics-olympiad/shared"
+import { Heat, Team } from "@ethics-olympiad/types"
 
 export interface Olympiad {
   event: Event;

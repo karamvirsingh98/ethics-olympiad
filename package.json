@@ -8,7 +8,7 @@
     "backend",
     "events",
     "manager",
-    "shared"
+    "types"
   ],
   "devDependencies": {
     "@feathersjs/feathers": "^4.5.12",

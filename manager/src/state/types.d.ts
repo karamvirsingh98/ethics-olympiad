@@ -1,5 +1,5 @@
 import { useAppState } from "./hooks/useAppState";
-import { Event, Case } from "@ethics-olympiad/shared"
+import { Event, Case } from "@ethics-olympiad/types"
 
 export type AppState = ReturnType<typeof useAppState>
 
