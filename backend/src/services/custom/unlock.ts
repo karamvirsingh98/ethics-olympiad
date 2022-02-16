@@ -1,6 +1,6 @@
 import { Application } from "@feathersjs/feathers";
 import { arrToKeyedObject } from "../../helpers";
-import { Event } from "../../types";
+import { Event } from "@ethics-olympiad/types"
 
 export class UnlockService {
   app: Application;

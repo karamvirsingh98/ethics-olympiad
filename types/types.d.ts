@@ -4,14 +4,6 @@ export interface User {
   email: string;
   admin: boolean;
 }
-
-export interface Invite {
-  name: string;
-  email: string;
-  key?: string;
-  expiry?: number;
-}
-
 export interface Event {
   _id?: string;
   password?: string;
