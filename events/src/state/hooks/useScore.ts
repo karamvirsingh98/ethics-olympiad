@@ -10,14 +10,18 @@ export function useScores() {
   const { name } = useJudgeName();
 
   useEffect(() => {
-    client.service('api/scores').find({ eventID, judgeName: name }).then(set)
-  }, [])
+    client.service("api/scores").find({ eventID, judgeName: name }).then(set);
+  }, []);
 
-  return {scores};
+  return { scores };
 }
 
-export function useScore(name: string, eventID: string, heatNumber: number) {
-  const [score, set] = useState(getDefaultFullScore(name, eventID, heatNumber));
+export function useScore() {
+  const { name } = useJudgeName();
+  const { eventID, heatNumber } = useParams();
+  const [score, set] = useState(
+    getDefaultFullScore(name, eventID!, Number(heatNumber))
+  );
 
   return {
     score,

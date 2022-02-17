@@ -50,7 +50,7 @@ function OlympiadRoutes({
         path="/heat:heatNumber/*"
         element={<Heat event={olympiad.event} cases={olympiad.cases} user={user} />}
       />
-      <Route path="/scores" element={<Scores />} />
+      <Route path="/scores/*" element={<Scores />} />
       {user && <Route path="/admin" element={<Admin event={olympiad.event} />} />}
     </Routes>
   );

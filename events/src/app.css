@@ -56,8 +56,13 @@
 
 .scores {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
   gap: 2rem;
+}
+
+.score {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .coin {
