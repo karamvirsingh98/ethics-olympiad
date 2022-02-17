@@ -1,23 +1,39 @@
-import { useState } from "react";
+import { Score } from "@ethics-olympiad/types";
+import { useEffect, useState } from "react";
+import { client } from "../../../main";
+import { getDefaultScore } from "../../../util/defaults";
+import { getScoreBounds, getTotalScore } from "../../../util/helpers";
 
 export default function Scores() {
-  const [selected, set] = useState<{ [key: string]: number }>({
-    haboda: 0,
-    skeepoda: 0,
-  });
+  const [score, set] = useState(getDefaultScore("kv"));
 
   return (
     <div className="scores">
-      <div style={{ display: "grid", gap: "1rem" }}>
-        {Object.keys(selected).map((k) => (
-          <ScoreDots
-            key={k}
-            label={k}
-            numDots={5}
-            selected={selected[k]}
-            onSelect={(s) => set({ ...selected, [k]: s })}
-          />
-        ))}
+      <div
+        style={{
+          display: "grid",
+          gap: "1rem",
+          placeSelf: "center stretch",
+          height: "fit-content",
+        }}
+      >
+        {Object.keys(score).map((k) => {
+          if (k === "judgeName" || k === "total" ) return;
+          else
+            return (
+              <ScoreDots
+                key={k}
+                label={k}
+                numDots={getScoreBounds(k as keyof Score)}
+                selected={score[k as keyof Score] as number}
+                onSelect={(s) => set({ ...score, [k]: s })}
+              />
+            );
+        })}
+
+        <div>
+          Total: {getTotalScore(score)}
+        </div>
       </div>
     </div>
   );

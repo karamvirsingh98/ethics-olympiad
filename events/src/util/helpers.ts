@@ -1,6 +1,7 @@
-import feathers from "@feathersjs/feathers"
-import primus from "@feathersjs/primus-client"
-import auth from "@feathersjs/authentication-client"
+import feathers from "@feathersjs/feathers";
+import primus from "@feathersjs/primus-client";
+import auth from "@feathersjs/authentication-client";
+import { Score } from "@ethics-olympiad/types";
 
 export function setupClient(baseURL: string) {
   const { Primus } = window as any;
@@ -30,4 +31,27 @@ export function generateEmbed(url: string) {
 
   //for any other url
   else return undefined;
-};
+}
+
+export function getScoreBounds(field: keyof Score) {
+  switch (field) {
+    case "commentary":
+      return 10;
+    case "response":
+      return 15;
+    case "judgeResponse":
+      return 15;
+    default:
+      return 5;
+  }
+}
+
+export function getTotalScore(score: Score) {
+  const keys = Object.keys(score);
+  let total = 0;
+  for (let key in keys) {
+    if (!(key === "total") && !(key === "judgeName"))
+      total += score[key as keyof Score] as number;
+  }
+  return total
+}

@@ -61,9 +61,7 @@ export interface ScoreStatus {
   [judgeName: string]: boolean[];
 }
 
-export interface Score {
-  judgeName: string;
-
+export interface TeamScore {
   //pertains to presetnation as team A
   clarity: number; // 0 - 5
   centrality: number; //0 - 5
@@ -78,6 +76,17 @@ export interface Score {
 
   //pertains to respectfulness score
   respectful: number; //0 - 5
-
-  total: number;
 }
+
+export interface Score {
+  eventID: string;
+  judgeName: string;
+  heatNumber: string;
+  teamA: string;
+  teamB: string;
+  scoreA: TeamScore;
+  scoreB: TeamScore;
+  total: number;
+  submitted?: boolean;
+}
+

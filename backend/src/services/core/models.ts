@@ -24,31 +24,37 @@ export const CaseModel = model(
   })
 );
 
+const TeamScore = {
+  judgeName: String,
+
+  //pertains to presetnation as team A
+  clarity: Number, // 0 - 5
+  centrality: Number, //0 - 5
+  thoughtfulness: Number, //0 - 5
+
+  //pertains to responses as Team A
+  response: Number, // 0 - 15
+  judgeResponse: Number, //0 - 15
+
+  //pertains to commentary as team B
+  commentary: Number, //0 - 10
+
+  //pertains to respectfulness score
+  respectful: Number, //0 - 5
+};
+
 export const ScoreModel = model(
   "olympiad-score",
   new Schema({
     eventID: String,
-    scores: {
-      type: Map,
-      of: {
-        judgeName: String,
-
-        //pertains to presetnation as team A
-        clarity: Number, // 0 - 5
-        centrality: Number, //0 - 5
-        thoughtfulness: Number, //0 - 5
-
-        //pertains to responses as Team A
-        response: Number, // 0 - 15
-        judgeResponse: Number, //0 - 15
-
-        //pertains to commentary as team B
-        commentary: Number, //0 - 10
-
-        //pertains to respectfulness score
-        respectful: Number, //0 - 5
-      },
-    },
+    judgeName: String,
+    heatNumber: Number,
+    teamA: String,
+    teamB: String,
+    scoreA: TeamScore,
+    scoreB: TeamScore,
+    total: Number,
+    submitted: Boolean
   })
 );
 
