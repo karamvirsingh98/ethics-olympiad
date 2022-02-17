@@ -7,9 +7,10 @@ import Unlock from "../components/unlock/Unlock";
 import { useEffect } from "react";
 import { client } from "../main";
 import useAuth from "../state/hooks/useAuth";
-import { Olympiad, User } from "../state/types";
+import { Olympiad } from "../state/types";
 import Admin from "../components/event/Admin";
 import Scores from "../components/event/scores/Scores";
+import { User } from "@ethics-olympiad/types";
 
 export default function EventComponent() {
   const { eventID } = useParams();
@@ -47,7 +48,7 @@ function OlympiadRoutes({
       <Route path="/" element={<EventSplash event={olympiad.event} user={user} />} />
       <Route
         path="/heat:heatNumber/*"
-        element={<Heat event={olympiad.event} cases={olympiad.cases} />}
+        element={<Heat event={olympiad.event} cases={olympiad.cases} user={user} />}
       />
       <Route path="/scores" element={<Scores />} />
       {user && <Route path="/admin" element={<Admin event={olympiad.event} />} />}

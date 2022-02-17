@@ -1,7 +1,8 @@
+import { User } from "@ethics-olympiad/types";
 import { useNavigate } from "react-router-dom";
 import { Event } from "../../state/types";
 
-export default function Topbar({ event }: { event: Event }) {
+export default function Topbar({ event, admin }: { event: Event, admin?: boolean }) {
   const navigate = useNavigate();
 
   return (
@@ -11,7 +12,7 @@ export default function Topbar({ event }: { event: Event }) {
         alignItems: "center",
         justifyContent: "space-between",
         borderBottom: "solid 1px",
-        paddingBottom: "2rem"
+        paddingBottom: "2rem",
       }}
     >
       <div style={{ fontSize: "2rem" }}> {event.title} </div>
@@ -25,10 +26,15 @@ export default function Topbar({ event }: { event: Event }) {
             Heat {i + 1}
           </button>
         ))}
-        <button className="orange" onClick={() => navigate('../scores')}>
+        <button className="orange" onClick={() => navigate("../scores")}>
           {" "}
           Scores{" "}
         </button>
+        {admin && (
+          <button className="blue" onClick={() => navigate("../admin")}>
+            Admin
+          </button>
+        )}
       </div>
     </div>
   );

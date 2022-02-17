@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { useAppState } from "../state/hooks/useAppState";
-import { User } from "../state/types";
+import { User } from "@ethics-olympiad/types";
 import Topbar from "../components/Topbar";
 import Events from "../pages/Events";
 import { Fragment } from "react";

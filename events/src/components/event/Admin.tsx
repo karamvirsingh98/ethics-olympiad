@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { client } from "../../main";
-import { ActiveEvent, Event, Team } from "../../state/types";
+import { Event } from "../../state/types";
+import { ActiveEvent, Team } from "@ethics-olympiad/types";
 import IfElse from "../util/IfElse";
 import Topbar from "./Topbar";
 import RoundTracker from "./util/RoundTracker";
 
 export default function Admin({ event }: { event: Event }) {
   const [active, set] = useState<ActiveEvent | null>();
+
+  console.log(event)
+
+  console.log('b')
 
   useEffect(() => {
     client.service("api/active").get(event._id).then(set);
@@ -18,9 +23,11 @@ export default function Admin({ event }: { event: Event }) {
     };
   }, []);
 
+  console.log(active)
+
   return (
     <div className="admin">
-      <Topbar event={event} />
+      <Topbar event={event} admin />
       <IfElse
         showIf={active ? true : false}
         showFalse={
@@ -38,7 +45,7 @@ export default function Admin({ event }: { event: Event }) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(500px, 1fr))",
+              gridTemplateColumns: "1fr 2fr",
               gap: "2rem",
             }}
           >

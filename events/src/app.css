@@ -48,12 +48,16 @@
   opacity: 1;
 }
 
-
-
 .admin {
   display: grid;
   gap: 2rem;
   grid-template-rows: auto 1fr;
+}
+
+.scores {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
 }
 
 .coin {

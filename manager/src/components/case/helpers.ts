@@ -1,6 +1,6 @@
+import { Case } from "@ethics-olympiad/types";
 import { client } from "../../main";
 import { RemoveOne, SetOne } from "../../state/hooks/useCollection";
-import { Case } from "../../state/types";
 
 export default function caseHelpers(setOne: SetOne<Case>, removeOne: RemoveOne, setEditing: (editing: boolean) => void) {
   return {

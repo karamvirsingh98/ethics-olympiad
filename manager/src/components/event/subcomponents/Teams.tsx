@@ -1,4 +1,4 @@
-import { Team } from "../../../state/types";
+import { Team } from "@ethics-olympiad/types";
 import Input from "../../util/Input";
 
 export default function Teams({

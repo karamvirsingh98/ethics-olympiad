@@ -1,7 +1,8 @@
 import { client } from "../main";
 import { getDefaultEvent } from "../state/defaults";
 import { RemoveOne, SetOne, SetOneField } from "../state/hooks/useCollection";
-import { Event, Events } from "../state/types";
+import { Events } from "../state/types";
+import { Event } from "@ethics-olympiad/types";
 
 export function eventsHelpers(
   userID: string,

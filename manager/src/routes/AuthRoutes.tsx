@@ -1,5 +1,5 @@
+import { User } from "@ethics-olympiad/types";
 import { Fragment, ReactNode } from "react";
-import { User } from "../state/types";
 
 export default function AuthRoutes({
   user,

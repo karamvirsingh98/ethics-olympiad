@@ -1,6 +1,6 @@
+import { Invite } from "@ethics-olympiad/types";
 import { Application } from "@feathersjs/feathers";
 import crypto from "crypto";
-import { Invite } from "../../types";
 
 const MONTH_IN_SECS = 2592000;
 const HOUR_IN_MS = 3600000;

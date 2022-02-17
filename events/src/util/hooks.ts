@@ -1,6 +1,6 @@
+import { Heat } from "@ethics-olympiad/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Heat } from "../state/types";
 
 export function useLocalStorage<T>(
   defaultStore: T,

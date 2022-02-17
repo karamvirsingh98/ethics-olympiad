@@ -1,4 +1,4 @@
-import { User } from "../../state/types";
+import { User } from "@ethics-olympiad/types";
 
 export default function UserComponent({ user }: { user: User }) {
   return (

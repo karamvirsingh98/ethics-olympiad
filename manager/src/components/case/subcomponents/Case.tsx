@@ -1,10 +1,10 @@
+import { Case } from "@ethics-olympiad/types";
 import { Fragment, useState } from "react";
 import {
   RemoveOne,
   SetOne,
   SetOneField,
 } from "../../../state/hooks/useCollection";
-import { Case } from "../../../state/types";
 import Conditional from "../../util/Conditional";
 import ToggleInput from "../../util/ToggleInput";
 import caseHelpers from "../helpers";

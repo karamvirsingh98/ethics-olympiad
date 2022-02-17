@@ -1,6 +1,7 @@
 import { Application } from "@feathersjs/feathers";
 import { filterOutFromObj } from "../../helpers";
-import { ActiveEvents, Status } from "../../types";
+import { ActiveEvents } from "../../types";
+import { Status } from "@ethics-olympiad/types";
 
 export class ActiveEventService {
   app: Application;

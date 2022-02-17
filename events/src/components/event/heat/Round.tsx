@@ -1,5 +1,5 @@
+import { Case } from "@ethics-olympiad/types";
 import { Route, Routes, useParams } from "react-router-dom";
-import { Case } from "../../../state/types";
 import CaseOverview from "./CaseOverview";
 import Stage from "./Stage";
 

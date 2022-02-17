@@ -5,7 +5,7 @@ import Conditional from "../components/util/Conditional";
 import Divider from "../components/util/Divider";
 import Input from "../components/util/Input";
 import useCollection from "../state/hooks/useCollection";
-import { Invite, User } from "../state/types";
+import { Invite, User } from "@ethics-olympiad/types";
 
 export default function Users({ currentUserID }: { currentUserID: string }) {
   const [users, { removeOne }] = useCollection<User>("users");

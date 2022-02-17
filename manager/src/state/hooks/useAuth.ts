@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { client } from "../../main";
-import { User } from "../types";
+import { User } from "@ethics-olympiad/types";
 
 export default function useAuth() {
   const [user, setUser] = useState<User | false>();

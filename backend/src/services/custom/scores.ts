@@ -1,5 +1,6 @@
+import { Score } from "@ethics-olympiad/types";
 import { Application } from "@feathersjs/feathers";
-import { Score } from "../../types";
+
 
 export class ScoresService {
   app: Application;

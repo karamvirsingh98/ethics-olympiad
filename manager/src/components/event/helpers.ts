@@ -1,5 +1,5 @@
 import { SetOneField } from "../../state/hooks/useCollection";
-import { Event } from "../../state/types";
+import { Event } from "@ethics-olympiad/types";
 
 export default function eventHelpers(
   event: Event,

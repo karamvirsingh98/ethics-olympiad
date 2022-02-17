@@ -1,5 +1,6 @@
+import { Case } from "@ethics-olympiad/types";
 import { RemoveOne, SetOne, SetOneField } from "../../state/hooks/useCollection";
-import { Case, Cases } from "../../state/types";
+import { Cases } from "../../state/types";
 import ArrayMap from "../util/ArrayMap";
 import CaseComponent from "./subcomponents/Case";
 

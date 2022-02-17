@@ -4,7 +4,7 @@ import protect from "@feathersjs/authentication-local/lib/hooks/protect";
 import { Application } from "@feathersjs/feathers";
 import { HookContext } from "@feathersjs/feathers";
 import { BadRequest, Forbidden } from "@feathersjs/errors";
-import { Event } from "../types";
+import { Event } from "@ethics-olympiad/types";
 
 export default function (app: Application) {
   //core service hooks

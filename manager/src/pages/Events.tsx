@@ -2,12 +2,13 @@ import { Fragment, useState } from "react";
 import EventCompnent from "../components/event/Event";
 import Items from "./page/Items";
 import PageTitle from "./page/PageTitle";
-import { AppState, User } from "../state/types";
+import { AppState } from "../state/types";
 import { useLocalStorage } from "../util/hooks";
 import TitleButtons from "../components/event/subcomponents/TitleButtons";
 import { eventsHelpers } from "./helpers";
 import Input from "../components/util/Input";
 import ToggleInput from "../components/util/ToggleInput";
+import { User } from "@ethics-olympiad/types";
 
 export default function Events({
   user,

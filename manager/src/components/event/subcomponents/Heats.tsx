@@ -1,5 +1,6 @@
+import { Heat, Event } from "@ethics-olympiad/types";
 import { SetOneField } from "../../../state/hooks/useCollection";
-import { Cases, Event, Heat } from "../../../state/types";
+import { Cases } from "../../../state/types";
 import Conditional from "../../util/Conditional";
 import CaseSelector from "./Selector";
 

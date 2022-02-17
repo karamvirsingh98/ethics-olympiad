@@ -1,4 +1,5 @@
-import { Cases, Case, Events, Event } from "../../state/types";
+import { Case, Event } from "@ethics-olympiad/types";
+import { Cases, Events } from "../../state/types";
 
 export default function Items({
   label,

@@ -1,9 +1,10 @@
 import { Fragment } from "react";
-import { AppState, Case, User } from "../state/types";
+import { AppState } from "../state/types";
 import { getDefaultCase } from "../state/defaults";
 import { client } from "../main";
 import CaseGroup from "../components/case/CaseGroup";
 import Divider from "../components/util/Divider";
+import { Case, User } from "@ethics-olympiad/types";
 
 export default function Cases({
   user,

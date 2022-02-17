@@ -1,4 +1,4 @@
-import { Case, Event, User } from "../types";
+import { Case, Event, User } from "@ethics-olympiad/types";
 import useCollection from "./useCollection";
 
 export function useAppState(user: User) {

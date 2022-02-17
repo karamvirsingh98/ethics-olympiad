@@ -1,6 +1,6 @@
+import { User } from "@ethics-olympiad/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../state/types";
 import DarkIcon from "./util/DarkIcon";
 
 export default function Topbar({

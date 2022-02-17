@@ -1,4 +1,4 @@
-import { Case, Event } from "./types";
+import { Case, Event } from "@ethics-olympiad/types";
 
 export function getDefaultEvent(userID: string): Event {
   return {

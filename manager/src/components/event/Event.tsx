@@ -1,5 +1,6 @@
+import { Event } from "@ethics-olympiad/types";
 import { SetOneField } from "../../state/hooks/useCollection";
-import { Cases, Event } from "../../state/types";
+import { Cases } from "../../state/types";
 import eventHelpers from "./helpers";
 import Heats from "./subcomponents/Heats";
 import Teams from "./subcomponents/Teams";

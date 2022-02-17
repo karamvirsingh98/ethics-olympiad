@@ -1,4 +1,4 @@
-import { Heat, Team } from "@ethics-olympiad/types"
+import { Case, Heat, Team } from "@ethics-olympiad/types"
 
 export interface Olympiad {
   event: Event;
@@ -18,34 +18,4 @@ export interface Event extends BaseEvent {
 
 export interface Cases {
   [id: string]: Case;
-}
-
-export interface Case {
-  _id?: string;
-  owner: string;
-  title: string;
-  question: string;
-  isVideo: boolean;
-  videoURL?: string;
-  bodyText?: string;
-}
-
-
-export interface ActiveEvent {
-  eventID: string;
-  status: EventStatus;
-  scores: ScoreStatus;
-}
-
-export interface EventStatus {
-  [judgeName: string]: Status;
-}
-
-export interface Status {
-  heatNumber: number;
-  roundNumber: number;
-  stageNumber: number;
-}
-export interface ScoreStatus {
-  [judgeName: string]: boolean[];
 }
