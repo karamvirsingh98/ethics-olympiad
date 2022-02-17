@@ -25,8 +25,6 @@ export const CaseModel = model(
 );
 
 const TeamScore = {
-  judgeName: String,
-
   //pertains to presetnation as team A
   clarity: Number, // 0 - 5
   centrality: Number, //0 - 5
@@ -53,7 +51,6 @@ export const ScoreModel = model(
     teamB: String,
     scoreA: TeamScore,
     scoreB: TeamScore,
-    total: Number,
     submitted: Boolean
   })
 );

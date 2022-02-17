@@ -81,12 +81,11 @@ export interface TeamScore {
 export interface Score {
   eventID: string;
   judgeName: string;
-  heatNumber: string;
+  heatNumber: number;
   teamA: string;
   teamB: string;
   scoreA: TeamScore;
   scoreB: TeamScore;
-  total: number;
   submitted?: boolean;
 }
 

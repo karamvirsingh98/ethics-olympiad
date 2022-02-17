@@ -1,8 +1,23 @@
-import { Score } from "@ethics-olympiad/types";
+import { Score, TeamScore } from "@ethics-olympiad/types";
 
-export function getDefaultScore(judgeName: string): Score {
+export function getDefaultFullScore(
+  judgeName: string,
+  eventID: string,
+  heatNumber: number
+): Score {
   return {
+    eventID,
     judgeName,
+    heatNumber,
+    teamA: "",
+    teamB: "",
+    scoreA: getDefaultScore(),
+    scoreB: getDefaultScore(),
+  };
+}
+
+function getDefaultScore(): TeamScore {
+  return {
     clarity: 0,
     centrality: 0,
     thoughtfulness: 0,
@@ -10,6 +25,5 @@ export function getDefaultScore(judgeName: string): Score {
     judgeResponse: 0,
     commentary: 0,
     respectful: 0,
-    total: 0
-  }
+  };
 }
