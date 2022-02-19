@@ -126,6 +126,10 @@ textarea:focus {
   background-color: rgba(126, 189, 194, 0.3);
 }
 
+.blue.active {
+  background-color: rgba(126, 189, 194, 0.6)
+}
+
 .blue:hover {
   background-color: rgba(126, 189, 194, 0.6);
 }

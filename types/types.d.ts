@@ -46,6 +46,7 @@ export interface ActiveEvent {
   eventID: string;
   status: EventStatus;
   scores: ScoreStatus;
+  teams: Team[]
 }
 
 export interface EventStatus {

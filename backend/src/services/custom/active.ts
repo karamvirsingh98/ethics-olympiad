@@ -1,7 +1,7 @@
-import { Application } from "@feathersjs/feathers";
+import { Application, Params } from "@feathersjs/feathers";
 import { filterOutFromObj } from "../../helpers";
 import { ActiveEvents } from "../../types";
-import { Status } from "@ethics-olympiad/types";
+import { Event, Status } from "@ethics-olympiad/types";
 
 export class ActiveEventService {
   app: Application;
@@ -17,8 +17,8 @@ export class ActiveEventService {
 
   //sets or resets the event
   async create({ eventID }: { eventID: string }) {
-    const event = await this.app.service("api/events").get(eventID);
-    this.state[eventID] = { eventID, status: {}, scores: {} };
+    const event: Event = await this.app.service("api/events").get(eventID);
+    this.state[eventID] = { eventID, status: {}, scores: {}, teams: event.teams };
   }
 
   //uses put requests to update the stage for each judge
@@ -27,10 +27,7 @@ export class ActiveEventService {
     { judgeName, status }: { judgeName: string; status: Status }
   ) {
     if (!this.state[eventID]) return 'event inactive'
-    this.state[eventID] = {
-      ...this.state[eventID],
-      status: { ...this.state[eventID].status, [judgeName]: status },
-    };
+    this.state[eventID].status[judgeName] = status
     return this.state[eventID];
   }
 
@@ -40,13 +37,12 @@ export class ActiveEventService {
     { judgeName, scored }: { judgeName: string; scored: boolean[] }
   ) {
     if (!this.state[eventID]) return "event inactive";
-    this.state[eventID] = {
-      ...this.state[eventID],
-      scores: { ...this.state[eventID].scores, [judgeName]: scored },
-    };
+    this.state[eventID].scores[judgeName].push(true)
     return this.state[eventID];
   }
 
+  //removes the event from the active list
+  //TODO: maybe wrap in an outer setTimeout to clean old evts, or setup internal clean method
   async remove(eventID: string) {
     this.state = filterOutFromObj(this.state, [eventID])
   }
