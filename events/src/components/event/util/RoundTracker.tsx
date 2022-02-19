@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import useStage from "../../../state/hooks/useStage";
 import IfElse from "../../util/IfElse";
 
@@ -13,6 +14,7 @@ const arr = [
 
 export default function RoundTracker({ stage, showButtons }: { stage: number, showButtons?: boolean }) {
   const { navigate, next, back } = useStage(stage)
+  const { roundNumber } = useParams()
 
   return (
     <div
@@ -50,13 +52,27 @@ export default function RoundTracker({ stage, showButtons }: { stage: number, sh
         <IfElse
           showIf={stage === 7}
           showTrue={
-            <button
-              className="green"
-              onClick={() => navigate("../../round2")}
-              style={{ placeSelf: "end start" }}
-            >
-              Next Round
-            </button>
+            <IfElse
+              showIf={roundNumber === "1"}
+              showTrue={
+                <button
+                  className="green"
+                  onClick={() => navigate("../../round2")}
+                  style={{ placeSelf: "end start" }}
+                >
+                  Next Round
+                </button>
+              }
+              showFalse={
+                <button
+                  className="orange"
+                  onClick={() => navigate("../../../")}
+                  style={{ placeSelf: "end start" }}
+                >
+                  End Heat
+                </button>
+              }
+            />
           }
           showFalse={
             <button

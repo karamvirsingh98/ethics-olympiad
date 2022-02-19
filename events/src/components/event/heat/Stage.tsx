@@ -16,7 +16,7 @@ export default function Stage({
     <div className="stage">
       {<RoundTracker stage={stage} showButtons />}
       <div className="stage-content">
-        <div style={{ fontSize: "3rem" }}>{question}</div>
+        <div style={{ fontSize: "3.5rem" }}>{question}</div>
         <Timer duration={timers[stage - 1]} />
       </div>
     </div>

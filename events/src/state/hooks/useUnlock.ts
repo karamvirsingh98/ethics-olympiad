@@ -5,7 +5,7 @@ import { Olympiad } from "../types";
 export default function useUnlock(eventID: string) {
   return {
     unlocked: window.localStorage.getItem(`event_${eventID}`) ? true : false,
-    unlock: (eventID: string, password: string) =>
+    unlock: (password: string) =>
       window.localStorage.setItem(`event_${eventID}`, password),
   };
 };
@@ -26,3 +26,17 @@ export function useFullEvent(eventID: string) {
 }
 
 
+function useOlympiad(eventID: string) {
+  const [olympiad, set] = useState<Olympiad>()
+
+  useEffect(() => {
+    if (!olympiad) return
+  })
+
+  const unlock = (password?: string) => {
+    try {
+      const p = password ? password : window.localStorage.getItem(`event_${eventID}`)
+    }
+    catch {}
+  }
+}

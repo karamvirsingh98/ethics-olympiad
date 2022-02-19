@@ -1,6 +1,7 @@
 import { Application } from "@feathersjs/feathers";
 import { arrToKeyedObject } from "../../helpers";
 import { Event } from "@ethics-olympiad/types"
+import { Forbidden } from "@feathersjs/errors";
 
 export class UnlockService {
   app: Application;
@@ -22,11 +23,12 @@ export class UnlockService {
     const cases = await this.app
       .service("api/cases")
       .find({ query: { _id: { $in: caseIDs } } });
-    if (user || data.password === password) {
+    if ((data.password === password) || user) {
       return {
         event: { _id, title, heats, timers, teams },
         cases: arrToKeyedObject(cases),
       };
     }
+    else throw new Forbidden('invalid password')
   }
 }

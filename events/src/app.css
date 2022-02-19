@@ -109,9 +109,10 @@
 
 .stage-content {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.25fr 1fr;
   place-items: center;
   padding-left: 1rem;
+  gap: 3rem;
 }
 
 .timer-container {

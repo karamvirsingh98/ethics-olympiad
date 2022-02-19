@@ -12,7 +12,7 @@ export default function Unlock({
   login,
 }: {
   eventID: string;
-  unlock: (eventID: string, password: string) => void;
+  unlock: (password: string) => void;
   onUnlock: (olympiad: Olympiad) => void;
   login: (credentials: { email: string; password: string }) => Promise<void>;
 }) {
@@ -21,17 +21,14 @@ export default function Unlock({
   const [admin, setAdmin] = useState(false);
 
   const doUnlock = async () => {
-    try {
-      await client
-        .service("api/unlock")
-        .create(admin ? { id: eventID, password } : { id: eventID })
-        .then((olympiad: Olympiad) => {
-          unlock(eventID, password);
-          onUnlock(olympiad);
-        });
-    } catch {
-      window.alert("Invalid Password.");
-    }
+    client
+      .service("api/unlock")
+      .create(admin ? { id: eventID } : { id: eventID, password })
+      .then((olympiad: Olympiad) => {
+        unlock(password);
+        onUnlock(olympiad);
+      })
+      .catch(() => window.alert("Invalid Password."))
   };
 
   return (
