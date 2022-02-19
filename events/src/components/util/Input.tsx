@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 interface InputProps {
   id?: string,
   className?: string,
