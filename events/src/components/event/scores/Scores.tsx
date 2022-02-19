@@ -5,6 +5,7 @@ import { Event } from "../../../state/types";
 import { DEFAULT_SCORE } from "../../../util/defaults";
 import Topbar from "../Topbar";
 import ScoreDots from "./subcomponents/ScoreDots";
+import TeamSelector from "./subcomponents/Selector";
 
 export default function Scores({ event }: { event: Event }) {
   const navigate = useNavigate();
@@ -35,14 +36,25 @@ export default function Scores({ event }: { event: Event }) {
 }
 
 function ScoreComponent() {
-  const { score, set, updateScore } = useScore();
+  const { score, set, updateScore } = useScore(); 
+  
+
 
   const SCORE_FIELDS = Object.keys(DEFAULT_SCORE) as Array<keyof TeamScore>
 
   return (
     <div className="score">
       <div style={{ display: "grid", gap: "2rem", height: "fit-content" }}>
-        Team A
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <div> Team A </div>
+          <TeamSelector teams={[]} selected={score.teamA} onSelect={(teamA) => set({ ...score, teamA})}  />
+        </div>
         {SCORE_FIELDS.map((label) => (
           <ScoreDots
             key={label + "A"}
