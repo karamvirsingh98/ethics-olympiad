@@ -20,6 +20,6 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "start": " tsc && node build/index.js"
+    "dev": " tsc && node build/index.js"
   }
 }
