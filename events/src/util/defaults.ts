@@ -11,19 +11,17 @@ export function getDefaultFullScore(
     heatNumber,
     teamA: "",
     teamB: "",
-    scoreA: getDefaultScore(),
-    scoreB: getDefaultScore(),
+    scoreA: DEFAULT_SCORE,
+    scoreB: DEFAULT_SCORE,
   };
 }
 
-function getDefaultScore(): TeamScore {
-  return {
-    clarity: 0,
-    centrality: 0,
-    thoughtfulness: 0,
-    response: 0,
-    judgeResponse: 0,
-    commentary: 0,
-    respectful: 0,
-  };
-}
+export const DEFAULT_SCORE: TeamScore = {
+  clarity: 0,
+  centrality: 0,
+  thoughtfulness: 0,
+  response: 0,
+  judgeResponse: 0,
+  commentary: 0,
+  respectful: 0,
+};

@@ -9,6 +9,11 @@ export default function ScoreDots({
   selected: number;
   onSelect: (selected: number) => void;
 }) {
+
+  function capitalise(s: string) {
+    return s[0].toUpperCase() + s.slice(1);
+  }
+
   return (
     <div
       style={{
@@ -17,7 +22,7 @@ export default function ScoreDots({
         justifyContent: "space-between",
       }}
     >
-      {label}
+      {capitalise(label)}
       <div style={{ display: "flex", gap: "2rem" }}>
         <div style={{ display: "flex", gap: "1rem" }}>
           <div onClick={() => onSelect(0)} style={{ cursor: "pointer" }}>
@@ -26,6 +31,7 @@ export default function ScoreDots({
           </div>
           {Array.from(new Array(numDots)).map((_, i) => (
             <div
+              key={i}
               style={{
                 cursor: "pointer",
                 width: "1rem",
@@ -44,3 +50,4 @@ export default function ScoreDots({
     </div>
   );
 }
+
