@@ -19,7 +19,7 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "dev-all": "cd backend && yarn start & cd manager && yarn dev & cd events && yarn dev",
+    "dev-all": "cd backend && yarn dev & cd manager && yarn dev & cd events && yarn dev",
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
     "build-backend": "cd backend && yarn build",
     "build-manager": "cd manager && yarn build",
@@ -27,3 +27,4 @@
     "restart": "cd backend && yarn start"
   }
 }
+
