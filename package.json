@@ -23,6 +23,7 @@
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
     "build-backend": "cd backend && yarn build",
     "build-manager": "cd manager && yarn build",
-    "build-events": "cd events && yarn build"
+    "build-events": "cd events && yarn build",
+    "restart": "cd backend && yarn start"
   }
 }
