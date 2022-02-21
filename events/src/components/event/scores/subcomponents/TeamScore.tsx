@@ -24,10 +24,10 @@ export default function TeamScoreComponent({
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "2rem",
+          gap: "1rem",
         }}
       >
-        <div style={{ whiteSpace: "nowrap", fontSize: "1.5rem" }}>Team A</div>
+        <div style={{ whiteSpace: "nowrap", fontSize: "1.5rem" }}>Team { teamA ? 'A' : "B" } </div>
         {teams && (
           <TeamSelector
             teams={teams}
