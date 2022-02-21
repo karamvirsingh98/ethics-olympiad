@@ -1,20 +1,18 @@
-import { Score, Team, TeamScore } from "@ethics-olympiad/types";
+import { Team } from "@ethics-olympiad/types";
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { client } from "../../../main";
 import { useScore } from "../../../state/hooks/useScore";
 import { Event } from "../../../state/types";
 import Topbar from "../Topbar";
-import { SCORE_FIELDS } from "./scoreFields";
-import ScoreDots from "./subcomponents/ScoreDots";
-import TeamSelector from "./subcomponents/Selector";
+import TeamScoreComponent from "./subcomponents/TeamScore";
 
 export default function Scores({ event }: { event: Event }) {
   const navigate = useNavigate();
   const [teams, set] = useState<Team[]>();
 
   useEffect(() => {
-    client.service("active");
+    client.service("api/active");
   });
 
   return (
@@ -72,53 +70,3 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
   );
 }
 
-function TeamScoreComponent({
-  teams,
-  score,
-  set,
-  updateScore,
-  teamA,
-}: {
-  teams: Team[];
-  score: Score;
-  set: (score: Score) => void;
-  updateScore: (field: string, newScore: number, teamA: boolean) => void;
-  teamA?: boolean;
-}) {
-  const FIELDS = Object.keys(SCORE_FIELDS) as Array<keyof TeamScore>;
-
-  return (
-    <div style={{ display: "grid", gap: "2rem", height: "fit-content" }}>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "2rem",
-        }}
-      >
-        <div style={{ whiteSpace: "nowrap", fontSize: "1.5rem" }}>Team A</div>
-        {teams && (
-          <TeamSelector
-            teams={teams}
-            selected={teamA ? score.teamA : score.teamB}
-            onSelect={
-              teamA
-                ? (teamA) => set({ ...score, teamA })
-                : (teamB) => set({ ...score, teamB })
-            }
-          />
-        )}
-      </div>
-      {FIELDS.map((label) => (
-        <ScoreDots
-          key={teamA ? label + "A" : label + "B"}
-          label={label}
-          description={SCORE_FIELDS[label].description}
-          numDots={SCORE_FIELDS[label].max}
-          selected={teamA ? score.scoreA[label] : score.scoreB[label]}
-          onSelect={(newScore) => updateScore(label, newScore, teamA ? true : false)}
-        />
-      ))}
-    </div>
-  );
-}
