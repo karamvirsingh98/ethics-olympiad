@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { client } from "../../../main";
-import { Event } from "../../../state/types";
+import { client } from "../../main";
+import { Event } from "../../state/types";
 import { ActiveEvent } from "@ethics-olympiad/types";
-import IfElse from "../../util/IfElse";
-import Topbar from "../Topbar";
+import IfElse from "../util/IfElse";
+import Topbar from "../event/Topbar";
 import Teams from "./subcomponents/Teams";
 import Judges from "./subcomponents/Judges";
 import Divider from "../util/Divider";

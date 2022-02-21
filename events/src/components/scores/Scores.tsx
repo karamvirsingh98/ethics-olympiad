@@ -1,10 +1,10 @@
 import { Team } from "@ethics-olympiad/types";
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { client } from "../../../main";
-import { useScore } from "../../../state/hooks/useScore";
-import { Event } from "../../../state/types";
-import Topbar from "../Topbar";
+import { client } from "../../main";
+import { useScore } from "../../state/hooks/useScore";
+import { Event } from "../../state/types";
+import Topbar from "../event/Topbar";
 import Divider from "../util/Divider";
 import TeamScoreComponent from "./subcomponents/team_score/TeamScore";
 

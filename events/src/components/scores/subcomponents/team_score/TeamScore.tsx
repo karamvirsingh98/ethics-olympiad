@@ -1,6 +1,6 @@
 import { Score, Team, TeamScore } from "@ethics-olympiad/types";
 import { Fragment } from "react";
-import IfElse from "../../../../util/IfElse";
+import IfElse from "../../../util/IfElse";
 import { SCORE_FIELDS } from "../../scoreFields";
 import ScoreDots from "../ScoreDots";
 import Selector from "../Selector";

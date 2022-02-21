@@ -8,8 +8,8 @@ import { useEffect } from "react";
 import { client } from "../main";
 import useAuth from "../state/hooks/useAuth";
 import { Olympiad } from "../state/types";
-import Admin from "../components/event/admin/Admin";
-import Scores from "../components/event/scores/Scores";
+import Admin from "../components/admin/Admin";
+import Scores from "../components/scores/Scores";
 import { User } from "@ethics-olympiad/types";
 
 export default function EventComponent() {

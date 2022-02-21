@@ -1,4 +1,4 @@
-import RoundTracker from "../../util/RoundTracker";
+import RoundTracker from "../../event/util/RoundTracker";
 
 export default function Judges({
   judges,

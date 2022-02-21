@@ -1,5 +1,5 @@
 import { Team } from "@ethics-olympiad/types";
-import RoundTracker from "../../util/RoundTracker";
+import RoundTracker from "../../event/util/RoundTracker";
 
 export default function Teams({ teams }: { teams: Team[] }) {
   return (
