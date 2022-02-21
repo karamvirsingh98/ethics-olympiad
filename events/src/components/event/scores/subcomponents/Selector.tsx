@@ -1,7 +1,7 @@
 import { Team } from "@ethics-olympiad/types";
 import { useState } from "react";
 
-export default function TeamSelector({
+export default function Selector({
   teams,
   selected,
   onSelect,

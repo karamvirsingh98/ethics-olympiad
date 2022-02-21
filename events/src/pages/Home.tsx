@@ -1,12 +1,24 @@
 import ArrayMap from "../components/util/ArrayMap";
 import BaseEventComponent from "../components/home/BaseEvent";
 import useBaseEvents from "../state/hooks/useBaseEvents";
+import useJudgeName from "../state/hooks/useJudgeName";
 
 export default function Home() {
-  const events = useBaseEvents()
+  const events = useBaseEvents();
+  const { name } = useJudgeName();
   return (
     <div className="home">
-      <div style={{ fontSize: "2rem" }}> Ethics Olympiad </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingRight: "4rem"
+        }}
+      >
+        <div style={{ fontSize: "2rem" }}> Ethics Olympiad Events </div>
+        <div>Logged in as {name}</div>
+      </div>
       <div className="events">
         <ArrayMap
           array={events}

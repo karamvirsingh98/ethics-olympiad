@@ -17,7 +17,7 @@ export default function ScoreDots({
   }
 
   return (
-    <div style={{ display: "grid", gap: '1rem' }}>
+    <div style={{ display: "grid", gap: "0.5rem" }}>
       <div
         style={{
           display: "flex",
@@ -26,8 +26,8 @@ export default function ScoreDots({
         }}
       >
         <div style={{ fontSize: "1.25rem" }}> {capitalise(label)} </div>
-        <div style={{ display: "flex", gap: "2rem" }}>
-          <div style={{ display: "flex", gap: "1rem" }}>
+        <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
             <div onClick={() => onSelect(0)} style={{ cursor: "pointer" }}>
               X
             </div>
@@ -47,12 +47,12 @@ export default function ScoreDots({
               />
             ))}
           </div>
-          <div>
+          <div style={{ fontSize: "1.25rem" }}>
             {selected} / {numDots}
           </div>
         </div>
       </div>
-      <div> {description} </div>
+      <div style={{ opacity: 0.5 }}> {description} </div>
     </div>
   );
 }

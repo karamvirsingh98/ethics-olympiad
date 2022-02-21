@@ -102,6 +102,16 @@ textarea:focus {
   background-color: rgba(86, 193, 140, 0.6);
 }
 
+.green.border {
+  border: solid 0.25rem rgba(86, 193, 140, 0.3);
+  background-color: transparent;
+}
+
+.green.border:hover {
+  border: solid 0.25rem rgba(86, 193, 140, 0.6);
+  background-color: rgba(86, 193, 140, 0.6);
+}
+
 .red {
   background-color: rgba(255, 90, 95, 0.3);
 }

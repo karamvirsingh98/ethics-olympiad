@@ -5,7 +5,8 @@ import { client } from "../../../main";
 import { useScore } from "../../../state/hooks/useScore";
 import { Event } from "../../../state/types";
 import Topbar from "../Topbar";
-import TeamScoreComponent from "./subcomponents/TeamScore";
+import Divider from "../util/Divider";
+import TeamScoreComponent from "./subcomponents/team_score/TeamScore";
 
 export default function Scores({ event }: { event: Event }) {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Scores({ event }: { event: Event }) {
         style={{
           display: "grid",
           gap: "2rem",
-          gridTemplateColumns: "auto 1fr",
+          gridTemplateColumns: "auto auto 1fr",
         }}
       >
         <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
@@ -37,10 +38,11 @@ export default function Scores({ event }: { event: Event }) {
             </button>
           ))}
         </div>
+        <Divider vertical />
         <Routes>
           <Route
             path="/heat:heatNumber"
-            element={teams && <ScoreComponent teams={teams} />}
+            element={<ScoreComponent teams={[]} />}
           />
         </Routes>
       </div>
@@ -60,6 +62,7 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
         updateScore={updateScore}
         teamA
       />
+      <Divider vertical />
       <TeamScoreComponent
         teams={teams}
         score={score}
