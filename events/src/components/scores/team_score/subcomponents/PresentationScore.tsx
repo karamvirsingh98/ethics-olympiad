@@ -1,9 +1,9 @@
 import { Score, TeamScore } from "@ethics-olympiad/types";
-import { SCORE_FIELDS } from "../../../scoreFields";
-import ScoreSlider from "../../ScoreSlider";
+import { SCORE_FIELDS } from "../../score_fields";
+import ScoreDots from "../../util/ScoreDots";
 import { UpdateScore } from "../TeamScore";
 
-export default function ResponseScores({
+export default function PresentationScore({
   score,
   updateScore,
   teamA,
@@ -12,7 +12,11 @@ export default function ResponseScores({
   updateScore: UpdateScore;
   teamA?: boolean;
 }) {
-  const FIELDS: Array<keyof TeamScore> = ["response", "judgeResponse"];
+  const FIELDS: Array<keyof TeamScore> = [
+    "clarity",
+    "centrality",
+    "thoughtfulness",
+  ];
 
   return (
     <div
@@ -25,13 +29,13 @@ export default function ResponseScores({
       }}
     >
       {FIELDS.map((label) => (
-        <ScoreSlider
+        <ScoreDots
           key={teamA ? label + "A" : label + "B"}
           label={label}
           description={SCORE_FIELDS[label].description}
-          max={SCORE_FIELDS[label].max}
-          value={teamA ? score.scoreA[label] : score.scoreB[label]}
-          onChange={(newScore) =>
+          numDots={SCORE_FIELDS[label].max}
+          selected={teamA ? score.scoreA[label] : score.scoreB[label]}
+          onSelect={(newScore) =>
             updateScore(label, newScore, teamA ? true : false)
           }
         />
@@ -39,3 +43,4 @@ export default function ResponseScores({
     </div>
   );
 }
+

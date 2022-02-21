@@ -1,6 +1,6 @@
 import { Score } from "@ethics-olympiad/types";
-import { SCORE_FIELDS } from "../../../scoreFields";
-import ScoreSlider from "../../ScoreSlider";
+import { SCORE_FIELDS } from "../../score_fields";
+import ScoreSlider from "../../util/ScoreSlider";
 import { UpdateScore } from "../TeamScore";
 
 export default function CommentaryScore({

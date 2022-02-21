@@ -58,11 +58,11 @@ function Slider({
       renderTrack={({ props, children }) => (
         <div
           {...props}
-          className="grey-flat"
           style={{
             ...props.style,
-            height: "0.5rem",
+            height: "0.25rem",
             width: "100%",
+            backgroundColor: "black",
           }}
         >
           {children}
@@ -73,8 +73,8 @@ function Slider({
           {...props}
           style={{
             ...props.style,
-            height: "1.5rem",
-            width: "1.5rem",
+            height: "1.25rem",
+            width: "1.25rem",
             borderRadius: "100%",
             backgroundColor: "rgba(126, 189, 194, 1)",
             outline: "none",

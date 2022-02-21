@@ -6,7 +6,7 @@ import { useScore } from "../../state/hooks/useScore";
 import { Event } from "../../state/types";
 import Topbar from "../event/Topbar";
 import Divider from "../util/Divider";
-import TeamScoreComponent from "./subcomponents/team_score/TeamScore";
+import TeamScoreComponent from "./team_score/TeamScore";
 
 export default function Scores({ event }: { event: Event }) {
   const navigate = useNavigate();
@@ -17,13 +17,14 @@ export default function Scores({ event }: { event: Event }) {
   });
 
   return (
-    <div className="scores">
+    <div className="scores" style={{ overflow: "hidden" }}>
       <Topbar event={event} />
       <div
         style={{
           display: "grid",
           gap: "2rem",
           gridTemplateColumns: "auto auto 1fr",
+          overflow: "hidden"
         }}
       >
         <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
@@ -54,14 +55,16 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
   const { score, set, updateScore } = useScore();
 
   return (
-    <div className="score">
-      <TeamScoreComponent
-        teams={teams}
-        score={score}
-        set={set}
-        updateScore={updateScore}
-        teamA
-      />
+    <div className="score" style={{ overflowY: "scroll" }}>
+      <div style={{ maxHeight: "100%", overflow: "auto" }}>
+        <TeamScoreComponent
+          teams={teams}
+          score={score}
+          set={set}
+          updateScore={updateScore}
+          teamA
+        />
+      </div>
       <Divider vertical />
       <TeamScoreComponent
         teams={teams}

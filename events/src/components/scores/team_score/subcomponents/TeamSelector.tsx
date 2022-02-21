@@ -1,5 +1,5 @@
 import { Score, Team } from "@ethics-olympiad/types";
-import Selector from "../../Selector";
+import Selector from "../../util/Selector";
 
 export default function TeamSelector({
   teams,

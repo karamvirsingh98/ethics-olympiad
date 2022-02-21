@@ -1,15 +1,18 @@
 import { Score, Team, TeamScore } from "@ethics-olympiad/types";
 import { Fragment } from "react";
-import IfElse from "../../../util/IfElse";
-import { SCORE_FIELDS } from "../../scoreFields";
-import ScoreDots from "../ScoreDots";
-import Selector from "../Selector";
+import IfElse from "../../util/IfElse";
+import { SCORE_FIELDS } from "../score_fields";
+import ScoreDots from "../util/ScoreDots";
 import CommentaryScore from "./subcomponents/CommentaryScore";
 import PresentationScore from "./subcomponents/PresentationScore";
 import ResponseScores from "./subcomponents/ResponseScores";
 import TeamSelector from "./subcomponents/TeamSelector";
 
-export type UpdateScore = (field: string, newScore: number, teamA: boolean) => void;
+export type UpdateScore = (
+  field: string,
+  newScore: number,
+  teamA: boolean
+) => void;
 
 export default function TeamScoreComponent({
   teams,
@@ -24,6 +27,15 @@ export default function TeamScoreComponent({
   updateScore: UpdateScore;
   teamA?: boolean;
 }) {
+
+  const total = (score: TeamScore) => {
+    let total = 0;
+    Object.keys(SCORE_FIELDS).forEach(
+      (field) => (total += score[field as keyof TeamScore])
+    );
+    return total;
+  };
+
   return (
     <div style={{ display: "grid", gap: "2rem", height: "fit-content" }}>
       <TeamSelector teams={teams} score={score} set={set} teamA={teamA} />
@@ -56,7 +68,16 @@ export default function TeamScoreComponent({
           updateScore("respectful", newScore, teamA ? true : false)
         }
       />
+      <div
+        style={{
+          fontSize: "2rem",
+          placeSelf: "center end",
+          padding: "1rem",
+          borderRadius: "0.25rem",
+        }}
+      >
+        Total Score : {total(teamA ? score.scoreA : score.scoreB)}
+      </div>
     </div>
   );
 }
-
