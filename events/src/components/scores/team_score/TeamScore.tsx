@@ -59,15 +59,20 @@ export default function TeamScoreComponent({
           </Fragment>
         }
       />
-      <ScoreDots
-        label="Respectful"
-        description={SCORE_FIELDS.respectful.description}
-        numDots={SCORE_FIELDS.respectful.max}
-        selected={teamA ? score.scoreA.respectful : score.scoreB.respectful}
-        onSelect={(newScore) =>
-          updateScore("respectful", newScore, teamA ? true : false)
-        }
-      />
+      <div
+        className="grey-flat"
+        style={{ padding: "1rem", borderRadius: "0.25rem" }}
+      >
+        <ScoreDots
+          label="Respectful"
+          description={SCORE_FIELDS.respectful.description}
+          numDots={SCORE_FIELDS.respectful.max}
+          selected={teamA ? score.scoreA.respectful : score.scoreB.respectful}
+          onSelect={(newScore) =>
+            updateScore("respectful", newScore, teamA ? true : false)
+          }
+        />
+      </div>
       <div
         style={{
           fontSize: "2rem",

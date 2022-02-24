@@ -13,7 +13,7 @@ export default function Scores({ event }: { event: Event }) {
   const [teams, set] = useState<Team[]>();
 
   useEffect(() => {
-    client.service("api/active");
+    client.service("api/active").get(event._id).then(console.log);
   });
 
   return (
@@ -24,10 +24,17 @@ export default function Scores({ event }: { event: Event }) {
           display: "grid",
           gap: "2rem",
           gridTemplateColumns: "auto auto 1fr",
-          overflow: "hidden"
+          overflow: "hidden",
         }}
       >
         <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
+          <button
+            className="blue"
+            onClick={() => navigate(`./`)}
+            style={{ fontSize: "1.5rem", padding: "0.5rem 2rem", width: "100%" }}
+          >
+            All
+          </button>
           {event.heats.map((_, i) => (
             <button
               key={i}
@@ -56,7 +63,7 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
 
   return (
     <div className="score" style={{ overflowY: "scroll" }}>
-      <div style={{ maxHeight: "100%", overflow: "auto" }}>
+      <div style={{ maxHeight: "100%" }}>
         <TeamScoreComponent
           teams={teams}
           score={score}

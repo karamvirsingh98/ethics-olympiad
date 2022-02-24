@@ -11,8 +11,10 @@ export class ActiveEventService {
     this.app = app;
   }
 
-  async get(eventID: string) {
-    return this.state[eventID];
+  async get(eventID: string, { user }: Params) {
+    if (!this.state[eventID]) return "event inactive";
+    if (!user) return this.state[eventID].teams
+    else return this.state[eventID];
   }
 
   //sets or resets the event

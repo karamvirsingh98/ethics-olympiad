@@ -27,7 +27,7 @@ export default function ScoreSlider({
         }}
       >
         <div style={{ fontSize: "1.25rem" }}> {capitalise(label)} </div>
-        <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "1fr 5rem", placeItems: "center end", width: "100%"}}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 5rem", placeItems: "center end", width: "100%"}}>
           <Slider {...{ max, value, onChange }} />
           <div style={{ fontSize: "1.25rem" }}>
             {value} / {max}
