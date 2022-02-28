@@ -13,7 +13,7 @@ export class ActiveEventService {
 
   async get(eventID: string, { user }: Params) {
     if (!this.state[eventID]) return "event inactive";
-    if (!user) return this.state[eventID].teams
+    if (!user) return this.state[eventID].teams.filter(team => team.present)
     else return this.state[eventID];
   }
 
