@@ -17,7 +17,7 @@ export default function Home() {
         }}
       >
         <div style={{ fontSize: "2rem" }}> Ethics Olympiad Events </div>
-        <div>Logged in as {name}</div>
+        <div> {name ? "logged in as " + name : ''} </div>
       </div>
       <div className="events">
         <ArrayMap

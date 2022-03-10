@@ -22,3 +22,8 @@ export default function Teams({ teams }: { teams: Team[] }) {
   );
 }
 
+export function Dot() {
+  return (
+    <div /> 
+  )
+}

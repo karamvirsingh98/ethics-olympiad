@@ -1,38 +1,22 @@
-import { useEffect, useState } from "react";
-import { client } from "../../main";
+import { useState } from "react";
 import { Event } from "../../state/types";
-import { ActiveEvent } from "@ethics-olympiad/types";
 import IfElse from "../util/IfElse";
 import Topbar from "../event/Topbar";
 import Teams from "./subcomponents/Teams";
 import Judges from "./subcomponents/Judges";
 import Divider from "../util/Divider";
+import { AdminButtons, StartButton } from "./subcomponents/Buttons";
+import useActiveEvent from "../../state/hooks/useActiveEvent";
 
 export default function Admin({ event }: { event: Event }) {
-  const [active, setActive] = useState<ActiveEvent | null>();
-  const [showScoreStatus, setShowScoreStatus] = useState(false);
-
-  console.log(event);
-
-  console.log("b");
-
-  //TODO: refactor into a new hook, and probably refactor hooks overall 
-
-  useEffect(() => {
-    client.service("api/active").get(event._id).then(setActive);
-    client.service("api/active").on("created", setActive);
-    client.service("api/active").on("updated", setActive);
-    return () => {
-      client.service("api/active").removeListener("created");
-      client.service("api/active").removeListener("updated");
-    };
-  }, []);
+  const [showScores, setShowScores] = useState(false);
+  const activeEvent = useActiveEvent(event._id);
 
   return (
     <div className="admin">
       <Topbar event={event} admin />
       <IfElse
-        showIf={active ? true : false}
+        showIf={activeEvent ? true : false}
         showFalse={<StartButton eventID={event._id} />}
         showTrue={
           <div
@@ -42,18 +26,9 @@ export default function Admin({ event }: { event: Event }) {
               gridTemplateRows: "auto 1fr",
             }}
           >
-            <div style={{ display: "flex", gap: "2rem", placeSelf: "end" }}>
-              <button
-                className="blue"
-                onClick={() => setShowScoreStatus(!showScoreStatus)}
-              >
-                {" "}
-                Show {showScoreStatus
-                  ? "Heat Progress"
-                  : "Score Submissions"}{" "}
-              </button>
-              <button className="red">End Event</button>
-            </div>
+            <AdminButtons
+              {...{ showScores, setShowScores, eventID: event._id }}
+            />
             <div
               style={{
                 display: "grid",
@@ -63,23 +38,11 @@ export default function Admin({ event }: { event: Event }) {
             >
               <Teams teams={event.teams} />
               <Divider />
-              {active && <Judges judges={active.status} />}
+              {activeEvent && <Judges judges={activeEvent.status} />}
             </div>
           </div>
         }
       />
     </div>
-  );
-}
-
-function StartButton({ eventID }: { eventID: string }) {
-  return (
-    <button
-      style={{ placeSelf: "center", fontSize: "2rem" }}
-      className="green"
-      onClick={() => client.service("api/active").create({ eventID })}
-    >
-      Start Event
-    </button>
   );
 }
