@@ -83,6 +83,7 @@
   border-top: solid 1px;
   border-bottom: solid 1px;
   padding: 1rem 0rem;
+  height: fit-content;
 }
 
 .heat-header {
@@ -146,4 +147,10 @@
 
 .dark-icon:hover {
   opacity: 1
+}
+
+.user { 
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
 }

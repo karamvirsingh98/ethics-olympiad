@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { client } from "../../main";
+import useJudgeName from "../../state/hooks/useJudgeName";
 import { Olympiad } from "../../state/types";
 import IfElse from "../util/IfElse";
 import AdminLogin from "./AdminLogin";
@@ -19,16 +20,19 @@ export default function Unlock({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
+  const { judgeName } = useJudgeName()
 
   const doUnlock = async () => {
-    client
-      .service("api/unlock")
-      .create(admin ? { id: eventID } : { id: eventID, password })
-      .then((olympiad: Olympiad) => {
-        unlock(password);
-        onUnlock(olympiad);
-      })
-      .catch(() => window.alert("Invalid Password."))
+    if (judgeName) {
+      client
+        .service("api/unlock")
+        .create(admin ? { id: eventID } : { id: eventID, password })
+        .then((olympiad: Olympiad) => {
+          unlock(password);
+          onUnlock(olympiad);
+        })
+        .catch(() => window.alert("Invalid Password."));
+    } else window.alert("Please enter your name.")
   };
 
   return (
@@ -52,13 +56,15 @@ export default function Unlock({
       />
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
+          display: "grid",
+          gridTemplateColumns: "1fr auto",
+          gap: "1rem",
           width: "100%",
         }}
       >
         <button
-          className="green"
+          className={judgeName ? "green" : "red"}
+          style={{ width: "100%", cursor: judgeName ? undefined : 'not-allowed' }}
           onClick={async () => {
             if (admin) {
               await login({ email, password });

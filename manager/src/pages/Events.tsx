@@ -76,10 +76,12 @@ export default function Events({
                       gap: "1rem",
                     }}
                   >
-                    <div style={{ borderBottom: "solid 0.25rem transparent" }}>
+                    <div style={{ borderBottom: "solid 0.25rem transparent", display: "flex" }}>
                       Password:
+                      <div style={{ opacity: 0.5, marginLeft: "0.5rem" }}>{!editing && !events[currentID].password && "Create A Password"}</div>
                     </div>
                     <ToggleInput
+                      placeholder="enter password"
                       editing={editing}
                       value={events[currentID].password}
                       onEdit={setPassword(currentID)}

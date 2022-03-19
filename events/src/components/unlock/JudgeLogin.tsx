@@ -11,11 +11,10 @@ export default function JudgeLogin({
   set: (p: string) => void;
 }) {
   const [show, setShow] = useState(false);
-  const { name, set: setName } = useJudgeName();
 
   return (
     <div style={{ display: "grid", gap: "2rem" }}>
-      <JudgeName name={name} set={setName} />
+      <JudgeName />
       <div
         style={{
           display: "grid",
@@ -43,19 +42,12 @@ export default function JudgeLogin({
   );
 }
 
-function JudgeName({
-  name,
-  set,
-}: {
-  name: string;
-  set: (name: string) => void;
-}) {
-  const [_name, _set] = useState(name)
-
+function JudgeName() {
+  const { judgeName, setName } = useJudgeName();
 
   return (
     <IfElse
-      showIf={name === ""}
+      showIf={!judgeName}
       showTrue={
         <div
           style={{
@@ -65,21 +57,18 @@ function JudgeName({
             gap: "1rem",
           }}
         >
-          <Input value={_name} placeholder="Name" onChange={(name) => _set(name)} />
-          <button
-            style={{ fontSize: "0.8rem", placeSelf: "end", width: "3rem" }}
-            className="green"
-            onClick={() => set(_name)}
-          >
-            Save
-          </button>
+          <Input
+            value={judgeName || undefined}
+            placeholder="Name"
+            onChange={(name) => setName(name)}
+          />
         </div>
       }
       showFalse={
         <div style={{ display: "flex", gap: "2rem" }}>
-          Logged in as {name}
+          Logged in as {judgeName}
           <button
-            onClick={() => set("")}
+            onClick={() => setName("")}
             className="orange"
             style={{
               fontSize: "0.8rem",
@@ -87,7 +76,7 @@ function JudgeName({
               whiteSpace: "nowrap",
             }}
           >
-            Not You? 
+            Not You?
           </button>
         </div>
       }

@@ -30,6 +30,7 @@ export default function Heats({
           overflowY: "auto",
           display: "grid",
           gap: "2rem",
+          minHeight: 250,
         }}
       >
         {cases &&
