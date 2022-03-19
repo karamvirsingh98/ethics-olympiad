@@ -11,16 +11,25 @@ export class ActiveEventService {
     this.app = app;
   }
 
-  async get(eventID: string, { user }: Params) {
-    if (!user) return this.state[eventID].teams.filter(team => team.present)
+  async get(eventID: string, { user, judgeName }: Params) {
+    if (!user && judgeName)
+      return {
+        scored: this.state[eventID].scores[judgeName],
+        teams: this.state[eventID].teams.filter((team) => team.present),
+      };
     else return this.state[eventID];
   }
 
   //sets or resets the event
   async create({ eventID }: { eventID: string }) {
     const event: Event = await this.app.service("api/events").get(eventID);
-    this.state[eventID] = { eventID, status: {}, scores: {}, teams: event.teams };
-    return this.state[eventID]
+    this.state[eventID] = {
+      eventID,
+      status: {},
+      scores: {},
+      teams: event.teams,
+    };
+    return this.state[eventID]; // event | null
   }
 
   //uses put requests to update the stage for each judge
@@ -32,21 +41,42 @@ export class ActiveEventService {
     return this.state[eventID]; //event | null;
   }
 
-  //uses patch requests to update the score status for each judge
-  async patch(
-    eventID: string,
-    { judgeName, scored }: { judgeName: string; scored: boolean[] }
-  ) {
-    this.state[eventID].scores[judgeName].push(true)
+  //uses patch requests to update whether a team is present or absent
+  async patch(eventID: string, data: { teamName: string; present: boolean }) {
+    const index = this.state[eventID].teams.findIndex(
+      ({ teamName }) => teamName === data.teamName
+    );
+    this.state[eventID].teams[index] = data;
     return this.state[eventID]; //event | null
   }
 
-  //removes the event from the active list
-  //TODO: maybe wrap in an outer setTimeout to clean old evts, or setup internal clean method
+  //removes an event from state
   async remove(eventID: string) {
-    this.state = filterOutFromObj(this.state, [eventID])
-    return null
+    this.state = filterOutFromObj(this.state, [eventID]);
+    return null;
   }
 
+  // clean() {
+  //   const now = Math.floor(Date.now() / 1000);
+  //   const filtered = this.invites.filter((invite) => invite.expiry! < now);
+  //   if (filtered.length > 0) {
+  //     console.log(
+  //       `Cleared ${this.invites.length - filtered.length} stale invites.`
+  //     );
+  //     this.invites = filtered;
+  //   }
+  // }
+
+  //internal method called by a hook to update the latest heat scored by a judge
+  async updateJudgeScore(
+    eventID: string,
+    judgeName: string,
+    heatNumber: number
+  ) {
+    this.state[eventID].scores[judgeName] = Math.max(
+      heatNumber,
+      this.state[eventID].scores[judgeName]
+    );
+  }
 }
 

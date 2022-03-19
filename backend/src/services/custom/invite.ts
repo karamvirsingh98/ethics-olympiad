@@ -36,7 +36,7 @@ export class InviteService {
       console.log(
         `${
           this.invites[this.invites.findIndex((i) => i.key === inviteKey)].name
-        } Signed Up`
+        } Has Created an Account` 
       );
       this.clear(inviteKey);
     }

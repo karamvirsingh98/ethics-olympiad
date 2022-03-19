@@ -28,7 +28,7 @@ export interface Heat {
 }
 
 export interface Team {
-  name: string;
+  teamName: string;
   present: boolean;
 }
 
@@ -58,8 +58,9 @@ export interface Status {
   roundNumber: number;
   stageNumber: number;
 }
+
 export interface ScoreStatus {
-  [judgeName: string]: boolean[];
+  [judgeName: string]: number;
 }
 
 export interface TeamScore {
