@@ -26,17 +26,17 @@ export function useFullEvent(eventID: string) {
 }
 
 
-function useOlympiad(eventID: string) {
-  const [olympiad, set] = useState<Olympiad>()
+// function useOlympiad(eventID: string) {
+//   const [olympiad, set] = useState<Olympiad>()
 
-  useEffect(() => {
-    if (!olympiad) return
-  })
+//   useEffect(() => {
+//     if (!olympiad) return
+//   })
 
-  const unlock = (password?: string) => {
-    try {
-      const p = password ? password : window.localStorage.getItem(`event_${eventID}`)
-    }
-    catch {}
-  }
-}
+//   const unlock = (password?: string) => {
+//     try {
+//       const p = password ? password : window.localStorage.getItem(`event_${eventID}`)
+//     }
+//     catch {}
+//   }
+// }

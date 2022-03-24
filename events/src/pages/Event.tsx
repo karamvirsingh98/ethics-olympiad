@@ -18,7 +18,9 @@ export default function EventComponent() {
   const { olympiad, set } = useFullEvent(eventID!);
   const { user, login, logout } = useAuth();
 
-  useEffect(() => { client.service("api/channel").create({ eventID }) }, []);
+  useEffect(() => {
+    client.service("api/channel").create({ eventID });
+  }, []);
 
   return (
     <UnlockManager
@@ -31,7 +33,9 @@ export default function EventComponent() {
           login={login}
         />
       }
-      isUnlocked={olympiad && <OlympiadRoutes user={user} olympiad={olympiad}  />}
+      isUnlocked={
+        olympiad && <OlympiadRoutes user={user} olympiad={olympiad} />
+      }
     />
   );
 }
@@ -45,13 +49,20 @@ function OlympiadRoutes({
 }) {
   return (
     <Routes>
-      <Route path="/" element={<EventSplash event={olympiad.event} user={user} />} />
+      <Route
+        path="/"
+        element={<EventSplash event={olympiad.event} user={user} />}
+      />
       <Route
         path="/heat:heatNumber/*"
-        element={<Heat event={olympiad.event} cases={olympiad.cases} user={user} />}
+        element={
+          <Heat event={olympiad.event} cases={olympiad.cases} user={user} />
+        }
       />
       <Route path="/scores/*" element={<Scores event={olympiad.event} />} />
-      {user && <Route path="/admin" element={<Admin event={olympiad.event} />} />}
+      {user && (
+        <Route path="/admin" element={<Admin event={olympiad.event} />} />
+      )}
     </Routes>
   );
 }

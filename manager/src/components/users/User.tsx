@@ -3,7 +3,7 @@ import { User } from "@ethics-olympiad/types";
 export default function UserComponent({ user }: { user: User }) {
   console.log(user);
   return (
-    <div className="grey-flat user" style={{ borderRadius: ".25rem" }}>
+    <div className="grey-flat user">
       <div
         style={{
           display: "grid",
@@ -19,7 +19,7 @@ export default function UserComponent({ user }: { user: User }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          opacity: 0.9
+          opacity: 0.8
         }}
       >
         <div>{user.email}</div>

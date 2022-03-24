@@ -1,13 +1,10 @@
 import { Fragment, useState } from "react";
 import EventCompnent from "../components/event/Event";
 import Items from "./page/Items";
-import PageTitle from "./page/PageTitle";
+import EventHeader from "./page/PageTitle";
 import { AppState } from "../state/types";
 import { useLocalStorage } from "../util/hooks";
-import TitleButtons from "../components/event/subcomponents/TitleButtons";
 import { eventsHelpers } from "./helpers";
-import Input from "../components/util/Input";
-import ToggleInput from "../components/util/ToggleInput";
 import { User } from "@ethics-olympiad/types";
 
 export default function Events({
@@ -31,12 +28,7 @@ export default function Events({
 
   const {
     createEvent,
-    deleteEvent,
-    saveEdits,
-    cancelEdits,
-    getTitle,
-    setTitle,
-    setPassword,
+    ...helpers
   } = eventsHelpers(
     user._id,
     currentID,
@@ -53,49 +45,12 @@ export default function Events({
       <div className="page-content">
         {events && events[currentID] && (
           <Fragment>
-            <PageTitle
+            <EventHeader
               editing={editing}
-              title={getTitle()}
-              rename={setTitle}
-              element={
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr auto",
-                    width: "100%",
-                    placeSelf: "start",
-                    gap: "2rem",
-                  }}
-                >
-                  <div
-                    style={{
-                      placeSelf: "start",
-                      display: "flex",
-                      alignItems: "flex-end",
-                      fontSize: "1rem",
-                      gap: "1rem",
-                    }}
-                  >
-                    <div style={{ borderBottom: "solid 0.25rem transparent", display: "flex" }}>
-                      Password:
-                      <div style={{ opacity: 0.5, marginLeft: "0.5rem" }}>{!editing && !events[currentID].password && "Create A Password"}</div>
-                    </div>
-                    <ToggleInput
-                      placeholder="enter password"
-                      editing={editing}
-                      value={events[currentID].password}
-                      onEdit={setPassword(currentID)}
-                    />
-                  </div>
-                  <TitleButtons
-                    editing={editing}
-                    toggleEditing={() => setEditing(!editing)}
-                    onDelete={deleteEvent}
-                    onSave={saveEdits}
-                    onCancel={cancelEdits}
-                  />
-                </div>
-              }
+              eventID={currentID}
+              events={events}
+              toggleEditing={() => setEditing(!editing)}
+              {...helpers}
             />
             <EventCompnent
               editing={editing}

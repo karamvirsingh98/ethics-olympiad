@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { client } from "../../main";
 import useJudgeName from "../../state/hooks/useJudgeName";
 import { Olympiad } from "../../state/types";
+import { useLocalStorage } from "../../util/hooks";
 import IfElse from "../util/IfElse";
 import AdminLogin from "./AdminLogin";
 import JudgeLogin from "./JudgeLogin";
@@ -20,7 +21,8 @@ export default function Unlock({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
-  const { judgeName } = useJudgeName()
+
+  const [judgeName, setName] = useState(localStorage.getItem('judge_name') || "")
 
   const doUnlock = async () => {
     if (judgeName) {
@@ -32,7 +34,7 @@ export default function Unlock({
           onUnlock(olympiad);
         })
         .catch(() => window.alert("Invalid Password."));
-    } else window.alert("Please enter your name.")
+    } else window.alert("Please enter your name.");
   };
 
   return (
@@ -52,7 +54,9 @@ export default function Unlock({
             setPassword={setPassword}
           />
         }
-        showFalse={<JudgeLogin password={password} set={setPassword} />}
+        showFalse={
+          <JudgeLogin {...{ judgeName, setName, password, setPassword }} />
+        }
       />
       <div
         style={{
@@ -64,7 +68,10 @@ export default function Unlock({
       >
         <button
           className={judgeName ? "green" : "red"}
-          style={{ width: "100%", cursor: judgeName ? undefined : 'not-allowed' }}
+          style={{
+            width: "100%",
+            cursor: judgeName ? undefined : "not-allowed",
+          }}
           onClick={async () => {
             if (admin) {
               await login({ email, password });

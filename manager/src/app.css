@@ -151,6 +151,14 @@
 
 .user { 
   display: grid;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 1rem;
+  border-radius: 0.25rem;
+}
+
+.invite { 
+  display: grid; 
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.25rem;
 }

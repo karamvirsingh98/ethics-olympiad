@@ -4,17 +4,21 @@ import IfElse from "../util/IfElse";
 import Input from "../util/Input";
 
 export default function JudgeLogin({
+  judgeName,
+  setName,
   password,
-  set,
+  setPassword,
 }: {
+  judgeName: string;
+  setName: (name: string) => void;
   password: string;
-  set: (p: string) => void;
+  setPassword: (p: string) => void;
 }) {
   const [show, setShow] = useState(false);
 
   return (
     <div style={{ display: "grid", gap: "2rem" }}>
-      <JudgeName />
+      <JudgeName {...{ judgeName, setName }} />
       <div
         style={{
           display: "grid",
@@ -27,7 +31,7 @@ export default function JudgeLogin({
           type={show ? undefined : "password"}
           placeholder="password"
           value={password}
-          onChange={set}
+          onChange={setPassword}
           // onConfirm={doUnlock}
         />
         <button
@@ -42,9 +46,13 @@ export default function JudgeLogin({
   );
 }
 
-function JudgeName() {
-  const { judgeName, setName } = useJudgeName();
-
+function JudgeName({
+  judgeName,
+  setName,
+}: {
+  judgeName: string;
+  setName: (name: string) => void;
+}) {
   return (
     <IfElse
       showIf={!judgeName}
@@ -58,9 +66,12 @@ function JudgeName() {
           }}
         >
           <Input
-            value={judgeName || undefined}
+            defaultValue={judgeName || undefined}
             placeholder="Name"
-            onChange={(name) => setName(name)}
+            onConfirm={(name) => {
+              setName(name)
+              localStorage.setItem('judge_name', name)
+            }}
           />
         </div>
       }

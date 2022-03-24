@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { client } from "../../main";
 
 export default function useActiveEvent(eventID: string) {
-  const [active, set] = useState<ActiveEvent | null>()
+  const [active, set] = useState<ActiveEvent | null>();
 
   useEffect(() => {
     client.service("api/active").get(eventID).then(set);
@@ -17,6 +17,5 @@ export default function useActiveEvent(eventID: string) {
     };
   }, []);
 
-
-  return active
+  return active;
 }
