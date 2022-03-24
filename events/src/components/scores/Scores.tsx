@@ -14,7 +14,7 @@ export default function Scores({ event }: { event: Event }) {
 
   useEffect(() => {
     client.service("api/active").get(event._id).then(console.log);
-  });
+  }, []);
 
   return (
     <div className="scores" style={{ overflow: "hidden" }}>
