@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useJudgeName } from "../../App";
 import { client } from "../../main";
-import useJudgeName from "./useJudgeName";
 
 export default function useActiveStage() {
   const { eventID, heatNumber, roundNumber, stageNumber } = useParams();
   const [stage, set] = useState(Number(stageNumber));
-  const { name: judgeName } = useJudgeName()
+  const { judgeName } = useJudgeName()
 
   useEffect(() => {
     if (stage !== Number(stageNumber)) set(Number(stageNumber));

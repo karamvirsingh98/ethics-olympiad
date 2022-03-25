@@ -1,8 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useJudgeName } from "../../App";
 import { client } from "../../main";
-import useJudgeName from "../../state/hooks/useJudgeName";
 import { Olympiad } from "../../state/types";
-import { useLocalStorage } from "../../util/hooks";
 import IfElse from "../util/IfElse";
 import AdminLogin from "./AdminLogin";
 import JudgeLogin from "./JudgeLogin";
@@ -22,7 +21,7 @@ export default function Unlock({
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
 
-  const [judgeName, setName] = useState(localStorage.getItem('judge_name') || "")
+  const { judgeName, setName } = useJudgeName()
 
   const doUnlock = async () => {
     if (judgeName) {

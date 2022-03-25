@@ -3,6 +3,9 @@ import Event from "./pages/Event";
 import Home from "./pages/Home";
 import DarkIcon from "./components/util/DarkIcon";
 import { useTheme } from "./util/hooks";
+import createUseJudgeName from "./state/hooks/useJudgeName";
+
+export const useJudgeName = createUseJudgeName()
 
 export default function App() {
   const [dark, toggle] = useTheme();
