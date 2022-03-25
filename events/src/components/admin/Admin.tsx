@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Event } from "../../state/types";
-import IfElse from "../util/IfElse";
 import Topbar from "../event/Topbar";
 import Teams from "./subcomponents/Teams";
 import Judges from "./subcomponents/Judges";
 import Divider from "../util/Divider";
-import { AdminButtons, StartButton } from "./subcomponents/Buttons";
+import { AdminButtons } from "./subcomponents/Buttons";
 import useActiveEvent from "../../state/hooks/useActiveEvent";
 
 export default function Admin({ event }: { event: Event }) {
@@ -30,7 +29,7 @@ export default function Admin({ event }: { event: Event }) {
             gap: "2rem",
           }}
         >
-          <Teams teams={event.teams} />
+          <Teams eventID={event._id} teams={event.teams} />
           <Divider />
           {activeEvent && <Judges judges={activeEvent.status} />}
         </div>

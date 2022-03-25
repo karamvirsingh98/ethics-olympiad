@@ -10,7 +10,7 @@ const HOME_IP = "http://10.0.0.44:3030";
 const MAX_HOME_IP = "http://10.0.0.43:3030"
 const LOCALHOST = "http://localhost:3030"
 
-export const client = setupClient(MAX_HOME_IP)
+export const client = setupClient(HOME_IP)
 
 ReactDOM.render(
   <React.StrictMode>

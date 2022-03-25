@@ -7,7 +7,7 @@ export const EventModel = model(
       owner: String,
       title: String,
       heats: [{ case1: String, case2: String }],
-      teams: [{ name: String, present: Boolean }],
+      teams: [{ teamName: String, present: Boolean }],
       timers: Array,
       password: String,
     },

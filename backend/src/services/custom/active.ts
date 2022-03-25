@@ -1,7 +1,7 @@
 import { Application, Params } from "@feathersjs/feathers";
 import { filterOutFromObj } from "../../helpers";
 import { ActiveEvents } from "../../types";
-import { Event, Status } from "@ethics-olympiad/types";
+import { Event, Status, Team } from "@ethics-olympiad/types";
 
 export class ActiveEventService {
   app: Application;
@@ -42,11 +42,14 @@ export class ActiveEventService {
   }
 
   //uses patch requests to update whether a team is present or absent
-  async patch(eventID: string, data: { teamName: string; present: boolean }) {
+  async patch(eventID: string, data: Team) {
+    console.log(data)
+    //FIXME URGENT figure out what's wrong with this indexing 
     const index = this.state[eventID].teams.findIndex(
       ({ teamName }) => teamName === data.teamName
     );
     this.state[eventID].teams[index] = data;
+    console.log(this.state[eventID])
     return this.state[eventID]; //event | null
   }
 

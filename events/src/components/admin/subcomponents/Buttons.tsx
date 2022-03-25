@@ -31,6 +31,8 @@ export function AdminButtons({
   setShowScores: (scores: boolean) => void;
   eventID: string;
 }) {
+  const navigate = useNavigate()
+
   return (
     <div style={{ display: "flex", gap: "2rem", placeSelf: "end" }}>
       <button className="blue" onClick={() => setShowScores(!showScores)}>
@@ -46,7 +48,10 @@ export function AdminButtons({
 
       <button
         className="red"
-        onClick={() => client.service("api/active").remove(eventID)}
+        onClick={() => {
+          client.service("api/active").remove(eventID)
+          navigate("..")
+        }}
       >
         End Event
       </button>

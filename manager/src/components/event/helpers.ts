@@ -27,14 +27,14 @@ export default function eventHelpers(
   const addTeam = () =>
     setOneField(event._id!, "teams", [
       ...event.teams,
-      { name: "", present: false },
+      { teamName: "", present: false },
     ]);
 
-  const renameTeam = (name: string, index: number) =>
+  const renameTeam = (teamName: string, index: number) =>
     setOneField(
       event._id!,
       "teams",
-      event.teams.map((team, i) => (i === index ? { ...team, name } : team))
+      event.teams.map((team, i) => (i === index ? { ...team, teamName } : team))
     );
 
   const removeTeam = (index: number) => {

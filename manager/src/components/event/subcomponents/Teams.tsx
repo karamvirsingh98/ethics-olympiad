@@ -14,6 +14,9 @@ export default function Teams({
   onRename: (name: string, index: number) => void;
   onRemove: (index: number) => void;
 }) {
+
+  console.log(teams)
+
   return (
     <div className="teams">
       <div className="heat-header">
@@ -45,9 +48,9 @@ export default function Teams({
               teams.map((team, i) => (
                 <TeamComponent
                   editing={editing}
-                  key={team.name + Math.random()}
+                  key={team.teamName}
                   team={team}
-                  onRename={(name) => onRename(name, i)}
+                  onRename={(teamName) => onRename(teamName, i)}
                   onRemove={() => onRemove(i)}
                 />
               ))}
@@ -74,7 +77,7 @@ export function TeamComponent({
       {editing ? (
         <Input
           style={{ fontSize: "1rem", textOverflow: "ellipsis" }}
-          defaultValue={team.name}
+          defaultValue={team.teamName}
           placeholder="New Team"
           onConfirm={onRename}
         />
@@ -86,7 +89,7 @@ export function TeamComponent({
             textOverflow: "ellipsis",
           }}
         >
-          {team.name}
+          {team.teamName}
         </div>
       )}
       {editing && (
