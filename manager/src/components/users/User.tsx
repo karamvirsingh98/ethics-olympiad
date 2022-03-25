@@ -1,7 +1,6 @@
 import { User } from "@ethics-olympiad/types";
 
 export default function UserComponent({ user }: { user: User }) {
-  console.log(user);
   return (
     <div className="grey-flat user">
       <div

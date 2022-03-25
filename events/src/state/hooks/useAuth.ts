@@ -25,8 +25,6 @@ export default function useAuth() {
     }
   };
 
-  console.log(user)
-
   const logout = async () => {
     await client.logout();
     setUser(false);

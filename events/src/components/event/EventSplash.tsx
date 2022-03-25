@@ -17,7 +17,7 @@ export default function EventSplash({
   const [active, set] = useState();
 
   useEffect(() => {
-    client.service("api/active").get().then(set);
+    client.service("api/active").get(event._id).then(set);
   }, []);
 
   return (

@@ -10,17 +10,31 @@ import TeamScoreComponent from "./team_score/TeamScore";
 
 export default function Scores({ event }: { event: Event }) {
   const navigate = useNavigate();
-  const [teams, set] = useState<Team[]>();
+  const [teams, setTeams] = useState<Team[]>();
+  const [scored, setScored] = useState(0);
 
   useEffect(() => {
-    client.service("api/active").get(event._id).then(console.log);
+    client
+      .service("api/active")
+      .get(event._id)
+      .then((res: { teams: Team[]; scored: number }) => {
+        setTeams(res.teams);
+        setScored(res.scored);
+      });
   }, []);
 
   return (
     <div className="scores" style={{ overflow: "hidden" }}>
       <Topbar event={event} />
       <div style={{ display: "grid", overflow: "hidden" }}>
-        <div style={{ display: "flex", gap: "1rem", height: "fit-content", padding: "0 0 1rem 1rem" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            height: "fit-content",
+            padding: "0 0 1rem 1rem",
+          }}
+        >
           {event.heats.map((_, i) => (
             <button
               key={i}

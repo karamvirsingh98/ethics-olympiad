@@ -25,6 +25,7 @@ export default function RoundTracker({ stage, showButtons }: { stage: number, sh
         placeItems: "center",
         maxWidth: "100%",
         gap: "2rem",
+        minWidth: 800
       }}
     >
       {showButtons && (

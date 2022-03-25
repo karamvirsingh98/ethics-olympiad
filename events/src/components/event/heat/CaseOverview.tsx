@@ -1,6 +1,6 @@
+import { Case } from "@ethics-olympiad/types";
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Case } from "../../../state/types";
 import { generateEmbed } from "../../../util/helpers";
 import IfElse from "../../util/IfElse";
 
@@ -31,28 +31,34 @@ export default function CaseOverview({ _case }: { _case: Case }) {
 function Video({ url }: { url: string }) {
   const [loading, set] = useState(true);
 
+
   return (
-    <Fragment>
-      {loading && <div className="spinner" />}
-      <IfElse
-        showIf={generateEmbed(url) ? true : false}
-        showTrue={
-          <iframe
-            frameBorder="0"
-            src={generateEmbed(url)}
-            style={{ width: "100%", height: "100%" }}
-            onLoad={() => set(false)}
-            title="Case Video"
-          />
-        }
-        showFalse={
-          <div style={{ placeSelf: "center", fontSize: "2rem" }}>
-            {" "}
-            Error Loading Video...{" "}
-          </div>
-        }
-      />
-    </Fragment>
+    <IfElse
+      showIf={loading}
+      showTrue={<div className="spinner" />}
+      showFalse={
+        <IfElse
+          showIf={url && generateEmbed(url) ? true : false}
+          showTrue={
+            url && (
+              <iframe
+                frameBorder="0"
+                src={generateEmbed(url)}
+                style={{ width: "100%", height: "100%" }}
+                onLoad={() => set(false)}
+                title="Case Video"
+              />
+            )
+          }
+          showFalse={
+            <div style={{ placeSelf: "center", fontSize: "2rem" }}>
+              {" "}
+              Error Loading Video...{" "}
+            </div>
+          }
+        />
+      }
+    />
   );
 }
 
