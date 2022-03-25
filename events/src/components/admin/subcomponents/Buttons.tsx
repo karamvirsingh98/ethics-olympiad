@@ -1,11 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import { client } from "../../../main";
 
-export function StartButton({ eventID }: { eventID: string }) {
+export function StartButton({
+  eventID,
+  navigate,
+}: {
+  eventID: string;
+  navigate: ReturnType<typeof useNavigate>;
+}) {
   return (
     <button
       style={{ placeSelf: "center", fontSize: "2rem" }}
       className="green"
-      onClick={() => client.service("api/active").create({ eventID })}
+      onClick={async () => {
+        await client.service("api/active").create({ eventID })
+        navigate("./admin")
+      }}
     >
       Start Event
     </button>

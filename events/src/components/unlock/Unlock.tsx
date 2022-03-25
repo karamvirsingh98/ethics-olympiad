@@ -21,10 +21,10 @@ export default function Unlock({
   const [password, setPassword] = useState("");
   const [admin, setAdmin] = useState(false);
 
-  const { judgeName, setName } = useJudgeName()
+  const { judgeName, setName } = useJudgeName();
 
   const doUnlock = async () => {
-    if (judgeName) {
+    if (judgeName || admin) {
       client
         .service("api/unlock")
         .create(admin ? { id: eventID } : { id: eventID, password })
@@ -66,10 +66,10 @@ export default function Unlock({
         }}
       >
         <button
-          className={judgeName ? "green" : "red"}
+          className={judgeName || admin ? "green" : "red"}
           style={{
             width: "100%",
-            cursor: judgeName ? undefined : "not-allowed",
+            cursor: judgeName || admin ? undefined : "not-allowed",
           }}
           onClick={async () => {
             if (admin) {

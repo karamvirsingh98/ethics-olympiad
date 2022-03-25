@@ -16,7 +16,7 @@ export default function AdminLogin({
 
   return (
     <Fragment>
-      <Input placeholder="username" value={username} onChange={setUsername} />
+      <Input placeholder="email" value={username} onChange={setUsername} />
       <div
         style={{
           display: "grid",

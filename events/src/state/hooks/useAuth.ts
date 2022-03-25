@@ -1,6 +1,6 @@
+import { User } from "@ethics-olympiad/types";
 import { useEffect, useState } from "react";
 import { client } from "../../main";
-import { User } from "../types";
 
 export default function useAuth() {
   const [user, setUser] = useState<User | false>();
@@ -24,6 +24,8 @@ export default function useAuth() {
       window.alert("Invalid Login Credentials");
     }
   };
+
+  console.log(user)
 
   const logout = async () => {
     await client.logout();

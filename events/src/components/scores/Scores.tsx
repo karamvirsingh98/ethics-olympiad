@@ -19,26 +19,8 @@ export default function Scores({ event }: { event: Event }) {
   return (
     <div className="scores" style={{ overflow: "hidden" }}>
       <Topbar event={event} />
-      <div
-        style={{
-          display: "grid",
-          gap: "2rem",
-          gridTemplateColumns: "auto auto 1fr",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
-          <button
-            className="blue"
-            onClick={() => navigate(`./`)}
-            style={{
-              fontSize: "1.5rem",
-              padding: "0.5rem 2rem",
-              width: "100%",
-            }}
-          >
-            All
-          </button>
+      <div style={{ display: "grid", overflow: "hidden" }}>
+        <div style={{ display: "flex", gap: "1rem", height: "fit-content", padding: "0 0 1rem 1rem" }}>
           {event.heats.map((_, i) => (
             <button
               key={i}
@@ -50,7 +32,7 @@ export default function Scores({ event }: { event: Event }) {
             </button>
           ))}
         </div>
-        <Divider vertical />
+        <Divider />
         <Routes>
           <Route
             path="/heat:heatNumber"
@@ -68,13 +50,22 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
 
   const validate = () => {
     const keys = Object.keys(score.scoreA) as unknown as Array<keyof TeamScore>;
-    const teamA = keys.every((key) => score.scoreA[key]);
-    const teamB = keys.every((key) => score.scoreB[key]);
-    return teamA && teamB && score.teamA && score.teamB;
+    const teamA =
+      keys.every((key) => score.scoreA[key]) && score.teamA ? true : false;
+    const teamB =
+      keys.every((key) => score.scoreB[key]) && score.teamB ? true : false;
+    return teamA && teamB;
   };
 
   return (
-    <div style={{ overflowY: "scroll", display: "grid", gap: "2rem", paddingBottom: "2rem" }}>
+    <div
+      style={{
+        overflowY: "scroll",
+        display: "grid",
+        gap: "2rem",
+        padding: "2rem 1rem",
+      }}
+    >
       <div className="score">
         <TeamScoreComponent
           teams={teams}
@@ -91,7 +82,15 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
           updateScore={updateScore}
         />
       </div>
-      <button className={validate() ? "green" : "red"} style={{ width: '100%', fontSize: "2rem" }} disabled={validate()}>
+      <button
+        className={validate() ? "green" : "red"}
+        style={{
+          width: "100%",
+          fontSize: "2rem",
+          cursor: validate() ? undefined : "not-allowed",
+        }}
+        disabled={validate()}
+      >
         Submit Scores for Heat {heatNumber}
       </button>
     </div>

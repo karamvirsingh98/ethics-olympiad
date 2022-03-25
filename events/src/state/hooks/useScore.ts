@@ -4,17 +4,17 @@ import { useJudgeName } from "../../App";
 import { client } from "../../main";
 import { getDefaultFullScore } from "../../util/defaults";
 
-export function useScores() {
-  const [scores, set] = useState();
-  const { eventID } = useParams();
-  const { judgeName } = useJudgeName();
+// export function useScores() {
+//   const [scores, set] = useState();
+//   const { eventID } = useParams();
+//   const { judgeName } = useJudgeName();
 
-  useEffect(() => {
-    client.service("api/scores").find({ eventID, judgeName }).then(set);
-  }, []);
+//   useEffect(() => {
+//     client.service("api/scores").find({ eventID, judgeName }).then(set);
+//   }, []);
 
-  return { scores };
-}
+//   return { scores };
+// }
 
 export function useScore() {
   const { judgeName } = useJudgeName();
