@@ -11,8 +11,8 @@ export default function Teams({
   eventID: string;
   teams: Team[];
 }) {
-  const updateTeam = (teamname: string, present: boolean) => () => {
-    client.service("api/active").patch(eventID, { teamname, present });
+  const updateTeam = (teamName: string, present: boolean) => () => {
+    client.service("api/active").patch(eventID, { teamName, present });
   };
 
   return (

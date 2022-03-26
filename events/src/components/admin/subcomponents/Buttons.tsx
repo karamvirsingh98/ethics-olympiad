@@ -6,7 +6,7 @@ export function StartButton({
   navigate,
 }: {
   eventID: string;
-  navigate: ReturnType<typeof useNavigate>;
+  navigate?: ReturnType<typeof useNavigate>;
 }) {
   return (
     <button
@@ -14,7 +14,7 @@ export function StartButton({
       className="green"
       onClick={async () => {
         await client.service("api/active").create({ eventID })
-        navigate("./admin")
+        navigate && navigate("./admin")
       }}
     >
       Start Event

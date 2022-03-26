@@ -12,8 +12,8 @@ export default function Selector({
 }) {
   const [show, setShow] = useState(false);
 
-  function f(name: string) {
-    return teams[teams.findIndex(t => t.name === name)]
+  function find(name: string): Team | undefined {
+    return teams[teams.findIndex(t => t.teamName === name)]
   }
 
   return (
@@ -30,7 +30,7 @@ export default function Selector({
         onClick={() => setShow(!show)}
         style={{ width: "100%", textAlign: "start" }}
       >
-        {f(selected) ? f(selected) : "No Team Selected"}
+        {find(selected)?.teamName || "No Team Selected"}
       </button>
       {show && (
         <div
@@ -47,11 +47,12 @@ export default function Selector({
           }}
           className="light"
         >
-          {teams.map(({ name }, i) => (
+          {teams.map(({ teamName }, i) => (
             <button
-              key={name}
+              key={teamName}
               onClick={() => {
-                onSelect(name);
+                onSelect(teamName);
+                setShow(false)
               }}
               className="blue"
               style={{
@@ -61,7 +62,7 @@ export default function Selector({
                 fontSize: "1rem",
               }}
             >
-              {teams[i].name}
+              {teams[i].teamName}
             </button>
           ))}
         </div>

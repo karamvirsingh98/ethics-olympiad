@@ -22,15 +22,16 @@ export default function Heats({
   onRemove: (index: number) => void;
 }) {
   return (
-    <div className="heats">
+    <div className="heats" style={{ maxHeight: "70vh" }}>
       <Header onAdd={onAdd} editing={editing} />
       <div
         style={{
-          maxHeight: "70vh",
+          maxHeight: `70vh`,
           overflowY: "auto",
-          display: "grid",
+          display: "flex",
+          flexDirection: "column",
           gap: "2rem",
-          minHeight: 250,
+          paddingBottom: "4rem",
         }}
       >
         {cases &&

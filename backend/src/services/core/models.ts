@@ -58,7 +58,6 @@ export const ScoreModel = model(
       teamB: String,
       scoreA: TeamScore,
       scoreB: TeamScore,
-      submitted: Boolean,
     },
     { timestamps: true }
   )

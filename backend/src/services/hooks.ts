@@ -14,7 +14,7 @@ export default function (app: Application) {
 
   //custom service hooks
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
-  app.service("api/scores").hooks();
+  app.service("api/scores").hooks(SCORE_HOOKS);
 }
 
 const protectEvents = () => {
@@ -42,9 +42,10 @@ const verifyInvite = () => {
 const updateJudgeScore = () => {
   return async (context: HookContext) => {
     const { eventID, judgeName, heatNumber } = context.data;
-    await context.app
+    context.app
       .service("/api/active")
       .updateJudgeScore(eventID, judgeName, heatNumber);
+    return context;
   };
 };
 
@@ -84,6 +85,8 @@ const SCORE_HOOKS = {
     update: [authenticate("jwt")],
     patch: [authenticate("jwt")],
     remove: [authenticate("jwt")],
+  },
+  after: {
     create: [updateJudgeScore()],
   },
 };

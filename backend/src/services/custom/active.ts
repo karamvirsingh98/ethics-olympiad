@@ -43,13 +43,10 @@ export class ActiveEventService {
 
   //uses patch requests to update whether a team is present or absent
   async patch(eventID: string, data: Team) {
-    console.log(data)
-    //FIXME URGENT figure out what's wrong with this indexing 
     const index = this.state[eventID].teams.findIndex(
       ({ teamName }) => teamName === data.teamName
     );
     this.state[eventID].teams[index] = data;
-    console.log(this.state[eventID])
     return this.state[eventID]; //event | null
   }
 
@@ -71,14 +68,13 @@ export class ActiveEventService {
   // }
 
   //internal method called by a hook to update the latest heat scored by a judge
-  async updateJudgeScore(
+  updateJudgeScore(
     eventID: string,
     judgeName: string,
     heatNumber: number
   ) {
-    this.state[eventID].scores[judgeName] = Math.max(
-      heatNumber,
-      this.state[eventID].scores[judgeName]
-    );
+    this.state[eventID].scores[judgeName] = heatNumber
+    const t: any = this
+    t.emit('scored', this.state[eventID])
   }
 }
