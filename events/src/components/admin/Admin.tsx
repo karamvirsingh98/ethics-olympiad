@@ -11,9 +11,7 @@ import { ScoreStatus } from "@ethics-olympiad/types";
 
 export default function Admin({ event }: { event: Event }) {
   const [showScores, setShowScores] = useState(false);
-  const activeEvent = useActiveEvent(event._id);
-
-  console.log(activeEvent);
+  const { activeEvent } = useActiveEvent(event._id);
 
   return (
     <div className="admin">

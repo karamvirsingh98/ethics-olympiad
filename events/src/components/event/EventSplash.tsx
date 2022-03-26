@@ -16,7 +16,7 @@ export default function EventSplash({
   user: User | undefined | false;
 }) {
   const navigate = useNavigate();
-  const activeEvent = useActiveEvent(event._id);
+  const { activeEvent } = useActiveEvent(event._id);
   const { judgeName } = useJudgeName();
 
   //TODO refactor these three things into a single hook, and use to have a much stronger control flow on the application

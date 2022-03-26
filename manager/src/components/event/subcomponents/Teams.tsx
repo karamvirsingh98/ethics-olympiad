@@ -15,8 +15,6 @@ export default function Teams({
   onRemove: (index: number) => void;
 }) {
 
-  console.log(teams)
-
   return (
     <div className="teams">
       <div className="heat-header">
