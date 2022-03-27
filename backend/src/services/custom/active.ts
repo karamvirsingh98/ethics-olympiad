@@ -68,13 +68,9 @@ export class ActiveEventService {
   // }
 
   //internal method called by a hook to update the latest heat scored by a judge
-  updateJudgeScore(
-    eventID: string,
-    judgeName: string,
-    heatNumber: number
-  ) {
-    this.state[eventID].scores[judgeName] = heatNumber
-    const t: any = this
-    t.emit('scored', this.state[eventID])
+  updateJudgeScore(eventID: string, judgeName: string, heatNumber: number) {
+    this.state[eventID].scores[judgeName] = heatNumber;
+    const t: any = this;
+    t.emit("scored", { type: "scored", data: this.state[eventID] });
   }
 }
