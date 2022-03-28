@@ -13,7 +13,7 @@ export default function useActiveEvent(eventID: string) {
     client.service("api/active").on("updated", set);
     client.service("api/active").on("patched", set);
     client.service("api/active").on("removed", set);
-    client.service("api/active").on("scored", console.log);
+    client.service("api/active").on("scored", set);
     return () => {
       client.service("api/active").removeListener("created");
       client.service("api/active").removeListener("updated");

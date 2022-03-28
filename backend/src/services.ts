@@ -21,6 +21,6 @@ export function coreServices(app: Application) {
 export function customServices(app: Application) {
   app.use("/api/invite", new InviteService(app));
   app.use("/api/unlock", new UnlockService(app));
-  app.use("/api/active", new ActiveEventService(app), { events: ["scored"] });
+  app.use("/api/active", new ActiveEventService(app));
   app.use("/api/channel", new ChannelService(app));
 }

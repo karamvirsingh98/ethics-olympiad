@@ -4,6 +4,8 @@ export default function Timer({ duration }: { duration: number }) {
   const { active, paused, time, start, pause, resume, reset } =
     useTimer(duration);
 
+    console.log(time())
+
   return (
     <div className="timer-container">
       <div style={{ fontSize: "15vw", fontWeight: 500 }}> {time()} </div>

@@ -14,7 +14,7 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "dev": "clear && cd backend && yarn dev & cd manager && yarn dev & cd events && yarn dev",
+    "dev-all": "clear && cd backend && yarn dev & cd manager && yarn dev & cd events && yarn dev",
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
     "build-backend": "cd backend && yarn build",
     "build-manager": "cd manager && yarn build",

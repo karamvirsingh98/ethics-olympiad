@@ -28,14 +28,14 @@ export function AdminButtons({
   eventID,
 }: {
   showScores: boolean;
-  setShowScores: (scores: boolean) => void;
+  setShowScores: () => void;
   eventID: string;
 }) {
   const navigate = useNavigate()
 
   return (
     <div style={{ display: "flex", gap: "2rem", placeSelf: "end" }}>
-      <button className="blue" onClick={() => setShowScores(!showScores)}>
+      <button className="blue" onClick={setShowScores}>
         {" "}
         Show {showScores ? "Heat Progress" : "Score Submissions"}{" "}
       </button>

@@ -39,5 +39,7 @@ app.listen(3030).on("listening", async () => {
         .filter((c: any) => c !== params.connection)
     );
 
-  app.service("api/active").on("scored", (d: any) => console.log("scored", d));
+  app
+    .service("api/active")
+    .publish("scored", (data: any) => app.channel(`events/${data.eventID}`));
 });

@@ -6,9 +6,11 @@ import { Event, Status, Team } from "@ethics-olympiad/types";
 export class ActiveEventService {
   app: Application;
   state: ActiveEvents = {};
+  events: string[];
 
   constructor(app: Application) {
     this.app = app;
+    this.events = ['scored']
   }
 
   async get(eventID: string, { user, judgeName }: Params) {
@@ -71,6 +73,6 @@ export class ActiveEventService {
   updateJudgeScore(eventID: string, judgeName: string, heatNumber: number) {
     this.state[eventID].scores[judgeName] = heatNumber;
     const t: any = this;
-    t.emit("scored", { type: "scored", data: this.state[eventID] });
+    t.emit("scored",this.state[eventID]);
   }
 }

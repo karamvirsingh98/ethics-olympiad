@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 export default function useTimer(duration: number) {
-  const [time, setTime] = useState(duration * 60);
+  const [time, setTime] = useState<number | null>(duration * 60);
   const [active, setActive] = useState(false);
   const [paused, setPaused] = useState(false);
   const ref: any = useRef(null);
@@ -28,7 +28,9 @@ export default function useTimer(duration: number) {
   const start = () => {
     setActive(true);
     ref.current = setInterval(() => {
-      if (time > 0) setTime((timer) => timer - 1);
+      setTime((timer) => {
+        
+      });
     }, 1000);
   };
 

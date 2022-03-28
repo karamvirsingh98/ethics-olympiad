@@ -8,9 +8,21 @@ import { AdminButtons, StartButton } from "./subcomponents/Buttons";
 import useActiveEvent from "../../state/hooks/useActiveEvent";
 import IfElse from "../util/IfElse";
 import { ScoreStatus } from "@ethics-olympiad/types";
+import { useLocalStorage } from "../../util/hooks";
+
+function useStatus(): [status: boolean, toggle: () => void] {
+  const [status, setStatus] = useLocalStorage("scores_or_judge", "judges")
+  const [show, set] = useState(status === "scores" ? true : false)
+  const toggle = () => {
+    set(!show)
+    setStatus(show ? "judges" : "scores")
+  }
+  return [show, toggle]
+}
+
 
 export default function Admin({ event }: { event: Event }) {
-  const [showScores, setShowScores] = useState(false);
+  const [showScores, setShowScores] = useStatus();
   const { activeEvent } = useActiveEvent(event._id);
 
   return (
@@ -44,7 +56,10 @@ export default function Admin({ event }: { event: Event }) {
                 showIf={showScores}
                 showTrue={
                   activeEvent && (
-                    <SocoreStatusComponent scores={activeEvent.scores} />
+                    <SocoreStatusComponent
+                      scores={activeEvent.scores}
+                      numHeats={event.heats.length}
+                    />
                   )
                 }
                 showFalse={
@@ -60,13 +75,59 @@ export default function Admin({ event }: { event: Event }) {
   );
 }
 
-function SocoreStatusComponent({ scores }: { scores: ScoreStatus }) {
+function SocoreStatusComponent({
+  scores,
+  numHeats,
+}: {
+  scores: ScoreStatus;
+  numHeats: number;
+}) {
   return (
-    <div style={{ display: "grid", gap: "1rem" }}>
+    <div
+      style={{
+        display: "grid",
+        height: "fit-content",
+        maxHeight: "75vh",
+        overflowY: "scroll",
+        gap: "2rem",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "end",
+          gap: "2rem",
+        }}
+      >
+        {Array.from(new Array(numHeats)).map((_, i) => (
+          <div style={{ width: "4rem", display: "grid", placeItems: "center" }}>
+            {" "}
+            Round {i + 1}{" "}
+          </div>
+        ))}
+      </div>
       {Object.keys(scores).map((name) => (
-        <div>
-          {" "}
-          {name} has scored up to heat {scores[name]}{" "}
+        <div
+          key={name}
+          style={{
+            display: "flex",
+            alignItems: "start",
+            justifyContent: "space-between",
+          }}
+        >
+          <div style={{ fontSize: "2rem" }}>
+            {name} has scored up to heat {scores[name]}
+          </div>
+          <div style={{ display: "flex", gap: "2rem" }}>
+            {Array.from(new Array(numHeats)).map((_, i) => (
+              <div
+                style={{ width: "4rem", display: "grid", placeItems: "center" }}
+              >
+                {" "}
+                {i < scores[name] ? "yeh" : "nah"}{" "}
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </div>

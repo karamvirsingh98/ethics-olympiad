@@ -116,7 +116,7 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
       keys.every((key) => score.scoreA[key]) && score.teamA ? true : false;
     const teamB =
       keys.every((key) => score.scoreB[key]) && score.teamB ? true : false;
-    return teamA && teamB;
+    return teamA && teamB && (score.teamA !== score.teamB);
   };
 
   const submitScore = async () => {
