@@ -20,10 +20,17 @@ export default function (app: Application) {
 const protectEvents = () => {
   return async (context: HookContext) => {
     if (!context.params.user)
-      context.result = context.result.map(({ _id, title }: Event) => ({
-        _id,
-        title,
-      }));
+      await Promise.all(
+        (context.result = context.result.map(
+          async ({ _id, eventTitle, templateID }: Event) => ({
+            _id,
+            eventTitle,
+            templateTitle: await context.app
+              .service("api/template")
+              .get({ _id: templateID }),
+          })
+        ))
+      );
     return context;
   };
 };

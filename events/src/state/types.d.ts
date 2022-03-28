@@ -1,4 +1,4 @@
-import { Case, Heat, Team } from "@ethics-olympiad/types"
+import { Case, Heat, Team } from "@ethics-olympiad/types";
 
 export interface Olympiad {
   event: Event;
@@ -7,7 +7,8 @@ export interface Olympiad {
 
 export interface BaseEvent {
   _id: string;
-  title: string;
+  eventTitle: string;
+  templateTitle: string;
 }
 
 export interface Event extends BaseEvent {

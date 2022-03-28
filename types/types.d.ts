@@ -3,6 +3,7 @@ export interface User {
   name: string;
   email: string;
   admin: boolean;
+  permissions?: Levels[];
   createdAt: string;
 }
 
@@ -13,14 +14,20 @@ export interface Invite {
   expiry?: number;
 }
 
+export interface Template {
+  _id?: string;
+  owner: string;
+  templateTitle: string;
+  heats: Heat[];
+  timers: number[];
+}
+
 export interface Event {
   _id?: string;
-  password?: string;
-  owner: string;
-  title: string;
-  timers: number[];
-  heats: Heat[];
+  templateID: string;
+  eventTitle: string;
   teams: Team[];
+  password?: string;
 }
 
 export interface Heat {
@@ -44,13 +51,13 @@ export interface Case {
   level: Levels;
 }
 
-export type Levels = "junior" | "middle" | "senior" | "tertiary"
+export type Levels = "junior" | "middle" | "senior" | "tertiary";
 
 export interface ActiveEvent {
   eventID: string;
   status: EventStatus;
   scores: ScoreStatus;
-  teams: Team[]
+  teams: Team[];
 }
 
 export interface EventStatus {
@@ -94,4 +101,3 @@ export interface Score {
   scoreB: TeamScore;
   submitted?: boolean;
 }
-

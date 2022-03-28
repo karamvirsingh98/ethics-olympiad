@@ -1,14 +1,24 @@
 import { model, Schema } from "mongoose";
 
+export const TemplateModel = model(
+  "olympiad-template",
+  new Schema(
+    {
+      owner: String,
+      templateTitle: String,
+      heats: [{ case1: String, case2: String }],
+      timers: Array,
+    }
+  )
+)
+
 export const EventModel = model(
   "olympiad-event",
   new Schema(
     {
-      owner: String,
-      title: String,
-      heats: [{ case1: String, case2: String }],
+      templateID: String,
+      eventTitle: String,
       teams: [{ teamName: String, present: Boolean }],
-      timers: Array,
       password: String,
     },
     { timestamps: true }
@@ -72,6 +82,7 @@ export const UserModel = model(
       email: String,
       password: String,
       admin: Boolean,
+      permissions: [String]
     },
     { timestamps: true }
   )

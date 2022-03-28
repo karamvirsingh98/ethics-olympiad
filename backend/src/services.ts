@@ -4,6 +4,7 @@ import {
   CaseModel,
   EventModel,
   ScoreModel,
+  TemplateModel,
   UserModel,
 } from "./services/core/models";
 import { ActiveEventService } from "./services/custom/active";
@@ -16,6 +17,7 @@ export function coreServices(app: Application) {
   app.use("/api/events", new Service({ Model: EventModel, lean: true }));
   app.use("/api/cases", new Service({ Model: CaseModel, lean: true }));
   app.use("/api/scores", new Service({ Model: ScoreModel, lean: true }));
+  app.use("/api/templates", new Service({ Model: TemplateModel, lean: true }));
 }
 
 export function customServices(app: Application) {
