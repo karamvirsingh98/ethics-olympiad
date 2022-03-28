@@ -11,15 +11,14 @@ import { ScoreStatus } from "@ethics-olympiad/types";
 import { useLocalStorage } from "../../util/hooks";
 
 function useStatus(): [status: boolean, toggle: () => void] {
-  const [status, setStatus] = useLocalStorage("scores_or_judge", "judges")
-  const [show, set] = useState(status === "scores" ? true : false)
+  const [status, setStatus] = useLocalStorage("scores_or_judge", "judges");
+  const [show, set] = useState(status === "scores" ? true : false);
   const toggle = () => {
-    set(!show)
-    setStatus(show ? "judges" : "scores")
-  }
-  return [show, toggle]
+    set(!show);
+    setStatus(show ? "judges" : "scores");
+  };
+  return [show, toggle];
 }
-
 
 export default function Admin({ event }: { event: Event }) {
   const [showScores, setShowScores] = useStatus();
@@ -99,12 +98,15 @@ function SocoreStatusComponent({
           gap: "2rem",
         }}
       >
-        {Array.from(new Array(numHeats)).map((_, i) => (
-          <div style={{ width: "4rem", display: "grid", placeItems: "center" }}>
-            {" "}
-            Round {i + 1}{" "}
-          </div>
-        ))}
+        {Object.keys(scores).length > 0 &&
+          Array.from(new Array(numHeats)).map((_, i) => (
+            <div
+              style={{ width: "4rem", display: "grid", placeItems: "center" }}
+            >
+              {" "}
+              Round {i + 1}{" "}
+            </div>
+          ))}
       </div>
       {Object.keys(scores).map((name) => (
         <div

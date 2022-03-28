@@ -1,4 +1,4 @@
-import { Case, Event } from "@ethics-olympiad/types";
+import { Case, Event, Levels } from "@ethics-olympiad/types";
 
 export function getDefaultEvent(userID: string): Event {
   return {
@@ -10,11 +10,12 @@ export function getDefaultEvent(userID: string): Event {
   };
 }
 
-export function getDefaultCase(userID: string, isVideo: boolean): Case {
+export function getDefaultCase(userID: string, isVideo: boolean, level: Levels): Case {
   return {
     owner: userID,
     title: "New Case",
     question: "",
-    isVideo: isVideo
+    isVideo: isVideo,
+    level,
   }
 }

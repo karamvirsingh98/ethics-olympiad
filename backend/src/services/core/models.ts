@@ -25,6 +25,7 @@ export const CaseModel = model(
       isVideo: Boolean,
       videoURL: String,
       bodyText: String,
+      level: String,
     },
     { timestamps: true }
   )

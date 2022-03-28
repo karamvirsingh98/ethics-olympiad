@@ -4,7 +4,8 @@ import { getDefaultCase } from "../state/defaults";
 import { client } from "../main";
 import CaseGroup from "../components/case/CaseGroup";
 import Divider from "../components/util/Divider";
-import { Case, User } from "@ethics-olympiad/types";
+import { Case, Levels, User } from "@ethics-olympiad/types";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 
 export default function Cases({
   user,
@@ -13,6 +14,51 @@ export default function Cases({
   user: User;
   state: AppState;
 }) {
+  return (
+    <Routes>
+      <Route path="/" element={<CaseRouteButtons />} />
+      <Route
+        path={"/:caseLevel"}
+        element={<CaseLevel {...{ user, state }} />}
+      />
+    </Routes>
+  );
+}
+
+function CaseRouteButtons() {
+  const navigate = useNavigate();
+  const levels: Levels[] = ["junior", "middle", "senior", "tertiary"];
+  function capitalise(s: string) {
+    return s[0].toUpperCase() + s.slice(1);
+  }
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "2rem",
+        alignItems: "center",
+        justifyContent: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      {levels.map((level) => (
+        <button
+          key={level}
+          onClick={() => navigate(`./${level}`)}
+          className="blue"
+          style={{ fontSize: "1.5rem", padding: "0.5rem 2rem" }}
+        >
+          {capitalise(level)} Cases
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function CaseLevel({ user, state }: { user: User; state: AppState }) {
+  const { caseLevel } = useParams();
+
   const {
     cases: [cases, { setOne, setOneField, removeOne }],
   } = state;
@@ -20,7 +66,7 @@ export default function Cases({
   const createCase = (isVideo: boolean) => async () => {
     const newCase: Case = await client
       .service("/api/cases")
-      .create(getDefaultCase(user._id, isVideo));
+      .create(getDefaultCase(user._id, isVideo, caseLevel! as Levels));
     setOne(newCase._id!, newCase);
   };
 
@@ -38,7 +84,9 @@ export default function Cases({
         <CaseGroup
           title="Video Cases"
           cases={cases}
-          sortCondition={(caseID) => cases && cases[caseID].isVideo}
+          sortCondition={(caseID) =>
+            cases && cases[caseID].isVideo && cases[caseID].level === caseLevel
+          }
           setOne={setOne}
           setOneField={setOneField}
           removeOne={removeOne}
@@ -50,7 +98,9 @@ export default function Cases({
         <CaseGroup
           title="Text Cases"
           cases={cases}
-          sortCondition={(caseID) => cases && !cases[caseID].isVideo}
+          sortCondition={(caseID) =>
+            cases && !cases[caseID].isVideo && cases[caseID].level === caseLevel
+          }
           setOne={setOne}
           setOneField={setOneField}
           removeOne={removeOne}

@@ -41,7 +41,10 @@ export interface Case {
   isVideo: boolean;
   videoURL?: string;
   bodyText?: string;
+  level: Levels;
 }
+
+export type Levels = "junior" | "middle" | "senior" | "tertiary"
 
 export interface ActiveEvent {
   eventID: string;

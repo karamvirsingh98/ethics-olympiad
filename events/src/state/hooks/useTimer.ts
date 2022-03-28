@@ -29,7 +29,8 @@ export default function useTimer(duration: number) {
     setActive(true);
     ref.current = setInterval(() => {
       setTime((timer) => {
-        
+        if (timer && timer > 0) return timer - 1;
+        else return null;
       });
     }, 1000);
   };
@@ -42,7 +43,10 @@ export default function useTimer(duration: number) {
   const resume = () => {
     setPaused(false);
     ref.current = setInterval(() => {
-      if (ref.current) setTime((timer) => timer - 1);
+      setTime((timer) => {
+        if (timer && timer > 0) return timer - 1;
+        else return null;
+      });
     }, 1000);
   };
 
@@ -54,11 +58,13 @@ export default function useTimer(duration: number) {
   };
 
   const formatTime = () => {
-    const getSeconds = `0${time % 60}`.slice(-2);
-    const minutes: any = `${Math.floor(time / 60)}`;
-    const getMinutes = `${minutes % 60}`.slice(-2);
+    if (time) {
+      const getSeconds = `0${time % 60}`.slice(-2);
+      const minutes: any = `${Math.floor(time / 60)}`;
+      const getMinutes = `${minutes % 60}`.slice(-2);
 
-    return `${getMinutes} : ${getSeconds}`;
+      return `${getMinutes} : ${getSeconds}`;
+    }
   };
 
   return { active, paused, time: formatTime, start, pause, resume, reset };
