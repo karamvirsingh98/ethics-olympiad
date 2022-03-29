@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { useAppState } from "../state/hooks/useAppState";
+// import { useAppState } from "../state/hooks/useAppState";
 import { User } from "@ethics-olympiad/types";
 import Topbar from "../components/Topbar";
 import Events from "../pages/Events";
@@ -18,15 +18,14 @@ export default function PageRoutes({
   dark: boolean;
   toggleDark: () => void;
 }) {
-  const state = useAppState(user);
 
   return (
     <Fragment>
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <Routes>
         <Route path="/" element={<div style={{ fontSize: '2rem' }}> Hello {user.name} </div>}></Route>
-        <Route path="/events" element={<Events user={user} state={state} />} />
-        <Route path="/cases/*" element={<Cases user={user} state={state} />} />
+        <Route path="/events" element={<Events user={user} />} />
+        <Route path="/cases/*" element={<Cases user={user} />} />
         {user.admin && (
           <Route path="/users" element={<Users currentUserID={user._id!} />} />
         )}

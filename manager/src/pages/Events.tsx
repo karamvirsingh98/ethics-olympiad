@@ -6,18 +6,16 @@ import { AppState } from "../state/types";
 import { useLocalStorage } from "../util/hooks";
 import { eventsHelpers } from "./helpers";
 import { User } from "@ethics-olympiad/types";
+import { useCases, useEvents } from "../App";
 
 export default function Events({
   user,
-  state,
 }: {
   user: User;
-  state: AppState;
 }) {
-  const {
-    events: [events, { setOne, setOneField, removeOne }],
-    cases: [cases],
-  } = state;
+
+  const [events, { setOne, setOneField, removeOne} ] = useEvents(user);
+  const [cases] = useCases(user)
 
   const [currentID, setID] = useLocalStorage(
     "",
@@ -32,7 +30,7 @@ export default function Events({
   } = eventsHelpers(
     user._id,
     currentID,
-    events!,
+    events,
     setOne,
     setOneField,
     removeOne,

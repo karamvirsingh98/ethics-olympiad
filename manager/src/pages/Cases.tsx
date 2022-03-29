@@ -6,20 +6,19 @@ import CaseGroup from "../components/case/CaseGroup";
 import Divider from "../components/util/Divider";
 import { Case, Levels, User } from "@ethics-olympiad/types";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
+import { useCases } from "../App";
 
 export default function Cases({
   user,
-  state,
 }: {
   user: User;
-  state: AppState;
 }) {
   return (
     <Routes>
       <Route path="/" element={<CaseRouteButtons />} />
       <Route
         path={"/:caseLevel"}
-        element={<CaseLevel {...{ user, state }} />}
+        element={<CaseLevel user={user} />}
       />
     </Routes>
   );
@@ -56,12 +55,10 @@ function CaseRouteButtons() {
   );
 }
 
-function CaseLevel({ user, state }: { user: User; state: AppState }) {
+function CaseLevel({ user }: { user: User }) {
   const { caseLevel } = useParams();
 
-  const {
-    cases: [cases, { setOne, setOneField, removeOne }],
-  } = state;
+  const [cases, { setOne, setOneField, removeOne }] = useCases(user)
 
   const createCase = (isVideo: boolean) => async () => {
     const newCase: Case = await client
