@@ -1,6 +1,9 @@
 import { SetOneField } from "../../state/hooks/useCollection";
 import { Event } from "@ethics-olympiad/types";
 
+
+//FIXME lord help me with the strength to complete this refactor. It's the right thing to do, but god is it a pain
+
 export default function eventHelpers(
   event: Event,
   setOneField: SetOneField<Event>
