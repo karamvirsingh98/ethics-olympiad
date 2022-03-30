@@ -14,9 +14,9 @@ export function Templates({ user, eventID }: { user: User; eventID: string }) {
         object={templates}
         map={(templateID) => (
           <TemplateComponent
+            editing={false}
             template={templates[templateID]}
             user={user}
-            eventID={eventID}
           />
         )}
       />
@@ -39,7 +39,7 @@ export default function TemplateComponent({
   return (
     <div>
       <div> {templateTitle} </div>
-      <Heats editing={editing} user={user} heats={heats} templateID={_id!}  />
+      <Heats editing={editing} user={user} heats={heats} templateID={_id!} />
     </div>
   );
 }
