@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Input from "../util/Input";
 
 export default function Signup({
@@ -8,12 +8,13 @@ export default function Signup({
   createAccount: (
     credentials: { name: string; email: string; password: string },
     inviteKey: string
-  ) => void;
+  ) => Promise<void>;
 }) {
   const [credentials, set] = useState({ name: "", email: "", password: "" });
   const [show, setShow] = useState(false);
 
   const { inviteKey } = useParams()
+  const navigate = useNavigate()
 
   return (
     <div className="auth-window">
@@ -52,7 +53,10 @@ export default function Signup({
           {show ? "Hide" : "Show"}
         </button>
       </div>
-      <button className="green" style={{ width: "100%" }} onClick={() => createAccount(credentials, inviteKey!)}>
+      <button className="green" style={{ width: "100%" }} onClick={async () => {
+        await createAccount(credentials, inviteKey!)
+        navigate("/")
+      }}>
         Create Account
       </button>
     </div>

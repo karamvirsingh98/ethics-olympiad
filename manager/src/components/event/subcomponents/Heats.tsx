@@ -1,26 +1,26 @@
-import { Heat, Event } from "@ethics-olympiad/types";
-import { SetOneField } from "../../../state/hooks/useCollection";
+import { Heat, User } from "@ethics-olympiad/types";
+import { useCases, useTemplates } from "../../../App";
 import { Cases } from "../../../state/types";
 import Conditional from "../../util/Conditional";
 import CaseSelector from "./Selector";
 
 export default function Heats({
   editing,
-  cases,
+  user,
   heats,
-  eventID,
-  setOneField,
+  templateID,
   onAdd,
   onRemove,
 }: {
   editing: boolean;
-  cases: Cases;
+  user: User;
   heats: Heat[];
-  eventID: string;
-  setOneField: SetOneField<Event>;
+  templateID: string;
   onAdd: () => void;
   onRemove: (index: number) => void;
 }) {
+  const [cases] = useCases(user);
+
   return (
     <div className="heats" style={{ maxHeight: "70vh" }}>
       <Header onAdd={onAdd} editing={editing} />
@@ -38,14 +38,14 @@ export default function Heats({
           heats &&
           heats.map((heat, i) => (
             <HeatComponent
-              key={i + Math.random()}
+              key={i}
               editing={editing}
-              eventID={eventID}
+              templateID={templateID}
+              user={user}
               index={i}
               cases={cases}
               heat={heat}
               heats={heats}
-              setOneField={setOneField}
               onRemove={onRemove}
             />
           ))}
@@ -57,23 +57,25 @@ export default function Heats({
 function HeatComponent({
   editing,
   index,
-  eventID,
+  templateID,
+  user,
   cases,
   heats,
   heat,
-  setOneField,
   onRemove,
 }: {
   editing: boolean;
   index: number;
-  eventID: string;
+  templateID: string;
+  user: User;
   cases: Cases;
   heats: Heat[];
   heat: Heat;
-  setOneField: SetOneField<Event>;
   onRemove: (index: number) => void;
 }) {
   const { case1, case2 } = heat;
+
+  const [_, { setOneField }] = useTemplates(user);
 
   const updateCase =
     (heatIndex: number, case1: boolean) => (caseID: string) => {
@@ -81,7 +83,7 @@ function HeatComponent({
       if (case1)
         _heats.splice(heatIndex, 1, { ..._heats[heatIndex], case1: caseID });
       else _heats.splice(heatIndex, 1, { ..._heats[heatIndex], case2: caseID });
-      setOneField(eventID, "heats", _heats);
+      setOneField(templateID, "heats", _heats);
     };
 
   return (

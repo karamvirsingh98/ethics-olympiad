@@ -11,7 +11,7 @@ export default function Auth({
   createAccount: (
     credentials: { name: string; email: string; password: string },
     inviteKey: string
-  ) => void;
+  ) => Promise<void>;
 }) {
   return (
     <Fragment>

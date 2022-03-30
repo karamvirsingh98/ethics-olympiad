@@ -48,7 +48,7 @@ function CaseRouteButtons() {
           className="blue"
           style={{ fontSize: "1.5rem", padding: "0.5rem 2rem" }}
         >
-          {capitalise(level)} Cases
+          {capitalise(level)} Level Cases
         </button>
       ))}
     </div>

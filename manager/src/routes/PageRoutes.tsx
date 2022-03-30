@@ -18,12 +18,14 @@ export default function PageRoutes({
   dark: boolean;
   toggleDark: () => void;
 }) {
-
   return (
     <Fragment>
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <Routes>
-        <Route path="/" element={<div style={{ fontSize: '2rem' }}> Hello {user.name} </div>}></Route>
+        <Route
+          path="/"
+          element={<div style={{ fontSize: "2rem" }}> Hello {user.name} </div>}
+        />
         <Route path="/events" element={<Events user={user} />} />
         <Route path="/cases/*" element={<Cases user={user} />} />
         {user.admin && (
