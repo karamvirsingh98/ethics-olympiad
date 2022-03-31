@@ -2,11 +2,11 @@ import { Fragment, useState } from "react";
 import EventCompnent from "../components/event/Event";
 import Items from "./page/Items";
 import EventHeader from "./page/PageTitle";
-import { AppState } from "../state/types";
 import { useLocalStorage } from "../util/hooks";
 import { eventsHelpers } from "./helpers";
 import { User } from "@ethics-olympiad/types";
-import { useCases, useEvents } from "../App";
+import { useEvents } from "../App";
+import { Route, Routes } from "react-router-dom";
 
 export default function Events({
   user,
@@ -15,7 +15,6 @@ export default function Events({
 }) {
 
   const [events, { setOne, setOneField, removeOne} ] = useEvents(user);
-  const [cases] = useCases(user)
 
   const [currentID, setID] = useLocalStorage(
     "",
@@ -52,7 +51,6 @@ export default function Events({
             />
             <EventCompnent
               editing={editing}
-              cases={cases!}
               event={events![currentID]}
               setOneField={setOneField}
             />

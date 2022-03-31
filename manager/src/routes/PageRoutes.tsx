@@ -26,7 +26,7 @@ export default function PageRoutes({
           path="/"
           element={<div style={{ fontSize: "2rem" }}> Hello {user.name} </div>}
         />
-        <Route path="/events" element={<Events user={user} />} />
+        <Route path="/events/" element={<Events user={user} />} />
         <Route path="/cases/*" element={<Cases user={user} />} />
         {user.admin && (
           <Route path="/users" element={<Users currentUserID={user._id!} />} />

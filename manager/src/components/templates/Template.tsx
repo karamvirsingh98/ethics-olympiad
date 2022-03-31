@@ -1,11 +1,11 @@
 import { Template, User } from "@ethics-olympiad/types";
-import { useState } from "react";
-import { useAuth, useCases, useTemplates } from "../../App";
-import { Cases } from "../../state/types";
-import Heats from "../event/subcomponents/Heats";
+import { useTemplates } from "../../App";
+import Heats from "./subcomponents/Heats";
+import Timers from "./subcomponents/Timers";
 import ObjectMap from "../util/ObjectMap";
+import templateHelpers from "./helpers";
 
-export function Templates({ user, eventID }: { user: User; eventID: string }) {
+export function Templates({ user }: { user: User }) {
   const [templates] = useTemplates(user);
 
   return (
@@ -34,12 +34,29 @@ export default function TemplateComponent({
   template: Template;
 }) {
   const { _id, templateTitle, heats } = template;
-  const [cases] = useCases(user);
+  const [_, { setOneField }] = useTemplates(user);
+
+  const { addHeat, removeHeat, editTimer } = templateHelpers(
+    template,
+    setOneField
+  );
 
   return (
     <div>
       <div> {templateTitle} </div>
-      <Heats editing={editing} user={user} heats={heats} templateID={_id!} />
+      <Heats
+        editing={editing}
+        user={user}
+        heats={heats}
+        templateID={_id!}
+        addHeat={addHeat}
+        removeHeat={removeHeat}
+      />
+      <Timers
+        editing={editing}
+        timers={template.timers}
+        onConfirm={editTimer}
+      />
     </div>
   );
 }

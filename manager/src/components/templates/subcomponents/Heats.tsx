@@ -2,28 +2,28 @@ import { Heat, User } from "@ethics-olympiad/types";
 import { useCases, useTemplates } from "../../../App";
 import { Cases } from "../../../state/types";
 import Conditional from "../../util/Conditional";
-import CaseSelector from "./Selector";
+import CaseSelector from "../../event/subcomponents/Selector";
 
 export default function Heats({
   editing,
   user,
   heats,
   templateID,
-  onAdd,
-  onRemove,
+  addHeat,
+  removeHeat,
 }: {
   editing: boolean;
   user: User;
   heats: Heat[];
   templateID: string;
-  onAdd: () => void;
-  onRemove: (index: number) => void;
+  addHeat: () => void;
+  removeHeat: (index: number) => void;
 }) {
   const [cases] = useCases(user);
 
   return (
     <div className="heats" style={{ maxHeight: "70vh" }}>
-      <Header onAdd={onAdd} editing={editing} />
+      <Header onAdd={addHeat} editing={editing} />
       <div
         style={{
           maxHeight: `70vh`,
@@ -46,7 +46,7 @@ export default function Heats({
               cases={cases}
               heat={heat}
               heats={heats}
-              onRemove={onRemove}
+              onRemove={removeHeat}
             />
           ))}
       </div>
