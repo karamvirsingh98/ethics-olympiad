@@ -10,7 +10,7 @@ export type SetOne<T> = (id: string, item: T) => void;
 export type SetOneField<T> = (id: string, field: keyof T, item: any) => void;
 export type RemoveOne = (id: string) => void;
 
-interface CollectionFunctions<T> {
+export interface CollectionFunctions<T> {
   set: SetCollection<T>;
   setOne: SetOne<T>;
   setOneField: SetOneField<T>;
@@ -22,7 +22,8 @@ type UseCollection<T, P> = (
 ) => [items: Collection<T>, functions: CollectionFunctions<T>];
 
 export function createUseCollection<T, P = any>(
-  service: string
+  service: string,
+  params?: P
 ): UseCollection<T, P> {
   const collection = atom<Collection<T>>({});
   return (user: User) => {
@@ -61,6 +62,15 @@ export default function useCollection<T, P = any>(
   params?: P
 ): [items: Collection<T> | undefined, functions: CollectionFunctions<T>] {
   const [items, set] = useState<Collection<T>>();
+
+  useEffect(() => {
+    client
+      .service(`api/${service}`)
+      .find(params)
+      .then((res: T[]) => {
+        set(arrToKeyedObject(res, "_id"));
+      });
+  }, []);
 
   return [
     items,

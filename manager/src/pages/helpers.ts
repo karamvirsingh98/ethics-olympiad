@@ -3,57 +3,50 @@ import { getDefaultEvent } from "../state/defaults";
 import { RemoveOne, SetOne, SetOneField } from "../state/hooks/useCollection";
 import { Events } from "../state/types";
 import { Event } from "@ethics-olympiad/types";
+import { useNavigate } from "react-router-dom";
 
 export function eventsHelpers(
   userID: string,
-  currentID: string,
+  eventID: string,
   events: Events,
   setOne: SetOne<Event>,
   setOneField: SetOneField<Event>,
   removeOne: RemoveOne,
-  setID: (id: string) => void,
   setEditing: (editing: boolean) => void
 ) {
-  const createEvent = async () => {
-    const newEvent: Event = await client
-      .service("/api/events")
-      .create(getDefaultEvent(userID));
-    setOne(newEvent._id!, newEvent);
-    setID(newEvent._id!);
-    setEditing(true);
-    document.getElementById("event-title")?.focus();
-  };
+  const navigate = useNavigate()
+
 
   const deleteEvent = async () => {
-    await client.service("api/events").remove(currentID);
-    removeOne(currentID);
-    setID("");
+    await client.service("api/events").remove(eventID);
+    removeOne(eventID);
+    navigate("..");
   };
 
   const saveEdits = async () => {
     const updatedEvent = await client
       .service("api/events")
-      .update(currentID, events![currentID]);
-    setOne(currentID, updatedEvent);
+      .update(eventID, events![eventID]);
+    setOne(eventID, updatedEvent);
     setEditing(false);
   };
 
   const cancelEdits = async () => {
-    setOne(currentID, await client.service("/api/events").get(currentID));
+    setOne(eventID, await client.service("/api/events").get(eventID));
     setEditing(false);
   };
 
   const getTitle = () =>
     events
-      ? events[currentID]
-        ? events[currentID].title
+      ? events[eventID]
+        ? events[eventID].eventTitle
         : Object.keys(events).length > 0
         ? "Select an Event"
         : "Create an Event"
       : "Failed to Load Events";
 
   const setTitle = (title: string) => {
-    setOneField(currentID, "title", title);
+    setOneField(eventID, "eventTitle", title);
   };
 
   const setPassword = (id: string) => (password: string) => {
@@ -61,7 +54,6 @@ export function eventsHelpers(
   };
 
   return {
-    createEvent,
     deleteEvent,
     saveEdits,
     cancelEdits,

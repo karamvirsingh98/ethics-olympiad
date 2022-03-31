@@ -1,4 +1,4 @@
-import { Heat, User } from "@ethics-olympiad/types";
+import { Heat, Template, User } from "@ethics-olympiad/types";
 import { useCases, useTemplates } from "../../../App";
 import { Cases } from "../../../state/types";
 import Conditional from "../../util/Conditional";
@@ -7,15 +7,13 @@ import CaseSelector from "../../event/subcomponents/Selector";
 export default function Heats({
   editing,
   user,
-  heats,
-  templateID,
+  template,
   addHeat,
   removeHeat,
 }: {
   editing: boolean;
   user: User;
-  heats: Heat[];
-  templateID: string;
+  template: Template;
   addHeat: () => void;
   removeHeat: (index: number) => void;
 }) {
@@ -35,17 +33,17 @@ export default function Heats({
         }}
       >
         {cases &&
-          heats &&
-          heats.map((heat, i) => (
+          template.heats &&
+          template.heats.map((heat, i) => (
             <HeatComponent
               key={i}
               editing={editing}
-              templateID={templateID}
+              templateID={template._id!}
               user={user}
               index={i}
               cases={cases}
               heat={heat}
-              heats={heats}
+              heats={template.heats}
               onRemove={removeHeat}
             />
           ))}

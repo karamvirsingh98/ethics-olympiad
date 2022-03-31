@@ -8,7 +8,6 @@ import { useTheme } from "./util/hooks";
 
 export const useAuth = createUseAuth();
 
-export const useEvents = createUseCollection<Event>('events')
 export const useTemplates = createUseCollection<Template>('templates')
 export const useCases = createUseCollection<Case>('cases')
 

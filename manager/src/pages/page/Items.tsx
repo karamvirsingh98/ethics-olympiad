@@ -1,38 +1,37 @@
 import { Case, Event } from "@ethics-olympiad/types";
-import { Cases, Events } from "../../state/types";
+import { useNavigate } from "react-router-dom";
+import { Events } from "../../state/types";
 
 export default function Items({
-  label,
-  items,
-  setCurrentID,
+  events,
   onNewClick,
 }: {
-  label: string;
-  items: Cases | Events;
-  setCurrentID: (id: string) => void;
+  events: Events;
   onNewClick: () => void;
 }) {
+
+  const navigate = useNavigate()
+
   return (
     <div className="items">
-      {Object.keys(items).map((id) => (
-        <Item item={items[id]} onClick={() => setCurrentID(id)} key={id} />
+      {Object.keys(events).map((id) => (
+        <Item item={events[id]} onClick={() => navigate(`./${id}`)} key={id} />
       ))}
       <button className="green" onClick={onNewClick}>
-        {" "}
-        New {label}{" "}
+        New Event
       </button>
     </div>
   );
 }
 
-function Item({ item, onClick }: { item: Event | Case; onClick: () => void }) {
+function Item({ item, onClick }: { item: Event; onClick: () => void }) {
   return (
     <button
       className="grey"
       onClick={onClick}
       style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
     >
-      {item.title}
+      {item.eventTitle}
     </button>
   );
 }

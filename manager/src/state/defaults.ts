@@ -1,12 +1,10 @@
 import { Case, Event, Levels } from "@ethics-olympiad/types";
 
-export function getDefaultEvent(userID: string): Event {
+export function getDefaultEvent(templateID: string): Event {
   return {
-    owner: userID,
-    title: "New Olympiad",
-    heats: [],
+    templateID,
+    eventTitle: "New Olympiad",
     teams: [],
-    timers: [3, 5, 1, 3, 1, 3, 7],
   };
 }
 
