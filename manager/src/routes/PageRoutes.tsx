@@ -2,11 +2,10 @@ import { Route, Routes } from "react-router-dom";
 // import { useAppState } from "../state/hooks/useAppState";
 import { User } from "@ethics-olympiad/types";
 import Topbar from "../components/Topbar";
-import Events from "../pages/Templates";
 import { Fragment } from "react";
 import Cases from "../pages/Cases";
 import Users from "../pages/Users";
-import { Templates } from "../components/template/Template";
+import { Templates } from "../pages/Templates";
 
 export default function PageRoutes({
   user,
