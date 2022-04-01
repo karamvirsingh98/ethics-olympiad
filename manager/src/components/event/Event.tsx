@@ -24,7 +24,6 @@ export default function EventComponent({
   const [editing, setEditing] = useState(false);
 
   const helpers = eventsHelpers(
-    user._id,
     eventID!,
     events!,
     setOne,

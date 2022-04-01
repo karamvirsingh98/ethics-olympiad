@@ -87,13 +87,11 @@ export default function TemplateComponent({ user }: { user: User }) {
             />
           </Routes>
           <Divider vertical />
-          {Object.keys(events).length > 0 && (
-            <Items
+          <Items
               events={events!}
               onNewClick={createEvent}
               templateID={template._id!}
             />
-          )}
         </div>
       )}
     </div>

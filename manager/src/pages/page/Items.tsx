@@ -7,20 +7,19 @@ export default function Items({
   events,
   onNewClick,
 }: {
-  templateID: string,
+  templateID: string;
   events: Events;
   onNewClick: () => void;
 }) {
   const navigate = useNavigate();
-  const { eventID: _t } = useParams()
-  console.log('id', _t)
+  const { eventID: _t } = useParams();
 
   return (
     <div className="items">
       <button
         className="blue"
         onClick={() => navigate(`/events/${templateID}`)}
-        style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
+        style={{ fontSize: "1.25rem", padding: "0.5rem 1rem", width: "100%" }}
       >
         General Configuration
       </button>
@@ -32,7 +31,11 @@ export default function Items({
             key={id}
           />
         ))}
-      <button className="green" onClick={onNewClick}>
+      <button
+        className="green"
+        onClick={onNewClick}
+        style={{ fontSize: "1.25rem", padding: "0.5rem 1rem", width: "100%" }}
+      >
         New Event
       </button>
     </div>
@@ -44,7 +47,7 @@ function Item({ item, onClick }: { item: Event; onClick: () => void }) {
     <button
       className="grey"
       onClick={onClick}
-      style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
+      style={{ fontSize: "1.25rem", padding: "0.5rem 1rem", width: "100%" }}
     >
       {item.eventTitle}
     </button>

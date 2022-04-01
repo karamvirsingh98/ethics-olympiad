@@ -1,12 +1,10 @@
 import { client } from "../main";
-import { getDefaultEvent } from "../state/defaults";
 import { RemoveOne, SetOne, SetOneField } from "../state/hooks/useCollection";
 import { Events } from "../state/types";
 import { Event } from "@ethics-olympiad/types";
 import { useNavigate } from "react-router-dom";
 
 export function eventsHelpers(
-  userID: string,
   eventID: string,
   events: Events,
   setOne: SetOne<Event>,
@@ -14,13 +12,12 @@ export function eventsHelpers(
   removeOne: RemoveOne,
   setEditing: (editing: boolean) => void
 ) {
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const deleteEvent = async () => {
     await client.service("api/events").remove(eventID);
     removeOne(eventID);
-    navigate("..");
+    navigate(`/events/${events[eventID].templateID}`);
   };
 
   const saveEdits = async () => {
