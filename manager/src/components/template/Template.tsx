@@ -52,7 +52,7 @@ export default function TemplateComponent({ user }: { user: User }) {
       <div className="page">
         <Routes>
           <Route
-            path="/"
+            path="/*"
             element={
               template && (
                 <TemplateConfig
@@ -111,7 +111,7 @@ function TemplateTitle({
         editing={editing}
         value={getTitle()}
         onEdit={rename}
-        fontSize="1.5rem"
+        fontSize="2rem"
       />
       <TitleButtons
         editing={editing}
@@ -139,7 +139,9 @@ function TemplateConfig({
   );
 
   return (
-    <div>
+    <div
+      style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}
+    >
       <Heats
         editing={editing}
         user={user}

@@ -27,7 +27,7 @@ export default function Topbar({
   }, []);
 
   return (
-    <div className="topbar">
+    <div className="topbar grey-flat">
       <div style={{ fontSize: "2rem" }}>Ethics Olympiad Manager</div>
       <div className="topbar-buttons">
         {TOPBAR_BUTTONS.map((text, i) => (

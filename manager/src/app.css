@@ -1,10 +1,10 @@
 .app {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 2rem;
+  gap: 1rem;
   width: 100vw;
   height: 100vh;
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 .auth-window {
@@ -20,6 +20,7 @@
   grid-template-columns: 1fr auto;
   place-items: center start;
   gap: 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .topbar-buttons {
@@ -173,5 +174,6 @@
 
 .template { 
   display: grid;
-  
+  grid-template-rows: auto 1fr;
+  gap: 2rem;
 }

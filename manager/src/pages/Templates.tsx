@@ -64,12 +64,12 @@ function TemplateCards({
       <ObjectMap
         object={templates}
         map={(templateID) => (
-          <div
+          <button
             className="grey template"
             onClick={() => navigate(`./${templates[templateID]._id}`)}
           >
             asdfa {templates[templateID].templateTitle}
-          </div>
+          </button>
         )}
       />
       <button className="green" onClick={createTemplate}>

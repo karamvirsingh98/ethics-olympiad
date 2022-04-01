@@ -20,17 +20,27 @@ export default function PageRoutes({
   return (
     <Fragment>
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
-      <Routes>
-        <Route
-          path="/"
-          element={<div style={{ fontSize: "2rem" }}> Hello {user.name} </div>}
-        />
-        <Route path="/events/*" element={<TemplatesComponent user={user} />} />
-        <Route path="/cases/*" element={<Cases user={user} />} />
-        {user.admin && (
-          <Route path="/users" element={<Users currentUserID={user._id!} />} />
-        )}
-      </Routes>
+      <div style={{ padding: "1rem" }}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div style={{ fontSize: "2rem" }}> Hello {user.name} </div>
+            }
+          />
+          <Route
+            path="/events/*"
+            element={<TemplatesComponent user={user} />}
+          />
+          <Route path="/cases/*" element={<Cases user={user} />} />
+          {user.admin && (
+            <Route
+              path="/users"
+              element={<Users currentUserID={user._id!} />}
+            />
+          )}
+        </Routes>
+      </div>
     </Fragment>
   );
 }
