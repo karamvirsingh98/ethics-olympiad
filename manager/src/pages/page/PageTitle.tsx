@@ -9,7 +9,7 @@ type Props = {
   events: Events;
   setTitle: (name: string) => void;
   toggleEditing: () => void;
-} & Omit<ReturnType<typeof eventsHelpers>, "createEvent">;
+} & ReturnType<typeof eventsHelpers>;
 
 export default function EventHeader({
   editing,
