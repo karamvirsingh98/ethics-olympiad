@@ -1,8 +1,9 @@
 import { Heat, Template, User } from "@ethics-olympiad/types";
-import { useCases, useTemplates } from "../../../App";
+import { useCases } from "../../../App";
 import { Cases } from "../../../state/types";
 import Conditional from "../../util/Conditional";
 import CaseSelector from "../../event/subcomponents/Selector";
+import { SetOneField } from "../../../state/hooks/useCollection";
 
 export default function Heats({
   editing,
@@ -10,17 +11,17 @@ export default function Heats({
   template,
   addHeat,
   removeHeat,
+  setOneField,
 }: {
   editing: boolean;
   user: User;
   template: Template;
   addHeat: () => void;
   removeHeat: (index: number) => void;
+  setOneField: SetOneField<Template>
 }) {
   const [cases] = useCases(user);
-
-  console.log(template.heats)
-
+  
   return (
     <div className="heats" style={{ maxHeight: "70vh" }}>
       <Header onAdd={addHeat} editing={editing} />
@@ -47,6 +48,7 @@ export default function Heats({
               heat={heat}
               heats={template.heats}
               onRemove={removeHeat}
+              setOneField={setOneField}
             />
           ))}
       </div>
@@ -63,6 +65,7 @@ function HeatComponent({
   heats,
   heat,
   onRemove,
+  setOneField
 }: {
   editing: boolean;
   index: number;
@@ -72,10 +75,11 @@ function HeatComponent({
   heats: Heat[];
   heat: Heat;
   onRemove: (index: number) => void;
+  setOneField: SetOneField<Template>
 }) {
   const { case1, case2 } = heat;
 
-  const [_, { setOneField }] = useTemplates(user);
+  // const [_, { setOneField }] = useTemplates(user);
 
   const updateCase =
     (heatIndex: number, case1: boolean) => (caseID: string) => {

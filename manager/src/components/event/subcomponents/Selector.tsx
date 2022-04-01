@@ -48,6 +48,7 @@ export default function CaseSelector({
               key={id}
               onClick={() => {
                 onSelect(id);
+                setShow(false)
               }}
               className="blue"
               style={{

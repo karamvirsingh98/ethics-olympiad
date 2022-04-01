@@ -1,13 +1,11 @@
 import { User, Event, Template } from "@ethics-olympiad/types";
-import { useTemplates } from "../../App";
 import Heats from "./subcomponents/Heats";
 import Timers from "./subcomponents/Timers";
 import templateConfigHelpers, { templateTitleHelpers } from "./helpers";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useCollection, {
   CollectionFunctions,
-  RemoveOne,
   SetOneField,
 } from "../../state/hooks/useCollection";
 import { client } from "../../main";
@@ -17,12 +15,25 @@ import EventComponent from "../event/Event";
 import ToggleInput from "../util/ToggleInput";
 import TitleButtons from "../event/subcomponents/TitleButtons";
 import Divider from "../util/Divider";
+import { Templates } from "../../state/types";
 
-export default function TemplateComponent({ user }: { user: User }) {
+export default function TemplateComponent({
+  user,
+  templateState,
+  editing,
+  setEditing,
+}: {
+  user: User;
+  templateState: [
+    templates: Templates,
+    templateFunctions: CollectionFunctions<Template>
+  ];
+  editing: boolean;
+  setEditing: (editing: boolean) => void;
+}) {
   const navigate = useNavigate();
   const { templateID } = useParams();
-  const [templates, templateFunctions] = useTemplates(user);
-  const [editing, setEditing] = useState(false);
+  const [templates, templateFunctions] = templateState;
 
   const [events, eventFunctions] = useCollection<Event>("events", {
     query: { owner: user._id, templateID },
@@ -39,6 +50,8 @@ export default function TemplateComponent({ user }: { user: User }) {
     setEditing(true);
     document.getElementById("event-title")?.focus();
   };
+
+  console.log("render");
 
   return (
     <div className="template">
@@ -88,10 +101,10 @@ export default function TemplateComponent({ user }: { user: User }) {
           </Routes>
           <Divider vertical />
           <Items
-              events={events!}
-              onNewClick={createEvent}
-              templateID={template._id!}
-            />
+            events={events!}
+            onNewClick={createEvent}
+            templateID={template._id!}
+          />
         </div>
       )}
     </div>
@@ -149,9 +162,9 @@ function TemplateConfig({
   template: Template;
   setOneField: SetOneField<Template>;
 }) {
-  const { addHeat, removeHeat, editTimer } = templateConfigHelpers(
-    template,
-    setOneField
+  const { addHeat, removeHeat, editTimer } = useMemo(
+    () => templateConfigHelpers(template, setOneField),
+    [template]
   );
 
   return (
@@ -168,6 +181,7 @@ function TemplateConfig({
         template={template}
         addHeat={addHeat}
         removeHeat={removeHeat}
+        setOneField={setOneField}
       />
       <Divider vertical />
       <Timers

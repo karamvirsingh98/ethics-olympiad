@@ -16,8 +16,8 @@ export function eventsHelpers(
 
   const deleteEvent = async () => {
     await client.service("api/events").remove(eventID);
-    removeOne(eventID);
     navigate(`/events/${events[eventID].templateID}`);
+    removeOne(eventID);
   };
 
   const saveEdits = async () => {
