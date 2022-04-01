@@ -19,6 +19,8 @@ export default function Heats({
 }) {
   const [cases] = useCases(user);
 
+  console.log(template.heats)
+
   return (
     <div className="heats" style={{ maxHeight: "70vh" }}>
       <Header onAdd={addHeat} editing={editing} />

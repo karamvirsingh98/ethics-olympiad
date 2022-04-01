@@ -45,8 +45,6 @@ function TemplateCards({
   setOne: SetOne<Template>;
   setEditing: (editing: boolean) => void;
 }) {
-  console.log(templates);
-  console.log("mounted");
 
   const navigate = useNavigate();
 

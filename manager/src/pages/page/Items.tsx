@@ -1,21 +1,25 @@
 import { Case, Event } from "@ethics-olympiad/types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Events } from "../../state/types";
 
 export default function Items({
+  templateID,
   events,
   onNewClick,
 }: {
+  templateID: string,
   events: Events;
   onNewClick: () => void;
 }) {
   const navigate = useNavigate();
+  const { eventID: _t } = useParams()
+  console.log('id', _t)
 
   return (
     <div className="items">
       <button
         className="blue"
-        onClick={() => navigate("..")}
+        onClick={() => navigate(`/events/${templateID}`)}
         style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
       >
         General Configuration

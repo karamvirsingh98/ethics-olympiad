@@ -51,43 +51,51 @@ export default function TemplateComponent({ user }: { user: User }) {
         />
       )}
       <Divider />
-      <div
-        style={{
-          display: " grid",
-          gridTemplateColumns: "3fr auto 1fr",
-          gap: "1rem",
-          paddingTop: "1rem",
-        }}
-      >
-        <Routes>
-          <Route
-            path="/*"
-            element={
-              template && (
-                <TemplateConfig
-                  editing={editing}
-                  user={user}
-                  template={template}
-                  setOneField={templateFunctions.setOneField}
-                />
-              )
-            }
-          />
-          {events && template && (
+      {events && template && (
+        <div
+          style={{
+            display: " grid",
+            gridTemplateColumns: "3fr auto 1fr",
+            gap: "1rem",
+            paddingTop: "1rem",
+          }}
+        >
+          <Routes>
+            <Route
+              path="/*"
+              element={
+                template && (
+                  <TemplateConfig
+                    editing={editing}
+                    user={user}
+                    template={template}
+                    setOneField={templateFunctions.setOneField}
+                  />
+                )
+              }
+            />
             <Route
               path="/:eventID"
               element={
-                <EventComponent
-                  user={user}
-                  eventState={[events, eventFunctions]}
-                />
+                Object.keys(events).length > 0 && (
+                  <EventComponent
+                    user={user}
+                    eventState={[events, eventFunctions]}
+                  />
+                )
               }
             />
+          </Routes>
+          <Divider vertical />
+          {Object.keys(events).length > 0 && (
+            <Items
+              events={events!}
+              onNewClick={createEvent}
+              templateID={template._id!}
+            />
           )}
-        </Routes>
-        <Divider vertical />
-        <Items events={events!} onNewClick={createEvent} />
-      </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -150,7 +158,11 @@ function TemplateConfig({
 
   return (
     <div
-      style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "1rem" }}
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
+        gap: "1rem",
+      }}
     >
       <Heats
         editing={editing}
