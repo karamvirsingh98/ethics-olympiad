@@ -3,12 +3,15 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { eventsHelpers } from "../../pages/helpers";
 import EventHeader from "../../pages/page/PageTitle";
-import { CollectionFunctions, SetOneField } from "../../state/hooks/useCollection";
+import {
+  CollectionFunctions,
+  SetOneField,
+} from "../../state/hooks/useCollection";
 import { Events } from "../../state/types";
 import eventHelpers from "./helpers";
 import Teams from "./subcomponents/Teams";
 
-export default function EventComponent ({
+export default function EventComponent({
   user,
   eventState,
 }: {

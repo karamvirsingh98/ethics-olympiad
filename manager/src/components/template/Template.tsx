@@ -16,6 +16,7 @@ import Items from "../../pages/page/Items";
 import EventComponent from "../event/Event";
 import ToggleInput from "../util/ToggleInput";
 import TitleButtons from "../event/subcomponents/TitleButtons";
+import Divider from "../util/Divider";
 
 export default function TemplateComponent({ user }: { user: User }) {
   const navigate = useNavigate();
@@ -49,7 +50,15 @@ export default function TemplateComponent({ user }: { user: User }) {
           templateFunctions={templateFunctions}
         />
       )}
-      <div className="page">
+      <Divider />
+      <div
+        style={{
+          display: " grid",
+          gridTemplateColumns: "3fr auto 1fr",
+          gap: "1rem",
+          paddingTop: "1rem",
+        }}
+      >
         <Routes>
           <Route
             path="/*"
@@ -76,8 +85,9 @@ export default function TemplateComponent({ user }: { user: User }) {
             />
           )}
         </Routes>
+        <Divider vertical />
+        <Items events={events!} onNewClick={createEvent} />
       </div>
-      {/* <Items events={events!} onNewClick={createEvent} /> */}
     </div>
   );
 }
@@ -140,7 +150,7 @@ function TemplateConfig({
 
   return (
     <div
-      style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}
+      style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "1rem" }}
     >
       <Heats
         editing={editing}
@@ -149,6 +159,7 @@ function TemplateConfig({
         addHeat={addHeat}
         removeHeat={removeHeat}
       />
+      <Divider vertical />
       <Timers
         editing={editing}
         timers={template.timers}

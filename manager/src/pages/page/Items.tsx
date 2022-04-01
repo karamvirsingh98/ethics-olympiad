@@ -9,14 +9,25 @@ export default function Items({
   events: Events;
   onNewClick: () => void;
 }) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="items">
-      {Object.keys(events).map((id) => (
-        <Item item={events[id]} onClick={() => navigate(`./${id}`)} key={id} />
-      ))}
+      <button
+        className="blue"
+        onClick={() => navigate("..")}
+        style={{ fontSize: "1.25rem", padding: "0.5rem 1rem" }}
+      >
+        General Configuration
+      </button>
+      {events &&
+        Object.keys(events).map((id) => (
+          <Item
+            item={events[id]}
+            onClick={() => navigate(`./${id}`)}
+            key={id}
+          />
+        ))}
       <button className="green" onClick={onNewClick}>
         New Event
       </button>
