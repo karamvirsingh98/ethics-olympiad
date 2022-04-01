@@ -2,19 +2,25 @@ import { User, Event, Template } from "@ethics-olympiad/types";
 import { useTemplates } from "../../App";
 import Heats from "./subcomponents/Heats";
 import Timers from "./subcomponents/Timers";
-import templateHelpers from "./helpers";
+import templateConfigHelpers, { templateTitleHelpers } from "./helpers";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import Items from "../../pages/page/Items";
-import useCollection, { SetOneField } from "../../state/hooks/useCollection";
+import useCollection, {
+  CollectionFunctions,
+  RemoveOne,
+  SetOneField,
+} from "../../state/hooks/useCollection";
 import { client } from "../../main";
 import { getDefaultEvent } from "../../state/defaults";
+import Items from "../../pages/page/Items";
 import EventComponent from "../event/Event";
+import ToggleInput from "../util/ToggleInput";
+import TitleButtons from "../event/subcomponents/TitleButtons";
 
 export default function TemplateComponent({ user }: { user: User }) {
   const navigate = useNavigate();
   const { templateID } = useParams();
-  const [templates, { setOneField }] = useTemplates(user);
+  const [templates, templateFunctions] = useTemplates(user);
   const [editing, setEditing] = useState(false);
 
   const [events, eventFunctions] = useCollection<Event>("events", {
@@ -35,11 +41,30 @@ export default function TemplateComponent({ user }: { user: User }) {
 
   return (
     <div className="template">
-      <div> {template.templateTitle} </div>
+      {template && (
+        <TemplateTitle
+          editing={editing}
+          template={template}
+          setEditing={setEditing}
+          templateFunctions={templateFunctions}
+        />
+      )}
       <div className="page">
         <Routes>
-          <Route path="/" element={<TemplateConfig editing={editing} user={user} template={template} setOneField={setOneField}  />} />
-          {events && (
+          <Route
+            path="/"
+            element={
+              template && (
+                <TemplateConfig
+                  editing={editing}
+                  user={user}
+                  template={template}
+                  setOneField={templateFunctions.setOneField}
+                />
+              )
+            }
+          />
+          {events && template && (
             <Route
               path="/:eventID"
               element={
@@ -51,8 +76,48 @@ export default function TemplateComponent({ user }: { user: User }) {
             />
           )}
         </Routes>
-        <Items events={events!} onNewClick={createEvent} />
       </div>
+      {/* <Items events={events!} onNewClick={createEvent} /> */}
+    </div>
+  );
+}
+
+function TemplateTitle({
+  editing,
+  template,
+  setEditing,
+  templateFunctions,
+}: {
+  editing: boolean;
+  template: Template;
+  setEditing: (editing: boolean) => void;
+  templateFunctions: CollectionFunctions<Template>;
+}) {
+  const { getTitle, rename, ...helpers } = templateTitleHelpers(
+    template,
+    templateFunctions,
+    setEditing
+  );
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <ToggleInput
+        editing={editing}
+        value={getTitle()}
+        onEdit={rename}
+        fontSize="1.5rem"
+      />
+      <TitleButtons
+        editing={editing}
+        toggleEditing={() => setEditing(!editing)}
+        {...helpers}
+      />
     </div>
   );
 }
@@ -68,13 +133,13 @@ function TemplateConfig({
   template: Template;
   setOneField: SetOneField<Template>;
 }) {
-  const { addHeat, removeHeat, editTimer } = templateHelpers(
+  const { addHeat, removeHeat, editTimer } = templateConfigHelpers(
     template,
     setOneField
   );
 
   return (
-    <>
+    <div>
       <Heats
         editing={editing}
         user={user}
@@ -87,6 +152,6 @@ function TemplateConfig({
         timers={template.timers}
         onConfirm={editTimer}
       />
-    </>
+    </div>
   );
 }

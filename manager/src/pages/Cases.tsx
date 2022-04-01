@@ -1,5 +1,3 @@
-import { Fragment } from "react";
-import { AppState } from "../state/types";
 import { getDefaultCase } from "../state/defaults";
 import { client } from "../main";
 import CaseGroup from "../components/case/CaseGroup";
