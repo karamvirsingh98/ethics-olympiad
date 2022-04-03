@@ -1,5 +1,9 @@
 import { Case } from "@ethics-olympiad/types";
-import { RemoveOne, SetOne, SetOneField } from "../../state/hooks/useCollection";
+import {
+  RemoveOne,
+  SetOne,
+  SetOneField,
+} from "../../state/hooks/useCollection";
 import { Cases } from "../../state/types";
 import ArrayMap from "../util/ArrayMap";
 import CaseComponent from "./subcomponents/Case";
@@ -16,7 +20,7 @@ export default function CaseGroup({
   title: string;
   cases?: Cases;
   sortCondition: (id: string) => void;
-  setOne: SetOne<Case>
+  setOne: SetOne<Case>;
   setOneField: SetOneField<Case>;
   removeOne: RemoveOne;
   onNewClick: () => void;
@@ -27,6 +31,7 @@ export default function CaseGroup({
         display: "grid",
         gap: "1rem",
         gridTemplateRows: "auto 100%",
+        maxHeight: "75vh",
       }}
     >
       <div
@@ -37,7 +42,7 @@ export default function CaseGroup({
           borderBottom: "solid 0.15rem",
         }}
       >
-        <div style={{ fontSize: "1.75rem" }}>{title}</div>
+        <div style={{ fontSize: "1.5rem" }}>{title}</div>
         <button className="green" onClick={onNewClick}>
           New Case
         </button>

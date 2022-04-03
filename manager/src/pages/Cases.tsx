@@ -60,42 +60,68 @@ function CaseLevel({ user }: { user: User }) {
     setOne(newCase._id!, newCase);
   };
 
+  function capitalise(s: string) {
+    return s[0].toUpperCase() + s.slice(1);
+  }
+  function formatTemplate(level: string, isNew?: boolean) {
+    return `${capitalise(level)} School Cases`;
+  }
+
   return (
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
-        gap: "2rem",
-        marginTop: "2rem",
-        overflow: "hidden",
+        gap: "1rem",
+        gridTemplateRows: "auto auto 1fr",
       }}
     >
-      <div style={{ overflowY: "auto" }}>
-        <CaseGroup
-          title="Video Cases"
-          cases={cases}
-          sortCondition={(caseID) =>
-            cases && cases[caseID].isVideo && cases[caseID].level === caseLevel
-          }
-          setOne={setOne}
-          setOneField={setOneField}
-          removeOne={removeOne}
-          onNewClick={createCase(true)}
-        />
+      <div
+        style={{ display: " grid", fontSize: "2rem", textAlign: "center" }}
+      >
+        {" "}
+        {formatTemplate(caseLevel!)}{" "}
       </div>
-      <Divider vertical />
-      <div style={{ overflowY: "auto" }}>
-        <CaseGroup
-          title="Text Cases"
-          cases={cases}
-          sortCondition={(caseID) =>
-            cases && !cases[caseID].isVideo && cases[caseID].level === caseLevel
-          }
-          setOne={setOne}
-          setOneField={setOneField}
-          removeOne={removeOne}
-          onNewClick={createCase(false)}
-        />
+      <Divider />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr auto 1fr",
+          gap: "2rem",
+          marginTop: "1rem",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ overflowY: "auto" }}>
+          <CaseGroup
+            title="Video Cases"
+            cases={cases}
+            sortCondition={(caseID) =>
+              cases &&
+              cases[caseID].isVideo &&
+              cases[caseID].level === caseLevel
+            }
+            setOne={setOne}
+            setOneField={setOneField}
+            removeOne={removeOne}
+            onNewClick={createCase(true)}
+          />
+        </div>
+        <Divider vertical />
+        <div style={{ overflowY: "auto" }}>
+          <CaseGroup
+            title="Text Cases"
+            cases={cases}
+            sortCondition={(caseID) =>
+              cases &&
+              !cases[caseID].isVideo &&
+              cases[caseID].level === caseLevel
+            }
+            setOne={setOne}
+            setOneField={setOneField}
+            removeOne={removeOne}
+            onNewClick={createCase(false)}
+          />
+        </div>
       </div>
     </div>
   );

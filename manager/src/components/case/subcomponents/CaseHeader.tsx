@@ -41,7 +41,7 @@ export default function CaseHeader({
         onDelete={onDelete}
         onSave={onSave}
         onCancel={onCancel}
-        extraText="Event"
+        extraText="Case"
       />
     </div>
   );

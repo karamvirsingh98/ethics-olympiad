@@ -2,7 +2,11 @@ import { Case } from "@ethics-olympiad/types";
 import { client } from "../../main";
 import { RemoveOne, SetOne } from "../../state/hooks/useCollection";
 
-export default function caseHelpers(setOne: SetOne<Case>, removeOne: RemoveOne, setEditing: (editing: boolean) => void) {
+export default function caseHelpers(
+  setOne: SetOne<Case>,
+  removeOne: RemoveOne,
+  setEditing: (editing: boolean) => void
+) {
   return {
     saveEdits: (id: string, _case: Case) => async () => {
       const updated = await client.service("/api/cases").update(id, _case);
