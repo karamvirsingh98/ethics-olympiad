@@ -1,11 +1,12 @@
 import { Case, Event, Levels, Template } from "@ethics-olympiad/types";
 
-export function getDefaultTemplate(userID: string): Template {
+export function getDefaultTemplate(userID: string, level: Levels): Template {
   return { 
     owner: userID, 
     templateTitle: "",
     heats: [],
-    timers: [3, 5, 1, 3, 1, 3, 7]
+    timers: [3, 5, 1, 3, 1, 3, 7],
+    level,
   }
 }
 

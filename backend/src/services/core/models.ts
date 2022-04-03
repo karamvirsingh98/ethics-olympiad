@@ -7,6 +7,7 @@ export const TemplateModel = model(
     templateTitle: String,
     heats: [{ case1: String, case2: String }],
     timers: Array,
+    level: String,
   })
 );
 

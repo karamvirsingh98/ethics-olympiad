@@ -1,7 +1,6 @@
-import { Template, User } from "@ethics-olympiad/types";
+import { Levels, Template, User } from "@ethics-olympiad/types";
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-// import { useTemplates } from "../App";
 import TemplateComponent from "../components/template/Template";
 import ObjectMap from "../components/util/ObjectMap";
 import { client } from "../main";
@@ -59,32 +58,46 @@ function TemplateCards({
   setEditing: (editing: boolean) => void;
 }) {
   const navigate = useNavigate();
+  const levels: Levels[] = ["junior", "middle", "senior", "tertiary"];
 
-  const createTemplate = async () => {
+  const createTemplate = (level: Levels) => async () => {
     const newTemplate: Template = await client
       .service("/api/templates")
-      .create(getDefaultTemplate(user._id));
+      .create(getDefaultTemplate(user._id, level));
     setOne(newTemplate._id!, newTemplate);
     navigate(`./${newTemplate._id!}`);
     setEditing(true);
   };
 
+  function capitalise(s: string) {
+    return s[0].toUpperCase() + s.slice(1);
+  }
+
+  function formatTemplate(level: string) {
+    return `New ${capitalise(level)} Template`;
+  }
+
   return (
     <div className="templates">
-      <ObjectMap
-        object={templates}
-        map={(templateID) => (
-          <button
-            className="grey template"
-            onClick={() => navigate(`./${templates[templateID]._id}`)}
-          >
-            {templates[templateID].templateTitle}
+      {levels.map((level) => (
+        <>
+          <ObjectMap
+            object={templates}
+            filter={(templateID) => templates[templateID].level === level}
+            map={(templateID) => (
+              <button
+                className="grey template"
+                onClick={() => navigate(`./${templates[templateID]._id}`)}
+              >
+                {templates[templateID].templateTitle}
+              </button>
+            )}
+          />
+          <button className="green" onClick={createTemplate(level)}>
+            {formatTemplate(level)}{" "}
           </button>
-        )}
-      />
-      <button className="green" onClick={createTemplate}>
-        New Template
-      </button>
+        </>
+      ))}
     </div>
   );
 }

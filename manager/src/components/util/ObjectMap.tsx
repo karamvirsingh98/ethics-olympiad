@@ -1,11 +1,12 @@
-import { Fragment } from "react";
-
 export default function ObjectMap<T>({
   object,
   map,
+  filter,
 }: {
   object: T;
   map: (key: string, index: number, array: string[]) => void;
+  filter?: (value: string, index: number, array: string[]) => void;
 }) {
-  return <Fragment>{Object.keys(object).map(map)}</Fragment>;
+  if (filter) return <>{Object.keys(object).filter(filter).map(map)}</>;
+  return <>{Object.keys(object).map(map)}</>;
 }

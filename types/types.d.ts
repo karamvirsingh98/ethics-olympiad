@@ -14,12 +14,15 @@ export interface Invite {
   expiry?: number;
 }
 
+export type Levels = "junior" | "middle" | "senior" | "tertiary";
+
 export interface Template {
   _id?: string;
   owner: string;
   templateTitle: string;
   heats: Heat[];
   timers: number[];
+  level: Levels;
 }
 
 export interface Event {
@@ -50,9 +53,6 @@ export interface Case {
   bodyText?: string;
   level: Levels;
 }
-
-export type Levels = "junior" | "middle" | "senior" | "tertiary";
-
 export interface ActiveEvent {
   eventID: string;
   status: EventStatus;
