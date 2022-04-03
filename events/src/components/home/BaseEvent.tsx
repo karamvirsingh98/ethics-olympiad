@@ -3,10 +3,13 @@ import { BaseEvent } from "../../state/types";
 
 export default function BaseEventComponent({ event }: { event: BaseEvent }) {
   const navigate = useNavigate();
-  
+
   return (
-    <div className="base-event green border" onClick={() => navigate(`/${event._id}`)}>
-      <div> {event.title} </div>
+    <div
+      className="base-event green border"
+      onClick={() => navigate(`/${event._id}`)}
+    >
+      {event.eventTitle}
     </div>
-  )
+  );
 }

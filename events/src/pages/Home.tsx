@@ -4,8 +4,10 @@ import useBaseEvents from "../state/hooks/useBaseEvents";
 import useJudgeName from "../state/hooks/useJudgeName";
 
 export default function Home() {
-  const events = useBaseEvents();
+  const { events, templates } = useBaseEvents();
   const { name } = useJudgeName();
+
+  console.log("events", events);
   return (
     <div className="home">
       <div
@@ -13,11 +15,11 @@ export default function Home() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          paddingRight: "4rem"
+          paddingRight: "4rem",
         }}
       >
         <div style={{ fontSize: "2rem" }}> Ethics Olympiad Events </div>
-        <div> {name ? "logged in as " + name : ''} </div>
+        <div> {name ? "logged in as " + name : ""} </div>
       </div>
       <div className="events">
         <ArrayMap
