@@ -1,4 +1,5 @@
 import { Levels, User } from "@ethics-olympiad/types";
+import { useState } from "react";
 import { client } from "../../main";
 import {
   CollectionFunctions,
@@ -15,6 +16,16 @@ export default function UserComponent({
   functions: CollectionFunctions<User>;
 }) {
   const { setOne, setOneField, removeOne } = functions;
+  const [confirm, set] = useState(false);
+
+  const deleteUser = () => {
+    if (!confirm) set(true);
+    else {
+      client.service("api/users").remove(user._id!);
+      removeOne(user._id!);
+      set(false);
+    }
+  };
 
   return (
     <div className="grey-flat user">
@@ -27,8 +38,12 @@ export default function UserComponent({
           }}
         >
           <div style={{ fontSize: "2rem" }}>{user.name}</div>
-          <button className="red" style={{ fontSize: "0.8rem" }}>
-            Delete
+          <button
+            className="red"
+            style={{ fontSize: "0.8rem" }}
+            onClick={deleteUser}
+          >
+            {confirm ? "Confirm" : "Delete"}
           </button>
         </div>
         <div style={{ display: "flex", gap: "2rem" }}>
@@ -78,7 +93,6 @@ function LevelsAccess({
       setOneField(user._id!, "permissions", permissions);
     }
   };
-
 
   return (
     <div style={{ display: "grid", gap: "1rem" }}>

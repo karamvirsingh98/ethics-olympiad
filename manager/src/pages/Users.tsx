@@ -20,7 +20,15 @@ export default function Users({ currentUserID }: { currentUserID: string }) {
         gap: "2rem",
       }}
     >
-      <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
+      <div
+        style={{
+          display: "grid",
+          gap: "2rem",
+          maxHeight: "85vh",
+          height: "fit-content",
+          overflowY: "scroll",
+        }}
+      >
         <div style={{ fontSize: "1.5rem" }}>All Users:</div>
         {userIDs &&
           userIDs.map((id) => (
@@ -40,7 +48,15 @@ function Invites() {
   }, []);
 
   return (
-    <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "2rem",
+        maxHeight: "85vh",
+        height: "fit-content",
+        overflowY: "scroll",
+      }}
+    >
       <InvitesHeader onConfirmInvite={set} />
       {invites &&
         invites.map((invite) => (
