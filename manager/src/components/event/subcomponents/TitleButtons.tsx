@@ -1,17 +1,21 @@
-import { Fragment } from "react";
+import { Fragment, ReactNode } from "react";
 
 export default function TitleButtons({
   editing,
+  extraText,
   toggleEditing,
   onDelete,
   onSave,
   onCancel,
+  children,
 }: {
   editing: boolean;
+  extraText: string;
   toggleEditing: () => void;
   onDelete: () => void;
   onSave: () => void;
   onCancel: () => void;
+  children?: ReactNode;
 }) {
   return (
     <div
@@ -26,14 +30,15 @@ export default function TitleButtons({
         className={editing ? "green" : "blue"}
         onClick={editing ? onSave : toggleEditing}
       >
-        {editing ? "Save" : "Edit"}
+        {editing ? `Save ${extraText}` : `Edit ${extraText}`}
       </button>
       <button
         className={editing ? "orange" : "red"}
         onClick={editing ? onCancel : onDelete}
       >
-        {editing ? "Cancel" : "Delete"}
+        {editing ? `Cancel Changes` : `Delete ${extraText}`}
       </button>
+      {children}
     </div>
   );
 }

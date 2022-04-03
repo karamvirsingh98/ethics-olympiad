@@ -15,7 +15,7 @@ export default function Topbar({ event, admin }: { event: Event, admin?: boolean
         paddingBottom: "2rem",
       }}
     >
-      <div style={{ fontSize: "2rem" }}> {event.title} </div>
+      <div style={{ fontSize: "2rem" }}> {event.eventTitle} </div>
       <div style={{ paddingRight: "3rem", display: "flex", gap: "1rem" }}>
         {event.heats.map((_, i) => (
           <button

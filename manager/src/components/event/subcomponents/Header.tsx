@@ -1,7 +1,7 @@
-import TitleButtons from "../../components/event/subcomponents/TitleButtons";
-import ToggleInput from "../../components/util/ToggleInput";
-import { Events } from "../../state/types";
-import { eventsHelpers } from "../helpers";
+import TitleButtons from "./TitleButtons";
+import ToggleInput from "../../util/ToggleInput";
+import { Events } from "../../../state/types";
+import { titleHelpers } from "../../../pages/helpers";
 
 type Props = {
   editing: boolean;
@@ -9,7 +9,7 @@ type Props = {
   events: Events;
   setTitle: (name: string) => void;
   toggleEditing: () => void;
-} & ReturnType<typeof eventsHelpers>;
+} & ReturnType<typeof titleHelpers>;
 
 export default function EventHeader({
   editing,
@@ -25,7 +25,7 @@ export default function EventHeader({
 }: Props) {
   return (
     <div className="page-title">
-      <div style={{ display: "grid", gap: "1rem" }}>
+      <div style={{ display: "grid", gap: "1rem", width: "100%" }}>
         <div style={{ display: "flex", gap: "1rem", fontSize: "1.75rem" }}>
           Name:
           <ToggleInput
@@ -34,6 +34,7 @@ export default function EventHeader({
             value={getTitle()}
             fontSize="1.75rem"
             onEdit={setTitle}
+            placeholder="Name This Event"
           />
         </div>
         <Password {...{ editing, eventID, events, setPassword }} />
@@ -55,6 +56,7 @@ export default function EventHeader({
             onSave: saveEdits,
             onCancel: cancelEdits,
           }}
+          extraText="Event"
         />
       </div>
     </div>

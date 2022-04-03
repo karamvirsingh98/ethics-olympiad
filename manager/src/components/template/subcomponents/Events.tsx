@@ -1,15 +1,20 @@
 import { Case, Event } from "@ethics-olympiad/types";
 import { useNavigate, useParams } from "react-router-dom";
-import { Events } from "../../state/types";
+import { Events } from "../../../state/types";
 
-export default function Items({
+export default function EventsComponent({
   templateID,
   events,
   onNewClick,
+  isTemplateEditing,
+  isEventEditing,
 }: {
   templateID: string;
   events: Events;
   onNewClick: () => void;
+  setEditing: (editing: boolean) => void;
+  isTemplateEditing: boolean;
+  isEventEditing?: boolean;
 }) {
   const navigate = useNavigate();
   const { eventID: _t } = useParams();
@@ -25,10 +30,17 @@ export default function Items({
       </button>
       {events &&
         Object.keys(events).map((id) => (
-          <Item
-            item={events[id]}
-            onClick={() => navigate(`./${id}`)}
+          <EventLink
+            event={events[id]}
+            onClick={() => {
+              if (isTemplateEditing) {
+                window.alert("Please save your changes to the template first.");
+              } else {
+                navigate(`./${id}`);
+              }
+            }}
             key={id}
+            disable={isTemplateEditing}
           />
         ))}
       <button
@@ -42,14 +54,27 @@ export default function Items({
   );
 }
 
-function Item({ item, onClick }: { item: Event; onClick: () => void }) {
+function EventLink({
+  event,
+  onClick,
+  disable,
+}: {
+  event: Event;
+  onClick: () => void;
+  disable: boolean;
+}) {
   return (
     <button
-      className="grey"
+      className={disable ? "grey" : "blue"}
       onClick={onClick}
-      style={{ fontSize: "1.25rem", padding: "0.5rem 1rem", width: "100%" }}
+      style={{
+        fontSize: "1.25rem",
+        padding: "0.5rem 1rem",
+        width: "100%",
+        cursor: disable ? "not-allowed" : "pointer",
+      }}
     >
-      {item.eventTitle}
+      {event.eventTitle || "Unnamed Event"}
     </button>
   );
 }

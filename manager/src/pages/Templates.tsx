@@ -1,7 +1,9 @@
 import { Levels, Template, User } from "@ethics-olympiad/types";
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
+import { formatTemplateLevel } from "../components/template/helpers";
 import TemplateComponent from "../components/template/Template";
+import Divider from "../components/util/Divider";
 import ObjectMap from "../components/util/ObjectMap";
 import { client } from "../main";
 import { getDefaultTemplate } from "../state/defaults";
@@ -67,36 +69,46 @@ function TemplateCards({
     setOne(newTemplate._id!, newTemplate);
     navigate(`./${newTemplate._id!}`);
     setEditing(true);
+    document.getElementById("template-title")?.focus();
   };
-
-  function capitalise(s: string) {
-    return s[0].toUpperCase() + s.slice(1);
-  }
-
-  function formatTemplate(level: string) {
-    return `New ${capitalise(level)} Template`;
-  }
 
   return (
     <div className="templates">
-      {levels.map((level) => (
-        <>
-          <ObjectMap
-            object={templates}
-            filter={(templateID) => templates[templateID].level === level}
-            map={(templateID) => (
-              <button
-                className="grey template"
-                onClick={() => navigate(`./${templates[templateID]._id}`)}
-              >
-                {templates[templateID].templateTitle}
-              </button>
-            )}
-          />
-          <button className="green" onClick={createTemplate(level)}>
-            {formatTemplate(level)}{" "}
-          </button>
-        </>
+      {levels.map((level, i) => (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            gap: "2rem",
+            marginLeft: i === 0 ? "undefined" : "1rem",
+          }}
+        >
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
+          >
+            <button
+              className="green"
+              onClick={createTemplate(level)}
+              style={{ width: "100%" }}
+            >
+              {formatTemplateLevel(level, true)}
+            </button>
+            <ObjectMap
+              object={templates}
+              filter={(templateID) => templates[templateID].level === level}
+              map={(templateID) => (
+                <button
+                  className="blue"
+                  onClick={() => navigate(`./${templates[templateID]._id}`)}
+                  style={{ width: "100%", fontSize: "1.25rem" }}
+                >
+                  {templates[templateID].templateTitle || "Unnamed Template"}
+                </button>
+              )}
+            />
+          </div>
+          {i < 3 && <Divider vertical />}
+        </div>
       ))}
     </div>
   );

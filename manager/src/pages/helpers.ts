@@ -1,46 +1,47 @@
 import { client } from "../main";
-import { RemoveOne, SetOne, SetOneField } from "../state/hooks/useCollection";
-import { Events } from "../state/types";
+import { CollectionFunctions } from "../state/hooks/useCollection";
 import { Event } from "@ethics-olympiad/types";
 import { useNavigate } from "react-router-dom";
 
-export function eventsHelpers(
-  eventID: string,
-  events: Events,
-  setOne: SetOne<Event>,
-  setOneField: SetOneField<Event>,
-  removeOne: RemoveOne,
+export function titleHelpers(
+  editing: boolean,
+  event: Event,
+  functions: CollectionFunctions<Event>,
   setEditing: (editing: boolean) => void
 ) {
   const navigate = useNavigate();
+  const { setOne, setOneField, removeOne } = functions;
+  const eventID = event._id!;
 
-  const deleteEvent = async () => {
-    await client.service("api/events").remove(eventID);
-    navigate(`/events/${events[eventID].templateID}`);
+  const deleteEvent = () => {
+    client.service("api/events").remove(eventID);
+    navigate(`/events/${event.templateID}`);
     removeOne(eventID);
   };
 
   const saveEdits = async () => {
     const updatedEvent = await client
       .service("api/events")
-      .update(eventID, events![eventID]);
+      .update(eventID, event);
     setOne(eventID, updatedEvent);
     setEditing(false);
   };
 
   const cancelEdits = async () => {
-    setOne(eventID, await client.service("/api/events").get(eventID));
-    setEditing(false);
+    const unedited: Event = await client.service("/api/events").get(eventID);
+    if (!unedited.eventTitle && !unedited.teams.length) {
+      deleteEvent();
+      setEditing(false);
+    } else {
+      setOne(eventID, unedited);
+      setEditing(false);
+    }
   };
 
-  const getTitle = () =>
-    events
-      ? events[eventID]
-        ? events[eventID].eventTitle
-        : Object.keys(events).length > 0
-        ? "Select an Event"
-        : "Create an Event"
-      : "Failed to Load Events";
+  const getTitle = () => {
+    if (editing) return event.eventTitle || "";
+    else return event.eventTitle || "Unnamed Template";
+  };
 
   const setTitle = (title: string) => {
     setOneField(eventID, "eventTitle", title);

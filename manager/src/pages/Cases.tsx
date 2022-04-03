@@ -6,18 +6,11 @@ import { Case, Levels, User } from "@ethics-olympiad/types";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useCases } from "../App";
 
-export default function Cases({
-  user,
-}: {
-  user: User;
-}) {
+export default function Cases({ user }: { user: User }) {
   return (
     <Routes>
       <Route path="/" element={<CaseRouteButtons />} />
-      <Route
-        path={"/:caseLevel"}
-        element={<CaseLevel user={user} />}
-      />
+      <Route path={"/:caseLevel"} element={<CaseLevel user={user} />} />
     </Routes>
   );
 }
@@ -30,25 +23,27 @@ function CaseRouteButtons() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "2rem",
-        alignItems: "center",
-        justifyContent: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      {levels.map((level) => (
-        <button
-          key={level}
-          onClick={() => navigate(`./${level}`)}
-          className="blue"
-          style={{ fontSize: "1.5rem", padding: "0.5rem 2rem" }}
-        >
-          {capitalise(level)} Level Cases
-        </button>
-      ))}
+    <div style={{ display: "grid", placeItems: "center", height: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "2rem",
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        {levels.map((level) => (
+          <button
+            key={level}
+            onClick={() => navigate(`./${level}`)}
+            className="blue"
+            style={{ fontSize: "1.5rem", padding: "0.5rem 2rem" }}
+          >
+            {capitalise(level)} Level Cases
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -56,7 +51,7 @@ function CaseRouteButtons() {
 function CaseLevel({ user }: { user: User }) {
   const { caseLevel } = useParams();
 
-  const [cases, { setOne, setOneField, removeOne }] = useCases(user)
+  const [cases, { setOne, setOneField, removeOne }] = useCases(user);
 
   const createCase = (isVideo: boolean) => async () => {
     const newCase: Case = await client

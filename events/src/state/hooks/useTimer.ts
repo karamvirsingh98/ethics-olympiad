@@ -64,7 +64,7 @@ export default function useTimer(duration: number) {
       const getMinutes = `${minutes % 60}`.slice(-2);
 
       return `${getMinutes} : ${getSeconds}`;
-    }
+    } else return "Time's Up!";
   };
 
   return { active, paused, time: formatTime, start, pause, resume, reset };

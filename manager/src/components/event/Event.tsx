@@ -1,8 +1,8 @@
 import { Event, User } from "@ethics-olympiad/types";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { eventsHelpers } from "../../pages/helpers";
-import EventHeader from "../../pages/page/PageTitle";
+import { titleHelpers } from "../../pages/helpers";
+import EventHeader from "./subcomponents/Header";
 import {
   CollectionFunctions,
   SetOneField,
@@ -12,28 +12,35 @@ import eventHelpers from "./helpers";
 import Teams from "./subcomponents/Teams";
 
 export default function EventComponent({
-  user,
   eventState,
+  editing,
+  setEditing,
 }: {
-  user: User;
   eventState: [events: Events, functions: CollectionFunctions<Event>];
+  editing: boolean;
+  setEditing: (editing: boolean) => void;
 }) {
   const { eventID } = useParams();
-  const [events, { setOne, setOneField, removeOne }] = eventState;
+  const [events, eventFunctions] = eventState;
 
-  const [editing, setEditing] = useState(false);
+  const event = events[eventID!];
 
-  const helpers = eventsHelpers(
-    eventID!,
-    events!,
-    setOne,
-    setOneField,
-    removeOne,
-    setEditing
+  const helpers = titleHelpers(editing, event, eventFunctions, setEditing);
+
+  const { addTeam, renameTeam, removeTeam } = eventHelpers(
+    events[eventID!],
+    eventFunctions.setOneField
   );
 
   return (
-    <div>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateRows: "auto 1fr",
+        gap: "2rem",
+        placeItems: "start center",
+      }}
+    >
       <EventHeader
         editing={editing}
         eventID={eventID!}
@@ -41,28 +48,6 @@ export default function EventComponent({
         toggleEditing={() => setEditing(!editing)}
         {...helpers}
       />
-      <EventCompnent
-        editing={editing}
-        event={events![eventID!]}
-        setOneField={setOneField}
-      />
-    </div>
-  );
-}
-
-function EventCompnent({
-  editing,
-  event,
-  setOneField,
-}: {
-  editing: boolean;
-  event: Event;
-  setOneField: SetOneField<Event>;
-}) {
-  const { addTeam, renameTeam, removeTeam } = eventHelpers(event, setOneField);
-
-  return (
-    <div className="event">
       <Teams
         editing={editing}
         teams={event.teams}

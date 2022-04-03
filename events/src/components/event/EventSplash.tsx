@@ -44,7 +44,7 @@ export default function EventSplash({
         gap: "2rem",
       }}
     >
-      {event.title}
+      {event.eventTitle}
       <div style={{ display: "flex", gap: "1rem" }}>
         <IfElse
           showIf={activeEvent ? true : false}
@@ -90,7 +90,7 @@ export default function EventSplash({
               showFalse={
                 <div style={{ fontSize: "2rem", textAlign: "center" }}>
                   Sorry, this event hasn't begun yet. If you can, please ask the
-                  event creator to start it.
+                  event administrator to start it.
                 </div>
               }
             />

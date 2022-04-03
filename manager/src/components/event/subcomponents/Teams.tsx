@@ -1,5 +1,6 @@
 import { Team } from "@ethics-olympiad/types";
 import Input from "../../util/Input";
+import ToggleInput from "../../util/ToggleInput";
 
 export default function Teams({
   editing,
@@ -14,7 +15,6 @@ export default function Teams({
   onRename: (name: string, index: number) => void;
   onRemove: (index: number) => void;
 }) {
-
   return (
     <div className="teams">
       <div className="heat-header">
@@ -34,11 +34,11 @@ export default function Teams({
           <div
             style={{
               display: "grid",
-              gap: "0.5rem",
+              gap: "1rem",
               borderTop: "solid 1px",
               borderBottom: "solid 1px",
               padding: "1rem 0rem ",
-              maxHeight: "70vh",
+              maxHeight: "57.5vh",
               overflowY: "auto",
             }}
           >

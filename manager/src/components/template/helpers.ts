@@ -33,42 +33,58 @@ export default function templateConfigHelpers(
 }
 
 export function templateTitleHelpers(
+  editing: boolean,
   template: Template,
   functions: CollectionFunctions<Template>,
   setEditing: (editing: boolean) => void
 ) {
+  const navigate = useNavigate();
   const { setOne, setOneField, removeOne } = functions;
-  const navigate = useNavigate()
+  const templateID = template._id!;
 
   const getTitle = () => {
-    return template.templateTitle || "Name this template";
+    if (editing) return template.templateTitle || "";
+    else return template.templateTitle || "Unnamed Template";
   };
 
   const rename = (templateTitle: string) => {
-    setOneField(template._id!, "templateTitle", templateTitle);
+    setOneField(templateID, "templateTitle", templateTitle);
   };
 
-  const onDelete = async () => {
-    await client.service("api/templates").remove(template._id!);
-    removeOne(template._id!);
-    navigate("..")
+  const onDelete = () => {
+    client.service("api/templates").remove(templateID);
+    navigate("..");
+    removeOne(templateID);
   };
 
   const onSave = async () => {
     const updatedTemplate = await client
       .service("api/templates")
-      .update(template._id!, template);
-    setOne(template._id!, updatedTemplate);
+      .update(templateID, template);
+    setOne(templateID, updatedTemplate);
     setEditing(false);
   };
 
   const onCancel = async () => {
-    setOne(
-      template._id!,
-      await client.service("api/templates").get(template._id!)
-    );
-    setEditing(false);
+    const unedited: Template = await client
+      .service("api/templates")
+      .get(templateID);
+    if (!unedited.templateTitle && !unedited.heats.length) {
+      onDelete();
+      setEditing(false);
+    } else {
+      setOne(templateID, unedited);
+      setEditing(false);
+    }
   };
 
   return { getTitle, rename, onDelete, onSave, onCancel };
+}
+
+export function capitalise(s: string) {
+  return s[0].toUpperCase() + s.slice(1);
+}
+
+export function formatTemplateLevel(level: string, isNew?: boolean) {
+  return `${isNew ? "New " : ""}${capitalise(level)} School Template`;
 }

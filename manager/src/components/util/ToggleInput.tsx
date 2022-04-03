@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import Conditional from "./Conditional";
 import Input from "./Input";
 
@@ -8,6 +9,7 @@ export default function ToggleInput({
   placeholder,
   autofocus,
   id,
+  style,
   onEdit,
 }: {
   editing: boolean;
@@ -16,6 +18,7 @@ export default function ToggleInput({
   placeholder?: string;
   autofocus?: boolean;
   id?: string;
+  style?: CSSProperties;
   onEdit: (value: string) => void;
 }) {
   return (
@@ -30,6 +33,7 @@ export default function ToggleInput({
           placeholder={placeholder}
           style={{
             fontSize: fontSize,
+            ...style
           }}
         />
       }
