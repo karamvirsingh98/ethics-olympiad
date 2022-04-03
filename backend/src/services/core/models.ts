@@ -81,7 +81,7 @@ export const UserModel = model(
       email: String,
       password: String,
       admin: Boolean,
-      permissions: [String],
+      permissions: Array,
     },
     { timestamps: true }
   )

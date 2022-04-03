@@ -12,7 +12,7 @@ export default function Switch({
         width: "2rem",
         height: "1rem",
         borderRadius: "1rem",
-        backgroundColor: "white",
+        backgroundColor: active ? "green" : "red",
       }}
       onClick={onClick}
     >
@@ -20,12 +20,12 @@ export default function Switch({
         style={{
           position: "absolute",
           left: 0,
-          transform: "translateX(100%)",
+          transform: active ? "translateX(100%)" : "translateX(0%)",
           transition: "transform .2s",
           borderRadius: "100%",
           width: "1rem",
           height: "1rem",
-          backgroundColor: "red",
+          backgroundColor: "white",
         }}
       />
     </div>

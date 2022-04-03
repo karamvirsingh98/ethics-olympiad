@@ -14,17 +14,29 @@ export default function EventsComponent({
   onNewClick: () => void;
   setEditing: (editing: boolean) => void;
   isTemplateEditing: boolean;
-  isEventEditing?: boolean;
+  isEventEditing: boolean;
 }) {
   const navigate = useNavigate();
-  const { eventID: _t } = useParams();
+
+  const arr = window.location.pathname.split("/");
+  const eventID = arr[arr.length - 1];
+  console.log(eventID);
 
   return (
     <div className="items">
       <button
-        className="blue"
-        onClick={() => navigate(`/events/${templateID}`)}
-        style={{ fontSize: "1.25rem", padding: "0.5rem 1rem", width: "100%" }}
+        className={isEventEditing ? "grey" : "blue"}
+        onClick={() => {
+          if (isEventEditing)
+            window.alert("Please save your changes to the event first.");
+          else navigate(`/events/${templateID}`);
+        }}
+        style={{
+          fontSize: "1.25rem",
+          padding: "0.5rem 1rem",
+          width: "100%",
+          cursor: isEventEditing ? "not-allowed" : "pointer",
+        }}
       >
         General Configuration
       </button>
@@ -33,20 +45,23 @@ export default function EventsComponent({
           <EventLink
             event={events[id]}
             onClick={() => {
-              if (isTemplateEditing) {
+              if (isTemplateEditing)
                 window.alert("Please save your changes to the template first.");
-              } else {
-                navigate(`./${id}`);
-              }
+              else navigate(`./${id}`);
             }}
             key={id}
-            disable={isTemplateEditing}
+            disable={isTemplateEditing || (isEventEditing && eventID !== id)}
           />
         ))}
       <button
-        className="green"
-        onClick={onNewClick}
-        style={{ fontSize: "1.25rem", padding: "0.5rem 1rem", width: "100%" }}
+        className={isEventEditing ? "grey" : "green"}
+        onClick={isEventEditing ? undefined : onNewClick}
+        style={{
+          fontSize: "1.25rem",
+          padding: "0.5rem 1rem",
+          width: "100%",
+          cursor: isEventEditing ? "not-allowed" : "pointer",
+        }}
       >
         New Event
       </button>

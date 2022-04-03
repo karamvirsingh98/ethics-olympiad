@@ -123,6 +123,7 @@ export default function TemplateComponent({
             templateID={template._id!}
             setEditing={setEventEditing}
             isTemplateEditing={editing}
+            isEventEditing={eventEditing}
           />
         </div>
       )}
