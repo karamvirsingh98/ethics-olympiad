@@ -1,4 +1,4 @@
-import { Case, Event } from "@ethics-olympiad/types";
+import { Event } from "@ethics-olympiad/types";
 import { useNavigate, useParams } from "react-router-dom";
 import { Events } from "../../../state/types";
 
