@@ -1,14 +1,15 @@
 interface InputProps {
-  id?: string,
-  className?: string,
-  placeholder?: string,
-  type?: string,
-  value?: string,
-  defaultValue?: string,
-  autofocus?: boolean,
-  style?: React.CSSProperties
-  onChange?: (value: string) => void
-  onConfirm?: (value: string) => void
+  id?: string;
+  className?: string;
+  placeholder?: string;
+  type?: string;
+  value?: string;
+  defaultValue?: string;
+  autofocus?: boolean;
+  style?: React.CSSProperties;
+  dontBlurOnEnter?: boolean;
+  onChange?: (value: string) => void;
+  onConfirm?: (value: string) => void;
 }
 
 export default function Input({
@@ -20,8 +21,9 @@ export default function Input({
   defaultValue,
   autofocus,
   style,
+  dontBlurOnEnter,
   onChange,
-  onConfirm
+  onConfirm,
 }: InputProps) {
   return (
     <input
@@ -34,7 +36,9 @@ export default function Input({
       defaultValue={defaultValue}
       autoFocus={autofocus}
       onChange={(e) => onChange && onChange(e.currentTarget.value)}
-      onBlur={(e) => onConfirm && onConfirm(e.currentTarget.value)}
+      onBlur={(e) =>
+        onConfirm && !dontBlurOnEnter && onConfirm(e.currentTarget.value)
+      }
       onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()}
     />
   );

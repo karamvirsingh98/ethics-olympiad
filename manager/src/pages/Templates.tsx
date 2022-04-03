@@ -60,7 +60,9 @@ function TemplateCards({
   setEditing: (editing: boolean) => void;
 }) {
   const navigate = useNavigate();
-  const levels: Levels[] = ["junior", "middle", "senior", "tertiary"];
+  const levels: Levels[] | undefined = user.admin
+    ? ["junior", "middle", "senior", "tertiary"]
+    : user.permissions;
 
   const createTemplate = (level: Levels) => async () => {
     const newTemplate: Template = await client
@@ -74,42 +76,43 @@ function TemplateCards({
 
   return (
     <div className="templates">
-      {levels.map((level, i) => (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: "2rem",
-            marginLeft: i === 0 ? "undefined" : "1rem",
-          }}
-        >
+      {levels &&
+        levels.map((level, i) => (
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              gap: "2rem",
+              marginLeft: i === 0 ? "undefined" : "1rem",
+            }}
           >
-            <button
-              className="green"
-              onClick={createTemplate(level)}
-              style={{ width: "100%" }}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
             >
-              {formatTemplateLevel(level, true)}
-            </button>
-            <ObjectMap
-              object={templates}
-              filter={(templateID) => templates[templateID].level === level}
-              map={(templateID) => (
-                <button
-                  className="blue"
-                  onClick={() => navigate(`./${templates[templateID]._id}`)}
-                  style={{ width: "100%", fontSize: "1.25rem" }}
-                >
-                  {templates[templateID].templateTitle || "Unnamed Template"}
-                </button>
-              )}
-            />
+              <button
+                className="green"
+                onClick={createTemplate(level)}
+                style={{ width: "100%" }}
+              >
+                {formatTemplateLevel(level, true)}
+              </button>
+              <ObjectMap
+                object={templates}
+                filter={(templateID) => templates[templateID].level === level}
+                map={(templateID) => (
+                  <button
+                    className="blue"
+                    onClick={() => navigate(`./${templates[templateID]._id}`)}
+                    style={{ width: "100%", fontSize: "1.25rem" }}
+                  >
+                    {templates[templateID].templateTitle || "Unnamed Template"}
+                  </button>
+                )}
+              />
+            </div>
+            {i < 3 && <Divider vertical />}
           </div>
-          {i < 3 && <Divider vertical />}
-        </div>
-      ))}
+        ))}
     </div>
   );
 }

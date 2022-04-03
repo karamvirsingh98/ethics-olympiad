@@ -1,5 +1,6 @@
-import { Case } from "@ethics-olympiad/types";
+import { Case, User } from "@ethics-olympiad/types";
 import {
+  CollectionFunctions,
   RemoveOne,
   SetOne,
   SetOneField,
@@ -7,24 +8,25 @@ import {
 import { Cases } from "../../state/types";
 import ArrayMap from "../util/ArrayMap";
 import CaseComponent from "./subcomponents/Case";
+import OfficialCase from "./subcomponents/OfficialCase";
 
 export default function CaseGroup({
+  user,
   title,
   cases,
   sortCondition,
-  setOne,
-  setOneField,
-  removeOne,
+  functions,
   onNewClick,
 }: {
+  user: User;
   title: string;
   cases?: Cases;
   sortCondition: (id: string) => void;
-  setOne: SetOne<Case>;
-  setOneField: SetOneField<Case>;
-  removeOne: RemoveOne;
+  functions: CollectionFunctions<Case>;
   onNewClick: () => void;
 }) {
+  const { setOne, setOneField, removeOne } = functions;
+
   return (
     <div
       style={{
@@ -39,6 +41,7 @@ export default function CaseGroup({
           display: "flex",
           alignItems: "start",
           justifyContent: "space-between",
+          paddingBottom: "0.25rem",
           borderBottom: "solid 0.15rem",
         }}
       >
@@ -51,15 +54,19 @@ export default function CaseGroup({
         {cases && (
           <ArrayMap
             array={Object.keys(cases).filter(sortCondition)}
-            map={(id) => (
-              <CaseComponent
-                _case={cases![id]}
-                key={id}
-                setOne={setOne}
-                setOneField={setOneField}
-                removeOne={removeOne}
-              />
-            )}
+            map={(id) =>
+              !user.admin && cases[id].isOfficial ? (
+                <OfficialCase _case={cases[id]} />
+              ) : (
+                <CaseComponent
+                  _case={cases[id]}
+                  key={id}
+                  setOne={setOne}
+                  setOneField={setOneField}
+                  removeOne={removeOne}
+                />
+              )
+            }
           />
         )}
       </div>

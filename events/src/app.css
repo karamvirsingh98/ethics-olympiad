@@ -168,6 +168,14 @@
   animation: spinner 1.1s infinite linear;
 }
 
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);

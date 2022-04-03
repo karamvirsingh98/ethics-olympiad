@@ -14,7 +14,6 @@ const updateJudgeScore = () => {
 export const SCORE_HOOKS = {
   before: {
     get: [authenticate("jwt")],
-    create: [authenticate("jwt")],
     update: [authenticate("jwt")],
     patch: [authenticate("jwt")],
     remove: [authenticate("jwt")],

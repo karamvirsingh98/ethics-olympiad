@@ -110,17 +110,18 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
   const { heatNumber } = useParams();
   const [showSubmit, setShowSubmit] = useState(false);
 
+
   const validate = () => {
     const keys = Object.keys(score.scoreA) as unknown as Array<keyof TeamScore>;
     const teamA =
       keys.every((key) => score.scoreA[key]) && score.teamA ? true : false;
     const teamB =
       keys.every((key) => score.scoreB[key]) && score.teamB ? true : false;
-    return teamA && teamB && (score.teamA !== score.teamB);
+    return teamA && teamB && score.teamA !== score.teamB;
   };
 
   const submitScore = async () => {
-    await client.service("api/scores").create(score)
+    await client.service("api/scores").create(score);
     setShowSubmit(true);
   };
 

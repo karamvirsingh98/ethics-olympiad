@@ -69,14 +69,14 @@ function JudgeName({
             defaultValue={judgeName || undefined}
             placeholder="Name"
             onConfirm={(name) => {
-              setName(name)
-              localStorage.setItem('judge_name', name)
+              setName(name);
+              localStorage.setItem("judge_name", name);
             }}
           />
         </div>
       }
       showFalse={
-        <div style={{ display: "flex", gap: "2rem" }}>
+        <div className="flex-between">
           Logged in as {judgeName}
           <button
             onClick={() => setName("")}

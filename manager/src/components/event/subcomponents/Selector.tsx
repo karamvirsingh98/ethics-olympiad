@@ -1,16 +1,20 @@
+import { Levels } from "@ethics-olympiad/types";
 import { useState } from "react";
 import { Cases } from "../../../state/types";
 
 export default function CaseSelector({
   cases,
   selected,
+  level,
   onSelect,
 }: {
   cases: Cases;
   selected: string;
+  level: Levels;
   onSelect: (id: string) => void;
 }) {
   const [show, setShow] = useState(false);
+  const toShow = Object.keys(cases).filter((id) => cases[id].level === level);
 
   return (
     <div
@@ -43,12 +47,12 @@ export default function CaseSelector({
           }}
           className="light"
         >
-          {Object.keys(cases).map((id) => (
+          {toShow.map((id) => (
             <button
               key={id}
               onClick={() => {
                 onSelect(id);
-                setShow(false)
+                setShow(false);
               }}
               className="blue"
               style={{

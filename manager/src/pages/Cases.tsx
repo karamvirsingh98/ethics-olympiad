@@ -5,19 +5,24 @@ import Divider from "../components/util/Divider";
 import { Case, Levels, User } from "@ethics-olympiad/types";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { useCases } from "../App";
+import { useEffect, useState } from "react";
+import { arrToKeyedObject } from "../util/helpers";
+import { Collection } from "../state/types";
 
 export default function Cases({ user }: { user: User }) {
   return (
     <Routes>
-      <Route path="/" element={<CaseRouteButtons />} />
+      <Route path="/" element={<CaseRouteButtons user={user} />} />
       <Route path={"/:caseLevel"} element={<CaseLevel user={user} />} />
     </Routes>
   );
 }
 
-function CaseRouteButtons() {
+function CaseRouteButtons({ user }: { user: User }) {
   const navigate = useNavigate();
-  const levels: Levels[] = ["junior", "middle", "senior", "tertiary"];
+  const levels = user.admin
+    ? ["junior", "middle", "senior", "tertiary"]
+    : user.permissions;
   function capitalise(s: string) {
     return s[0].toUpperCase() + s.slice(1);
   }
@@ -33,7 +38,7 @@ function CaseRouteButtons() {
           flexWrap: "wrap",
         }}
       >
-        {levels.map((level) => (
+        {levels?.map((level) => (
           <button
             key={level}
             onClick={() => navigate(`./${level}`)}
@@ -50,14 +55,22 @@ function CaseRouteButtons() {
 
 function CaseLevel({ user }: { user: User }) {
   const { caseLevel } = useParams();
+  const [officialCases, setOfficialCases] = useState<Collection<Case>>({});
+  const [cases, functions] = useCases(user);
 
-  const [cases, { setOne, setOneField, removeOne }] = useCases(user);
+  useEffect(() => {
+    if (!user.admin)
+      client
+        .service("api/cases")
+        .find({ query: { isOfficial: true, level: caseLevel } })
+        .then((res: Case[]) => setOfficialCases(arrToKeyedObject(res, "_id")));
+  }, []);
 
   const createCase = (isVideo: boolean) => async () => {
     const newCase: Case = await client
       .service("/api/cases")
-      .create(getDefaultCase(user._id, isVideo, caseLevel! as Levels));
-    setOne(newCase._id!, newCase);
+      .create(getDefaultCase(user, isVideo, caseLevel! as Levels));
+    functions.setOne(newCase._id!, newCase);
   };
 
   function capitalise(s: string) {
@@ -67,6 +80,8 @@ function CaseLevel({ user }: { user: User }) {
     return `${capitalise(level)} School Cases`;
   }
 
+  const _cases = user.admin ? cases : { ...cases, ...officialCases };
+
   return (
     <div
       style={{
@@ -75,11 +90,8 @@ function CaseLevel({ user }: { user: User }) {
         gridTemplateRows: "auto auto 1fr",
       }}
     >
-      <div
-        style={{ display: " grid", fontSize: "2rem", textAlign: "center" }}
-      >
-        {" "}
-        {formatTemplate(caseLevel!)}{" "}
+      <div style={{ display: " grid", fontSize: "2rem", textAlign: "center" }}>
+        {formatTemplate(caseLevel!)}
       </div>
       <Divider />
       <div
@@ -93,32 +105,30 @@ function CaseLevel({ user }: { user: User }) {
       >
         <div style={{ overflowY: "auto" }}>
           <CaseGroup
+            user={user}
             title="Video Cases"
-            cases={cases}
+            cases={_cases}
             sortCondition={(caseID) =>
-              cases &&
-              cases[caseID].isVideo &&
-              cases[caseID].level === caseLevel
+              _cases &&
+              _cases[caseID].isVideo &&
+              _cases[caseID].level === caseLevel
             }
-            setOne={setOne}
-            setOneField={setOneField}
-            removeOne={removeOne}
+            functions={functions}
             onNewClick={createCase(true)}
           />
         </div>
         <Divider vertical />
         <div style={{ overflowY: "auto" }}>
           <CaseGroup
+            user={user}
             title="Text Cases"
-            cases={cases}
+            cases={_cases}
             sortCondition={(caseID) =>
-              cases &&
-              !cases[caseID].isVideo &&
-              cases[caseID].level === caseLevel
+              _cases &&
+              !_cases[caseID].isVideo &&
+              _cases[caseID].level === caseLevel
             }
-            setOne={setOne}
-            setOneField={setOneField}
-            removeOne={removeOne}
+            functions={functions}
             onNewClick={createCase(false)}
           />
         </div>

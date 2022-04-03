@@ -27,7 +27,7 @@ export default function Topbar({
   }, []);
 
   return (
-    <div className="topbar grey-flat">
+    <div className="topbar grey-flat" style={{ width: "100%" }}>
       <div style={{ fontSize: "2rem" }}>Ethics Olympiad Manager</div>
       <div className="topbar-buttons">
         {TOPBAR_BUTTONS.map((text, i) => (
@@ -54,7 +54,13 @@ export default function Topbar({
         <button onClick={toggleDark}>
           <DarkIcon dark={dark} />
         </button>
-        <button className="red" onClick={() => { logout(); navigate("/")}}>
+        <button
+          className="red"
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+        >
           Logout
         </button>
       </div>

@@ -11,8 +11,8 @@ export default function (app: Application) {
   app.service("api/events").hooks(EVENT_HOOKS);
   app.service("api/cases").hooks({ before: { all: [authenticate("jwt")] } });
   app.service("api/templates").hooks(TEMPLATE_HOOKS);
+  app.service("api/scores").hooks(SCORE_HOOKS);
 
   //custom service hooks
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
-  app.service("api/scores").hooks(SCORE_HOOKS);
 }

@@ -20,7 +20,6 @@ export default function EventsComponent({
 
   const arr = window.location.pathname.split("/");
   const eventID = arr[arr.length - 1];
-  console.log(eventID);
 
   return (
     <div className="items">

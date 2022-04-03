@@ -1,9 +1,4 @@
-import { TeamScore } from "@ethics-olympiad/types";
-
-type ScoreFields = Record<
-  keyof TeamScore,
-  { description: string; max: number }
->;
+import { ScoreFields } from "@ethics-olympiad/types";
 
 export const SCORE_FIELDS: ScoreFields = {
   clarity: {

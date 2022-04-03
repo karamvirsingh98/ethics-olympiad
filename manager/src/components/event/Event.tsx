@@ -10,6 +10,8 @@ import {
 import { Events } from "../../state/types";
 import eventHelpers from "./helpers";
 import Teams from "./subcomponents/Teams";
+import Scores from "./subcomponents/Scores";
+import Divider from "../util/Divider";
 
 export default function EventComponent({
   eventState,
@@ -38,7 +40,6 @@ export default function EventComponent({
         display: "grid",
         gridTemplateRows: "auto 1fr",
         gap: "2rem",
-        placeItems: "start center",
       }}
     >
       <EventHeader
@@ -48,13 +49,23 @@ export default function EventComponent({
         toggleEditing={() => setEditing(!editing)}
         {...helpers}
       />
-      <Teams
-        editing={editing}
-        teams={event.teams}
-        onAdd={addTeam}
-        onRename={renameTeam}
-        onRemove={removeTeam}
-      />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr auto 1fr",
+          gap: "2rem",
+        }}
+      >
+        <Teams
+          editing={editing}
+          teams={event.teams}
+          onAdd={addTeam}
+          onRename={renameTeam}
+          onRemove={removeTeam}
+        />
+        <Divider vertical />
+        <Scores eventID={event._id!} />
+      </div>
     </div>
   );
 }

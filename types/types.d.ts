@@ -52,6 +52,7 @@ export interface Case {
   videoURL?: string;
   bodyText?: string;
   level: Levels;
+  isOfficial: boolean;
 }
 export interface ActiveEvent {
   eventID: string;
@@ -73,6 +74,11 @@ export interface Status {
 export interface ScoreStatus {
   [judgeName: string]: number;
 }
+
+export type ScoreFields = Record<
+  keyof TeamScore,
+  { description: string; max: number }
+>;
 
 export interface TeamScore {
   //pertains to presetnation as team A

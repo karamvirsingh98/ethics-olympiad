@@ -22,12 +22,7 @@ export default function PageRoutes({
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <div style={{ padding: "1rem" }}>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div style={{ fontSize: "2rem" }}> Hello {user.name} </div>
-            }
-          />
+          <Route path="/" />
           <Route
             path="/events/*"
             element={<TemplatesComponent user={user} />}

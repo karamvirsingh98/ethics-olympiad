@@ -7,7 +7,6 @@ export default function Home() {
   const { events, templates } = useBaseEvents();
   const { name } = useJudgeName();
 
-  console.log("events", events);
   return (
     <div className="home">
       <div

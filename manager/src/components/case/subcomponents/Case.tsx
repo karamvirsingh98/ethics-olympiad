@@ -39,7 +39,7 @@ export default function CaseComponent({
         padding: "1rem",
         borderRadius: "0.25rem",
       }}
-      className="grey-flat"
+      className="grey"
     >
       <CaseHeader
         title={title}

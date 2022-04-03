@@ -16,7 +16,7 @@ export default function Users({ currentUserID }: { currentUserID: string }) {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
+        gridTemplateColumns: "3fr auto 2fr",
         gap: "2rem",
       }}
     >
