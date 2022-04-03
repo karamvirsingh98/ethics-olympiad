@@ -1,14 +1,23 @@
 import { HookContext } from "@feathersjs/feathers";
 import { authenticate } from "@feathersjs/authentication/lib/hooks";
+import { Event } from "@ethics-olympiad/types";
 
 const handleTemplateDelete = () => {
   return async (context: HookContext) => {
-    console.log(context);
+    const id = context.id;
+    const eventsToRemove = await context.app
+      .service("api/events")
+      .find({ query: { templateID: id } });
+    await Promise.all(
+      eventsToRemove.map((event: Event) =>
+        context.app.service("api/events").remove(event._id)
+      )
+    );
     return context;
   };
 };
 
-const TEMPLATE_HOOKS = {
+export const TEMPLATE_HOOKS = {
   before: {
     find: [authenticate("jwt")],
     get: [authenticate("jwt")],
@@ -17,6 +26,6 @@ const TEMPLATE_HOOKS = {
     remove: [authenticate("jwt")],
   },
   after: {
-    delete: [handleTemplateDelete()],
+    remove: [handleTemplateDelete()],
   },
 };
