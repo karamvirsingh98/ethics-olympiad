@@ -3,7 +3,7 @@ import configuration from "@feathersjs/configuration";
 import primus from "@feathersjs/primus";
 import mongoose from "mongoose";
 import { coreServices, customServices } from "./services";
-import hooks from "./services/hooks";
+import hooks from "./hooks";
 import authentication from "./services/core/authentication";
 import client from "./client";
 
