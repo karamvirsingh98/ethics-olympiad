@@ -43,5 +43,3 @@ app.listen(3030).on("listening", async () => {
     .service("api/active")
     .publish("scored", (data: any) => app.channel(`events/${data.eventID}`));
 });
-
-const x = 1;
