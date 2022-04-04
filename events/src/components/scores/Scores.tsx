@@ -81,11 +81,15 @@ export default function Scores({ event }: { event: Event }) {
                   padding: "10vw",
                 }}
               >
-                {activeEvent
-                  ? scored === event.heats.length
-                    ? "All Heats Scored! Thanks for participating :)"
-                    : "Please click on the blue heat button to start scoring the current heat. Green ones have already been scored, and red ones are inaccessible until you finish scoring the current heat. "
-                  : "Event Inactive, please contact the organiser."}
+                {activeEvent ? (
+                  scored === event.heats.length ? (
+                    "All Heats Scored! Thanks for participating :)"
+                  ) : (
+                    <ScoreTutorial />
+                  )
+                ) : (
+                  "Event Inactive, please contact the organiser."
+                )}
               </div>
             }
           />
@@ -105,11 +109,29 @@ export default function Scores({ event }: { event: Event }) {
   );
 }
 
+function ScoreTutorial() {
+  return (
+    <div style={{ display: "grid", gap: "1rem" }}>
+      <div>
+        The <button className="blue">Blue Heat</button> is the one you need to
+        score.
+      </div>
+      <div>
+        <button className="green">Green Heat(s)</button> have already been
+        scored.
+      </div>
+      <div>
+        <button className="red">Red Heat(s)</button> can't be scored until you
+        finish the <button className="blue">Blue</button> one.
+      </div>
+    </div>
+  );
+}
+
 function ScoreComponent({ teams }: { teams: Team[] }) {
   const { score, set, updateScore } = useScore();
   const { heatNumber } = useParams();
   const [showSubmit, setShowSubmit] = useState(false);
-
 
   const validate = () => {
     const keys = Object.keys(score.scoreA) as unknown as Array<keyof TeamScore>;
