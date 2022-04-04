@@ -7,4 +7,4 @@ delete json.scripts.dev;
 delete json.scripts.predeploy;
 delete json.devDependencies;
 
-writeFileSync("./build/package.json", JSON.stringify(json, undefined, 2));
+writeFileSync("./dist/package.json", JSON.stringify(json, undefined, 2));

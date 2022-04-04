@@ -19,7 +19,7 @@
   "scripts": {
     "dev-all": "clear && cd backend && yarn dev & cd manager && yarn dev & cd events && yarn dev",
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
-    "deploy-backend": "cd backend && yarn predeploy && cd .. && git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend",
+    "deploy-backend": "cd backend && yarn predeploy && cd .. && git subtree split -P backend/dist -b deploy-backend && git push origin deploy-backend",
     "build-manager": "cd manager && yarn build",
     "build-events": "cd events && yarn build"
   }

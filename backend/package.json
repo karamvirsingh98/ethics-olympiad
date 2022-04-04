@@ -22,7 +22,7 @@
   },
   "scripts": {
     "dev": " tsc && node build/index.js",
-    "start": "node build/index.js",
-    "predeploy": "rm -r build && vite build && node post-build.mjs && cp ./Procfile ./build && cp -R ./config ./build " 
+    "start": "node dist/index.js",
+    "predeploy": "rm -r build && vite build && node post-build.mjs && cp ./Procfile ./dist && cp -R ./config ./dist " 
   }
 }
