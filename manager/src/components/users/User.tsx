@@ -1,5 +1,6 @@
 import { User } from "@ethics-olympiad/types";
 import { CollectionFunctions } from "../../state/hooks/useCollection";
+import Conditional from "../util/Conditional";
 import Divider from "../util/Divider";
 import LevelsAccess from "./LevelsAccess";
 import UserInfo from "./UserInfo";
@@ -15,9 +16,17 @@ export default function UserComponent({
 
   return (
     <div className="grey-flat user">
-      <UserInfo user={user} removeOne={removeOne} />
+      <UserInfo user={user} removeOne={removeOne} setOneField={setOneField} />
       <Divider vertical />
-      <LevelsAccess user={user} setOneField={setOneField} />
+      <Conditional
+        condition={user.admin ? true : false}
+        showTrue={
+          <div style={{ display: "grid", placeItems: "center" }}>
+            This user does not require permissions.
+          </div>
+        }
+        showFalse={<LevelsAccess user={user} setOneField={setOneField} />}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { User } from "@ethics-olympiad/types";
-import { RemoveOne } from "../../state/hooks/useCollection";
+import { RemoveOne, SetOneField } from "../../state/hooks/useCollection";
 import Switch from "../util/Switch";
 import { useState } from "react";
 import { client } from "../../main";
@@ -7,9 +7,11 @@ import { client } from "../../main";
 export default function UserInfo({
   user,
   removeOne,
+  setOneField,
 }: {
   user: User;
   removeOne: RemoveOne;
+  setOneField: SetOneField<User>;
 }) {
   const [confirm, set] = useState(false);
 
@@ -20,6 +22,13 @@ export default function UserInfo({
       removeOne(user._id!);
       set(false);
     }
+  };
+
+  const updateAdmin = async () => {
+    await client
+      .service("api/users")
+      .update(user._id!, { ...user, admin: !user.admin });
+    setOneField(user._id, "admin", !user.admin);
   };
 
   return (
@@ -42,7 +51,7 @@ export default function UserInfo({
       </div>
       <div style={{ display: "flex", gap: "2rem" }}>
         Has Admin Privelidges
-        <Switch active={user.admin} onClick={() => {}} />
+        <Switch active={user.admin} onClick={updateAdmin} />
       </div>
       <div>{`Email: ${user.email}`}</div>
       <div>
