@@ -23,6 +23,7 @@
     "build-manager": "cd manager && yarn build",
     "build-events": "cd events && yarn build",
     "build": "yarn workspace @ethics-olympiad/backend build && echo 'building backend?' ",
-    "start": "yarn workspace @ethics-olympiad/backend start"
+    "start": "yarn workspace @ethics-olympiad/backend start",
+    "preinstall": "yarn set version berry"
   }
 }
