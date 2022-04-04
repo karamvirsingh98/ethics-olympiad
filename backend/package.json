@@ -23,6 +23,6 @@
   "scripts": {
     "dev": " tsc && node build/index.js",
     "start": "node build/index.js",
-    "pre-deploy": "vite build && cp ./Procfile ./build && cp ./config ./build" 
+    "predeploy": "vite build && cp ./Procfile ./build && cp -R ./config ./build" 
   }
 }
