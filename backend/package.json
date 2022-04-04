@@ -22,9 +22,10 @@
   "scripts": {
     "start": "node build/index.js",
     "dev": " yarn build && node build/index.js",
+    "build": "tsc",
     "postinstall": "tsc"
   },
   "engines": {
-    "yarn": "1.x"
+    "yarn": "1.22.18"
   }
 }
