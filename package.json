@@ -19,7 +19,7 @@
     "build-backend": "git checkout deploy-backend && git merge main --force && git commit -A -m 'deploying backend' && git push origin deploy-backend && git ceckout main",
     "build-manager": "cd manager && yarn build",
     "build-events": "cd events && yarn build",
-    "build": "yarn workspace @ethics-olympiad/backend build",
+    "build": "yarn workspace @ethics-olympiad/backend build && echo 'building backend?' ",
     "start": "yarn workspace @ethics-olympiad/backend start"
   }
 }
