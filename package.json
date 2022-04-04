@@ -24,6 +24,6 @@
     "build-events": "cd events && yarn build",
     "build": "yarn workspace @ethics-olympiad/backend build && echo 'building backend?' ",
     "start": "yarn workspace @ethics-olympiad/backend start",
-    "preinstall": "yarn set version berry"
+    "heroku-prebuild": "yarn set version berry"
   }
 }
