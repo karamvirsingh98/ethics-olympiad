@@ -22,8 +22,8 @@ app.configure(coreServices);
 app.configure(customServices);
 app.configure(hooks);
 
-app.listen(Number(process.env.PORT) || 3030).on("listening", async () => {
-  console.log("websocket server on port 3030");
+app.listen(app.get("port") || 3030).on("listening", async () => {
+  console.log("websocket server on port: ", process.env.PORT);
   if (process.env.NODE_ENV !== "production") await client();
   console.log("======================");
   console.log("====Setup Complete====");
