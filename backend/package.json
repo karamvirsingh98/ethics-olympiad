@@ -13,6 +13,7 @@
     "feathers-mongoose": "^8.5.1",
     "mongoose": "^6.1.6",
     "typescript": "^4.5.4",
+    "vite": "^2.9.1",
     "ws": "^8.5.0"
   },
   "devDependencies": {
@@ -20,8 +21,8 @@
     "@types/ws": "^8.2.2"
   },
   "scripts": {
-    "dev": " yarn build && node build/index.js",
+    "dev": " tsc && node build/index.js",
     "start": "node build/index.js",
-    "build": "tsc"
+    "deploy-backend": "git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend"
   }
 }
