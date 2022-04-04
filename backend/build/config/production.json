@@ -1,0 +1,9 @@
+{
+  "port": "PORT",
+  "cors": {
+    "origin": [
+      "https://olympiad-manager.vercel.app",
+      "https://olympiad-app.vercel.app"
+    ]
+  }
+}
