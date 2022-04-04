@@ -17,7 +17,7 @@
     "dev-frontends": "clear && cd manager && yarn dev & cd events && yarn dev",
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
     "deploy-backend": "cd backend && yarn && cd .. git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend",
-    "build-manager": "cd manager && yarn build",
-    "build-events": "cd events && yarn build"
+    "deploy-manager": "git checkout deploy-manager && git merge main && git add -A && git push origin deploy-manager && git checkout main",
+    "deploy-events": "git checkout deploy-events && git merge main && git add -A && git push origin deploy-events && git checkout main"
   }
 }
