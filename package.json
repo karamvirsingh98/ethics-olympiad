@@ -19,11 +19,8 @@
   "scripts": {
     "dev-all": "clear && cd backend && yarn dev & cd manager && yarn dev & cd events && yarn dev",
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
-    "build-backend": "git checkout deploy-backend && git merge main --force && git commit -A -m 'deploying backend' && git push origin deploy-backend && git ceckout main",
+    "deploy-backend": "git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend",
     "build-manager": "cd manager && yarn build",
-    "build-events": "cd events && yarn build",
-    "build": "yarn workspace @ethics-olympiad/backend build && echo 'building backend?' ",
-    "start": "yarn workspace @ethics-olympiad/backend start",
-    "heroku-prebuild": "yarn set version berry"
+    "build-events": "cd events && yarn build"
   }
 }
