@@ -13,6 +13,9 @@
   "devDependencies": {
     "typescript": "^4.5.4"
   },
+  "engines": {
+    "yarn": "3.2.0"
+  },
   "scripts": {
     "dev-all": "clear && cd backend && yarn dev & cd manager && yarn dev & cd events && yarn dev",
     "build-all": "yarn build-backend & yarn build-manager & yarn build-events",
