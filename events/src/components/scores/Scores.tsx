@@ -112,15 +112,15 @@ export default function Scores({ event }: { event: Event }) {
 function ScoreTutorial() {
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
-      <div>
+      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         The <button className="blue">Blue Heat</button> is the one you need to
         score.
       </div>
-      <div>
+      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         <button className="green">Green Heat(s)</button> have already been
         scored.
       </div>
-      <div>
+      <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         <button className="red">Red Heat(s)</button> can't be scored until you
         finish the <button className="blue">Blue</button> one.
       </div>
