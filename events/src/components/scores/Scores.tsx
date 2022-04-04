@@ -111,7 +111,7 @@ export default function Scores({ event }: { event: Event }) {
 
 function ScoreTutorial() {
   return (
-    <div style={{ display: "grid", gap: "1rem", opacity: 0.8 }}>
+    <div style={{ display: "grid", gap: "1rem", opacity: 0.5 }}>
       <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
         The <button className="blue">Blue Heat</button> is the one you need to
         score.
