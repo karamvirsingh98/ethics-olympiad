@@ -16,7 +16,6 @@
     "typescript": "^4.5.4"
   },
   "devDependencies": {
-    "@ethics-olympiad/types": "1.0.0",
     "@types/ws": "^8.2.2"
   },
   "scripts": {
