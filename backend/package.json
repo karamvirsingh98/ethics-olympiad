@@ -23,6 +23,6 @@
   "scripts": {
     "dev": " tsc && node build/index.js",
     "start": "node dist/index.js",
-    "predeploy": "rm -r dist && vite build && node post-build.mjs && cp ./Procfile ./dist && cp -R ./config ./dist " 
+    "predeploy": "rm -r dist && vite build && node post-build.mjs && cp ./Procfile ./dist && cp -R ./config ./dist "
   }
 }
