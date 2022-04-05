@@ -1,4 +1,4 @@
-===== Initiating Deployment =====
+echo ===== Initiating Deployment =====
 
 # clear and rebuild
 rm -r dist

@@ -29,6 +29,9 @@ app.listen(app.get("port") || 3030).on("listening", async () => {
   console.log("====Setup Complete====");
   console.log("======================");
 
+  console.log("AUTHKEY", process.env.AUTHKEY);
+  console.log("app get", app.get("authentication.secret"));
+
   app.on("connection", (c: any) => app.channel("general").join(c));
 
   app
@@ -38,9 +41,6 @@ app.listen(app.get("port") || 3030).on("listening", async () => {
         .channel(`events/${data.eventID}`)
         .filter((c: any) => c !== params.connection)
     );
-
-  console.log("AUTHKEY", process.env.AUTHKEY)
-  console.log("app get", app.get('authentication.secret'))
 
   app
     .service("api/active")
