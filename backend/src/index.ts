@@ -30,9 +30,6 @@ app.listen(app.get("port") || 3030).on("listening", async () => {
   console.log("======================");
   console.log("====Setup Complete====");
   console.log("======================");
-
-  console.log("AUTHKEY", process.env.AUTHKEY);
-  console.log("app get", app.get("authentication"));
   
   app.on("connection", (c: any) => app.channel("general").join(c));
 
