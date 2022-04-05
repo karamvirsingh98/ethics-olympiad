@@ -7,10 +7,11 @@ import "./index.css";
 import "./app.css";
 
 const HOME_IP = "http://10.0.0.44:3030";
-const MAX_HOME_IP = "http://10.0.0.43:3030"
-const LOCALHOST = "http://localhost:3030"
+const MAX_HOME_IP = "http://10.0.0.43:3030";
+const LOCALHOST = "http://localhost:3030";
+const HEROKU = "https://ethicsolympiad.herokuapp.com/";
 
-export const client = setupClient("https://ethicsolympiad.herokuapp.com/")
+export const client = setupClient(LOCALHOST);
 
 ReactDOM.render(
   <React.StrictMode>
