@@ -6,7 +6,7 @@ html {
 
 * {
   box-sizing: inherit;
-  transition: background-color 250ms ease-in-out, border-color 250ms ease-in-out;
+  transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
 }
 
 body {
@@ -103,6 +103,10 @@ textarea:focus {
 
 .grey:hover {
   background-color: rgba(112, 108, 87, 0.8);
+}
+
+.blue-active {
+  background-color: rgba(126, 189, 194, 0.7);
 }
 
 .blue {

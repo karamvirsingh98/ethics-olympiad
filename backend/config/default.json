@@ -9,7 +9,7 @@
       "header": {
         "typ": "access"
       },
-      "audience": "https://olymiad-manager-backend.herokuapp.com",
+      "audience": "https://ethicsolympiad.herokuapp.com",
       "issuer": "feathers",
       "algorithm": "HS256",
       "expiresIn": "1d"

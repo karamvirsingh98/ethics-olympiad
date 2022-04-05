@@ -8,6 +8,7 @@ export default function EventsComponent({
   onNewClick,
   isTemplateEditing,
   isEventEditing,
+  inEvent,
 }: {
   templateID: string;
   events: Events;
@@ -15,6 +16,7 @@ export default function EventsComponent({
   setEditing: (editing: boolean) => void;
   isTemplateEditing: boolean;
   isEventEditing: boolean;
+  inEvent: boolean;
 }) {
   const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ export default function EventsComponent({
   return (
     <div className="items">
       <button
-        className={isEventEditing ? "grey" : "blue"}
+        className={isEventEditing ? "grey" : inEvent ? "blue" : "blue-active"}
         onClick={() => {
           if (isEventEditing)
             window.alert("Please save your changes to the event first.");
@@ -50,6 +52,7 @@ export default function EventsComponent({
             }}
             key={id}
             disable={isTemplateEditing || (isEventEditing && eventID !== id)}
+            inEvent={inEvent}
           />
         ))}
       <button
@@ -72,14 +75,16 @@ function EventLink({
   event,
   onClick,
   disable,
+  inEvent,
 }: {
   event: Event;
   onClick: () => void;
   disable: boolean;
+  inEvent: boolean;
 }) {
   return (
     <button
-      className={disable ? "grey" : "blue"}
+      className={disable ? "grey" : inEvent ? "blue-active" : "blue"}
       onClick={onClick}
       style={{
         fontSize: "1.25rem",

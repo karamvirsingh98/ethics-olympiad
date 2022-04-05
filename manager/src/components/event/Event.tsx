@@ -64,7 +64,7 @@ export default function EventComponent({
           onRemove={removeTeam}
         />
         <Divider vertical />
-        <Scores eventID={event._id!} />
+        <Scores event={event} />
       </div>
     </div>
   );

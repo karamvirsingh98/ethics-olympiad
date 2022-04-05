@@ -19,12 +19,16 @@ export default function Topbar({
 
   useEffect(() => {
     const pathName = window.location.pathname;
-    set(
-      TOPBAR_BUTTONS.findIndex(
-        (t) => t.toLowerCase() === pathName.slice(1, pathName.length)
-      )
-    );
-  }, []);
+    const index =
+      pathName === "/"
+        ? 0
+        : TOPBAR_BUTTONS.findIndex(
+            (t) => t.toLowerCase() === pathName.slice(1, pathName.length)
+          );
+    set(index);
+  }, [window.location.pathname]);
+
+  console.log(current, TOPBAR_BUTTONS[current]);
 
   return (
     <div className="topbar" style={{ width: "100%" }}>
@@ -32,7 +36,7 @@ export default function Topbar({
       <div className="topbar-buttons">
         {TOPBAR_BUTTONS.map((text, i) => (
           <TopbarButton
-            key={text + i}
+            key={i}
             text={text}
             active={i === current}
             onClick={() => {

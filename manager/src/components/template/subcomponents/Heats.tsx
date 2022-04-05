@@ -2,7 +2,7 @@ import { Case, Heat, Levels, Template, User } from "@ethics-olympiad/types";
 import { useCases } from "../../../App";
 import { Cases, Collection } from "../../../state/types";
 import Conditional from "../../util/Conditional";
-import CaseSelector from "../../event/subcomponents/Selector";
+import CaseSelector from "../../event/subcomponents/CaseSelector";
 import { SetOneField } from "../../../state/hooks/useCollection";
 import { useEffect, useState } from "react";
 import { client } from "../../../main";

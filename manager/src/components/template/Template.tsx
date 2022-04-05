@@ -124,6 +124,7 @@ export default function TemplateComponent({
             setEditing={setEventEditing}
             isTemplateEditing={editing}
             isEventEditing={eventEditing}
+            inEvent={inEvent}
           />
         </div>
       )}
