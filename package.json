@@ -17,8 +17,8 @@
     "dev-manager": "cd manager && yarn dev",
     "dev-events": "cd events && yarn dev",
     "deploy-backend": "./scripts/backend.sh",
-    "deploy-manager": "git checkout deploy-manager && git merge main && git add -A && git push origin deploy-manager && git checkout main",
-    "deploy-events": "git checkout deploy-events && git merge main && git add -A && git push origin deploy-events && git checkout main"
+    "deploy-manager": "git checkout deploy-manager && git merge main && git commit -m 'Updating Manager' && git push origin deploy-manager && git checkout main",
+    "deploy-events": "git checkout deploy-events && git merge main && git commit -m 'Updating Events' && git push origin deploy-events && git checkout main"
   },
   "packageManager": "yarn@3.2.0"
 }
