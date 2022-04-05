@@ -28,8 +28,6 @@ export default function Topbar({
     set(index);
   }, [window.location.pathname]);
 
-  console.log(current, TOPBAR_BUTTONS[current]);
-
   return (
     <div className="topbar" style={{ width: "100%" }}>
       <div style={{ fontSize: "2rem" }}>Ethics Olympiad Manager</div>
