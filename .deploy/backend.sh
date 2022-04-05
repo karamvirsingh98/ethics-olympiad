@@ -13,7 +13,7 @@ git add -A
 git commit -m 'Deploying Backend'
 
 # push subtree branch to origin to trigger heroku build
-git push origin -f deploy-backend:deploy-backend
+git push origin deploy-backend
 
 # cleanup local branch
 git branch -D deploy-backend
