@@ -72,46 +72,44 @@ export function createUseAuth(): UseAuth {
 export function useAuth() {
   const [user, setUser] = useState<User | false | undefined>();
 
-    useEffect(() => {
-      client
-        .reAuthenticate()
-        .then(({ user }) => setUser(user))
-        .catch(() => setUser(false));
-    }, []);
+  useEffect(() => {
+    client
+      .reAuthenticate()
+      .then(({ user }) => setUser(user))
+      .catch(() => setUser(false));
+  }, []);
 
-    const login = async (credentials: Credentials) => {
-      try {
-        const res = await client.authenticate({
-          strategy: "local",
-          ...credentials,
-        });
-        setUser(res.user);
-      } catch (e) {
-        console.log("error logging in", e);
-        setUser(false);
-        window.alert("Invalid Login Credentials");
-      }
-    };
-
-    const logout = async () => {
-      await client.logout();
+  const login = async (credentials: Credentials) => {
+    try {
+      const res = await client.authenticate({
+        strategy: "local",
+        ...credentials,
+      });
+      setUser(res.user);
+    } catch (e) {
+      console.log("error logging in", e);
       setUser(false);
-    };
+      window.alert("Invalid Login Credentials");
+    }
+  };
 
-    const createAccount = async (
-      credentials: Required<Credentials>,
-      inviteKey: string
-    ) => {
-      try {
-        const user = await client
-          .service("api/users")
-          .create({ ...credentials, inviteKey });
-        setUser(user);
-      } catch (err: any) {
-        setUser(false);
-        window.alert(err.message);
-      }
-    };
+  const logout = async () => {
+    await client.logout();
+    setUser(false);
+  };
 
-    return { user, login, logout, createAccount };
+  const createAccount = async (
+    credentials: Required<Credentials>,
+    inviteKey: string
+  ) => {
+    try {
+      await client.service("api/users").create({ ...credentials, inviteKey });
+      await login(credentials);
+    } catch (err: any) {
+      setUser(false);
+      window.alert(err.message);
+    }
+  };
+
+  return { user, login, logout, createAccount };
 }
