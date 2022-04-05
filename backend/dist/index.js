@@ -164,7 +164,7 @@ class InviteService {
     return this.invites;
   }
   async create(data) {
-    const key = crypto__default["default"].randomBytes(16).toString("hex");
+    const key = crypto__default["default"].randomBytes(8).toString("hex");
     const expiry = Math.floor(Date.now() / 1e3) + MONTH_IN_SECS;
     this.invites.push({ ...data, key, expiry });
     return this.invites;
