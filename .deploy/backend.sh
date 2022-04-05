@@ -4,6 +4,6 @@ echo ===== Predeploy Completed =====
 
 # push backend/dist to deployment branch
 git subtree split -P backend/build -b deploy-backend
-git push origin deploy-backend:deploy-backend --force
+git push origin -f deploy-backend:deploy-backend
 git branch -D deploy-backend
 echo ===== Pushed to Deployment Branch =====

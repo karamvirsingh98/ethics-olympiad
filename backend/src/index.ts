@@ -10,8 +10,10 @@ import client from "./client";
 const app = feathers().configure(configuration());
 app.configure(
   primus({ transformer: "websockets" }, (primus: any) => {
-    primus.library();
-    primus.save(__dirname + "/primus.js");
+    if (process.env.NODE_ENV !== "production") {
+      primus.library();
+      primus.save(__dirname + "/primus.js");
+    }
   })
 );
 

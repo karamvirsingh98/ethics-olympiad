@@ -349,8 +349,10 @@ var client = async () => http__default["default"].createServer(function(req, res
 
 const app = feathers__default["default"]().configure(configuration__default["default"]());
 app.configure(primus__default["default"]({ transformer: "websockets" }, (primus2) => {
-  primus2.library();
-  primus2.save(__dirname + "/primus.js");
+  if (process.env.NODE_ENV !== "production") {
+    primus2.library();
+    primus2.save(__dirname + "/primus.js");
+  }
 }));
 mongoose__default["default"].connect(app.get("mongodb"));
 app.configure(authentication);
