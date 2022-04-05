@@ -17,7 +17,7 @@
     "dev-manager": "cd manager && yarn dev",
     "dev-events": "cd events && yarn dev",
     "deploy-all": "yarn deploy-backend & yarn deploy-manager & yarn deploy-events",
-    "deploy-backend": "cd backend && yarn predeploy && cd .. && git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend",
+    "deploy-backend": "yarn workspace @ethics-olympiad/backend run predeploy && git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend",
     "deploy-manager": "git checkout deploy-manager && git merge main && git add -A && git push origin deploy-manager && git checkout main",
     "deploy-events": "git checkout deploy-events && git merge main && git add -A && git push origin deploy-events && git checkout main"
   },

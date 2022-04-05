@@ -366,5 +366,7 @@ app.listen(app.get("port") || 3030).on("listening", async () => {
   console.log("======================");
   app.on("connection", (c) => app.channel("general").join(c));
   app.service("api/active").publish((data, { params }) => app.channel(`events/${data.eventID}`).filter((c) => c !== params.connection));
+  console.log("AUTHKEY", process.env.AUTHKEY);
+  console.log("app get", app.get("authentication.secret"));
   app.service("api/active").publish("scored", (data) => app.channel(`events/${data.eventID}`));
 });
