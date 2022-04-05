@@ -6,11 +6,10 @@ echo ===== Predeploy Completed =====
 echo ===== Initiating Deployment =====
 
 # split subtree
-git subtree split -P backend/build -b deploy-backend
+git subtree split -P backend/dist -b deploy-backend
 
 # prepare subtree branch for deployment
-git add -A 
-git commit -m 'Deploying Backend'
+git commit -a -m 'Deploying Backend'
 
 # push subtree branch to origin to trigger heroku build
 git push origin deploy-backend
