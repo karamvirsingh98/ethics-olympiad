@@ -20,5 +20,6 @@
     "deploy-backend": "cd backend && yarn && cd .. git subtree split -P backend/build -b deploy-backend && git push origin deploy-backend",
     "deploy-manager": "git checkout deploy-manager && git merge main && git add -A && git push origin deploy-manager && git checkout main",
     "deploy-events": "git checkout deploy-events && git merge main && git add -A && git push origin deploy-events && git checkout main"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }

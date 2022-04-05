@@ -39,6 +39,9 @@ app.listen(app.get("port") || 3030).on("listening", async () => {
         .filter((c: any) => c !== params.connection)
     );
 
+  console.log("AUTHKEY", process.env.AUTHKEY)
+  console.log("app get", app.get('authentication.secret'))
+
   app
     .service("api/active")
     .publish("scored", (data: any) => app.channel(`events/${data.eventID}`));

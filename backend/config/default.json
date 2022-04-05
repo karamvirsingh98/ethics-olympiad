@@ -3,7 +3,7 @@
   "authentication": {
     "entity": "user",
     "service": "api/users",
-    "secret": "5H8GpACU28sYuHZRnJgXeL6Zv0WE7jxv4I38SA31KOlWR5URg0",
+    "secret": "AUTHKEY",
     "authStrategies": ["jwt", "local"],
     "jwtOptions": {
       "header": {
