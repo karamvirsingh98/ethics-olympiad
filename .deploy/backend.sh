@@ -9,11 +9,13 @@ echo ===== Initiating Deployment =====
 git subtree split -P backend/dist -b deploy-backend
 
 # prepare subtree branch for deployment
+git checkout deploy-backend
 git commit -a -m 'Deploying Backend'
 
 # push subtree branch to origin to trigger heroku build
 git push origin deploy-backend
 
 # cleanup local branch
+git checkout main
 git branch -D deploy-backend
 echo ===== Pushed to Deployment Branch =====
