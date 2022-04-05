@@ -8,11 +8,10 @@ export default function InviteComponent({
   invite: Invite;
   onDelete: (invites: Invite[]) => void;
 }) {
-
-	const deleteInvite = async () => {
-		const invites = await client.service('api/invite').remove(invite.key)
-		onDelete(invites)
-	}
+  const deleteInvite = async () => {
+    const invites = await client.service("api/invite").remove(invite.key);
+    onDelete(invites);
+  };
 
   return (
     <div className="invite grey-flat">
@@ -25,11 +24,17 @@ export default function InviteComponent({
       >
         <div style={{ fontSize: "1.25rem" }}>{invite.name}</div>
         <div style={{ opacity: 0.8 }}>{invite.email}</div>
-        <button className="red" style={{ fontSize: "0.8rem" }}>
+        <button
+          className="red"
+          style={{ fontSize: "0.8rem" }}
+          onClick={deleteInvite}
+        >
           Delete
         </button>
       </div>
-      <div>Invite URL: http://localhost:3000/signup/{invite.key}</div>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        Invite URL: {window.location.origin}/signup/{invite.key}
+      </div>
     </div>
   );
 }
