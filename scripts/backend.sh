@@ -25,4 +25,5 @@ echo ===== Initiating Deployment =====
 # cleanup local branch
 git checkout main
 git branch -D deploy-backend
+rm -r backend/dist
 echo ===== Pushed to Deployment Branch =====
