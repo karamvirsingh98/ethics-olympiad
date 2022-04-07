@@ -17,9 +17,9 @@
     "dev-manager": "yarn workspace @ethics-olympiad/manager run dev",
     "dev-events": "yarn workspace @ethics-olympiad/events run dev",
     "dev-backend": "yarn workspace @ethics-olympiad/backend run dev",
-    "deploy-backend": "./scripts/backend.sh",
-    "deploy-manager": "git checkout deploy-manager && git merge main && git add -A && git push origin deploy-manager && git checkout main",
-    "deploy-events": "git checkout deploy-events && git merge main && git add -A && git push origin deploy-events && git checkout main"
+    "deploy-manager": "./deploy/manager.sh",
+    "deploy-events": "./deploy/events.sh",
+    "deploy-backend": "./deploy/backend.sh"
   },
   "packageManager": "yarn@3.2.0"
 }
