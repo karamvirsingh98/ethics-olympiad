@@ -1,3 +1,7 @@
-backend
 node_modules
+<<<<<<< HEAD
 .yarn
+=======
+.yarn/*
+.env
+>>>>>>> main

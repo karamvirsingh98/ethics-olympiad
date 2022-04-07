@@ -1,8 +1,6 @@
 import { Levels, User } from "@ethics-olympiad/types";
 import { client } from "../../main";
-import {
-  SetOneField,
-} from "../../state/hooks/useCollection";
+import { SetOneField } from "../../state/hooks/useCollection";
 import Switch from "../util/Switch";
 
 export default function LevelsAccess({
@@ -24,27 +22,32 @@ export default function LevelsAccess({
   const updateUserLevel = (level: Levels) => async () => {
     if (user.permissions?.includes(level)) {
       const permissions = user.permissions.filter((p) => p !== level);
-      await client.service("api/users").update(user._id!, {
-        ...user,
-        permissions,
-      });
+      await client
+        .service("api/users")
+        .patch(user._id!, {
+          permissions,
+        })
+        .then(console.log);
       setOneField(user._id!, "permissions", permissions);
     } else {
       const permissions = user.permissions
         ? [...user.permissions, level]
         : [level];
-      await client.service("api/users").update(user._id!, {
-        ...user,
-        permissions,
-      });
+      await client
+        .service("api/users")
+        .patch(user._id!, {
+          permissions,
+        })
+        .then(console.log);
       setOneField(user._id!, "permissions", permissions);
     }
   };
 
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
-      {levels.map((level) => (
+      {levels.map((level, i) => (
         <div
+          key={i}
           style={{
             display: "flex",
             alignItems: "center",

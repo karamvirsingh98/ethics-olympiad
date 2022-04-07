@@ -25,9 +25,7 @@ export default function UserInfo({
   };
 
   const updateAdmin = async () => {
-    await client
-      .service("api/users")
-      .update(user._id!, { ...user, admin: !user.admin });
+    await client.service("api/users").patch(user._id!, { admin: !user.admin });
     setOneField(user._id, "admin", !user.admin);
   };
 

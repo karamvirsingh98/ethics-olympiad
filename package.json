@@ -15,10 +15,18 @@
   },
   "scripts": {
     "dev-manager": "yarn workspace @ethics-olympiad/manager run dev",
+<<<<<<< HEAD
     "dev-events": "yarn workspace @ethics-olympiad/manager run dev",
     "deploy-backend": "./scripts/backend.sh",
     "deploy-manager": "git checkout deploy-manager && git merge main && git commit -m 'Updating Manager' && git push origin deploy-manager && git checkout main",
     "deploy-events": "git checkout deploy-events && git merge main && git commit -m 'Updating Events' && git push origin deploy-events && git checkout main"
+=======
+    "dev-events": "yarn workspace @ethics-olympiad/events run dev",
+    "dev-backend": "yarn workspace @ethics-olympiad/backend run dev",
+    "deploy-manager": "./deploy/manager.sh",
+    "deploy-events": "./deploy/events.sh",
+    "deploy-backend": "./deploy/backend.sh"
+>>>>>>> main
   },
   "packageManager": "yarn@3.2.0"
 }
