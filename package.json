@@ -14,8 +14,8 @@
     "typescript": "^4.5.4"
   },
   "scripts": {
-    "dev-manager": "cd manager && yarn dev",
-    "dev-events": "cd events && yarn dev",
+    "dev-manager": "yarn workspace @ethics-olympiad/manager run dev",
+    "dev-events": "yarn workspace @ethics-olympiad/manager run dev",
     "deploy-backend": "./scripts/backend.sh",
     "deploy-manager": "git checkout deploy-manager && git merge main && git commit -m 'Updating Manager' && git push origin deploy-manager && git checkout main",
     "deploy-events": "git checkout deploy-events && git merge main && git commit -m 'Updating Events' && git push origin deploy-events && git checkout main"

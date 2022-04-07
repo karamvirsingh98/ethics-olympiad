@@ -1,5 +1,5 @@
 import { Event, User } from "@ethics-olympiad/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { titleHelpers } from "../../pages/helpers";
 import EventHeader from "./subcomponents/Header";
@@ -12,6 +12,8 @@ import eventHelpers from "./helpers";
 import Teams from "./subcomponents/Teams";
 import Scores from "./subcomponents/Scores";
 import Divider from "../util/Divider";
+import { client } from "../../main";
+import Conditional from "../util/Conditional";
 
 export default function EventComponent({
   eventState,
@@ -24,6 +26,7 @@ export default function EventComponent({
 }) {
   const { eventID } = useParams();
   const [events, eventFunctions] = eventState;
+  const [active, set] = useState(false);
 
   const event = events[eventID!];
 
@@ -33,6 +36,13 @@ export default function EventComponent({
     events[eventID!],
     eventFunctions.setOneField
   );
+
+  useEffect(() => {
+    client
+      .service("api/events")
+      .get()
+      .then((res: any) => set(res ? true : false));
+  }, []);
 
   return (
     <div
@@ -64,7 +74,11 @@ export default function EventComponent({
           onRemove={removeTeam}
         />
         <Divider vertical />
-        <Scores event={event} />
+        <Conditional 
+          condition={active}
+          showTrue={<Scores event={event} />}
+          showFalse={<div> This Event isn't active, so there are no scores yet! </div>}
+        />
       </div>
     </div>
   );

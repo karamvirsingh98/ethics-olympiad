@@ -123,55 +123,30 @@ function TeamScoreCards({
 
   const ts = getTeamScores();
 
-  console.log(ts);
-
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
-      {ts &&
-        ts.map((teamTotals) => (
-          <div
-            className="grey-flat"
-            style={{
-              padding: "1rem",
-              borderRadius: "0.2rem",
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              placeItems: "center start",
-            }}
-          >
-            <div> {teamTotals[0].teamName} </div>
-            {teamTotals.map((score, i) => (
-              <>
-                <div style={{ display: "grid", gap: "1rem" }}>
-                  <div> Heat{i + 1} </div>
-                  <div> {score.total} </div>
-                </div>
-              </>
-            ))}
-          </div>
-        ))}
+      {ts?.map((teamTotals) => (
+        <div
+          className="grey-flat"
+          style={{
+            padding: "1rem",
+            borderRadius: "0.2rem",
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            placeItems: "center start",
+          }}
+        >
+          <div> {teamTotals[0].teamName} </div>
+          {teamTotals.map((score, i) => (
+            <>
+              <div style={{ display: "grid", gap: "1rem" }}>
+                <div> Heat{i + 1} </div>
+                <div> {score.total} </div>
+              </div>
+            </>
+          ))}
+        </div>
+      ))}
     </div>
   );
-}
-
-function adsf({ scores }: { scores: Score[] }) {
-  return scores.map((score) => (
-    <div
-      style={{ display: "grid", gap: "1rem", padding: "1rem" }}
-      className="grey-flat"
-    >
-      <div className="flex-between">
-        <div>{"Judge: " + score.judgeName}</div>
-        <div>{"Heat Number: " + score.heatNumber}</div>
-      </div>
-      <div className="flex-between">
-        <div>{"TeamA: " + score.teamA}</div>
-        <div>{"Total: " + total(score.scoreA)}</div>
-      </div>
-      <div className="flex-between">
-        <div>{"TeamB: " + score.teamB}</div>
-        <div>{"Total: " + total(score.scoreB)}</div>
-      </div>
-    </div>
-  ));
 }
