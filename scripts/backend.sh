@@ -2,8 +2,10 @@
 yarn workspace @ethics-olympiad/backend run predeploy
 echo ===== Predeploy Completed =====
 
-#stash changes in main for a clean subtree split
-git stash
+#commit to main for a clean subtree split
+git add -A 
+git commit -m 'Backend Deployment Rebuild'
+git push origin main
 
 # push backend/dist to deployment branch
 echo ===== Initiating Deployment =====
@@ -24,5 +26,4 @@ echo ===== Initiating Deployment =====
 git checkout main
 git branch -D deploy-backend
 rm -r backend/dist
-git stash pop
 echo ===== Pushed to Deployment Branch =====
