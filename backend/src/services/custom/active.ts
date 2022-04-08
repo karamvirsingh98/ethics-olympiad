@@ -10,7 +10,7 @@ export class ActiveEventService {
 
   constructor(app: Application) {
     this.app = app;
-    this.events = ['scored']
+    this.events = []
   }
 
   async get(eventID: string, { user, judgeName }: Params) {

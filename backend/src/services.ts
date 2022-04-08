@@ -9,6 +9,7 @@ import {
 } from "./services/core/models";
 import { ActiveEventService } from "./services/custom/active";
 import { ChannelService } from "./services/custom/channel";
+import { ForgotPasswordService } from "./services/custom/forgot";
 import { InviteService } from "./services/custom/invite";
 import { UnlockService } from "./services/custom/unlock";
 
@@ -25,4 +26,5 @@ export function customServices(app: Application) {
   app.use("/api/unlock", new UnlockService(app));
   app.use("/api/active", new ActiveEventService(app));
   app.use("/api/channel", new ChannelService(app));
+  app.use("/api/forgot", new ForgotPasswordService(app));
 }

@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Route, Routes } from "react-router-dom";
+import Forgot from "../components/auth/Forgot";
 import Login from "../components/auth/Login";
 import Signup from "../components/auth/Signup";
 
@@ -20,6 +21,10 @@ export default function Auth({
         <Route
           path="/signup/:inviteKey"
           element={<Signup createAccount={createAccount} />}
+        />
+        <Route
+          path="/recover-password"
+          element={<Forgot />}
         />
       </Routes>
     </Fragment>
