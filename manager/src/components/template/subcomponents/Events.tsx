@@ -82,6 +82,10 @@ function EventLink({
   disable: boolean;
   inEvent: boolean;
 }) {
+  //FIXME active event state has to be location.eventID === 'event._id'
+  const params = useParams();
+  console.log(params);
+
   return (
     <button
       className={disable ? "grey" : inEvent ? "blue-active" : "blue"}
