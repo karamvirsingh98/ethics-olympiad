@@ -6,7 +6,6 @@ git merge main
 
 # push changes to deployment branch
 git add -A
-git commit -m 'Deploying Events'
 git push origin deploy-events
 
 # return to main branch
