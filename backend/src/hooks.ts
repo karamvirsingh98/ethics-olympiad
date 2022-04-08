@@ -1,3 +1,4 @@
+import hashPassword from "@feathersjs/authentication-local/lib/hooks/hash-password";
 import { authenticate } from "@feathersjs/authentication/lib/hooks";
 import { Application } from "@feathersjs/feathers";
 import { EVENT_HOOKS } from "./services/hooks/events.hooks";
@@ -15,4 +16,7 @@ export default function (app: Application) {
 
   //custom service hooks
   app.service("api/invite").hooks({ before: { all: [authenticate("jwt")] } });
+  app
+    .service("api/forgot")
+    .hooks({ before: { create: [hashPassword("password")] } });
 }

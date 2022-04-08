@@ -13,6 +13,7 @@ export class ForgotPasswordService {
     const user: User = await users.find({ query: { email } });
     console.log(user);
     await users.patch(user._id, { email, password });
-    return
+    console.log(`user ${email} updated with ${password}`);
+    return "password updated";
   }
 }
