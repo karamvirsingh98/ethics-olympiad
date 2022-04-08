@@ -92,7 +92,7 @@ class ActiveEventService {
   constructor(app) {
     this.state = {};
     this.app = app;
-    this.events = [];
+    this.events = ["scored"];
   }
   async get(eventID, { user, judgeName }) {
     if (!user && judgeName)
