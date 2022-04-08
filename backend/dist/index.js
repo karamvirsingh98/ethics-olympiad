@@ -310,8 +310,8 @@ const USER_HOOKS = {
     find: [hooks$1.authenticate("jwt")],
     get: [hooks$1.authenticate("jwt")],
     create: [verifyInvite(), hashPassword__default["default"]("password")],
-    update: [hashPassword__default["default"]("password"), hooks$1.authenticate("jwt")],
-    patch: [hashPassword__default["default"]("password"), hooks$1.authenticate("jwt")],
+    update: [hooks$1.authenticate("jwt")],
+    patch: [hooks$1.authenticate("jwt")],
     remove: [hooks$1.authenticate("jwt")]
   },
   after: {

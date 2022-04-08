@@ -20,8 +20,8 @@ export const USER_HOOKS = {
     find: [authenticate("jwt")],
     get: [authenticate("jwt")],
     create: [verifyInvite(), hashPassword("password")],
-    update: [hashPassword("password"), authenticate("jwt")],
-    patch: [hashPassword("password"), authenticate("jwt")],
+    update: [authenticate("jwt")],
+    patch: [authenticate("jwt")],
     remove: [authenticate("jwt")],
   },
 
