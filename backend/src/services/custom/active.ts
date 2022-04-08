@@ -6,10 +6,14 @@ import { Event, Status, Team } from "@ethics-olympiad/types";
 export class ActiveEventService {
   app: Application;
   state: ActiveEvents = {};
+
+  // These are FeathersJS events, not active olympiad events. Do not remove.
   events: string[];
 
   constructor(app: Application) {
     this.app = app;
+
+    // These are FeathersJS events, not active olympiad events. Do not remove.
     this.events = ["scored"];
   }
 
