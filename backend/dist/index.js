@@ -92,7 +92,7 @@ class ActiveEventService {
   constructor(app) {
     this.state = {};
     this.app = app;
-    this.events = ["scored"];
+    this.events = [];
   }
   async get(eventID, { user, judgeName }) {
     if (!user && judgeName)
@@ -149,6 +149,19 @@ class ChannelService {
       this.app.channel(`events/${eventID}`).leave(connection);
     }
     return `left channel ${eventID}`;
+  }
+}
+
+class ForgotPasswordService {
+  constructor(app) {
+    this.app = app;
+  }
+  async create({ email, password }) {
+    const users = this.app.service("api/users");
+    const user = await users.find({ query: { email } });
+    console.log(user);
+    await users.patch(user._id, { email, password });
+    return;
   }
 }
 
@@ -228,6 +241,7 @@ function customServices(app) {
   app.use("/api/unlock", new UnlockService(app));
   app.use("/api/active", new ActiveEventService(app));
   app.use("/api/channel", new ChannelService(app));
+  app.use("/api/forgot", new ForgotPasswordService(app));
 }
 
 const protectEvents = () => {
