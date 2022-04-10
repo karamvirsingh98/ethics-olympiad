@@ -46,7 +46,7 @@ export default function Teams({
               teams.map((team, i) => (
                 <TeamComponent
                   editing={editing}
-                  key={team.teamName}
+                  key={team.teamName+i}
                   team={team}
                   onRename={(teamName) => onRename(teamName, i)}
                   onRemove={() => onRemove(i)}
