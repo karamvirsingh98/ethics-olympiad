@@ -22,7 +22,7 @@ export default function Topbar({
     const index =
       pathName === "/"
         ? 0
-        : TOPBAR_BUTTONS.findIndex(
+        : [...TOPBAR_BUTTONS, "Users"].findIndex(
             (t) => t.toLowerCase() === pathName.slice(1, pathName.length)
           );
     set(index);
