@@ -81,7 +81,7 @@ function TemplateCards({
   };
 
   const capitalise = (s: string) => {
-    return s[0].toUpperCase() + s.slice(0, s.length);
+    return s[0].toUpperCase() + s.slice(1, s.length);
   };
 
   return (
