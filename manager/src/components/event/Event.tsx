@@ -78,7 +78,25 @@ export default function EventComponent({
           condition={active}
           showTrue={<Scores event={event} />}
           showFalse={
-            <div> This Event isn't active, so there are no scores yet! </div>
+            <div style={{ padding: "1rem" }}>
+              <div> This Event isn't active, so there are no scores yet! </div>
+              <div
+                style={{ display: "grid", placeItems: "center", gap: "1rem" }}
+              >
+                <div>
+                  Click on the button below to navtigate to the Event App, and
+                  Activate this Event.
+                </div>
+                <a href={`https://eo-events.vercel.app/${event._id}/admin`}>
+                  <button
+                    style={{ fontSize: "1.25rem", padding: "1rem" }}
+                    className="green"
+                  >
+                    Go To Admin Page
+                  </button>
+                </a>
+              </div>
+            </div>
           }
         />
       </div>
