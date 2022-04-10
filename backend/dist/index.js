@@ -159,7 +159,7 @@ class ForgotPasswordService {
   async create({ email, password }) {
     const users = this.app.service("api/users");
     const user = await users.find({ query: { email } });
-    console.log(user);
+    console.log(user._id());
     try {
       await users.patch(user._id, { email, password });
     } catch (e) {
