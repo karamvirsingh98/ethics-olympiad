@@ -53,20 +53,33 @@ export default function EventsComponent({
       >
         New Event
       </button>
-      {events &&
-        Object.keys(events).map((id) => (
-          <EventLink
-            event={events[id]}
-            onClick={() => {
-              if (isTemplateEditing)
-                window.alert("Please save your changes to the template first.");
-              else navigate(`./${id}`);
-            }}
-            key={id}
-            disable={isTemplateEditing || (isEventEditing && eventID !== id)}
-            inEvent={inEvent}
-          />
-        ))}
+      <div
+        style={{
+          overflow: "scroll",
+          display: "flex",
+          flexDirection: "column",
+          gap: " 1rem",
+          maxHeight: "62.5vh",
+          paddingBottom: "2rem",
+        }}
+      >
+        {events &&
+          Object.keys(events).map((id) => (
+            <EventLink
+              event={events[id]}
+              onClick={() => {
+                if (isTemplateEditing)
+                  window.alert(
+                    "Please save your changes to the template first."
+                  );
+                else navigate(`./${id}`);
+              }}
+              key={id}
+              disable={isTemplateEditing || (isEventEditing && eventID !== id)}
+              inEvent={inEvent}
+            />
+          ))}
+      </div>
     </div>
   );
 }
@@ -84,11 +97,17 @@ function EventLink({
 }) {
   //FIXME active event state has to be location.eventID === 'event._id'
   const params = useParams();
-  console.log(params);
+  const eventID = params["*"];
 
   return (
     <button
-      className={disable ? "grey" : inEvent ? "blue-active" : "blue"}
+      className={
+        disable
+          ? "grey"
+          : inEvent && eventID === event._id
+          ? "blue-active"
+          : "blue"
+      }
       onClick={onClick}
       style={{
         fontSize: "1.25rem",
