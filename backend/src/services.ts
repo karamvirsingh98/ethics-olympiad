@@ -14,11 +14,11 @@ import { InviteService } from "./services/custom/invite";
 import { UnlockService } from "./services/custom/unlock";
 
 export function coreServices(app: Application) {
-  app.use("/api/users", new Service({ Model: UserModel, lean: true }));
-  app.use("/api/events", new Service({ Model: EventModel, lean: true }));
-  app.use("/api/cases", new Service({ Model: CaseModel, lean: true }));
-  app.use("/api/scores", new Service({ Model: ScoreModel, lean: true }));
-  app.use("/api/templates", new Service({ Model: TemplateModel, lean: true }));
+  app.use("/api/users", new Service({ Model: UserModel }));
+  app.use("/api/events", new Service({ Model: EventModel }));
+  app.use("/api/cases", new Service({ Model: CaseModel }));
+  app.use("/api/scores", new Service({ Model: ScoreModel }));
+  app.use("/api/templates", new Service({ Model: TemplateModel }));
 }
 
 export function customServices(app: Application) {
