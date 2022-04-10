@@ -160,7 +160,11 @@ class ForgotPasswordService {
     const users = this.app.service("api/users");
     const user = await users.find({ query: { email } });
     console.log(user);
-    await users.patch(user._id, { email, password });
+    try {
+      await users.patch(user._id, { email, password });
+    } catch (e) {
+      console.log(e);
+    }
     console.log(`user ${email} updated with ${password}`);
     return "password updated";
   }
