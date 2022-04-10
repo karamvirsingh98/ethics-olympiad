@@ -235,11 +235,11 @@ class UnlockService {
 }
 
 function coreServices(app) {
-  app.use("/api/users", new feathersMongoose.Service({ Model: UserModel, lean: true }));
-  app.use("/api/events", new feathersMongoose.Service({ Model: EventModel, lean: true }));
-  app.use("/api/cases", new feathersMongoose.Service({ Model: CaseModel, lean: true }));
-  app.use("/api/scores", new feathersMongoose.Service({ Model: ScoreModel, lean: true }));
-  app.use("/api/templates", new feathersMongoose.Service({ Model: TemplateModel, lean: true }));
+  app.use("/api/users", new feathersMongoose.Service({ Model: UserModel }));
+  app.use("/api/events", new feathersMongoose.Service({ Model: EventModel }));
+  app.use("/api/cases", new feathersMongoose.Service({ Model: CaseModel }));
+  app.use("/api/scores", new feathersMongoose.Service({ Model: ScoreModel }));
+  app.use("/api/templates", new feathersMongoose.Service({ Model: TemplateModel }));
 }
 function customServices(app) {
   app.use("/api/invite", new InviteService(app));
