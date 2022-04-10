@@ -7,8 +7,8 @@ var mongoose = require('mongoose');
 var feathersMongoose = require('feathers-mongoose');
 var crypto = require('crypto');
 var errors = require('@feathersjs/errors');
-var hooks$1 = require('@feathersjs/authentication/lib/hooks');
 var hashPassword = require('@feathersjs/authentication-local/lib/hooks/hash-password');
+var hooks$1 = require('@feathersjs/authentication/lib/hooks');
 var protect = require('@feathersjs/authentication-local/lib/hooks/protect');
 var lib$1 = require('@feathersjs/authentication-local/lib');
 var lib = require('@feathersjs/authentication/lib');
@@ -161,7 +161,8 @@ class ForgotPasswordService {
     const user = await users.find({ query: { email } });
     console.log(user);
     await users.patch(user._id, { email, password });
-    return;
+    console.log(`user ${email} updated with ${password}`);
+    return "password updated";
   }
 }
 
@@ -340,6 +341,7 @@ function hooks(app) {
   app.service("api/templates").hooks(TEMPLATE_HOOKS);
   app.service("api/scores").hooks(SCORE_HOOKS);
   app.service("api/invite").hooks({ before: { all: [hooks$1.authenticate("jwt")] } });
+  app.service("api/forgot").hooks({ before: { create: [hashPassword__default["default"]("password")] } });
 }
 
 function authentication(app) {
