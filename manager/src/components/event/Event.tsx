@@ -39,8 +39,8 @@ export default function EventComponent({
 
   useEffect(() => {
     client
-      .service("api/events")
-      .get()
+      .service("api/active")
+      .get(eventID)
       .then((res: any) => set(res ? true : false));
   }, []);
 
@@ -74,10 +74,12 @@ export default function EventComponent({
           onRemove={removeTeam}
         />
         <Divider vertical />
-        <Conditional 
+        <Conditional
           condition={active}
           showTrue={<Scores event={event} />}
-          showFalse={<div> This Event isn't active, so there are no scores yet! </div>}
+          showFalse={
+            <div> This Event isn't active, so there are no scores yet! </div>
+          }
         />
       </div>
     </div>
