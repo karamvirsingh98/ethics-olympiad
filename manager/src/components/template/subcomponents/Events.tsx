@@ -41,6 +41,18 @@ export default function EventsComponent({
       >
         General Configuration
       </button>
+      <button
+        className={isEventEditing ? "grey" : "green"}
+        onClick={isEventEditing ? undefined : onNewClick}
+        style={{
+          fontSize: "1.25rem",
+          padding: "0.5rem 1rem",
+          width: "100%",
+          cursor: isEventEditing ? "not-allowed" : "pointer",
+        }}
+      >
+        New Event
+      </button>
       {events &&
         Object.keys(events).map((id) => (
           <EventLink
@@ -55,18 +67,6 @@ export default function EventsComponent({
             inEvent={inEvent}
           />
         ))}
-      <button
-        className={isEventEditing ? "grey" : "green"}
-        onClick={isEventEditing ? undefined : onNewClick}
-        style={{
-          fontSize: "1.25rem",
-          padding: "0.5rem 1rem",
-          width: "100%",
-          cursor: isEventEditing ? "not-allowed" : "pointer",
-        }}
-      >
-        New Event
-      </button>
     </div>
   );
 }
