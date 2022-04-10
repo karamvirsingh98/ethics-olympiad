@@ -109,6 +109,10 @@ textarea:focus {
   background-color: rgba(126, 189, 194, 0.7);
 }
 
+.blue-flat {
+  background-color: rgba(126, 189, 194, 0.4);
+}
+
 .blue {
   background-color: rgba(126, 189, 194, 0.4);
 }

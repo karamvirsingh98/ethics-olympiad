@@ -1,9 +1,13 @@
 import { Case, Event, Levels, Template, User } from "@ethics-olympiad/types";
 
-export function getDefaultTemplate(userID: string, level: Levels): Template {
+export function getDefaultTemplate(
+  userID: string,
+  title: string,
+  level: Levels
+): Template {
   return {
     owner: userID,
-    templateTitle: "",
+    templateTitle: title,
     heats: [],
     timers: [3, 5, 1, 3, 1, 3, 7],
     level,
@@ -21,7 +25,7 @@ export function getDefaultEvent(templateID: string): Event {
 export function getDefaultCase(
   user: User,
   isVideo: boolean,
-  level: Levels,
+  level: Levels
 ): Case {
   return {
     owner: user._id,
@@ -29,6 +33,6 @@ export function getDefaultCase(
     question: "",
     isVideo: isVideo,
     level,
-    isOfficial: user.admin ? true : false
+    isOfficial: user.admin ? true : false,
   };
 }
