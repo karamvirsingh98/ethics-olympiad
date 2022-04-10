@@ -10,8 +10,8 @@ export class ForgotPasswordService {
 
   async create({ email, password }: { email: string; password: string }) {
     const users = this.app.service("api/users");
-    const user: User = await users.find({ query: { email } });
-    console.log(user);
+    const user: any = await users.find({ query: { email } });
+    console.log(user._id() as any);
     try {
       await users.patch(user._id, { email, password });
     } catch (e) {
