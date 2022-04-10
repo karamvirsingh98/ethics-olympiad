@@ -11,7 +11,7 @@ const MAX_HOME_IP = "http://10.0.0.43:3030";
 const LOCALHOST = "http://localhost:3030";
 const HEROKU = "https://ethicsolympiad.herokuapp.com/";
 
-export const client = setupClient(HEROKU);
+export const client = setupClient(LOCALHOST);
 
 ReactDOM.render(
   <React.StrictMode>
