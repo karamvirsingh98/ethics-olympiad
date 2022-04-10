@@ -38,7 +38,7 @@ export default function Teams({
               borderTop: "solid 1px",
               borderBottom: "solid 1px",
               padding: "1rem 0rem ",
-              maxHeight: "57.5vh",
+              maxHeight: "55.5vh",
               overflowY: "auto",
             }}
           >
@@ -46,7 +46,7 @@ export default function Teams({
               teams.map((team, i) => (
                 <TeamComponent
                   editing={editing}
-                  key={team.teamName+i}
+                  key={team.teamName + i}
                   team={team}
                   onRename={(teamName) => onRename(teamName, i)}
                   onRemove={() => onRemove(i)}

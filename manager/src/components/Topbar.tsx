@@ -19,6 +19,7 @@ export default function Topbar({
 
   useEffect(() => {
     const pathName = window.location.pathname;
+    console.log(pathName.split("/")[0]);
     const index =
       pathName === "/"
         ? 0

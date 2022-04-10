@@ -15,15 +15,15 @@ const total = (score: TeamScore) => {
 export default function Scores({ event }: { event: Event }) {
   const [scores, setScores] = useState<Score[]>();
   const [option, setOption] = useState<ScoreOption>("Team");
-  const [checking, set] = useState(false);
+  const [checking, setChecking] = useState(false);
 
   const checkForScores = () => {
-    set(true);
+    setChecking(true);
     client
       .service("api/scores")
       .find({ query: { eventID: event._id } })
       .then((res: Score[]) => {
-        set(false);
+        setChecking(false);
         setScores(res);
       });
   };
@@ -48,11 +48,13 @@ export default function Scores({ event }: { event: Event }) {
         </div>
       </div>
 
-      <Conditional
-        condition={option === "Individual"}
-        showTrue={<IndividualScoreCards scores={scores} />}
-        showFalse={<TeamScoreCards scores={scores} teams={event.teams} />}
-      />
+      {scores && (
+        <Conditional
+          condition={option === "Individual"}
+          showTrue={<IndividualScoreCards scores={scores} />}
+          showFalse={<TeamScoreCards scores={scores} teams={event.teams} />}
+        />
+      )}
     </div>
   );
 }
@@ -136,7 +138,7 @@ function TeamScoreCards({
             placeItems: "center start",
           }}
         >
-          <div> {teamTotals[0].teamName} </div>
+          <div> {teamTotals[0] ? teamTotals[0].teamName : ""} </div>
           {teamTotals.map((score, i) => (
             <>
               <div style={{ display: "grid", gap: "1rem" }}>
