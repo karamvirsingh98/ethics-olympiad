@@ -48,13 +48,15 @@ export default function Scores({ event }: { event: Event }) {
         </div>
       </div>
 
-      {scores && (
-        <Conditional
-          condition={option === "Individual"}
-          showTrue={<IndividualScoreCards scores={scores} />}
-          showFalse={<TeamScoreCards scores={scores} teams={event.teams} />}
-        />
-      )}
+      <div style={{ maxHeight: "50vh", overflow: "scroll" }}>
+        {scores && (
+          <Conditional
+            condition={option === "Individual"}
+            showTrue={<IndividualScoreCards scores={scores} />}
+            showFalse={<TeamScoreCards scores={scores} teams={event.teams} />}
+          />
+        )}
+      </div>
     </div>
   );
 }
@@ -125,30 +127,34 @@ function TeamScoreCards({
 
   const ts = getTeamScores();
 
+  console.log(scores);
+
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
-      {ts?.map((teamTotals) => (
-        <div
-          className="grey-flat"
-          style={{
-            padding: "1rem",
-            borderRadius: "0.2rem",
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            placeItems: "center start",
-          }}
-        >
-          <div> {teamTotals[0] ? teamTotals[0].teamName : ""} </div>
-          {teamTotals.map((score, i) => (
-            <>
-              <div style={{ display: "grid", gap: "1rem" }}>
-                <div> Heat{i + 1} </div>
-                <div> {score.total} </div>
-              </div>
-            </>
-          ))}
-        </div>
-      ))}
+      {scores &&
+        scores.length > 0 &&
+        ts?.map((teamTotals) => (
+          <div
+            className="grey-flat"
+            style={{
+              padding: "1rem",
+              borderRadius: "0.2rem",
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              placeItems: "center start",
+            }}
+          >
+            <div> {teamTotals[0] ? teamTotals[0].teamName : ""} </div>
+            {teamTotals.map((score, i) => (
+              <>
+                <div style={{ display: "grid", gap: "1rem" }}>
+                  <div> Heat{i + 1} </div>
+                  <div> {score.total} </div>
+                </div>
+              </>
+            ))}
+          </div>
+        ))}
     </div>
   );
 }

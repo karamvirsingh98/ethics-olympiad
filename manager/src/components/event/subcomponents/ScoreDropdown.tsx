@@ -24,7 +24,7 @@ export default function ScoreDropdown({
       <button
         className="blue"
         onClick={() => setShow(!show)}
-        style={{ width: "100%", textAlign: "start" }}
+        style={{ width: "7rem", textAlign: "center" }}
       >
         {selected}
       </button>
