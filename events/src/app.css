@@ -87,6 +87,10 @@
 
 .coin.flipping {
   animation: flip 250ms linear infinite;
+  -webkit-animation-name: webflip;
+  -webkit-animation-duration: 250ms;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-fill-mode: infinite;
 }
 
 .rise {
@@ -219,6 +223,15 @@
     transform: rotateX(0deg);
   }
   to {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes webflip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
     transform: rotateX(360deg);
   }
 }

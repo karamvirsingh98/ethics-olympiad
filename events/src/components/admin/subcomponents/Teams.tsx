@@ -16,7 +16,17 @@ export default function Teams({
   };
 
   return (
-    <div style={{ display: "grid", gap: "1rem", height: "fit-content" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        maxHeight: "80vh",
+        overflow: "hidden",
+        overflowY: "scroll",
+        paddingRight: "1rem",
+      }}
+    >
       <div style={{ fontSize: "1.75rem" }}> Teams </div>
       {teams.map((team, i) => (
         <div

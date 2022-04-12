@@ -6,7 +6,7 @@ export default function Judges({ judges }: { judges: EventStatus }) {
   const names = Object.keys(judges);
 
   return (
-    <div style={{ overflowY: "scroll", maxHeight: "70vh" }}>
+    <div style={{ overflowY: "scroll", maxHeight: "80vh" }}>
       <ObjectMap
         object={judges}
         map={(name) => (
@@ -15,6 +15,7 @@ export default function Judges({ judges }: { judges: EventStatus }) {
               display: "grid",
               gap: "1rem",
               alignItems: "center",
+              overflow: "hidden",
               overflowX: "scroll",
               paddingBottom: "1rem",
             }}
