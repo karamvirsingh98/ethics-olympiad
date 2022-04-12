@@ -7,7 +7,16 @@ export default function DarkIcon({
 }) {
   return (
     <button
-      style={{ position: "absolute", top: "1rem", right: "2rem", display: "grid", placeItems: "center", width: '1.5rem', height: "1.5rem" }}
+      style={{
+        position: "absolute",
+        top: "1rem",
+        right: "2rem",
+        display: "grid",
+        placeItems: "center",
+        width: "1.5rem",
+        height: "1.5rem",
+        zIndex: 999,
+      }}
       onClick={toggle}
     >
       <svg
