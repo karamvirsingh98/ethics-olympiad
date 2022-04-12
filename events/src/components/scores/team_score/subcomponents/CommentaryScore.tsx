@@ -21,7 +21,7 @@ export default function CommentaryScore({
       }}
     >
       <ScoreSlider
-        label="Commentary"
+        label="commentary"
         description={SCORE_FIELDS.commentary.description}
         max={SCORE_FIELDS.commentary.max}
         value={teamA ? score.scoreA.commentary : score.scoreB.commentary}

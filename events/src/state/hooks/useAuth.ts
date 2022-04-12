@@ -12,7 +12,7 @@ export default function useAuth() {
       .catch(() => setUser(false));
   }, []);
 
-  const login = async (credentials: {email: string, password: string}) => {
+  const login = async (credentials: { email: string; password: string }) => {
     try {
       const res = await client.authenticate({
         strategy: "local",
@@ -27,6 +27,7 @@ export default function useAuth() {
 
   const logout = async () => {
     await client.logout();
+    localStorage.clear();
     setUser(false);
   };
 

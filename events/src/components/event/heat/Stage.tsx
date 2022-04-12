@@ -10,13 +10,15 @@ export default function Stage({
   question: string;
   timers: number[];
 }) {
-  const stage = useActiveStage()
+  const stage = useActiveStage();
+
+  const fontSize = question.length < 150 ? "3.5rem" : "3rem";
 
   return (
     <div className="stage">
       {<RoundTracker stage={stage} showButtons />}
       <div className="stage-content">
-        <div style={{ fontSize: "3.5rem" }}>{question}</div>
+        <div style={{ fontSize }}>{question}</div>
         <Timer duration={timers[stage - 1]} />
       </div>
     </div>

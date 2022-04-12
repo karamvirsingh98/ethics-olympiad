@@ -74,7 +74,7 @@ textarea:focus {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .dark {
@@ -129,6 +129,10 @@ textarea:focus {
   background-color: rgba(112, 108, 97, 0.3);
 }
 
+.grey-solid {
+  background-color: rgba(112, 108, 97, 1);
+}
+
 .grey:hover {
   background-color: rgba(112, 108, 87, 0.6);
 }
@@ -138,7 +142,7 @@ textarea:focus {
 }
 
 .blue.active {
-  background-color: rgba(126, 189, 194, 0.6)
+  background-color: rgba(126, 189, 194, 0.6);
 }
 
 .blue:hover {

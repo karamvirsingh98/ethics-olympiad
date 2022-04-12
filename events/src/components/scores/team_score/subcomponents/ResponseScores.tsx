@@ -14,11 +14,7 @@ export default function ResponseScores({
 }) {
   const FIELDS: Array<keyof TeamScore> = ["response", "judgeResponse"];
 
-  function format(label: keyof TeamScore) {
-    if (label === 'judgeResponse') return 'Judge Q&A Response'
-    else if (label === 'response') return 'Commentary Response'
-    return 'Response'
-  }
+  
 
   return (
     <div
@@ -33,7 +29,7 @@ export default function ResponseScores({
       {FIELDS.map((label) => (
         <ScoreSlider
           key={teamA ? label + "A" : label + "B"}
-          label={format(label)}
+          label={label}
           description={SCORE_FIELDS[label].description}
           max={SCORE_FIELDS[label].max}
           value={teamA ? score.scoreA[label] : score.scoreB[label]}

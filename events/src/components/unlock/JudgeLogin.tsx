@@ -17,7 +17,7 @@ export default function JudgeLogin({
   const [show, setShow] = useState(false);
 
   return (
-    <div style={{ display: "grid", gap: "2rem" }}>
+    <div style={{ display: "grid", gap: "2rem", width: "100%" }}>
       <JudgeName {...{ judgeName, setName }} />
       <div
         style={{
@@ -57,23 +57,14 @@ function JudgeName({
     <IfElse
       showIf={!judgeName}
       showTrue={
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            width: "100%",
-            gap: "1rem",
+        <Input
+          defaultValue={judgeName || undefined}
+          placeholder="Name"
+          onConfirm={(name) => {
+            setName(name);
+            localStorage.setItem("judge_name", name);
           }}
-        >
-          <Input
-            defaultValue={judgeName || undefined}
-            placeholder="Name"
-            onConfirm={(name) => {
-              setName(name);
-              localStorage.setItem("judge_name", name);
-            }}
-          />
-        </div>
+        />
       }
       showFalse={
         <div className="flex-between">

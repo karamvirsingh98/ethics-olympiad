@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useJudgeName } from "../../App";
 import { client } from "../../main";
 import { Olympiad } from "../../state/types";
@@ -23,6 +23,8 @@ export default function Unlock({
 
   const { judgeName, setName } = useJudgeName();
 
+  useEffect(() => setPassword(""), [admin]);
+
   const doUnlock = async () => {
     if (judgeName || admin) {
       client
@@ -35,6 +37,8 @@ export default function Unlock({
         .catch(() => window.alert("Invalid Password."));
     } else window.alert("Please enter your name.");
   };
+
+  const canLogin = admin ? email && password : judgeName && password;
 
   return (
     <div className="auth-window">
@@ -66,10 +70,10 @@ export default function Unlock({
         }}
       >
         <button
-          className={judgeName || admin ? "green" : "red"}
+          className={canLogin ? "green" : "red"}
           style={{
             width: "100%",
-            cursor: judgeName || admin ? undefined : "not-allowed",
+            cursor: canLogin ? undefined : "not-allowed",
           }}
           onClick={async () => {
             if (admin) {

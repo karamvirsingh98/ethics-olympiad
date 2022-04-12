@@ -27,7 +27,6 @@ export default function TeamScoreComponent({
   updateScore: UpdateScore;
   teamA?: boolean;
 }) {
-
   const total = (score: TeamScore) => {
     let total = 0;
     Object.keys(SCORE_FIELDS).forEach(
@@ -64,7 +63,7 @@ export default function TeamScoreComponent({
         style={{ padding: "1rem", borderRadius: "0.25rem" }}
       >
         <ScoreDots
-          label="Respectful"
+          label="respectful"
           description={SCORE_FIELDS.respectful.description}
           numDots={SCORE_FIELDS.respectful.max}
           selected={teamA ? score.scoreA.respectful : score.scoreB.respectful}

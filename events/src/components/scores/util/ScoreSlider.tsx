@@ -1,4 +1,6 @@
+import { ScoreFields, TeamScore } from "@ethics-olympiad/types";
 import { Range } from "react-range";
+import ScoreExplainer from "../team_score/subcomponents/ScoreExplainer";
 
 export default function ScoreSlider({
   label,
@@ -7,16 +9,12 @@ export default function ScoreSlider({
   value,
   onChange,
 }: {
-  label: string;
+  label: keyof ScoreFields;
   description: string;
   value: number;
   max: number;
   onChange: (value: number) => void;
 }) {
-  function capitalise(s: string) {
-    return s[0].toUpperCase() + s.slice(1);
-  }
-
   return (
     <div style={{ display: "grid", gap: "0.5rem" }}>
       <div
@@ -26,8 +24,15 @@ export default function ScoreSlider({
           placeItems: "center start",
         }}
       >
-        <div style={{ fontSize: "1.25rem" }}> {capitalise(label)} </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 5rem", placeItems: "center end", width: "100%"}}>
+        <ScoreExplainer label={label} />
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 5rem",
+            placeItems: "center end",
+            width: "100%",
+          }}
+        >
           <Slider {...{ max, value, onChange }} />
           <div style={{ fontSize: "1.25rem" }}>
             {value} / {max}

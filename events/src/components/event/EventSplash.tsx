@@ -42,6 +42,7 @@ export default function EventSplash({
         display: "grid",
         placeItems: "center",
         gap: "2rem",
+        textAlign: "center",
       }}
     >
       {event.eventTitle}

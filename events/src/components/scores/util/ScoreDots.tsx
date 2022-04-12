@@ -1,3 +1,6 @@
+import { ScoreFields } from "@ethics-olympiad/types";
+import ScoreExplainer from "../team_score/subcomponents/ScoreExplainer";
+
 export default function ScoreDots({
   label,
   description,
@@ -5,17 +8,12 @@ export default function ScoreDots({
   selected,
   onSelect,
 }: {
-  label: string;
+  label: keyof ScoreFields;
   description: string;
   numDots: number;
   selected: number;
   onSelect: (selected: number) => void;
 }) {
-
-  function capitalise(s: string) {
-    return s[0].toUpperCase() + s.slice(1);
-  }
-
   return (
     <div style={{ display: "grid", gap: "0.5rem" }}>
       <div
@@ -25,12 +23,9 @@ export default function ScoreDots({
           justifyContent: "space-between",
         }}
       >
-        <div style={{ fontSize: "1.25rem" }}> {capitalise(label)} </div>
+        <ScoreExplainer label={label} />
         <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
           <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-            <div onClick={() => onSelect(0)} style={{ cursor: "pointer" }}>
-              X
-            </div>
             {Array.from(new Array(numDots)).map((_, i) => (
               <div
                 key={i}
@@ -41,7 +36,6 @@ export default function ScoreDots({
                   borderRadius: "100%",
                   backgroundColor: selected >= i + 1 ? "#C297B8" : "grey",
                   transition: "background-color 250ms ease-in-out",
-                  // border: "solid 0.25rem #C297B8",
                 }}
                 onClick={() => onSelect(i + 1)}
               />
@@ -56,4 +50,3 @@ export default function ScoreDots({
     </div>
   );
 }
-
