@@ -123,6 +123,7 @@ export default function EventSplash({
           height: "100vh",
           backgroundPosition: "center",
           opacity: 0.05,
+          backgroundRepeat: "no-repeat",
         }}
       />
     </>
