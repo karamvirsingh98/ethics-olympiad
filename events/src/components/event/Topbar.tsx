@@ -39,7 +39,7 @@ export default function Topbar({
           navigate(`/`);
         }}
       >
-        Loguot
+        Logout
       </button>
     </div>
   );
