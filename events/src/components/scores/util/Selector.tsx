@@ -1,5 +1,7 @@
 import { Team } from "@ethics-olympiad/types";
 import { useState } from "react";
+import chevron from "../../../assets/icons/chevron.svg";
+import Chevron from "../../util/Chevron";
 
 export default function Selector({
   teams,
@@ -13,7 +15,7 @@ export default function Selector({
   const [show, setShow] = useState(false);
 
   function find(name: string): Team | undefined {
-    return teams[teams.findIndex(t => t.teamName === name)]
+    return teams[teams.findIndex((t) => t.teamName === name)];
   }
 
   return (
@@ -28,9 +30,17 @@ export default function Selector({
       <button
         className="blue"
         onClick={() => setShow(!show)}
-        style={{ width: "100%", textAlign: "start" }}
+        style={{
+          width: "100%",
+          textAlign: "start",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0rem 1rem",
+        }}
       >
         {find(selected)?.teamName || "No Team Selected"}
+        <Chevron up={show} />
       </button>
       {show && (
         <div
@@ -52,7 +62,7 @@ export default function Selector({
               key={teamName}
               onClick={() => {
                 onSelect(teamName);
-                setShow(false)
+                setShow(false);
               }}
               className="blue"
               style={{

@@ -25,11 +25,5 @@ export default function useAuth() {
     }
   };
 
-  const logout = async () => {
-    await client.logout();
-    localStorage.clear();
-    setUser(false);
-  };
-
-  return { user, login, logout };
+  return { user, login };
 }

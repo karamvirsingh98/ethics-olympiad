@@ -57,22 +57,23 @@ export default function EventSplash({
                 {event.heats.map((_, i) => (
                   <button
                     key={i}
-                    className={getColor(i)}
-                    disabled={
-                      !activeEvent ||
-                      getColor(i) === "red" ||
-                      getColor(i) === "green"
-                    }
+                    className="blue"
+                    // className={getColor(i)}
+                    // disabled={
+                    //   !activeEvent ||
+                    //   getColor(i) === "red" ||
+                    //   getColor(i) === "green"
+                    // }
                     onClick={() => navigate(`./heat${i + 1}`)}
                     style={{
                       fontSize: "1.5rem",
                       padding: "0.5rem 2rem",
-                      cursor:
-                        !activeEvent ||
-                        getColor(i) === "red" ||
-                        getColor(i) === "green"
-                          ? "not-allowed"
-                          : undefined,
+                      // cursor:
+                      //   !activeEvent ||
+                      //   getColor(i) === "red" ||
+                      //   getColor(i) === "green"
+                      //     ? "not-allowed"
+                      //     : undefined,
                     }}
                   >
                     Heat {i + 1}

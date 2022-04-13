@@ -15,7 +15,7 @@ export default function DarkIcon({
         placeItems: "center",
         width: "1.5rem",
         height: "1.5rem",
-        zIndex: 999,
+        zIndex: 1000,
       }}
       onClick={toggle}
     >

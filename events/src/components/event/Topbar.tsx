@@ -1,17 +1,15 @@
-import { User } from "@ethics-olympiad/types";
 import { useNavigate, useParams } from "react-router-dom";
 import { client } from "../../main";
-import { Event } from "../../state/types";
 
-export default function Topbar({
-  event,
-  admin,
-}: {
-  event: Event;
-  admin?: boolean;
-}) {
+export default function Topbar({ admin }: { admin?: boolean }) {
   const navigate = useNavigate();
-  // const { eventID } = useParams();
+  const params = useParams();
+
+  const logout = async () => {
+    await client.logout();
+    localStorage.clear();
+    navigate(`/`);
+  };
 
   return (
     <div
@@ -22,23 +20,20 @@ export default function Topbar({
         paddingTop: "0.45rem",
         paddingRight: "3rem",
         gap: "1rem",
+        zIndex: 999,
       }}
     >
-      <button className="blue" onClick={() => navigate(`../`)}>
-        Home
-      </button>
+      {params["*"] && (
+        <button className="blue" onClick={() => navigate(`.`)}>
+          Home
+        </button>
+      )}
       {admin && (
         <button className="blue" onClick={() => navigate("../admin")}>
           Admin
         </button>
       )}
-      <button
-        className="red"
-        onClick={async () => {
-          await client.logout();
-          navigate(`/`);
-        }}
-      >
+      <button className="red" onClick={logout}>
         Logout
       </button>
     </div>

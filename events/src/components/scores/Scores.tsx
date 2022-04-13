@@ -6,7 +6,6 @@ import { client } from "../../main";
 import useActiveEvent from "../../state/hooks/useActiveEvent";
 import { useScore } from "../../state/hooks/useScore";
 import { Event } from "../../state/types";
-import Topbar from "../event/Topbar";
 import Divider from "../util/Divider";
 import SubmitDialog from "./SubmitDialog";
 import TeamScoreComponent from "./team_score/TeamScore";
@@ -31,7 +30,6 @@ export default function Scores({ event }: { event: Event }) {
 
   return (
     <div className="scores" style={{ overflow: "hidden" }}>
-      <Topbar event={event} />
       <div
         style={{
           display: "grid",

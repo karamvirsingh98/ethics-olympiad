@@ -11,12 +11,13 @@ import { Olympiad } from "../state/types";
 import Admin from "../components/admin/Admin";
 import Scores from "../components/scores/Scores";
 import { User } from "@ethics-olympiad/types";
+import Topbar from "../components/event/Topbar";
 
 export default function EventComponent() {
   const { eventID } = useParams();
   const { unlocked, unlock } = useUnlock(eventID!);
   const { olympiad, set } = useFullEvent(eventID!);
-  const { user, login, logout } = useAuth();
+  const { user, login } = useAuth();
 
   useEffect(() => {
     client.service("api/channel").create({ eventID });
@@ -48,21 +49,29 @@ function OlympiadRoutes({
   olympiad: Olympiad;
 }) {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={<EventSplash event={olympiad.event} user={user} />}
-      />
-      <Route
-        path="/heat:heatNumber/*"
-        element={
-          <Heat event={olympiad.event} cases={olympiad.cases} user={user} />
-        }
-      />
-      <Route path="/scores/*" element={<Scores event={olympiad.event} />} />
-      {user && (
-        <Route path="/admin" element={<Admin event={olympiad.event} />} />
-      )}
-    </Routes>
+    <div
+      style={{
+        display: "grid",
+        gap: "2rem",
+        gridTemplateRows: "auto 1fr",
+        overflow: "hidden",
+      }}
+    >
+      <Topbar admin={user ? true : false} />
+      <Routes>
+        <Route
+          path="/"
+          element={<EventSplash event={olympiad.event} user={user} />}
+        />
+        <Route
+          path="/heat:heatNumber/*"
+          element={<Heat event={olympiad.event} cases={olympiad.cases} />}
+        />
+        <Route path="/scores/*" element={<Scores event={olympiad.event} />} />
+        {user && (
+          <Route path="/admin" element={<Admin event={olympiad.event} />} />
+        )}
+      </Routes>
+    </div>
   );
 }
