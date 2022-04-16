@@ -26,7 +26,6 @@ export default function Admin({ event }: { event: Event }) {
 
   return (
     <div className="admin">
-      <Topbar admin />
       <IfElse
         showIf={activeEvent ? true : false}
         showTrue={
