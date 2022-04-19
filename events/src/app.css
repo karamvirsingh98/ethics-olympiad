@@ -27,7 +27,6 @@
   height: fit-content;
   max-height: 87.5vh;
   overflow-y: auto;
-  overflow: hidden;
 }
 
 .base-event {
