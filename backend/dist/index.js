@@ -65,6 +65,8 @@ const ScoreModel = mongoose.model("olympiad-score", new mongoose.Schema({
   heatNumber: Number,
   teamA: String,
   teamB: String,
+  honorableA: Boolean,
+  honorableB: Boolean,
   scoreA: TeamScore,
   scoreB: TeamScore
 }, { timestamps: true }));
@@ -254,6 +256,11 @@ const protectEvents = () => {
     return context;
   };
 };
+const deleteScoresWhenEventDeleted = () => {
+  return async (context) => {
+    console.log(context.id);
+  };
+};
 const EVENT_HOOKS = {
   before: {
     get: [hooks$1.authenticate("jwt")],
@@ -263,7 +270,8 @@ const EVENT_HOOKS = {
     remove: [hooks$1.authenticate("jwt")]
   },
   after: {
-    find: [protectEvents()]
+    find: [protectEvents()],
+    remove: [deleteScoresWhenEventDeleted()]
   }
 };
 
