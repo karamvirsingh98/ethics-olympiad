@@ -16,6 +16,12 @@ const protectEvents = () => {
   };
 };
 
+const deleteScoresWhenEventDeleted = () => {
+  return async (context: HookContext) => {
+    console.log(context.id);
+  };
+};
+
 export const EVENT_HOOKS = {
   before: {
     get: [authenticate("jwt")],
@@ -27,5 +33,6 @@ export const EVENT_HOOKS = {
 
   after: {
     find: [protectEvents()],
+    remove: [deleteScoresWhenEventDeleted()],
   },
 };
