@@ -39,12 +39,12 @@ export default function Heats({
       <Header onAdd={addHeat} editing={editing} />
       <div
         style={{
-          maxHeight: `70vh`,
           overflowY: "auto",
           display: "flex",
           flexDirection: "column",
           gap: "2rem",
           paddingBottom: "4rem",
+          height: "70vh",
         }}
       >
         {cases &&
