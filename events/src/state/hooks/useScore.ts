@@ -1,20 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useJudgeName } from "../../App";
-import { client } from "../../main";
 import { getDefaultFullScore } from "../../util/defaults";
-
-// export function useScores() {
-//   const [scores, set] = useState();
-//   const { eventID } = useParams();
-//   const { judgeName } = useJudgeName();
-
-//   useEffect(() => {
-//     client.service("api/scores").find({ eventID, judgeName }).then(set);
-//   }, []);
-
-//   return { scores };
-// }
 
 export function useScore() {
   const { judgeName } = useJudgeName();
@@ -30,6 +17,13 @@ export function useScore() {
       if (teamA) {
         set({ ...score, scoreA: { ...score.scoreA, [field]: newScore } });
       } else set({ ...score, scoreB: { ...score.scoreB, [field]: newScore } });
+    },
+    toggleHonorable: (teamA: boolean) => () => {
+      set(
+        teamA
+          ? { ...score, honorableA: !score.honorableA }
+          : { ...score, honorableB: !score.honorableB }
+      );
     },
   };
 }

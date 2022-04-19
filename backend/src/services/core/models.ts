@@ -1,3 +1,4 @@
+import { Score, User } from "@ethics-olympiad/types";
 import { model, Schema } from "mongoose";
 
 export const TemplateModel = model(
@@ -60,13 +61,15 @@ const TeamScore = {
 
 export const ScoreModel = model(
   "olympiad-score",
-  new Schema(
+  new Schema<Score>(
     {
       eventID: String,
       judgeName: String,
       heatNumber: Number,
       teamA: String,
       teamB: String,
+      honorableA: Boolean,
+      honorableB: Boolean,
       scoreA: TeamScore,
       scoreB: TeamScore,
     },

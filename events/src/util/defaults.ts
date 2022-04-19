@@ -11,6 +11,8 @@ export function getDefaultFullScore(
     heatNumber,
     teamA: "",
     teamB: "",
+    honorableA: false,
+    honorableB: false,
     scoreA: DEFAULT_SCORE,
     scoreB: DEFAULT_SCORE,
   };

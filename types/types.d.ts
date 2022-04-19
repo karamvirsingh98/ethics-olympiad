@@ -103,7 +103,8 @@ export interface Score {
   heatNumber: number;
   teamA: string;
   teamB: string;
+  honorableA: boolean;
+  honorableB: boolean;
   scoreA: TeamScore;
   scoreB: TeamScore;
-  submitted?: boolean;
 }

@@ -16,11 +16,13 @@ export default function Round({
   const { roundNumber } = useParams();
   const round = Number(roundNumber);
 
+  const casesAreDefined = (case1 && case2) ? true : false
+
   return (
     <div style={{ overflow: "hidden" }}>
       <Routes>
         <IfElse
-          showIf={}
+          showIf={casesAreDefined}
           showTrue={
             <>
               <Route

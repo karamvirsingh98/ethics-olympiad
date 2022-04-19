@@ -127,7 +127,7 @@ function ScoreTutorial() {
 }
 
 function ScoreComponent({ teams }: { teams: Team[] }) {
-  const { score, set, updateScore } = useScore();
+  const { score, set, updateScore, toggleHonorable } = useScore();
   const { heatNumber } = useParams();
   const [showSubmit, setShowSubmit] = useState(false);
 
@@ -144,6 +144,8 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
     await client.service("api/scores").create(score);
     setShowSubmit(true);
   };
+
+  console.log(score.honorableA, score.honorableB);
 
   return (
     <>
@@ -162,6 +164,7 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
             score={score}
             set={set}
             updateScore={updateScore}
+            toggleHonorable={toggleHonorable}
             teamA
           />
           <Divider vertical />
@@ -170,6 +173,7 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
             score={score}
             set={set}
             updateScore={updateScore}
+            toggleHonorable={toggleHonorable}
           />
         </div>
         <button

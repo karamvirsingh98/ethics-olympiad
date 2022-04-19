@@ -1,6 +1,7 @@
 import { Score, Team, TeamScore } from "@ethics-olympiad/types";
 import { Fragment } from "react";
 import IfElse from "../../util/IfElse";
+import Switch from "../../util/Switch";
 import { SCORE_FIELDS } from "../score_fields";
 import ScoreDots from "../util/ScoreDots";
 import CommentaryScore from "./subcomponents/CommentaryScore";
@@ -14,17 +15,21 @@ export type UpdateScore = (
   teamA: boolean
 ) => void;
 
+export type ToggleHonorable = (teamA: boolean) => () => void;
+
 export default function TeamScoreComponent({
   teams,
   score,
   set,
   updateScore,
+  toggleHonorable,
   teamA,
 }: {
   teams: Team[];
   score: Score;
   set: (score: Score) => void;
   updateScore: UpdateScore;
+  toggleHonorable: ToggleHonorable;
   teamA?: boolean;
 }) {
   const total = (score: TeamScore) => {
@@ -73,11 +78,23 @@ export default function TeamScoreComponent({
         />
       </div>
       <div
+        className="flex-between grey-flat"
+        style={{ gap: "2rem", padding: "1rem" }}
+      >
+        <div style={{ fontSize: "1.25rem" }}>
+          Give this team an Honorable Mention?
+        </div>
+        <Switch
+          active={teamA ? score.honorableA : score.honorableB}
+          onClick={toggleHonorable(teamA ? true : false)}
+        />
+      </div>
+      <div
         style={{
           fontSize: "2rem",
           placeSelf: "center end",
           padding: "1rem",
-          borderRadius: "0.25rem",
+          borderRadius: "0.5rem",
         }}
       >
         Total Score : {total(teamA ? score.scoreA : score.scoreB)}
