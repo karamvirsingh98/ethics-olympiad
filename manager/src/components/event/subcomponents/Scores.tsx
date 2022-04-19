@@ -119,42 +119,65 @@ function TeamScoreCards({
     );
 
   const getGrandTotal = (teamScores: TeamTotal[]) => {
-    return teamScores.reduce(
-      (prev, curr) => prev + curr.total,
-      teamScores[0].total
-    );
+    return teamScores.reduce((prev, curr) => {
+      console.log(prev, curr);
+      return prev + curr.total;
+    }, 0);
   };
 
   const ts = getTeamScores();
-
-  console.log(scores);
+  console.log(ts);
 
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
       {scores &&
         scores.length > 0 &&
-        ts?.map((teamTotals) => (
-          <div
-            className="grey-flat"
-            style={{
-              padding: "1rem",
-              borderRadius: "0.2rem",
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              placeItems: "center start",
-            }}
-          >
-            <div> {teamTotals[0] ? teamTotals[0].teamName : ""} </div>
-            {teamTotals.map((score, i) => (
-              <>
-                <div style={{ display: "grid", gap: "1rem" }}>
-                  <div> Heat{i + 1} </div>
-                  <div> {score.total} </div>
+        ts
+          ?.filter((ts) => ts.length)
+          .sort((a, b) => (getGrandTotal(a) < getGrandTotal(b) ? 1 : -1))
+          .map(
+            (teamTotals, i) =>
+              teamTotals.length && (
+                <div
+                  key={i}
+                  className="grey-flat"
+                  style={{
+                    padding: "1rem",
+                    borderRadius: "0.2rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div> {teamTotals[0] ? teamTotals[0].teamName : ""} </div>
+                  <div style={{ display: "flex", gap: "2rem" }}>
+                    {teamTotals.map((score, i) => (
+                      <div
+                        key={score.teamName + i}
+                        style={{
+                          display: "grid",
+                          gap: "1rem",
+                          placeItems: "center",
+                        }}
+                      >
+                        <div> Heat{i + 1} </div>
+                        <div> {score.total} </div>
+                      </div>
+                    ))}
+                    <div
+                      style={{
+                        display: "grid",
+                        gap: "1rem",
+                        placeItems: "center",
+                      }}
+                    >
+                      <div> Grand Total </div>
+                      <div> {getGrandTotal(teamTotals) || "Uncalculated"} </div>
+                    </div>
+                  </div>
                 </div>
-              </>
-            ))}
-          </div>
-        ))}
+              )
+          )}
     </div>
   );
 }
