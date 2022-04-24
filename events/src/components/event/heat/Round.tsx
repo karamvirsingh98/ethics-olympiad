@@ -16,38 +16,33 @@ export default function Round({
   const { roundNumber } = useParams();
   const round = Number(roundNumber);
 
-  const casesAreDefined = (case1 && case2) ? true : false
+  const casesAreDefined = case1 && case2 ? true : false;
 
   return (
     <div style={{ overflow: "hidden" }}>
       <Routes>
-        <IfElse
-          showIf={casesAreDefined}
-          showTrue={
-            <>
-              <Route
-                path="/"
-                element={<CaseOverview _case={round === 1 ? case1 : case2} />}
-              />
-              <Route
-                path="/stage:stageNumber"
-                element={
-                  <Stage
-                    roundNumber={Number(roundNumber)}
-                    question={round === 1 ? case1.question : case2.question}
-                    timers={timers}
-                  />
-                }
-              />
-            </>
-          }
-          showFalse={
-            <Route
-              path="/"
-              element={<CaseOverview _case={round === 1 ? case1 : case2} />}
+        <Route
+          path="/"
+          element={
+            <IfElse
+              showIf={casesAreDefined}
+              showTrue={<CaseOverview _case={round === 1 ? case1 : case2} />}
+              showFalse={<Route path="/" element={<NotFound />} />}
             />
           }
         />
+        {casesAreDefined && (
+          <Route
+            path="/stage:stageNumber"
+            element={
+              <Stage
+                roundNumber={Number(roundNumber)}
+                question={round === 1 ? case1.question : case2.question}
+                timers={timers}
+              />
+            }
+          />
+        )}
       </Routes>
     </div>
   );
