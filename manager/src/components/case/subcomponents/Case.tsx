@@ -87,7 +87,7 @@ export default function CaseComponent({
                   placeholder="Video URL"
                   editing={editing}
                   value={videoURL}
-                  onEdit={() => {}}
+                  onEdit={(videoUrl) => setOneField(_id!, "videoURL", videoUrl)}
                 />
               }
               showFalse={
