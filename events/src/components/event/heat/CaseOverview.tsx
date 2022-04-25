@@ -31,6 +31,15 @@ export default function CaseOverview({ _case }: { _case: Case }) {
 function Video({ url }: { url: string }) {
   const [loading, set] = useState(true);
 
+  return (
+    <iframe
+      frameBorder="0"
+      src={generateEmbed(url)}
+      style={{ width: "100%", height: "100%" }}
+      onLoad={() => set(false)}
+      title="Case Video"
+    />
+  );
 
   return (
     <IfElse
@@ -38,17 +47,15 @@ function Video({ url }: { url: string }) {
       showTrue={<div className="spinner" />}
       showFalse={
         <IfElse
-          showIf={url && generateEmbed(url) ? true : false}
+          showIf={generateEmbed(url) ? true : false}
           showTrue={
-            url && (
-              <iframe
-                frameBorder="0"
-                src={generateEmbed(url)}
-                style={{ width: "100%", height: "100%" }}
-                onLoad={() => set(false)}
-                title="Case Video"
-              />
-            )
+            <iframe
+              frameBorder="0"
+              src={generateEmbed(url)}
+              style={{ width: "100%", height: "100%" }}
+              onLoad={() => set(false)}
+              title="Case Video"
+            />
           }
           showFalse={
             <div style={{ placeSelf: "center", fontSize: "2rem" }}>
