@@ -20,10 +20,12 @@ export default function Timer({ duration }: { duration: number }) {
   filter.connect(gain);
   gain.connect(ctx.destination);
   rawTime === 0 && osc.start();
-  rawTime === 0 &&
+  if (rawTime === 0) {
     setInterval(() => {
       osc.stop();
     }, 500);
+  }
+  // rawTime === 0 &&
 
   return (
     <div className="timer-container">

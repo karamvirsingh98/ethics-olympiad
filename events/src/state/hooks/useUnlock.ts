@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { client } from "../../main";
 import { Olympiad } from "../types";
 
@@ -8,23 +9,25 @@ export default function useUnlock(eventID: string) {
     unlock: (password: string) =>
       window.localStorage.setItem(`event_${eventID}`, password),
   };
-};
+}
 
 export function useFullEvent(eventID: string) {
   const [olympiad, set] = useState<Olympiad>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!olympiad) {
-      try {
-        const password = window.localStorage.getItem(`event_${eventID}`);
-        client.service('api/unlock').create({ id: eventID, password }).then(set)
-      } catch {}
+      const password = window.localStorage.getItem(`event_${eventID}`);
+      client
+        .service("api/unlock")
+        .create({ id: eventID, password })
+        .then(set)
+        .catch((e: any) => e.code === 404 && navigate("/"));
     }
   }, [eventID]);
 
   return { olympiad, set };
 }
-
 
 // function useOlympiad(eventID: string) {
 //   const [olympiad, set] = useState<Olympiad>()
