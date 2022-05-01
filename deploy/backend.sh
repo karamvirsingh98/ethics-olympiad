@@ -15,8 +15,8 @@ git subtree split -P backend/dist -b deploy-backend
 
 # prepare subtree branch for deployment
 git checkout deploy-backend
-git add -A
-git commit -m 'Deploying Backend'
+git add .
+git commit -am 'Deploying Backend'
 
 # push subtree branch to origin to trigger heroku build
 # git push origin deploy-backend:deploy-backend --force ## FIXME github deployment currently unsupported
