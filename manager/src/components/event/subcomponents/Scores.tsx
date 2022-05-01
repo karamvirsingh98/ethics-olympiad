@@ -18,6 +18,10 @@ export default function Scores({ event }: { event: Event }) {
   const [checking, setChecking] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  useEffect(() => {
+    checkForScores();
+  }, []);
+
   const checkForScores = () => {
     setChecking(true);
     client
@@ -31,13 +35,13 @@ export default function Scores({ event }: { event: Event }) {
 
   const deleteScores = async () => {
     setDeleting(true);
-    await client.service("api/remove-scores").create({ eventID: event._id });
+    await client
+      .service("api/remove-scores")
+      .create({ eventID: event._id })
+      .then(console.log);
+    checkForScores();
     setDeleting(false);
   };
-
-  useEffect(() => {
-    checkForScores();
-  }, []);
 
   return (
     <div className="teams">
@@ -130,13 +134,11 @@ function TeamScoreCards({
 
   const getGrandTotal = (teamScores: TeamTotal[]) => {
     return teamScores.reduce((prev, curr) => {
-      console.log(prev, curr);
       return prev + curr.total;
     }, 0);
   };
 
   const ts = getTeamScores();
-  console.log(ts);
 
   return (
     <div style={{ display: "grid", gap: "1rem" }}>
