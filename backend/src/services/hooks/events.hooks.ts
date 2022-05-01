@@ -1,6 +1,6 @@
 import { authenticate } from "@feathersjs/authentication/lib/hooks";
 import { HookContext } from "@feathersjs/feathers";
-import { Event } from "@ethics-olympiad/types";
+import { Event, Score } from "@ethics-olympiad/types";
 
 const protectEvents = () => {
   return async (context: HookContext) => {
@@ -16,9 +16,18 @@ const protectEvents = () => {
   };
 };
 
-const deleteScoresWhenEventDeleted = () => {
+const handleEventDelete = () => {
   return async (context: HookContext) => {
-    console.log(context.id);
+    const id = context.id;
+    const scoresToRemove = await context.app
+      .service("api/scores")
+      .find({ query: { eventID: id } });
+    await Promise.all(
+      scoresToRemove.map((score: Score) =>
+        context.app.service("api/events").remove(score._id)
+      )
+    );
+    return context;
   };
 };
 
@@ -33,6 +42,6 @@ export const EVENT_HOOKS = {
 
   after: {
     find: [protectEvents()],
-    remove: [deleteScoresWhenEventDeleted()],
+    remove: [handleEventDelete()],
   },
 };
