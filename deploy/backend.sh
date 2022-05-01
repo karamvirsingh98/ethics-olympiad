@@ -19,7 +19,9 @@ git add -A
 git commit -m 'Deploying Backend'
 
 # push subtree branch to origin to trigger heroku build
-git push origin deploy-backend:deploy-backend --force
+# git push origin deploy-backend:deploy-backend --force ## FIXME github deployment currently unsupported
+heroku git:remote -a ethicsolympiad-test
+git push heroku master -a ethicsolympiad-test
 echo ===== Initiating Deployment =====
 
 # cleanup local branch
