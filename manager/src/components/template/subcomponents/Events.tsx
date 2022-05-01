@@ -59,9 +59,10 @@ export default function EventsComponent({
           overflow: "scroll",
           display: "flex",
           flexDirection: "column",
-          gap: " 1rem",
+          gap: "1rem",
           maxHeight: "62.5vh",
           paddingBottom: "2rem",
+          width: "100%",
         }}
       >
         {events &&
