@@ -1,11 +1,29 @@
+import { useEffect } from "react";
 import useTimer from "../../../state/hooks/useTimer";
 import IfElse from "../../util/IfElse";
 
 export default function Timer({ duration }: { duration: number }) {
-  const { active, paused, time, start, pause, resume, reset } =
+  const { active, paused, time, start, pause, resume, reset, rawTime } =
     useTimer(duration);
 
   const timeNotUp = time() !== "Time's Up!";
+
+  const ctx = new AudioContext();
+  const osc = ctx.createOscillator();
+  osc.frequency.value = 440;
+  const filter = ctx.createBiquadFilter();
+  filter.frequency.value = 330;
+  filter.type = "lowpass";
+  const gain = ctx.createGain();
+  gain.gain.value = 0.3;
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  rawTime === 0 && osc.start();
+  rawTime === 0 &&
+    setInterval(() => {
+      osc.stop();
+    }, 500);
 
   return (
     <div className="timer-container">

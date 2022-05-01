@@ -67,5 +67,5 @@ export default function useTimer(duration: number) {
     } else return "Time's Up!";
   };
 
-  return { active, paused, time: formatTime, start, pause, resume, reset };
+  return { active, paused, time: formatTime, start, pause, resume, reset, rawTime: time };
 }
