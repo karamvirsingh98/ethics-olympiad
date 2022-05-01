@@ -5,7 +5,7 @@ import { Fragment } from "react";
 import Cases from "../pages/Cases";
 import Users from "../pages/Users";
 import { TemplatesComponent } from "../pages/Templates";
-import imgUrl from "../assets/hero.png";
+import Home from "../pages/Home";
 
 export default function PageRoutes({
   user,
@@ -25,43 +25,7 @@ export default function PageRoutes({
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
       <div style={{ padding: "1rem" }}>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "2fr 1fr",
-                  placeItems: "center",
-                  height: "100%",
-                }}
-              >
-                <img src={imgUrl} alt="" style={{ height: "50vh" }} />
-                <div
-                  style={{
-                    display: "grid",
-                    gap: "2rem",
-                    placeItems: "center",
-                  }}
-                >
-                  <button
-                    className="blue"
-                    style={{ padding: "1rem", fontSize: "2rem" }}
-                    onClick={() => navigate("/events")}
-                  >
-                    Your Events
-                  </button>
-                  <button
-                    className="blue"
-                    style={{ padding: "1rem", fontSize: "2rem" }}
-                    onClick={() => navigate("/cases")}
-                  >
-                    Your Cases
-                  </button>
-                </div>
-              </div>
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route
             path="/events/*"
             element={<TemplatesComponent user={user} />}
