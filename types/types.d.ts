@@ -98,6 +98,7 @@ export interface TeamScore {
 }
 
 export interface Score {
+  _id?: string;
   eventID: string;
   judgeName: string;
   heatNumber: number;

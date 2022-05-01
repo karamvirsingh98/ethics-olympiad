@@ -11,6 +11,7 @@ import { ActiveEventService } from "./services/custom/active";
 import { ChannelService } from "./services/custom/channel";
 import { ForgotPasswordService } from "./services/custom/forgot";
 import { InviteService } from "./services/custom/invite";
+import { RemoveScoresService } from "./services/custom/remove_scores";
 import { UnlockService } from "./services/custom/unlock";
 
 export function coreServices(app: Application) {
@@ -27,4 +28,5 @@ export function customServices(app: Application) {
   app.use("/api/active", new ActiveEventService(app));
   app.use("/api/channel", new ChannelService(app));
   app.use("/api/forgot", new ForgotPasswordService(app));
+  app.use("api/remove-scores", new RemoveScoresService(app));
 }
