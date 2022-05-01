@@ -28,18 +28,3 @@ export function useFullEvent(eventID: string) {
 
   return { olympiad, set };
 }
-
-// function useOlympiad(eventID: string) {
-//   const [olympiad, set] = useState<Olympiad>()
-
-//   useEffect(() => {
-//     if (!olympiad) return
-//   })
-
-//   const unlock = (password?: string) => {
-//     try {
-//       const p = password ? password : window.localStorage.getItem(`event_${eventID}`)
-//     }
-//     catch {}
-//   }
-// }
