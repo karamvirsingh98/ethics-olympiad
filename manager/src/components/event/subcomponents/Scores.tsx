@@ -16,6 +16,7 @@ export default function Scores({ event }: { event: Event }) {
   const [scores, setScores] = useState<Score[]>();
   const [option, setOption] = useState<ScoreOption>("Team");
   const [checking, setChecking] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const checkForScores = () => {
     setChecking(true);
@@ -26,6 +27,12 @@ export default function Scores({ event }: { event: Event }) {
         setChecking(false);
         setScores(res);
       });
+  };
+
+  const deleteScores = async () => {
+    setDeleting(true);
+    await client.service("api/remove-scores").create({ eventID: event._id });
+    setDeleting(false);
   };
 
   useEffect(() => {
@@ -43,7 +50,10 @@ export default function Scores({ event }: { event: Event }) {
             disabled={checking}
             className={checking ? "orange" : "green"}
           >
-            Check for Scores
+            Refresh
+          </button>
+          <button className="red" disabled={deleting} onClick={deleteScores}>
+            Delete Scores
           </button>
         </div>
       </div>
