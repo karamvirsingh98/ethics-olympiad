@@ -17,6 +17,6 @@ export class RemoveScoresService {
         this.app.service("api/scores").remove(score._id)
       )
     );
-    return true
+    return true;
   }
 }
