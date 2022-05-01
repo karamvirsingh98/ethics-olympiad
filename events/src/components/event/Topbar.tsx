@@ -29,7 +29,7 @@ export default function Topbar({ admin }: { admin?: boolean }) {
         </button>
       )}
       {admin && (
-        <button className="blue" onClick={() => navigate("../admin")}>
+        <button className="blue" onClick={() => navigate("./admin")}>
           Admin
         </button>
       )}
