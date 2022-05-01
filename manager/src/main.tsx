@@ -6,12 +6,11 @@ import App from "./App";
 import "./index.css";
 import "./app.css";
 
-const LOCALHOST = "http://localhost:3030";
-const HEROKU = "https://ethicsolympiad.herokuapp.com/";
+const DEVELOPMENT = "http://localhost:3030";
 const TESTING = "https://ethicsolympiad-test.herokuapp.com";
+const PRODUCTION = "https://ethicsolympiad.herokuapp.com/";
 
-
-export const client = setupClient(TESTING);
+export const client = setupClient(PRODUCTION);
 
 ReactDOM.render(
   <React.StrictMode>
