@@ -145,8 +145,6 @@ function ScoreComponent({ teams }: { teams: Team[] }) {
     setShowSubmit(true);
   };
 
-  console.log(score.honorableA, score.honorableB);
-
   return (
     <>
       <Divider />

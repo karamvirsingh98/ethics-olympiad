@@ -75,7 +75,6 @@ export default function useTimer(duration: number) {
 
   if (time === 0) {
     oscRef.current = ctx.createOscillator();
-    oscRef.current.type = "sawtooth";
     oscRef.current.frequency.value = 440;
     const filter = ctx.createBiquadFilter();
     filter.frequency.value = 330;
