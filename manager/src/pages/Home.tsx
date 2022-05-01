@@ -15,7 +15,7 @@ export default function Home() {
         height: "100%",
       }}
     >
-      <img src={imgUrl} alt="" style={{ height: "50vh" }} />
+      <img src={imgUrl} alt="" style={{ height: "50vh", opacity: 0.5 }} />
       <div
         style={{
           display: "grid",
