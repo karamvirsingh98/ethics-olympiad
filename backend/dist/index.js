@@ -33,7 +33,7 @@ const TemplateModel = mongoose.model("olympiad-template", new mongoose.Schema({
   heats: [{ case1: String, case2: String }],
   timers: Array,
   level: String
-}));
+}, { timestamps: true }));
 const EventModel = mongoose.model("olympiad-event", new mongoose.Schema({
   templateID: String,
   eventTitle: String,
@@ -208,6 +208,17 @@ class InviteService {
   }
 }
 
+class RemoveScoresService {
+  constructor(app) {
+    this.app = app;
+  }
+  async create({ eventID }) {
+    const eventScores = await this.app.service("api/scores").find({ query: { eventID } });
+    await Promise.all(eventScores.map((score) => this.app.service("api/scores").remove(score._id)));
+    return true;
+  }
+}
+
 class UnlockService {
   constructor(app) {
     this.app = app;
@@ -243,6 +254,7 @@ function customServices(app) {
   app.use("/api/active", new ActiveEventService(app));
   app.use("/api/channel", new ChannelService(app));
   app.use("/api/forgot", new ForgotPasswordService(app));
+  app.use("api/remove-scores", new RemoveScoresService(app));
 }
 
 const protectEvents = () => {
