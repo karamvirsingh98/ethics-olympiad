@@ -18,8 +18,6 @@ export default function PageRoutes({
   dark: boolean;
   toggleDark: () => void;
 }) {
-  const navigate = useNavigate();
-
   return (
     <Fragment>
       <Topbar logout={logout} dark={dark} toggleDark={toggleDark} user={user} />
