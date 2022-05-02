@@ -114,12 +114,13 @@ function TeamScoreCards({
   interface TeamTotal {
     teamName: string;
     total: number;
+    honorable: boolean;
   }
 
   const getTeamScores = () =>
     scores &&
     teams &&
-    teams.map(({ teamName }, i) =>
+    teams.map(({ teamName }) =>
       scores
         .filter(({ teamA, teamB }) => teamA === teamName || teamB === teamName)
         .sort((a, b) => (a.heatNumber < b.heatNumber ? 1 : -1))
@@ -130,6 +131,8 @@ function TeamScoreCards({
               total: total(
                 score.teamA === teamName ? score.scoreA : score.scoreB
               ),
+              honorable:
+                score.teamA === teamName ? score.honorableA : score.honorableB,
             } as TeamTotal)
         )
     );
@@ -149,8 +152,11 @@ function TeamScoreCards({
         ts
           ?.filter((ts) => ts.length)
           .sort((a, b) => (getGrandTotal(a) < getGrandTotal(b) ? 1 : -1))
-          .map(
-            (teamTotals, i) =>
+          .map((teamTotals, i) => {
+            const hasHonorableMention = teamTotals.some(
+              (total) => total.honorable
+            );
+            return (
               teamTotals.length && (
                 <div
                   key={i}
@@ -163,7 +169,10 @@ function TeamScoreCards({
                     justifyContent: "space-between",
                   }}
                 >
-                  <div> {teamTotals[0] ? teamTotals[0].teamName : ""} </div>
+                  <div>
+                    {teamTotals[0] ? teamTotals[0].teamName : ""}
+                    <b>{hasHonorableMention ? "H" : ""}</b>
+                  </div>
                   <div style={{ display: "flex", gap: "2rem" }}>
                     {teamTotals.map((score, i) => (
                       <div
@@ -186,12 +195,13 @@ function TeamScoreCards({
                       }}
                     >
                       <div> Grand Total </div>
-                      <div> {getGrandTotal(teamTotals) || "Uncalculated"} </div>
+                      <div> {getGrandTotal(teamTotals) || ""} </div>
                     </div>
                   </div>
                 </div>
               )
-          )}
+            );
+          })}
     </div>
   );
 }

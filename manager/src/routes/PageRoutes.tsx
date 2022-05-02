@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { User } from "@ethics-olympiad/types";
 import Topbar from "../components/Topbar";
 import { Fragment } from "react";
