@@ -1,5 +1,5 @@
 import { Heat } from "@ethics-olympiad/types";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export function useLocalStorage<T>(
@@ -27,10 +27,22 @@ export function useTheme(): [dark: boolean, toggle: () => void] {
   return [dark, toggle];
 }
 
-
 export function useHeatNumber(heats: Heat[]) {
   const { heatNumber } = useParams();
   const n = heatNumber ? Number(heatNumber) : undefined;
   const caseIDs = heats[n! - 1];
-  return caseIDs
+  return caseIDs;
+}
+
+export function usePadQuestion() {
+  const heightRef = useRef<HTMLDivElement>(null);
+
+  const [pad, set] = useState(false);
+  useEffect(() => {
+    heightRef.current &&
+      heightRef.current.scrollHeight > heightRef.current.clientHeight &&
+      set(true);
+  }, [heightRef.current]);
+
+  return { heightRef, pad };
 }
