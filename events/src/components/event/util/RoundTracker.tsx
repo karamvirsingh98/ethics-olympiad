@@ -12,9 +12,15 @@ const arr = [
   "Judge Q&A",
 ];
 
-export default function RoundTracker({ stage, showButtons }: { stage: number, showButtons?: boolean }) {
-  const { navigate, next, back } = useStage(stage)
-  const { roundNumber } = useParams()
+export default function RoundTracker({
+  stage,
+  showButtons,
+}: {
+  stage: number;
+  showButtons?: boolean;
+}) {
+  const { navigate, next, back } = useStage(stage);
+  const { roundNumber } = useParams();
 
   return (
     <div
@@ -25,7 +31,7 @@ export default function RoundTracker({ stage, showButtons }: { stage: number, sh
         placeItems: "center",
         maxWidth: "100%",
         gap: "2rem",
-        minWidth: 800
+        minWidth: 800,
       }}
     >
       {showButtons && (
