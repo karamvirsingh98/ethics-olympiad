@@ -1,5 +1,5 @@
 import { Score, Team, TeamScore } from "@ethics-olympiad/types";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import IfElse from "../../util/IfElse";
 import Switch from "../../util/Switch";
 import { SCORE_FIELDS } from "../score_fields";
@@ -32,13 +32,11 @@ export default function TeamScoreComponent({
   toggleHonorable: ToggleHonorable;
   teamA?: boolean;
 }) {
-  const total = (score: TeamScore) => {
-    let total = 0;
-    Object.keys(SCORE_FIELDS).forEach(
-      (field) => (total += score[field as keyof TeamScore])
+  const total = (score: TeamScore) =>
+    Object.keys(SCORE_FIELDS).reduce(
+      (a, v) => a + score[v as keyof TeamScore],
+      0
     );
-    return total;
-  };
 
   return (
     <div style={{ display: "grid", gap: "2rem", height: "fit-content" }}>
@@ -77,18 +75,11 @@ export default function TeamScoreComponent({
           }
         />
       </div>
-      <div
-        className="flex-between grey-flat"
-        style={{ gap: "2rem", padding: "1rem" }}
-      >
-        <div style={{ fontSize: "1.25rem" }}>
-          Give this team an Honorable Mention?
-        </div>
-        <Switch
-          active={teamA ? score.honorableA : score.honorableB}
-          onClick={toggleHonorable(teamA ? true : false)}
-        />
-      </div>
+      <HonorableMention
+        teamA={teamA ? true : false}
+        score={score}
+        toggleHonorable={toggleHonorable}
+      />
       <div
         style={{
           fontSize: "2rem",
@@ -99,6 +90,47 @@ export default function TeamScoreComponent({
       >
         Total Score : {total(teamA ? score.scoreA : score.scoreB)}
       </div>
+    </div>
+  );
+}
+
+function HonorableMention({
+  teamA,
+  score,
+  toggleHonorable,
+}: {
+  teamA: boolean;
+  score: Score;
+  toggleHonorable: ToggleHonorable;
+}) {
+  const [disabled, set] = useState(false);
+
+  const total = (score: TeamScore) =>
+    Object.keys(SCORE_FIELDS).reduce(
+      (a, v) => a + score[v as keyof TeamScore],
+      0
+    );
+
+  console.log("dis", disabled);
+
+  useEffect(() => {
+    if (teamA && total(score.scoreA) > total(score.scoreB)) set(true);
+    else if (total(score.scoreB) > total(score.scoreA)) set(true);
+  }, [score]);
+
+  return (
+    <div
+      className="flex-between grey-flat"
+      style={{ gap: "2rem", padding: "1rem" }}
+    >
+      <div style={{ fontSize: "1.25rem" }}>
+        Give this team an Honorable Mention?
+      </div>
+      <Switch
+        active={teamA ? score.honorableA : score.honorableB}
+        onClick={toggleHonorable(teamA ? true : false)}
+        // disabled={disabled}
+      />
     </div>
   );
 }
