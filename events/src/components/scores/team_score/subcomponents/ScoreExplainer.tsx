@@ -1,5 +1,5 @@
 import { ScoreFields, TeamScore } from "@ethics-olympiad/types";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Divider from "../../../util/Divider";
 
 export default function ScoreExplainer({
@@ -36,23 +36,22 @@ export default function ScoreExplainer({
           <div className="score-explainers">
             <div style={{ display: "grid", gap: "1rem" }}>
               {map.map((_, i) => (
-                <>
+                <Fragment key={i}>
                   <div
                     style={{
                       display: "grid",
                       gridTemplateColumns: "3rem 1fr",
                       alignItems: "center",
                     }}
-                    key={i}
                   >
                     <div> {Guidelines[label].range[i]} </div>
                     <div> {Guidelines[label].explainers[i]} </div>
                   </div>
                   {i + 1 !== Guidelines[label].range.length && <Divider />}
-                </>
+                </Fragment>
               ))}
             </div>
-          </div>{" "}
+          </div>
         </div>
       )}
     </div>
