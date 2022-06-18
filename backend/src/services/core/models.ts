@@ -1,4 +1,4 @@
-import { Score, User } from "@ethics-olympiad/types";
+import { CustomQuestion, Score, User } from "@ethics-olympiad/types";
 import { model, Schema } from "mongoose";
 
 export const TemplateModel = model(
@@ -89,6 +89,18 @@ export const UserModel = model(
       password: String,
       admin: Boolean,
       permissions: Array,
+    },
+    { timestamps: true }
+  )
+);
+
+export const CustomQuestionModel = model(
+  "custom-question",
+  new Schema<CustomQuestion>(
+    {
+      caseID: String,
+      userID: String,
+      question: String,
     },
     { timestamps: true }
   )
