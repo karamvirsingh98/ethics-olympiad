@@ -60,6 +60,7 @@ export default function CaseGroup({
               ) : (
                 <CaseComponent
                   _case={cases[id]}
+                  user={user}
                   key={id}
                   setOne={setOne}
                   setOneField={setOneField}
