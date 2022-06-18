@@ -2,6 +2,7 @@ import { Application } from "@feathersjs/feathers";
 import { Service } from "feathers-mongoose";
 import {
   CaseModel,
+  CustomQuestionModel,
   EventModel,
   ScoreModel,
   TemplateModel,
@@ -20,6 +21,7 @@ export function coreServices(app: Application) {
   app.use("/api/cases", new Service({ Model: CaseModel }));
   app.use("/api/scores", new Service({ Model: ScoreModel }));
   app.use("/api/templates", new Service({ Model: TemplateModel }));
+  app.use("/api/questions", new Service({ Model: CustomQuestionModel }));
 }
 
 export function customServices(app: Application) {
