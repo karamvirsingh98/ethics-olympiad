@@ -109,3 +109,10 @@ export interface Score {
   scoreA: TeamScore;
   scoreB: TeamScore;
 }
+
+export interface CustomQuestion {
+  _id: string;
+  caseID: string;
+  userID: string;
+  question: string;
+}
