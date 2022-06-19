@@ -12,10 +12,11 @@ export default function OfficialCase({
   _case: Case;
   user: User;
 }) {
-  const [show, set] = useState(false);
-  const [customQ, setCustomQ] = useState<string>();
+  const [loading, setLoading] = useState(true);
+  // const [show, set] = useState(false);
+  const [customQ, setCustomQ] = useState<CustomQuestion>();
   const [editing, setEditing] = useState(false);
-  const [saving, setSaving] = useState(false);
+  // const [saving, setSaving] = useState(false);
 
   const { title, isVideo, videoURL, bodyText } = _case;
 
@@ -23,17 +24,31 @@ export default function OfficialCase({
     client
       .service("api/questions")
       .find({ caseID: _case._id, userID: user._id })
-      .then((question: CustomQuestion) =>
-        setCustomQ(question ? question.question : "")
-      );
-  }, []);
+      .then(async (questions: CustomQuestion[]) => {
+        console.log("questions", questions);
+        if (!questions.length) {
+          const question = await client
+            .service("api/questions")
+            .create({ caseID: _case._id, userID: user._id });
+          console.log("new question", question);
+          setCustomQ(question);
+        } else setCustomQ(questions[0]);
+        setLoading(false);
+      });
+  }, [editing]);
 
   const onSave = async () => {
-    setSaving(true);
-    await client
-      .service("api/questions")
-      .update({ ..._case, question: customQ });
-    setSaving(false);
+    setLoading(true);
+    try {
+      await client
+        .service("api/questions")
+        .update(customQ?._id, customQ)
+        .then(console.log);
+      setLoading(false);
+      setEditing(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const toggleEditing = () => setEditing(!editing);
@@ -63,32 +78,42 @@ export default function OfficialCase({
         >
           {title}
         </div>
-        <button className={show ? "orange" : "blue"} onClick={() => set(!show)}>
-          {show ? "Hide Details" : "Show Details"}
-        </button>
-        <TitleButtons
-          editing={editing}
-          extraText="Question"
-          toggleEditing={toggleEditing}
-          onSave={onSave}
-        />
+        <div style={{ display: "flex", gap: "1rem" }}>
+          {/* <button
+            className={editing ? "orange" : "blue"}
+            onClick={() => set(!editing)}
+          >
+            {editing ? "Hide Details" : "Show Details"}
+          </button> */}
+          <TitleButtons
+            editing={editing}
+            extraText="Question"
+            toggleEditing={toggleEditing}
+            onSave={onSave}
+          />
+        </div>
       </div>
 
-      {show && (
+      {editing && (
         <>
           <div style={{ display: "flex", fontSize: "1rem", gap: "1rem" }}>
             <div style={{ borderBottom: "solid 0.25rem transparent" }}>
               Question:
             </div>
             <Conditional
-              condition={saving}
+              condition={loading}
               showTrue={<div> Loading... </div>}
               showFalse={
                 <ToggleInput
                   placeholder="Question"
-                  value={customQ}
+                  value={customQ?.question}
                   editing={editing}
-                  onEdit={(question) => setCustomQ(question)}
+                  onEdit={(question) =>
+                    setCustomQ({
+                      ...customQ!,
+                      question,
+                    })
+                  }
                 />
               }
             />
