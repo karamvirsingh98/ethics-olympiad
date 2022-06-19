@@ -111,7 +111,7 @@ export interface Score {
 }
 
 export interface CustomQuestion {
-  _id: string;
+  _id?: string;
   caseID: string;
   userID: string;
   question: string;
