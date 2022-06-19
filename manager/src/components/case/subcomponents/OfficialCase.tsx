@@ -1,11 +1,42 @@
-import { Case } from "@ethics-olympiad/types";
-import { useState } from "react";
+import { Case, CustomQuestion, User } from "@ethics-olympiad/types";
+import { useEffect, useState } from "react";
+import { client } from "../../../main";
+import TitleButtons from "../../event/subcomponents/TitleButtons";
 import Conditional from "../../util/Conditional";
+import ToggleInput from "../../util/ToggleInput";
 
-export default function OfficialCase({ _case }: { _case: Case }) {
+export default function OfficialCase({
+  _case,
+  user,
+}: {
+  _case: Case;
+  user: User;
+}) {
   const [show, set] = useState(false);
+  const [customQ, setCustomQ] = useState<string>();
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const { title, question, isVideo, videoURL, bodyText } = _case;
+  const { title, isVideo, videoURL, bodyText } = _case;
+
+  useEffect(() => {
+    client
+      .service("api/questions")
+      .find({ caseID: _case._id, userID: user._id })
+      .then((question: CustomQuestion) =>
+        setCustomQ(question ? question.question : "")
+      );
+  }, []);
+
+  const onSave = async () => {
+    setSaving(true);
+    await client
+      .service("api/questions")
+      .update({ ..._case, question: customQ });
+    setSaving(false);
+  };
+
+  const toggleEditing = () => setEditing(!editing);
 
   return (
     <div
@@ -35,6 +66,12 @@ export default function OfficialCase({ _case }: { _case: Case }) {
         <button className={show ? "orange" : "blue"} onClick={() => set(!show)}>
           {show ? "Hide Details" : "Show Details"}
         </button>
+        <TitleButtons
+          editing={editing}
+          extraText="Question"
+          toggleEditing={toggleEditing}
+          onSave={onSave}
+        />
       </div>
 
       {show && (
@@ -43,14 +80,18 @@ export default function OfficialCase({ _case }: { _case: Case }) {
             <div style={{ borderBottom: "solid 0.25rem transparent" }}>
               Question:
             </div>
-            <div
-              style={{
-                fontSize: "1.25rem",
-                borderBottom: "solid 0.25rem transparent",
-              }}
-            >
-              {question}
-            </div>
+            <Conditional
+              condition={saving}
+              showTrue={<div> Loading... </div>}
+              showFalse={
+                <ToggleInput
+                  placeholder="Question"
+                  value={customQ}
+                  editing={editing}
+                  onEdit={(question) => setCustomQ(question)}
+                />
+              }
+            />
           </div>
           <div
             style={{
@@ -81,7 +122,9 @@ export default function OfficialCase({ _case }: { _case: Case }) {
                 </div>
               }
               showFalse={
-                <div style={{ whiteSpace: "pre-wrap", marginRight: "2rem" }}> {bodyText} </div>
+                <div style={{ whiteSpace: "pre-wrap", marginRight: "2rem" }}>
+                  {bodyText}
+                </div>
               }
             />
           </div>
