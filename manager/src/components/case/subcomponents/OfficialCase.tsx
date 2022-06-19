@@ -13,24 +13,20 @@ export default function OfficialCase({
   user: User;
 }) {
   const [loading, setLoading] = useState(true);
-  // const [show, set] = useState(false);
   const [customQ, setCustomQ] = useState<CustomQuestion>();
   const [editing, setEditing] = useState(false);
-  // const [saving, setSaving] = useState(false);
 
   const { title, isVideo, videoURL, bodyText } = _case;
 
   useEffect(() => {
     client
       .service("api/questions")
-      .find({ caseID: _case._id, userID: user._id })
+      .find({ query: { caseID: _case._id, userID: user._id } })
       .then(async (questions: CustomQuestion[]) => {
-        console.log("questions", questions);
         if (!questions.length) {
           const question = await client
             .service("api/questions")
             .create({ caseID: _case._id, userID: user._id });
-          console.log("new question", question);
           setCustomQ(question);
         } else setCustomQ(questions[0]);
         setLoading(false);
@@ -38,16 +34,11 @@ export default function OfficialCase({
   }, [editing]);
 
   const onSave = async () => {
-    setLoading(true);
     try {
-      await client
-        .service("api/questions")
-        .update(customQ?._id, customQ)
-        .then(console.log);
-      setLoading(false);
+      await client.service("api/questions").update(customQ?._id, customQ);
       setEditing(false);
     } catch (e) {
-      console.log(e);
+      console.log("Error Saving Custom Question -> ", e);
     }
   };
 
@@ -79,12 +70,6 @@ export default function OfficialCase({
           {title}
         </div>
         <div style={{ display: "flex", gap: "1rem" }}>
-          {/* <button
-            className={editing ? "orange" : "blue"}
-            onClick={() => set(!editing)}
-          >
-            {editing ? "Hide Details" : "Show Details"}
-          </button> */}
           <TitleButtons
             editing={editing}
             extraText="Question"
