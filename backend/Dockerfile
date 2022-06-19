@@ -1,12 +1,11 @@
-FROM node:alpine
+FROM --platform=linux/amd64 node:alpine
 
-WORKDIR /backend
+ENV NODE_ENV=production
 
-COPY ./build/package.json ./
+WORKDIR /app
+
+COPY ./dist ./
 
 RUN npm install
 
-COPY ./build/index.js ./
-COPY ./config ./
-
-CMD node index.js
+CMD ["node", "index.js"]
