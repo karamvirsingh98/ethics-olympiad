@@ -23,6 +23,7 @@
   "scripts": {
     "dev": " tsc && node build/src/index.js",
     "start": "node index.js",
-    "predeploy": "./predeploy.sh"
+    "predeploy": "./predeploy.sh",
+    "build": "docker build -t eo-backend ."
   }
 }
