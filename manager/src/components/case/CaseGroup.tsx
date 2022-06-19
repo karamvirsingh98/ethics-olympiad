@@ -56,7 +56,7 @@ export default function CaseGroup({
             array={Object.keys(cases).filter(sortCondition)}
             map={(id) =>
               !user.admin && cases[id].isOfficial ? (
-                <OfficialCase _case={cases[id]} user={user} />
+                <OfficialCase _case={cases[id]} user={user} key={id} />
               ) : (
                 <CaseComponent
                   _case={cases[id]}
