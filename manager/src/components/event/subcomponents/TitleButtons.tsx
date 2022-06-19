@@ -1,20 +1,20 @@
-import { Fragment, ReactNode } from "react";
+import { ReactNode } from "react";
 
 export default function TitleButtons({
   editing,
   extraText,
   toggleEditing,
-  onDelete,
   onSave,
+  onDelete,
   onCancel,
   children,
 }: {
   editing: boolean;
   extraText: string;
   toggleEditing: () => void;
-  onDelete: () => void;
   onSave: () => void;
-  onCancel: () => void;
+  onDelete?: () => void;
+  onCancel?: () => void;
   children?: ReactNode;
 }) {
   return (
@@ -32,12 +32,14 @@ export default function TitleButtons({
       >
         {editing ? `Save ${extraText}` : `Edit ${extraText}`}
       </button>
-      <button
-        className={editing ? "orange" : "red"}
-        onClick={editing ? onCancel : onDelete}
-      >
-        {editing ? `Cancel Changes` : `Delete ${extraText}`}
-      </button>
+      {onDelete && onCancel && (
+        <button
+          className={editing ? "orange" : "red"}
+          onClick={editing ? onCancel : onDelete}
+        >
+          {editing ? `Cancel Changes` : `Delete ${extraText}`}
+        </button>
+      )}
       {children}
     </div>
   );
