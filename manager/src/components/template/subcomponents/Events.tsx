@@ -56,11 +56,12 @@ export default function EventsComponent({
       </button>
       <div
         style={{
-          overflow: "scroll",
+          overflowY: "auto",
           display: "flex",
           flexDirection: "column",
           gap: "1rem",
           maxHeight: "62.5vh",
+          minHeight: "30vh",
           paddingBottom: "2rem",
           width: "100%",
         }}
