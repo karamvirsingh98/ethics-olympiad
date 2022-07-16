@@ -1,8 +1,18 @@
-import { Score } from "@ethics-olympiad/types";
+import { Score, TeamScore } from "@ethics-olympiad/types";
 
 export default function scoresToCSV(scores: Score[]) {
   const sanitised: any = scores.map((score) => {
-    const _s: any = score;
+    const aTotal = calcTotal(score.scoreA);
+    const bTotal = calcTotal(score.scoreB);
+    const winner =
+      aTotal > bTotal ? score.teamA : aTotal === bTotal ? "Draw" : score.teamB;
+
+    const _s: any = {
+      ...score,
+      "scoreA.total": aTotal,
+      "scoreB.total": bTotal,
+      winner,
+    };
     delete _s._id;
     delete _s.eventID;
     delete _s.createdAt;
@@ -14,6 +24,10 @@ export default function scoresToCSV(scores: Score[]) {
   const headers = getHeaders(sanitised[0]);
   const values = getValues(sanitised);
   return assembleCSV(headers, values);
+}
+
+function calcTotal(score: TeamScore) {
+  return Object.values(score).reduce((prev, curr) => prev + curr, 0);
 }
 
 function getHeaders(json: { [key: string]: any }, subkey?: string) {
