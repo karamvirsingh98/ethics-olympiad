@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { client } from "../../../main";
 import Conditional from "../../util/Conditional";
+import CsvExporter from "./CsvExporter";
 import ScoreDropdown, { ScoreOption } from "./ScoreDropdown";
 
 const total = (score: TeamScore) => {
@@ -58,9 +59,10 @@ export default function Scores({ event }: { event: Event }) {
           >
             Refresh
           </button>
-          <button className="red" disabled={deleting} onClick={deleteScores}>
+          {/* <button className="red" disabled={deleting} onClick={deleteScores}>
             Delete Scores
-          </button>
+          </button> */}
+          {scores && <CsvExporter title={event.eventTitle} scores={scores} />}
         </div>
       </div>
 
