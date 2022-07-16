@@ -7,7 +7,7 @@ export default function scoresToCSV(scores: Score[]) {
     delete _s.eventID;
     delete _s.createdAt;
     delete _s.updatedAt;
-    delete _s._v;
+    delete _s.__v;
     return _s;
   });
 
