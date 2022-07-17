@@ -1,42 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import imgUrl from "../assets/hero.png";
+import hero from "../assets/hero.png";
 
 export default function Home() {
   const navigate = useNavigate();
 
-  const buttonStyle = { padding: "1rem", fontSize: "2rem", width: "100%" };
-
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "2fr 1fr",
-        placeItems: "center",
-        height: "100%",
-      }}
-    >
-      <img src={imgUrl} alt="" style={{ height: "50vh", opacity: 0.5 }} />
-      <div
-        style={{
-          display: "grid",
-          gap: "2rem",
-          placeItems: "center stretch",
-          width: "100%",
-          paddingRight: "2rem",
-        }}
-      >
+    <div className="home">
+      <img src={hero} alt="" className="home-hero" />
+      <div className="home-content">
         <button
-          className="blue"
-          style={buttonStyle}
+          className="blue home-button"
           onClick={() => navigate("/events")}
         >
           Your Events
         </button>
-        <button
-          className="blue"
-          style={buttonStyle}
-          onClick={() => navigate("/cases")}
-        >
+        <button className="blue home-button" onClick={() => navigate("/cases")}>
           Your Cases
         </button>
       </div>
