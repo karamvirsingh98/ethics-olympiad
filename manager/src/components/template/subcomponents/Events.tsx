@@ -98,7 +98,6 @@ function EventLink({
   disable: boolean;
   inEvent: boolean;
 }) {
-  //FIXME active event state has to be location.eventID === 'event._id'
   const params = useParams();
   const eventID = params["*"];
 
