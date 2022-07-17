@@ -8,7 +8,7 @@ export default function eventHelpers(
   const addTeam = () =>
     setOneField(event._id!, "teams", [
       ...event.teams,
-      { teamName: "", present: false },
+      { teamName: "", present: true },
     ]);
 
   const renameTeam = (teamName: string, index: number) =>
