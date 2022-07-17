@@ -108,6 +108,7 @@ export default function TemplateComponent({
               element={
                 Object.keys(events).length > 0 && (
                   <EventComponent
+                    template={template}
                     eventState={[events, eventFunctions]}
                     editing={eventEditing}
                     setEditing={setEventEditing}
