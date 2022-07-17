@@ -1,87 +1,115 @@
 import { Event, Score, Template } from "@ethics-olympiad/types";
 import ArrayMap from "../../util/ArrayMap";
+import Conditional from "../../util/Conditional";
 import RangeGenerator from "../../util/RangeGenerator";
+import ToggleInput from "../../util/ToggleInput";
 import useScores from "../useScores";
 
 export default function ScoresV2({
+  editing,
   template,
   event,
+  scores,
+  onTeamRename,
+  onTeamRemove,
 }: {
+  editing: boolean;
   template: Template;
   event: Event;
+  scores?: Score[];
+  onTeamRename: (name: string, index: number) => void;
+  onTeamRemove: (index: number) => void;
 }) {
   const heats = template.heats.length;
-  const { scores, loading, checkForScores } = useScores(event);
 
   return (
     <table>
-      <ScoresV2Header heats={heats} />
-      <TotalScores heats={heats} event={event} scores={scores} />
+      <Headers heats={heats} />
+      <ArrayMap
+        array={event.teams}
+        map={({ teamName }, i) => (
+          <tr key={i}>
+            <TeamName
+              editing={editing}
+              teamName={teamName}
+              onEdit={(name) => onTeamRename(name, i)}
+              onRemove={() => onTeamRemove(i)}
+            />
+            <TotalScore heats={heats} teamName={teamName} scores={scores} />
+          </tr>
+        )}
+      />
     </table>
   );
 }
 
-function TotalScores({
-  heats,
-  event,
-  scores,
+function TeamName({
+  editing,
+  teamName,
+  onEdit,
+  onRemove,
 }: {
-  heats: number;
-  event: Event;
-  scores?: Score[];
+  editing: boolean;
+  teamName: string;
+  onEdit: (name: string) => void;
+  onRemove: () => void;
 }) {
   return (
-    <ArrayMap
-      array={event.teams}
-      map={({ teamName }, i) => (
-        <tr key={i}>
-          <td> {teamName} </td>
-          <RangeGenerator
-            quantity={heats}
-            element={(index) => (
-              <td key={index}>
-                <TotalScore
-                  teamName={teamName}
-                  heat={index + 1}
-                  scores={scores}
-                />
-              </td>
-            )}
-          />
-        </tr>
-      )}
-    />
+    <td style={{ width: "40%" }}>
+      <div className="flex-between">
+        <ToggleInput
+          editing={editing}
+          value={teamName}
+          placeholder="New Team"
+          onEdit={onEdit}
+        />
+        {editing && (
+          <button className="red" onClick={onRemove}>
+            Remove
+          </button>
+        )}
+      </div>
+    </td>
   );
 }
 
 function TotalScore({
+  heats,
   teamName,
-  heat,
   scores,
 }: {
+  heats: number;
   teamName: string;
-  heat: number;
   scores?: Score[];
 }) {
   if (!scores) return null;
 
-  const score = scores?.find(
-    ({ heatNumber, teamA, teamB }) =>
-      heatNumber === heat && (teamA === teamName || teamB === teamName)
+  const teamScores = scores.filter(
+    (score) => score.teamA === teamName || score.teamB === teamName
   );
 
-  if (!score) return null;
+  console.log(teamScores);
+
+  const totals = teamScores.map((score) =>
+    Object.values(
+      score.teamA === teamName ? score.scoreA : score.scoreB
+    ).reduce((total, next) => next + total, 0)
+  );
+
+  console.log(totals);
 
   return (
     <>
-      {Object.values(
-        score.teamA === teamName ? score.scoreA : score.scoreB
-      ).reduce((total, next) => total + next, 0)}
+      <RangeGenerator
+        quantity={heats}
+        element={(i) => <td key={i}>{totals[i] || "N/A"}</td>}
+      />
+      <td>{totals.reduce((total, next) => total + next, 0)}</td>
     </>
   );
 }
 
-function ScoresV2Header({ heats }: { heats: number }) {
+function Headers({ heats }: { heats: number }) {
   return (
     <tr>
       <th> Teams </th>
@@ -89,6 +117,7 @@ function ScoresV2Header({ heats }: { heats: number }) {
         quantity={heats}
         element={(index) => <th key={index}>Heat {index + 1}</th>}
       />
+      <th> Grand Total </th>
     </tr>
   );
 }
