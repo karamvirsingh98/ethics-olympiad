@@ -39,7 +39,7 @@ export default function EventsComponent({
           cursor: isEventEditing ? "not-allowed" : "pointer",
         }}
       >
-        General Configuration
+        Template Configuration
       </button>
       <button
         className={isEventEditing || isTemplateEditing ? "grey" : "green"}
