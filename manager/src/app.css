@@ -199,3 +199,32 @@
   justify-content: space-between;
   width: 100%;
 }
+
+.spinner,
+.spinner:after {
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
+}
+.spinner {
+  place-self: center;
+  margin: 60px auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 0.7em solid rgba(255, 255, 255, 0.2);
+  border-right: 0.7em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 0.7em solid rgba(255, 255, 255, 0.2);
+  border-left: 0.7em solid #ffffff;
+  transform: translateZ(0);
+  animation: spinner .8s infinite ease-in-out;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(450deg);
+  }
+}
