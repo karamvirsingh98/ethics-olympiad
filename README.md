@@ -8,4 +8,4 @@ This repo is setup using `yarn 3.2.0`, and relies heavily on the `workspaces` pa
 
 ## Testing and Development
 
-All three components can be developed locally, provided `node` and `npm` are installed. By default, the backend will connect to the MongoDB Atlas instance used in production, however it can just as easily connect to a fresh MongoDB instance running on docker. In order to do this, modify the `mongodb` variable in `/backend/config/default/json`.
+All three components can be developed locally, provided `node` and `npm` are installed. By default, the backend will connect to the MongoDB Atlas instance used in production, however it can just as easily connect to a fresh MongoDB instance running on docker. In order to do this, modify the `mongodb` variable in `/backend/config/default.json`.
