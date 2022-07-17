@@ -1,5 +1,6 @@
 import { User } from "@ethics-olympiad/types";
 import { Fragment, ReactNode } from "react";
+import Loading from "../pages/Loading";
 
 export default function AuthRoutes({
   user,
@@ -14,22 +15,4 @@ export default function AuthRoutes({
   else if (user === false) return <Fragment> {notAuth} </Fragment>;
   else if (user === undefined) return <Loading />;
   else return null;
-}
-
-function Loading() {
-  return (
-    <div
-      style={{
-        display: "grid",
-        placeItems: "center",
-        fontSize: "2rem",
-        height: "100vh",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-        Loading...
-        <div className="spinner" />
-      </div>
-    </div>
-  );
 }
