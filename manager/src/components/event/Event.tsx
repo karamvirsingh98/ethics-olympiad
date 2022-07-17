@@ -15,6 +15,8 @@ import Divider from "../util/Divider";
 import { client } from "../../main";
 import Conditional from "../util/Conditional";
 import ScoresV2 from "./subcomponents/ScoresV2";
+import useScores from "./useScores";
+import CsvExporter from "./subcomponents/CsvExporter";
 
 export default function EventComponent({
   template,
@@ -32,6 +34,8 @@ export default function EventComponent({
   const [active, set] = useState(false);
 
   const event = events[eventID!];
+
+  const { scores, loading, checkForScores } = useScores(event);
 
   const helpers = titleHelpers(editing, event, eventFunctions, setEditing);
 
@@ -62,7 +66,43 @@ export default function EventComponent({
         toggleEditing={() => setEditing(!editing)}
         {...helpers}
       />
-      <ScoresV2 template={template} event={event} />
+      <div
+        style={{
+          display: "grid",
+          gridTemplateRows: "auto 57.5vh",
+          height: "fit-content",
+          gap: "1rem",
+        }}
+      >
+        <div className="flex-between" style={{ height: "fit-content" }}>
+          <Conditional
+            condition={editing}
+            showTrue={
+              <button className="green" onClick={addTeam}>
+                Add Team
+              </button>
+            }
+            showFalse={<span />}
+          />
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <CsvExporter title={event.eventTitle} scores={scores} />
+            <button
+              className={loading ? "orange" : "blue"}
+              onClick={checkForScores}
+            >
+              {loading ? "Loading Scores" : "Refresh Scores"}
+            </button>
+          </div>
+        </div>
+        <ScoresV2
+          editing={editing}
+          template={template}
+          event={event}
+          scores={scores}
+          onTeamRename={renameTeam}
+          onTeamRemove={removeTeam}
+        />
+      </div>
 
       {/* <div
         style={{
