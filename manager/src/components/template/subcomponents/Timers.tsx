@@ -39,16 +39,17 @@ export default function Timers({
           padding: "1rem 0rem ",
         }}
       >
-        {timers && timers.map((time, i) => (
-          <TimeInput
-            key={i * Math.random()}
-            editing={editing}
-            time={time}
-            index={i}
-            label={LABELS[i]}
-            onConfirm={onConfirm}
-          />
-        ))}
+        {timers &&
+          timers.map((time, i) => (
+            <TimeInput
+              key={i}
+              editing={editing}
+              time={time}
+              index={i}
+              label={LABELS[i]}
+              onConfirm={onConfirm}
+            />
+          ))}
       </div>
     </div>
   );
@@ -68,20 +69,28 @@ function TimeInput({
   onConfirm: (value: string, index: number) => void;
 }) {
   return (
-    <div className="timer-input">
+    <div
+      className="timer-input"
+      onClick={
+        editing
+          ? () => document.getElementById(`${label}-timer-input`)?.focus()
+          : undefined
+      }
+    >
       <div style={{ placeSelf: "start" }}> {label}: </div>
       <div
         style={{
           placeSelf: "end",
           borderBottom: editing ? undefined : "solid 0.25rem transparent",
-          display: 'grid', 
+          display: "grid",
           gap: "0.5rem",
-          gridAutoFlow: "column"
+          gridAutoFlow: "column",
         }}
       >
         {editing ? (
           <Input
-            style={{ width: "2rem", textAlign: "right"}}
+            id={`${label}-timer-input`}
+            style={{ width: "2rem", textAlign: "right" }}
             defaultValue={time.toString()}
             onConfirm={(value) => onConfirm(value, index)}
           />
