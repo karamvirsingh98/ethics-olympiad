@@ -7,7 +7,7 @@ export default function CsvExporter({
   scores,
 }: {
   title: string;
-  scores: Score[];
+  scores?: Score[];
 }) {
   const [loading, set] = useState(false);
 
@@ -20,27 +20,31 @@ export default function CsvExporter({
   };
 
   const download = () => {
-    // set loading to true
-    set(true);
+    if (scores) {
+      // set loading to true
+      set(true);
 
-    // generate csv, convert to blob
-    const csvScores = scoresToCSV(scores);
-    const blob = new Blob([csvScores], { type: "text/csv" });
+      // generate csv, convert to blob
+      const csvScores = scoresToCSV(scores);
+      const blob = new Blob([csvScores], { type: "text/csv" });
 
-    // create hidden a-element to use for download
-    const elem = window.document.createElement("a");
-    elem.style.display = "none";
-    elem.href = window.URL.createObjectURL(blob);
-    elem.download = `${title}--Scores--${getDate()}`;
+      // create hidden a-element to use for download
+      const elem = window.document.createElement("a");
+      elem.style.display = "none";
+      elem.href = window.URL.createObjectURL(blob);
+      elem.download = `${title}--Scores--${getDate()}`;
 
-    //add to dom and 'click' it to execute download
-    document.body.appendChild(elem);
-    elem.click();
-    document.body.removeChild(elem);
+      //add to dom and 'click' it to execute download
+      document.body.appendChild(elem);
+      elem.click();
+      document.body.removeChild(elem);
 
-    // set loading to false
-    set(false);
+      // set loading to false
+      set(false);
+    }
   };
+
+  if (!scores) return null;
 
   return (
     <button
