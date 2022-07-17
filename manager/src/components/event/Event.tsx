@@ -1,4 +1,4 @@
-import { Event, User } from "@ethics-olympiad/types";
+import { Event, Template, User } from "@ethics-olympiad/types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { titleHelpers } from "../../pages/helpers";
@@ -14,12 +14,15 @@ import Scores from "./subcomponents/Scores";
 import Divider from "../util/Divider";
 import { client } from "../../main";
 import Conditional from "../util/Conditional";
+import ScoresV2 from "./subcomponents/ScoresV2";
 
 export default function EventComponent({
+  template,
   eventState,
   editing,
   setEditing,
 }: {
+  template: Template;
   eventState: [events: Events, functions: CollectionFunctions<Event>];
   editing: boolean;
   setEditing: (editing: boolean) => void;
@@ -59,7 +62,9 @@ export default function EventComponent({
         toggleEditing={() => setEditing(!editing)}
         {...helpers}
       />
-      <div
+      <ScoresV2 template={template} event={event} />
+
+      {/* <div
         style={{
           display: "grid",
           gridTemplateColumns: "1fr auto 1fr",
@@ -98,8 +103,8 @@ export default function EventComponent({
               </div>
             </div>
           }
-        />
-      </div>
+        /> 
+      </div> */}
     </div>
   );
 }
