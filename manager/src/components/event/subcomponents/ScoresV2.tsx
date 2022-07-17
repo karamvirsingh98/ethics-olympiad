@@ -88,15 +88,11 @@ function TotalScore({
     (score) => score.teamA === teamName || score.teamB === teamName
   );
 
-  console.log(teamScores);
-
   const totals = teamScores.map((score) =>
     Object.values(
       score.teamA === teamName ? score.scoreA : score.scoreB
     ).reduce((total, next) => next + total, 0)
   );
-
-  console.log(totals);
 
   return (
     <>
