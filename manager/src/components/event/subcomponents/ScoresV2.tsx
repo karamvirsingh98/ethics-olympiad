@@ -1,9 +1,7 @@
 import { Event, Score, Template } from "@ethics-olympiad/types";
 import ArrayMap from "../../util/ArrayMap";
-import Conditional from "../../util/Conditional";
 import RangeGenerator from "../../util/RangeGenerator";
 import ToggleInput from "../../util/ToggleInput";
-import useScores from "../useScores";
 
 export default function ScoresV2({
   editing,
@@ -25,20 +23,22 @@ export default function ScoresV2({
   return (
     <table>
       <Headers heats={heats} />
-      <ArrayMap
-        array={event.teams}
-        map={({ teamName }, i) => (
-          <tr key={i}>
-            <TeamName
-              editing={editing}
-              teamName={teamName}
-              onEdit={(name) => onTeamRename(name, i)}
-              onRemove={() => onTeamRemove(i)}
-            />
-            <TotalScore heats={heats} teamName={teamName} scores={scores} />
-          </tr>
-        )}
-      />
+      <tbody>
+        <ArrayMap
+          array={event.teams}
+          map={({ teamName }, i) => (
+            <tr key={i}>
+              <TeamName
+                editing={editing}
+                teamName={teamName}
+                onEdit={(name) => onTeamRename(name, i)}
+                onRemove={() => onTeamRemove(i)}
+              />
+              <TotalScore heats={heats} teamName={teamName} scores={scores} />
+            </tr>
+          )}
+        />
+      </tbody>
     </table>
   );
 }
@@ -107,13 +107,15 @@ function TotalScore({
 
 function Headers({ heats }: { heats: number }) {
   return (
-    <tr>
-      <th> Teams </th>
-      <RangeGenerator
-        quantity={heats}
-        element={(index) => <th key={index}>Heat {index + 1}</th>}
-      />
-      <th> Grand Total </th>
-    </tr>
+    <thead>
+      <tr>
+        <th> Teams </th>
+        <RangeGenerator
+          quantity={heats}
+          element={(index) => <th key={index}>Heat {index + 1}</th>}
+        />
+        <th> Grand Total </th>
+      </tr>
+    </thead>
   );
 }
