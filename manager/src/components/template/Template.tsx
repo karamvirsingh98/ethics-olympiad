@@ -203,7 +203,7 @@ function TemplateConfig({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
+        gridTemplateColumns: "1.5fr auto 1fr",
         gap: "1rem",
       }}
     >
