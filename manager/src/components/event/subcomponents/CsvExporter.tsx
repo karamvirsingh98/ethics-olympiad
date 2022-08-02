@@ -32,7 +32,7 @@ export default function CsvExporter({
       const elem = window.document.createElement("a");
       elem.style.display = "none";
       elem.href = window.URL.createObjectURL(blob);
-      elem.download = `${title}--Scores--${getDate()}`;
+      elem.download = `${title}--Scores--${getDate()}.csv`;
 
       //add to dom and 'click' it to execute download
       document.body.appendChild(elem);
