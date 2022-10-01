@@ -1,24 +1,17 @@
 import { User, Event, Template } from "@ethics-olympiad/types";
-import Heats from "./subcomponents/Heats";
-import Timers from "./subcomponents/Timers";
-import templateConfigHelpers, {
-  formatTemplateLevel,
-  templateTitleHelpers,
-} from "./helpers";
 import { Route, Routes, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useCollection, {
   CollectionFunctions,
-  SetOneField,
 } from "../../state/hooks/useCollection";
 import { client } from "../../main";
 import { getDefaultEvent } from "../../state/defaults";
 import EventsComponent from "./subcomponents/Events";
 import EventComponent from "../event/Event";
-import ToggleInput from "../util/ToggleInput";
-import TitleButtons from "../event/subcomponents/TitleButtons";
 import Divider from "../util/Divider";
 import { Templates } from "../../state/types";
+import TemplateConfig from "./subcomponents/TemplateConfig";
+import TemplateTitle from "./subcomponents/TemplateTitle";
 
 export default function TemplateComponent({
   user,
@@ -128,98 +121,6 @@ export default function TemplateComponent({
           />
         </div>
       )}
-    </div>
-  );
-}
-
-function TemplateTitle({
-  editing,
-  template,
-  setEditing,
-  templateFunctions,
-  hideButtonsWhen,
-}: {
-  editing: boolean;
-  template: Template;
-  setEditing: (editing: boolean) => void;
-  templateFunctions: CollectionFunctions<Template>;
-  hideButtonsWhen?: boolean;
-}) {
-  const { getTitle, rename, ...helpers } = templateTitleHelpers(
-    editing,
-    template,
-    templateFunctions,
-    setEditing
-  );
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <ToggleInput
-        editing={editing}
-        value={getTitle()}
-        onEdit={rename}
-        fontSize="2rem"
-        id={"template-title"}
-        style={{ width: "50%" }}
-        placeholder="Name This Template"
-      />
-      <div> {formatTemplateLevel(template.level)} </div>
-      {!hideButtonsWhen && (
-        <TitleButtons
-          editing={editing}
-          toggleEditing={() => setEditing(!editing)}
-          {...helpers}
-          extraText="Template"
-        />
-      )}
-    </div>
-  );
-}
-
-function TemplateConfig({
-  editing,
-  user,
-  template,
-  setOneField,
-}: {
-  editing: boolean;
-  user: User;
-  template: Template;
-  setOneField: SetOneField<Template>;
-}) {
-  const { addHeat, removeHeat, editTimer } = useMemo(
-    () => templateConfigHelpers(template, setOneField),
-    [template]
-  );
-
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
-        gap: "1rem",
-      }}
-    >
-      <Heats
-        editing={editing}
-        user={user}
-        template={template}
-        addHeat={addHeat}
-        removeHeat={removeHeat}
-        setOneField={setOneField}
-      />
-      <Divider vertical />
-      <Timers
-        editing={editing}
-        timers={template.timers}
-        onConfirm={editTimer}
-      />
     </div>
   );
 }

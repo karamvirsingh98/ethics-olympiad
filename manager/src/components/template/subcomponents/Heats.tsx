@@ -1,4 +1,11 @@
-import { Case, Heat, Levels, Template, User } from "@ethics-olympiad/types";
+import {
+  Case,
+  CustomQuestion,
+  Heat,
+  Levels,
+  Template,
+  User,
+} from "@ethics-olympiad/types";
 import { useCases } from "../../../App";
 import { Cases, Collection } from "../../../state/types";
 import Conditional from "../../util/Conditional";
@@ -60,6 +67,7 @@ export default function Heats({
               heats={template.heats}
               onRemove={removeHeat}
               setOneField={setOneField}
+              user={user}
             />
           ))}
       </div>
@@ -74,6 +82,7 @@ function HeatComponent({
   cases,
   heats,
   heat,
+  user,
   onRemove,
   setOneField,
 }: {
@@ -83,6 +92,7 @@ function HeatComponent({
   cases: Cases;
   heats: Heat[];
   heat: Heat;
+  user: User;
   onRemove: (index: number) => void;
   setOneField: SetOneField<Template>;
 }) {
@@ -114,12 +124,13 @@ function HeatComponent({
         )}
       </div>
 
-      <div style={{ display: "grid", width: "100%" }}>
+      <div style={{ display: "grid", width: "100%", gap: "1rem" }}>
         <HeatCase
           editing={editing}
           cases={cases}
           caseID={case1}
           level={level}
+          user={user}
           onSelect={updateCase(index, true)}
         />
         <HeatCase
@@ -127,6 +138,7 @@ function HeatComponent({
           cases={cases}
           caseID={case2}
           level={level}
+          user={user}
           onSelect={updateCase(index, false)}
         />
       </div>
@@ -139,14 +151,31 @@ function HeatCase({
   cases,
   caseID,
   level,
+  user,
   onSelect,
 }: {
   editing: boolean;
   cases: Cases;
   caseID: string;
   level: Levels;
+  user: User;
   onSelect: (id: string) => void;
 }) {
+  const [hasQuestion, setHasQuestion] = useState(false);
+
+  console.log(caseID, hasQuestion);
+
+  useEffect(() => {
+    if (user.admin) setHasQuestion(true);
+    else
+      client
+        .service("api/questions")
+        .find({ query: { caseID, userID: user._id } })
+        .then((questions: CustomQuestion[]) => {
+          questions[0].question && setHasQuestion(true);
+        });
+  }, [caseID]);
+
   return (
     <div className="heat-item">
       <div style={{ padding: "0.5rem" }}>Round 1:</div>
@@ -155,17 +184,23 @@ function HeatCase({
         showTrue={
           <CaseSelector
             cases={cases}
-            selected={caseID}
+            caseID={caseID}
             onSelect={onSelect}
             level={level}
+            hasQuestion={hasQuestion}
           />
         }
         showFalse={
-          <div style={{ alignSelf: "center" }}>
-            {" "}
-            {caseID && cases[caseID]
-              ? cases[caseID].title
-              : "No Case Selected"}{" "}
+          <div
+            style={{
+              alignSelf: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            {caseID && cases[caseID] ? cases[caseID].title : "No Case Selected"}
+            {!hasQuestion && <p style={{ color: "red" }}> ! </p>}
           </div>
         }
       />

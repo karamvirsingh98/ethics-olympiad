@@ -1,16 +1,19 @@
-import { Levels } from "@ethics-olympiad/types";
-import { useState } from "react";
+import { CustomQuestion, Levels, User } from "@ethics-olympiad/types";
+import { useEffect, useState } from "react";
+import { client } from "../../../main";
 import { Cases } from "../../../state/types";
 
 export default function CaseSelector({
   cases,
-  selected,
+  caseID,
   level,
+  hasQuestion,
   onSelect,
 }: {
   cases: Cases;
-  selected: string;
+  caseID: string;
   level: Levels;
+  hasQuestion: boolean;
   onSelect: (id: string) => void;
 }) {
   const [show, setShow] = useState(false);
@@ -28,9 +31,16 @@ export default function CaseSelector({
       <button
         className="blue"
         onClick={() => setShow(!show)}
-        style={{ width: "100%", textAlign: "start" }}
+        style={{
+          width: "100%",
+          textAlign: "start",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        {cases[selected] ? cases[selected].title : "No Case Selected"}
+        {cases[caseID] ? cases[caseID].title : "No Case Selected"}
+        {!hasQuestion && <p style={{ color: "red" }}> ! </p>}
       </button>
       {show && (
         <div
@@ -60,9 +70,14 @@ export default function CaseSelector({
                 border: "none",
                 width: "100%",
                 fontSize: "1rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                textAlign: "left",
               }}
             >
               {cases[id].title}
+              {!hasQuestion && <p style={{ color: "red" }}> ! </p>}
             </button>
           ))}
         </div>
