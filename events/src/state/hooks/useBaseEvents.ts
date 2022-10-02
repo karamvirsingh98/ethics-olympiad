@@ -8,7 +8,7 @@ export default function useBaseEvents() {
   const [templates, setTemplates] = useState<Template[]>([]);
   useEffect(() => {
     client.service("api/events").find().then(setEvents);
-    client.service("api/templates").find().then(setTemplates)
+    client.service("api/templates").find().then(setTemplates);
   }, []);
   return { events, templates };
 }

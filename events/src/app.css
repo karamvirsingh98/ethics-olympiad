@@ -32,6 +32,7 @@
 .base-event {
   border-radius: 0.25rem;
   padding: 1rem;
+  font-size: 1.25rem;
   cursor: pointer;
   transition: box-shadow 250ms ease-in-out, background-color 250ms ease-in-out;
 }
