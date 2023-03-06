@@ -35,7 +35,7 @@ export class UnlockService {
       .service("api/cases")
       .find({ query: { _id: { $in: caseIDs } } });
     const isOfficial = await this.isOfficialEvent(owner);
-    if (!isOfficial) {
+    if (isOfficial) {
       const customQuestions = await this.app
         .service("api/questions")
         .find({ query: { caseID: { $in: caseIDs }, userID: owner } });
