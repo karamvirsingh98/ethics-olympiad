@@ -1,3 +1,5 @@
+"use server";
+
 import { createSafeActionClient } from "next-safe-action";
 import { createSelectSchema, createInsertSchema } from "drizzle-zod";
 import {
@@ -13,6 +15,7 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
+import { zOlympiadHeats, zOlympiadScore } from "./entities";
 
 const unauthenticated = createSafeActionClient();
 const authenticated = createSafeActionClient();
@@ -75,14 +78,18 @@ export const DeleteQuestionAction = authenticated
 
 // ==================== EVENTS ====================
 export const CreateTemplateAction = authenticated
-  .schema(createInsertSchema(TemplatesTable, { caseIds: z.array(z.number()) }))
+  .schema(createInsertSchema(TemplatesTable, { heats: zOlympiadHeats }))
   .action(async ({ parsedInput }) => {
     await db.insert(TemplatesTable).values(parsedInput);
     revalidatePath("/templates");
   });
 
 export const UpdateTemplateAction = authenticated
-  .schema(createSelectSchema(TemplatesTable, { caseIds: z.array(z.number()) }))
+  .schema(
+    createSelectSchema(TemplatesTable, { heats: zOlympiadHeats })
+      .partial()
+      .required({ id: true })
+  )
   .action(async ({ parsedInput }) => {
     await db
       .update(TemplatesTable)
@@ -118,13 +125,15 @@ export const UpdateEventAction = authenticated
       teams: z.array(z.string()),
       timers: z.array(z.number()),
     })
+      .partial()
+      .required({ id: true })
   )
   .action(async ({ parsedInput }) => {
     await db
       .update(EventsTable)
       .set(parsedInput)
       .where(eq(EventsTable.id, parsedInput.id));
-    revalidatePath("/events");
+    revalidatePath("/manager/events");
   });
 
 export const DeleteEventAction = authenticated
@@ -135,22 +144,22 @@ export const DeleteEventAction = authenticated
   });
 
 // ==================== RESULTS ====================
-export const CreateResultAction = authenticated
-  .schema(createInsertSchema(ResultsTable))
+export const SubmitResultsAction = authenticated
+  .schema(z.array(createInsertSchema(ResultsTable, { score: zOlympiadScore })))
   .action(async ({ parsedInput }) => {
     await db.insert(ResultsTable).values(parsedInput);
-    revalidatePath("/results");
+    revalidatePath("/olympiads");
   });
 
-export const UpdateResultAction = authenticated
-  .schema(createSelectSchema(ResultsTable))
-  .action(async ({ parsedInput }) => {
-    await db
-      .update(ResultsTable)
-      .set(parsedInput)
-      .where(eq(ResultsTable.id, parsedInput.id));
-    revalidatePath("/results");
-  });
+// export const UpdateResultAction = authenticated
+//   .schema(createSelectSchema(ResultsTable))
+//   .action(async ({ parsedInput }) => {
+//     await db
+//       .update(ResultsTable)
+//       .set(parsedInput)
+//       .where(eq(ResultsTable.id, parsedInput.id));
+//     revalidatePath("/results");
+//   });
 
 export const DeleteResultAction = authenticated
   .schema(z.object({ id: z.number() }))

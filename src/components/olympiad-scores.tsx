@@ -1,0 +1,223 @@
+"use client";
+
+import { zOlympiadScore } from "@/lib/entities";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { cn } from "@/lib/utils";
+import { Slider } from "./ui/slider";
+import { Button } from "./ui/button";
+import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { useAction } from "next-safe-action/hooks";
+import { SubmitResultsAction } from "@/lib/actions";
+import { Checkbox } from "./ui/checkbox";
+
+const DEFAULT: zOlympiadScore = {
+  centrality: 0,
+  clarity: 0,
+  commentary: 0,
+  judge: 0,
+  respectfulness: 0,
+  response: 0,
+  thoughtfulness: 0,
+};
+
+export const OlympiadScores = ({
+  eventId,
+  heat,
+  teams,
+}: {
+  eventId: number;
+  heat: number;
+  teams: string[];
+}) => {
+  const [team, setTeam] = useState({ teamA: "", teamB: "" });
+  const [score, setScore] = useState({ teamA: DEFAULT, teamB: DEFAULT });
+  const [honorable, setHonorable] = useState({ teamA: false, teamB: false });
+
+  const update_score = (
+    side: "teamA" | "teamB",
+    field: keyof zOlympiadScore,
+    value: number
+  ) =>
+    setScore((score) => ({
+      ...score,
+      [side]: { ...score[side], [field]: value },
+    }));
+
+  const { execute } = useAction(SubmitResultsAction);
+
+  return (
+    <div className="p-4 border rounded-md">
+      <div className="flex justify-between">
+        <p className="px-2 text-3xl font-bold mb-12">Heat {heat} Scores</p>
+        <Button
+          onClick={() =>
+            execute(
+              (["teamA", "teamB"] as const).map((side) => ({
+                eventId,
+                heat,
+                judge: "ur mans",
+                team: team[side],
+                score: score[side],
+                honorable: false,
+              }))
+            )
+          }
+        >
+          Submit <CheckCircledIcon className="w-4 ml-4" />
+        </Button>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        {(["teamA", "teamB"] as const).map((side) => (
+          <div key={side} className="flex flex-col gap-4 p-4 border rounded-md">
+            <TeamSelector
+              label={side === "teamA" ? "Team A" : "Team B"}
+              teams={teams}
+              value={team[side]}
+              onChange={(team) => setTeam((t) => ({ ...t, [side]: team }))}
+            />
+            <div className="px-4 py-2 border rounded-md bg-border/50 flex flex-col gap-4">
+              {(["clarity", "centrality", "thoughtfulness"] as const).map(
+                (field) => (
+                  <ScoreDots
+                    key={field}
+                    label={field}
+                    score={score[side][field]}
+                    onSelect={(score) => update_score(side, field, score)}
+                  />
+                )
+              )}
+            </div>
+            <div className="px-4 py-2 border rounded-md bg-border/50 flex flex-col gap-4">
+              {(["response", "judge"] as const).map((field) => (
+                <ScoreSlider
+                  key={field}
+                  label={field}
+                  score={score[side][field]}
+                  onChange={(score) => update_score(side, field, score)}
+                  max={15}
+                />
+              ))}
+            </div>
+            <div className="px-4 py-2 border rounded-md bg-border/50">
+              <ScoreSlider
+                label={"commentary"}
+                score={score[side].commentary}
+                onChange={(score) => update_score(side, "commentary", score)}
+                max={10}
+              />
+            </div>
+            <div className="px-4 py-2 border rounded-md bg-border/50">
+              <ScoreDots
+                label={"respectful"}
+                score={score[side].respectfulness}
+                onSelect={(score) =>
+                  update_score(side, "respectfulness", score)
+                }
+              />
+            </div>
+            <div className="px-4 py-2 border rounded-md bg-border/50 flex items-center justify-between">
+              <p>Honorable Mention</p>
+              <Checkbox
+                checked={honorable[side]}
+                onCheckedChange={(state) =>
+                  state !== "indeterminate" &&
+                  setHonorable((h) => ({ ...h, [side]: state }))
+                }
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const TeamSelector = ({
+  label,
+  teams,
+  value,
+  onChange,
+}: {
+  label: string;
+  teams: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) => (
+  <div className="mb-4 flex items-center justify-between">
+    <p className="pl-4 text-xl font-semibold">{label}</p>
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="w-72">
+        <SelectValue placeholder="Select Team" />
+      </SelectTrigger>
+      <SelectContent>
+        {teams.map((team) => (
+          <SelectItem key={team} value={team}>
+            {team}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+);
+
+const ScoreDots = ({
+  label,
+  score,
+  onSelect,
+}: {
+  label: string;
+  score: number;
+  onSelect: (score: number) => void;
+}) => (
+  <div className="flex items-center justify-between">
+    <div className="capitalize">{label}</div>
+    <div className="flex items-center gap-4">
+      {Array.from(new Array(5)).map((_, i) => (
+        <div
+          key={i}
+          onClick={() => onSelect(i + 1)}
+          className={cn(
+            "cursor-pointer w-4 h-4 border rounded-full bg-accent border-primary",
+            i < score && "bg-primary"
+          )}
+        />
+      ))}
+      <div className="w-12 text-right">{score}/5</div>
+    </div>
+  </div>
+);
+
+const ScoreSlider = ({
+  label,
+  score,
+  max,
+  onChange,
+}: {
+  label: string;
+  score: number;
+  max: number;
+  onChange: (score: number) => void;
+}) => (
+  <div className="flex items-center justify-between">
+    <div className="capitalize">{label}</div>
+    <div className="flex items-center gap-4">
+      <Slider
+        min={0}
+        max={max}
+        value={[score]}
+        onValueChange={(e) => onChange(e[0])}
+        className="w-72"
+      />
+      <div className="w-12 text-right">
+        {score}/{max}
+      </div>
+    </div>
+  </div>
+);

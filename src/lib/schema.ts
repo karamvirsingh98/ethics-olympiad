@@ -1,9 +1,10 @@
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import {
-  integer,
-  //   primaryKey,
-  sqliteTable,
-  text,
-} from "drizzle-orm/sqlite-core";
+  zOlympiadHeats,
+  zOlympiadLevel,
+  zOlympiadScore,
+  zUserRole,
+} from "./entities";
 
 // Users
 export const UsersTable = sqliteTable("users", {
@@ -11,14 +12,16 @@ export const UsersTable = sqliteTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull(),
   password: text("password").notNull(),
-  role: text("role", { enum: ["Admin", "Manager"] }).default("Manager"),
+  role: text("role", { enum: zUserRole.options }).default("Manager"),
 });
 
 // Cases
 export const CasesTable = sqliteTable("cases", {
   id: integer("id").primaryKey(),
+  userId: integer("userId").notNull(),
   title: text("title").notNull(),
   content: text("content").notNull(),
+  level: text("level", { enum: zOlympiadLevel.options }).notNull(),
 });
 
 // Questions
@@ -33,21 +36,14 @@ export const QuestionsTable = sqliteTable("questions", {
 export const TemplatesTable = sqliteTable("templates", {
   id: integer("id").primaryKey(),
   title: text("title").notNull(),
-  caseIds: text("caseIds", { mode: "json" }).$type<number[]>().notNull(),
+  heats: text("heats", { mode: "json" }).$type<zOlympiadHeats>().notNull(),
+  level: text("level", { enum: zOlympiadLevel.options }).notNull(),
 });
-
-// export const TemplateCasesTable = sqliteTable(
-//   "template-cases",
-//   {
-//     tempalteId: integer("templateId").notNull(),
-//     caseId: integer("caseId").notNull(),
-//   },
-//   (table) => ({ pk: primaryKey({ columns: [table.tempalteId, table.caseId] }) })
-// );
 
 // Events
 export const EventsTable = sqliteTable("events", {
   id: integer("id").primaryKey(),
+  templateId: integer("templateId").notNull(),
   title: text("title").notNull(),
   password: text("password").notNull(),
   teams: text("teams", { mode: "json" }).$type<string[]>().notNull(),
@@ -61,5 +57,6 @@ export const ResultsTable = sqliteTable("results", {
   heat: integer("heat").notNull(),
   judge: text("judge").notNull(),
   team: text("team").notNull(),
-  total: integer("total").notNull(),
+  honorable: integer("honorable", { mode: "boolean" }).notNull(),
+  score: text("score", { mode: "json" }).$type<zOlympiadScore>().notNull(),
 });
