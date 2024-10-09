@@ -12,10 +12,11 @@ import {
 import { cn } from "@/lib/utils";
 import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
+import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
 import { SubmitResultsAction } from "@/lib/actions";
 import { Checkbox } from "./ui/checkbox";
+import { useRouter } from "next/navigation";
 
 const DEFAULT: zOlympiadScore = {
   centrality: 0,
@@ -50,13 +51,23 @@ export const OlympiadScores = ({
       [side]: { ...score[side], [field]: value },
     }));
 
-  const { execute } = useAction(SubmitResultsAction);
+  const router = useRouter();
+  const { execute, isPending } = useAction(SubmitResultsAction, {
+    onSuccess: () => router.push(`/olympiads/${eventId}`),
+  });
 
   return (
     <div className="p-4 border rounded-md">
       <div className="flex justify-between">
         <p className="px-2 text-3xl font-bold mb-12">Heat {heat} Scores</p>
         <Button
+          disabled={
+            isPending ||
+            !team.teamA || //ensure team A is selected
+            !team.teamB || // ensure team B is selected
+            !Object.values(score.teamA).every((v) => !!v) || // ensure every field of team A score is non 0
+            !Object.values(score.teamB).every((v) => !!v) // ensure every field of team B score is non 0
+          }
           onClick={() =>
             execute(
               (["teamA", "teamB"] as const).map((side) => ({
@@ -65,17 +76,25 @@ export const OlympiadScores = ({
                 judge: "ur mans",
                 team: team[side],
                 score: score[side],
-                honorable: false,
+                honorable: honorable[side],
               }))
             )
           }
         >
-          Submit <CheckCircledIcon className="w-4 ml-4" />
+          Submit
+          {isPending ? (
+            <ReloadIcon className="w-4 ml-4 animate-spin" />
+          ) : (
+            <CheckCircledIcon className="w-4 ml-4" />
+          )}
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex gap-4">
         {(["teamA", "teamB"] as const).map((side) => (
-          <div key={side} className="flex flex-col gap-4 p-4 border rounded-md">
+          <div
+            key={side}
+            className="w-full flex flex-col gap-4 pr-4 border-r last:pr-0 last:border-none"
+          >
             <TeamSelector
               label={side === "teamA" ? "Team A" : "Team B"}
               teams={teams}
@@ -98,7 +117,7 @@ export const OlympiadScores = ({
               {(["response", "judge"] as const).map((field) => (
                 <ScoreSlider
                   key={field}
-                  label={field}
+                  label={field === "judge" ? "Judges Q&A" : field}
                   score={score[side][field]}
                   onChange={(score) => update_score(side, field, score)}
                   max={15}
@@ -115,7 +134,7 @@ export const OlympiadScores = ({
             </div>
             <div className="px-4 py-2 border rounded-md bg-border/50">
               <ScoreDots
-                label={"respectful"}
+                label={"respectfulness"}
                 score={score[side].respectfulness}
                 onSelect={(score) =>
                   update_score(side, "respectfulness", score)
@@ -125,6 +144,7 @@ export const OlympiadScores = ({
             <div className="px-4 py-2 border rounded-md bg-border/50 flex items-center justify-between">
               <p>Honorable Mention</p>
               <Checkbox
+                className="bg-background"
                 checked={honorable[side]}
                 onCheckedChange={(state) =>
                   state !== "indeterminate" &&
@@ -150,10 +170,10 @@ const TeamSelector = ({
   value: string;
   onChange: (value: string) => void;
 }) => (
-  <div className="mb-4 flex items-center justify-between">
-    <p className="pl-4 text-xl font-semibold">{label}</p>
+  <div className="px-4 py-2 bg-border/50 border rounded-md flex items-center justify-between">
+    <p className="text-xl font-semibold">{label}</p>
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-72">
+      <SelectTrigger className="w-72 bg-background">
         <SelectValue placeholder="Select Team" />
       </SelectTrigger>
       <SelectContent>
@@ -184,7 +204,7 @@ const ScoreDots = ({
           key={i}
           onClick={() => onSelect(i + 1)}
           className={cn(
-            "cursor-pointer w-4 h-4 border rounded-full bg-accent border-primary",
+            "cursor-pointer w-4 h-4 border rounded-full border-primary bg-background",
             i < score && "bg-primary"
           )}
         />

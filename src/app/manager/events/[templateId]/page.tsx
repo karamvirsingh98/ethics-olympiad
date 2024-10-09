@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { TemplateCases } from "@/components/template-cases";
+import { CaretLeftIcon } from "@radix-ui/react-icons";
 
 export default async function TemplatePage({
   params,
@@ -49,22 +50,24 @@ export default async function TemplatePage({
             <NewEvent templateId={templateId} />
           </div>
           <div className="h-full flex gap-4">
-            <div className="w-64 flex flex-col gap-4 shrink-0">
+            <div className="flex flex-col gap-4 shrink-0">
               {events.map((event) => (
                 <Link
                   key={event.id}
                   href={`/manager/events/${event.templateId}?eventId=${event.id}`}
                 >
                   <Button
-                    className="w-full justify-start"
+                    className="justify-start"
                     variant={eventId === event.id ? "secondary" : "outline"}
                   >
-                    {event.title}
+                    <div className="w-64 overflow-hidden overflow-ellipsis">
+                      {event.title}
+                    </div>
                   </Button>
                 </Link>
               ))}
             </div>
-            {!!eventId && (
+            {!!eventId ? (
               <TemplateEvents
                 eventId={eventId}
                 heats={template.heats}
@@ -72,6 +75,21 @@ export default async function TemplatePage({
                 teams={events.find((e) => e.id === eventId)?.teams ?? []}
                 results={results}
               />
+            ) : (
+              <div className="border rounded-md border-dashed grid place-items-center w-full min-h-[40vh]">
+                {events.length ? (
+                  <div className="flex items-center gap-2">
+                    <CaretLeftIcon className="w-4" />
+                    <p className="text-muted-foreground">
+                      Select an event to get started
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-muted-foreground">
+                    Create an event to get started
+                  </p>
+                )}
+              </div>
             )}
           </div>
         </div>

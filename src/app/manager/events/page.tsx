@@ -11,14 +11,18 @@ export default async function ManagerEventsPage() {
         <h1 className="text-5xl font-bold">Templates</h1>
         <NewTemplate />
       </div>
-      <div className="grid gap-4">
+      <div className="grid grid-cols-3 gap-4">
         {templates.map((t) => (
           <Link
             key={t.id}
             href={"/manager/events/" + t.id}
-            className="p-4 border rounded-md"
+            className="p-4 border rounded-md flex flex-col hover:bg-accent hover:-translate-y-1 transition-all"
           >
-            {t.title}{" "}
+            <p className="text-lg font-semibold mb-4">{t.title}</p>
+            <p className="text-sm text-muted-foreground">{t.level} Level</p>
+            <p className="text-sm text-muted-foreground">
+              {t.heats.length} Heats
+            </p>
           </Link>
         ))}
       </div>

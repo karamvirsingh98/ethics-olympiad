@@ -20,25 +20,43 @@ import { zOlympiadHeats, zOlympiadScore } from "./entities";
 const unauthenticated = createSafeActionClient();
 const authenticated = createSafeActionClient();
 
-export const LoginAction = unauthenticated
-  .schema(createSelectSchema(UsersTable))
-  .action(async () => {});
+// ==================== AUTH ====================
 
-// ==================== CASES ====================
-export const CreateCaseAction = authenticated
-  .schema(createInsertSchema(CasesTable))
+export const CreateUserAction = unauthenticated
+  .schema(createInsertSchema(UsersTable))
   .action(async ({ parsedInput }) => {
-    await db.insert(CasesTable).values(parsedInput);
-    revalidatePath("/cases");
+    await db.insert(UsersTable).values(parsedInput);
+    // sign some jwt and add it to cookies
+    redirect("/manager");
   });
 
-export const UpdateCaseAction = authenticated
-  .schema(createSelectSchema(CasesTable))
+export const LoginAction = unauthenticated
+  .schema(createSelectSchema(UsersTable).pick({ email: true, password: true }))
+  .action(async ({ parsedInput: { email, password } }) => {
+    const user = await db.query.UsersTable.findFirst({
+      where: (table, { eq }) => eq(table.email, email),
+    });
+
+    if (!user) throw new Error("user not found");
+    if (user.password !== password) throw new Error("incorrect password");
+
+    // sign some jwt
+
+    redirect("/manager");
+  });
+
+// ==================== CASES ====================
+
+export const AddOrUpdateCaseAction = authenticated
+  .schema(createInsertSchema(CasesTable))
   .action(async ({ parsedInput }) => {
     await db
-      .update(CasesTable)
-      .set(parsedInput)
-      .where(eq(CasesTable.id, parsedInput.id));
+      .insert(CasesTable)
+      .values(parsedInput)
+      .onConflictDoUpdate({
+        target: CasesTable.id,
+        set: { content: parsedInput.content },
+      });
     revalidatePath("/cases");
   });
 
@@ -50,33 +68,21 @@ export const DeleteCaseAction = authenticated
   });
 
 // ==================== QUESTIONS ====================
-export const CreateQuestionAction = authenticated
+
+export const AddOrUpdateQuestion = authenticated
   .schema(createInsertSchema(QuestionsTable))
   .action(async ({ parsedInput }) => {
-    await db.insert(QuestionsTable).values(parsedInput);
-    revalidatePath("/cases");
-  });
-
-export const UpdateQuestionAction = authenticated
-  .schema(createSelectSchema(QuestionsTable))
-  .action(async ({ parsedInput }) => {
     await db
-      .update(QuestionsTable)
-      .set(parsedInput)
-      .where(eq(QuestionsTable.id, parsedInput.id));
+      .insert(QuestionsTable)
+      .values(parsedInput)
+      .onConflictDoUpdate({
+        target: QuestionsTable.id,
+        set: { text: parsedInput.text },
+      });
     revalidatePath("/cases");
   });
 
-export const DeleteQuestionAction = authenticated
-  .schema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    await db
-      .delete(QuestionsTable)
-      .where(eq(QuestionsTable.id, parsedInput.id));
-    revalidatePath("/cases");
-  });
-
-// ==================== EVENTS ====================
+// ==================== TEMPLATES ====================
 export const CreateTemplateAction = authenticated
   .schema(createInsertSchema(TemplatesTable, { heats: zOlympiadHeats }))
   .action(async ({ parsedInput }) => {

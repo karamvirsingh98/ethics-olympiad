@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
+import { PlusCircledIcon, StarFilledIcon } from "@radix-ui/react-icons";
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
 import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
@@ -100,15 +100,19 @@ export const TemplateEvents = ({
           >
             {team}
             <div className="flex items-center gap-4">
-              {heats.map((_, i) => (
-                <p key={i} className="w-16 pr-4 border-r">
-                  {total_score(
-                    results.find((r) => r.team === team && r.heat === i + 1)
-                      ?.score
-                  )}
-                  <span className="text-muted-foreground text-sm">/60</span>
-                </p>
-              ))}
+              {heats.map((_, i) => {
+                const result = results.find(
+                  (r) => r.team === team && r.heat === i + 1
+                );
+                return (
+                  <p key={i} className="w-16 pr-4 border-r flex items-center">
+                    {total_score(result?.score)}
+                    {result?.honorable && (
+                      <StarFilledIcon className="w-4 ml-2 text-yellow-500" />
+                    )}
+                  </p>
+                );
+              })}
 
               {/* total score */}
               <p className="w-16">

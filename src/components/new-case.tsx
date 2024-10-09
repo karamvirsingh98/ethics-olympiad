@@ -17,15 +17,18 @@ import {
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
-import { CreateCaseAction } from "@/lib/actions";
+import { AddOrUpdateCaseAction } from "@/lib/actions";
 import { Textarea } from "./ui/textarea";
+import { LevelSelector } from "./level-selector";
+import { zOlympiadLevel } from "@/lib/entities";
 
 export const NewCase = () => {
   const [open, setOpen] = useState(false);
 
   const [{ title, content }, setState] = useState({ title: "", content: "" });
+  const [level, setLevel] = useState<zOlympiadLevel>();
 
-  const { execute, isPending } = useAction(CreateCaseAction, {
+  const { execute, isPending } = useAction(AddOrUpdateCaseAction, {
     onSettled: () => {
       setState({ title: "", content: "" });
       setOpen(false);
@@ -63,13 +66,17 @@ export const NewCase = () => {
               }
             />
           </div>
+          <div>
+            <p className="pb-1">Template Level</p>
+            <LevelSelector value={level} onChange={setLevel} />
+          </div>
         </div>
         <DialogFooter>
           <Button
             className="gap-4"
             disabled={isPending}
             onClick={() =>
-              execute({ userId: 0, title, content, levl: "Junior" })
+              level && execute({ userId: 0, title, content, level })
             }
           >
             Submit

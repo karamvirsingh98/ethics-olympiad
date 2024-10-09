@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className + " dark"}>
-        <Navbar />
+      <body className={font.className}>
+        <Navbar authenticated />
         <div className="py-12 container flex flex-col gap-12">{children}</div>
       </body>
     </html>

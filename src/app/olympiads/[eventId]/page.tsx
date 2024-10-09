@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import { OlympiadScores } from "@/components/olympiad-scores";
+import { cn } from "@/lib/utils";
 
 export default async function OlympiadPage({
   params,
@@ -53,6 +54,11 @@ export default async function OlympiadPage({
       ),
   });
 
+  const results = await db.query.ResultsTable.findMany({
+    where: (table, { eq, and }) =>
+      and(eq(table.eventId, eventId), eq(table.judge, "ur mans")),
+  });
+
   const caseId =
     !!heat &&
     !!round &&
@@ -62,45 +68,49 @@ export default async function OlympiadPage({
     <>
       <div className="px-4 flex justify-between">
         <h1 className="text-5xl font-bold">{event.title}</h1>
-        <div className="flex gap-4">
+        {!!heat && (
           <Link href={`/olympiads/${eventId}`}>
             <Button variant="outline">
               Home <HomeIcon className="w-4 ml-4" />
             </Button>
           </Link>
-        </div>
+        )}
       </div>
 
       {!heat && !round && !stage && (
-        <div className="min-h-[50vh] grid place-items-center">
-          <div className="flex gap-4 justify-center">
-            {template.heats.map((heat, i) => (
-              <div
-                key={i}
-                className="p-4 border rounded-md flex flex-col gap-2 "
-              >
-                <p className="text-xl font-semibold mb-4">Heat {i + 1}</p>
-                <div className="w-96 overflow-ellipsis line-clamp-1">
-                  Case 1: {cases.find((c) => c.id === heat.case1)?.title}
-                </div>
-                <div className="w-96 overflow-ellipsis line-clamp-1">
-                  Case 2: {cases.find((c) => c.id === heat.case2)?.title}
-                </div>
-                <div className="mt-4 flex gap-4 justify-end">
-                  <Link href={`/olympiads/${eventId}?heat=${i + 1}&round=3`}>
-                    <Button variant="outline">
-                      Scores <StarIcon className="w-4 ml-4" />
-                    </Button>
-                  </Link>
-                  <Link href={`/olympiads/${eventId}?heat=${i + 1}&round=1`}>
-                    <Button variant="secondary">
-                      Start <CaretRightIcon className="w-4 ml-4" />
-                    </Button>
-                  </Link>
-                </div>
+        <div className="flex gap-8">
+          {template.heats.map((heat, i) => (
+            <div key={i} className="p-4 border rounded-md flex flex-col gap-2 ">
+              <p className="text-xl font-semibold mb-4">Heat {i + 1}</p>
+              <div className="w-96 overflow-ellipsis line-clamp-1">
+                Case 1: {cases.find((c) => c.id === heat.case1)?.title}
               </div>
-            ))}
-          </div>
+              <div className="w-96 overflow-ellipsis line-clamp-1">
+                Case 2: {cases.find((c) => c.id === heat.case2)?.title}
+              </div>
+              <div className="mt-4 flex gap-4 justify-end">
+                <Link
+                  href={`/olympiads/${eventId}?heat=${i + 1}&round=3`}
+                  className={cn(
+                    results.some((r) => r.heat === i + 1) &&
+                      "pointer-events-none cursor-not-allowed"
+                  )}
+                >
+                  <Button
+                    variant="secondary"
+                    disabled={results.some((r) => r.heat === i + 1)}
+                  >
+                    Scores <StarIcon className="w-4 ml-4" />
+                  </Button>
+                </Link>
+                <Link href={`/olympiads/${eventId}?heat=${i + 1}&round=1`}>
+                  <Button variant="outline">
+                    Start <CaretRightIcon className="w-4 ml-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
