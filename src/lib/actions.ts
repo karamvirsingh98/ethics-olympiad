@@ -15,22 +15,41 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { zOlympiadHeats, zOlympiadScore } from "./entities";
+import { zJudgeUpdate, zOlympiadHeats, zOlympiadScore } from "./entities";
+import Pusher from "pusher";
+import { cookies } from "next/headers";
+import { parse_jwt_payload, sign_jwt, verify_jwt } from "./jwt";
 
-const unauthenticated = createSafeActionClient();
-const authenticated = createSafeActionClient();
+const unauthenticated_action_builder = createSafeActionClient();
+const authenticated_action_builder = unauthenticated_action_builder.use(
+  async ({ next }) => {
+    const token = cookies().get("auth-token")?.value;
+    if (!token) throw new Error();
+
+    const verified = await verify_jwt(token);
+    if (!verified) throw new Error();
+
+    const { userId } = parse_jwt_payload<{ userId: number }>(token);
+
+    return next({ ctx: { userId } });
+  }
+);
 
 // ==================== AUTH ====================
-
-export const CreateUserAction = unauthenticated
+export const CreateUserAction = unauthenticated_action_builder
   .schema(createInsertSchema(UsersTable))
   .action(async ({ parsedInput }) => {
-    await db.insert(UsersTable).values(parsedInput);
-    // sign some jwt and add it to cookies
+    const [{ id }] = await db
+      .insert(UsersTable)
+      .values(parsedInput)
+      .returning();
+
+    cookies().set("auth-token", await sign_jwt({ userId: id }));
+
     redirect("/manager");
   });
 
-export const LoginAction = unauthenticated
+export const LoginManagerAction = unauthenticated_action_builder
   .schema(createSelectSchema(UsersTable).pick({ email: true, password: true }))
   .action(async ({ parsedInput: { email, password } }) => {
     const user = await db.query.UsersTable.findFirst({
@@ -40,19 +59,44 @@ export const LoginAction = unauthenticated
     if (!user) throw new Error("user not found");
     if (user.password !== password) throw new Error("incorrect password");
 
-    // sign some jwt
-
+    cookies().set("auth-token", await sign_jwt({ userId: user.id }));
     redirect("/manager");
   });
 
-// ==================== CASES ====================
+export const LogoutManagerAction = unauthenticated_action_builder.action(
+  async () => {
+    cookies().delete("auth-token");
+    redirect("/");
+  }
+);
 
-export const AddOrUpdateCaseAction = authenticated
-  .schema(createInsertSchema(CasesTable))
-  .action(async ({ parsedInput }) => {
+export const LoginJudgeAction = unauthenticated_action_builder
+  .schema(
+    z.object({ eventId: z.number(), name: z.string(), password: z.string() })
+  )
+  .action(async ({ parsedInput: { eventId, name, password } }) => {
+    const event = await db.query.EventsTable.findFirst({
+      where: (table, { eq }) => eq(table.id, eventId),
+    });
+
+    if (!event || event.password !== password) throw new Error();
+
+    const stored = cookies().get("authenticated-events")?.value || "[]";
+    const parsed = JSON.parse(stored) as number[];
+
+    cookies().set("judge-name", name);
+    cookies().set("authenticated-events", JSON.stringify([...parsed, eventId]));
+
+    redirect(`/olympiads/${eventId}`);
+  });
+
+// ==================== CASES ====================
+export const AddOrUpdateCaseAction = authenticated_action_builder
+  .schema(createInsertSchema(CasesTable).omit({ userId: true }))
+  .action(async ({ parsedInput, ctx: { userId } }) => {
     await db
       .insert(CasesTable)
-      .values(parsedInput)
+      .values({ ...parsedInput, userId })
       .onConflictDoUpdate({
         target: CasesTable.id,
         set: { content: parsedInput.content },
@@ -60,21 +104,24 @@ export const AddOrUpdateCaseAction = authenticated
     revalidatePath("/cases");
   });
 
-export const DeleteCaseAction = authenticated
+export const DeleteCaseAction = authenticated_action_builder
   .schema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { userId } }) => {
+    const c = await db.query.CasesTable.findFirst({
+      where: (table, { eq }) => eq(table.id, parsedInput.id),
+    });
+    if (c?.userId !== userId) throw new Error("not allowed");
     await db.delete(CasesTable).where(eq(CasesTable.id, parsedInput.id));
     revalidatePath("/cases");
   });
 
 // ==================== QUESTIONS ====================
-
-export const AddOrUpdateQuestion = authenticated
-  .schema(createInsertSchema(QuestionsTable))
-  .action(async ({ parsedInput }) => {
+export const AddOrUpdateQuestion = authenticated_action_builder
+  .schema(createInsertSchema(QuestionsTable).omit({ userId: true }))
+  .action(async ({ parsedInput, ctx: { userId } }) => {
     await db
       .insert(QuestionsTable)
-      .values(parsedInput)
+      .values({ ...parsedInput, userId })
       .onConflictDoUpdate({
         target: QuestionsTable.id,
         set: { text: parsedInput.text },
@@ -83,20 +130,30 @@ export const AddOrUpdateQuestion = authenticated
   });
 
 // ==================== TEMPLATES ====================
-export const CreateTemplateAction = authenticated
-  .schema(createInsertSchema(TemplatesTable, { heats: zOlympiadHeats }))
-  .action(async ({ parsedInput }) => {
-    await db.insert(TemplatesTable).values(parsedInput);
+export const CreateTemplateAction = authenticated_action_builder
+  .schema(
+    createInsertSchema(TemplatesTable, { heats: zOlympiadHeats }).omit({
+      userId: true,
+    })
+  )
+  .action(async ({ parsedInput, ctx: { userId } }) => {
+    await db.insert(TemplatesTable).values({ ...parsedInput, userId });
     revalidatePath("/templates");
   });
 
-export const UpdateTemplateAction = authenticated
+export const UpdateTemplateAction = authenticated_action_builder
   .schema(
     createSelectSchema(TemplatesTable, { heats: zOlympiadHeats })
       .partial()
       .required({ id: true })
   )
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { userId } }) => {
+    const template = await db.query.TemplatesTable.findFirst({
+      where: (table, { eq }) => eq(table.id, parsedInput.id),
+    });
+
+    if (template?.userId !== userId) throw new Error("not allowed");
+
     await db
       .update(TemplatesTable)
       .set(parsedInput)
@@ -104,7 +161,7 @@ export const UpdateTemplateAction = authenticated
     revalidatePath("/templates/" + TemplatesTable.id);
   });
 
-export const DeleteTemplateAction = authenticated
+export const DeleteTemplateAction = authenticated_action_builder
   .schema(z.object({ id: z.number() }))
   .action(async ({ parsedInput }) => {
     await db.delete(EventsTable).where(eq(EventsTable.id, parsedInput.id));
@@ -113,7 +170,7 @@ export const DeleteTemplateAction = authenticated
   });
 
 // ==================== EVENTS ====================
-export const CreateEventAction = authenticated
+export const CreateEventAction = authenticated_action_builder
   .schema(
     createInsertSchema(EventsTable, {
       teams: z.array(z.string()),
@@ -125,7 +182,7 @@ export const CreateEventAction = authenticated
     revalidatePath("/events");
   });
 
-export const UpdateEventAction = authenticated
+export const UpdateEventAction = authenticated_action_builder
   .schema(
     createSelectSchema(EventsTable, {
       teams: z.array(z.string()),
@@ -142,7 +199,7 @@ export const UpdateEventAction = authenticated
     revalidatePath("/manager/events");
   });
 
-export const DeleteEventAction = authenticated
+export const DeleteEventAction = authenticated_action_builder
   .schema(z.object({ id: z.number() }))
   .action(async ({ parsedInput }) => {
     await db.delete(EventsTable).where(eq(EventsTable.id, parsedInput.id));
@@ -150,26 +207,38 @@ export const DeleteEventAction = authenticated
   });
 
 // ==================== RESULTS ====================
-export const SubmitResultsAction = authenticated
+export const SubmitResultsAction = unauthenticated_action_builder
   .schema(z.array(createInsertSchema(ResultsTable, { score: zOlympiadScore })))
   .action(async ({ parsedInput }) => {
-    await db.insert(ResultsTable).values(parsedInput);
+    const judge = cookies().get("judge-name")?.value;
+    if (!judge) throw new Error("judge not found");
+
+    const values = parsedInput.map((p) => ({ ...p, judge }));
+    await db.insert(ResultsTable).values(values);
+
     revalidatePath("/olympiads");
   });
 
-// export const UpdateResultAction = authenticated
-//   .schema(createSelectSchema(ResultsTable))
-//   .action(async ({ parsedInput }) => {
-//     await db
-//       .update(ResultsTable)
-//       .set(parsedInput)
-//       .where(eq(ResultsTable.id, parsedInput.id));
-//     revalidatePath("/results");
-//   });
-
-export const DeleteResultAction = authenticated
+export const DeleteResultAction = authenticated_action_builder
   .schema(z.object({ id: z.number() }))
   .action(async ({ parsedInput }) => {
     await db.delete(ResultsTable).where(eq(ResultsTable.id, parsedInput.id));
     revalidatePath("/results");
+  });
+
+// ==================== PUSHER ====================
+export const SendJudgeUpdateAction = unauthenticated_action_builder
+  .schema(zJudgeUpdate.omit({ judge: true }).extend({ eventId: z.number() }))
+  .action(async ({ parsedInput: { eventId, ...data } }) => {
+    const judge = cookies().get("judge-name")?.value;
+    if (!judge) return;
+    await new Pusher({
+      appId: process.env.PUSHER_APP_ID,
+      secret: process.env.PUSHER_SECRET,
+      key: process.env.NEXT_PUBLIC_PUSHER_KEY,
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+    }).trigger("ethics-olympiad", `event-${eventId}-judge-update`, {
+      ...data,
+      judge,
+    });
   });

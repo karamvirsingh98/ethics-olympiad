@@ -1,11 +1,9 @@
-import { TemplateEvents } from "@/components/template-events";
-import { NewEvent } from "@/components/new-event";
-import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
+import { NewEvent } from "@/components/new-event";
+import { TemplateCases } from "@/components/template-cases";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { TemplateCases } from "@/components/template-cases";
-import { CaretLeftIcon } from "@radix-ui/react-icons";
+import { BackButton } from "@/components/back-button";
 
 export default async function TemplatePage({
   params,
@@ -29,68 +27,45 @@ export default async function TemplatePage({
     where: (table, { eq }) => eq(table.templateId, templateId),
   });
 
-  const results = await db.query.ResultsTable.findMany({
-    where: (table, { eq }) => eq(table.eventId, eventId ? eventId : 0),
+  const cases = await db.query.CasesTable.findMany({
+    where: (table, { eq }) => eq(table.level, template.level),
   });
-
-  const cases = await db.query.CasesTable.findMany({});
 
   return (
     <>
-      <h1 className="px-4 text-5xl font-bold">{template?.title}</h1>
-      <div className="flex gap-4">
+      <div className="flex items-center gap-4">
+        <BackButton />
+        <h1 className="text-5xl font-bold">{template?.title}</h1>
+      </div>
+      <div className="flex flex-col-reverse lg:flex-row gap-4">
         <TemplateCases
           cases={cases}
           heats={template.heats}
           templateId={templateId}
         />
-        <div className="w-full p-4 border rounded-md flex flex-col gap-8">
-          <div className="flex items-center justify-between">
+        <div className="w-full p-4 border rounded-md flex flex-col gap-8 h-fit">
+          <div className="flex justify-between">
             <p className="text-3xl font-bold mb-4">Events</p>
             <NewEvent templateId={templateId} />
           </div>
-          <div className="h-full flex gap-4">
-            <div className="flex flex-col gap-4 shrink-0">
-              {events.map((event) => (
-                <Link
-                  key={event.id}
-                  href={`/manager/events/${event.templateId}?eventId=${event.id}`}
-                >
-                  <Button
-                    className="justify-start"
-                    variant={eventId === event.id ? "secondary" : "outline"}
-                  >
-                    <div className="w-64 overflow-hidden overflow-ellipsis">
-                      {event.title}
-                    </div>
-                  </Button>
-                </Link>
-              ))}
-            </div>
-            {!!eventId ? (
-              <TemplateEvents
-                eventId={eventId}
-                heats={template.heats}
-                eventName={events.find((e) => e.id === eventId)?.title ?? ""}
-                teams={events.find((e) => e.id === eventId)?.teams ?? []}
-                results={results}
-              />
-            ) : (
-              <div className="border rounded-md border-dashed grid place-items-center w-full min-h-[40vh]">
-                {events.length ? (
-                  <div className="flex items-center gap-2">
-                    <CaretLeftIcon className="w-4" />
-                    <p className="text-muted-foreground">
-                      Select an event to get started
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-muted-foreground">
-                    Create an event to get started
+          <div className="grid gap-4">
+            {events.map((event) => (
+              <Link
+                key={eventId}
+                href={`/manager/events/${templateId}/${event.id}`}
+                className="p-4 border rounded-md hover:-translate-y-1 hover:bg-accent/25 transition-all"
+              >
+                <p className="mb-4 text-lg font-semibold">{event.title}</p>
+                <div className="flex items-center gap-4">
+                  <p className="text-sm text-muted-foreground">
+                    {event.teams.length} Teams
                   </p>
-                )}
-              </div>
-            )}
+                  <p className="pl-4 border-l text-sm text-muted-foreground">
+                    Password: {event.password}
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

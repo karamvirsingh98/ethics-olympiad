@@ -1,16 +1,22 @@
 import { db } from "@/lib/db";
+import { verify_jwt } from "@/lib/jwt";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  const token = cookies().get("auth-token")?.value;
+  if (await verify_jwt(token)) redirect("/manager");
+
   const templates = await db.query.TemplatesTable.findMany();
   const olympiads = await db.query.EventsTable.findMany();
 
   return (
     <>
-      <h1 className="text-5xl font-bold">
-        Welcome to the Ethics Olympiad app!
+      <h1 className="px-4 text-5xl font-bold">
+        Welcome to the Ethics Olympiad App!
       </h1>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid lg:grid-cols-3 gap-4">
         {olympiads.map((olympiad) => {
           const template = templates.find((t) => t.id === olympiad.templateId);
           return (

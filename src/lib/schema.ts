@@ -10,7 +10,7 @@ import {
 export const UsersTable = sqliteTable("users", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
-  email: text("email").notNull(),
+  email: text("email").notNull().unique(),
   password: text("password").notNull(),
   role: text("role", { enum: zUserRole.options }).default("Manager"),
 });
@@ -27,14 +27,15 @@ export const CasesTable = sqliteTable("cases", {
 // Questions
 export const QuestionsTable = sqliteTable("questions", {
   id: integer("id").primaryKey(),
-  caseId: integer("caseId").notNull(),
   userId: integer("userId").notNull(),
+  caseId: integer("caseId").notNull(),
   text: text("text").notNull(),
 });
 
 //  Templates
 export const TemplatesTable = sqliteTable("templates", {
   id: integer("id").primaryKey(),
+  userId: integer("userId").notNull(),
   title: text("title").notNull(),
   heats: text("heats", { mode: "json" }).$type<zOlympiadHeats>().notNull(),
   level: text("level", { enum: zOlympiadLevel.options }).notNull(),

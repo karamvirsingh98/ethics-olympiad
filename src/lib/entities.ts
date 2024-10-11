@@ -26,3 +26,12 @@ export const zOlympiadScore = z.object({
   commentary: z.number(),
   respectfulness: z.number(),
 });
+
+export type zJudgeUpdate = z.infer<typeof zJudgeUpdate>;
+export const zJudgeUpdate = z.object({
+  judge: z.string(),
+  heat: z.number(),
+  round: z.number().optional(),
+  stage: z.number().optional(),
+  timer: z.number().optional(),
+});

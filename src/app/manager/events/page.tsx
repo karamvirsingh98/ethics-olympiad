@@ -16,7 +16,7 @@ export default async function ManagerEventsPage() {
           <Link
             key={t.id}
             href={"/manager/events/" + t.id}
-            className="p-4 border rounded-md flex flex-col hover:bg-accent hover:-translate-y-1 transition-all"
+            className="p-4 border rounded-md flex flex-col hover:bg-accent/25 hover:-translate-y-1 transition-all"
           >
             <p className="text-lg font-semibold mb-4">{t.title}</p>
             <p className="text-sm text-muted-foreground">{t.level} Level</p>

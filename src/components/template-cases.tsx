@@ -13,6 +13,7 @@ import {
 } from "./ui/select";
 import { useAction } from "next-safe-action/hooks";
 import { UpdateTemplateAction } from "@/lib/actions";
+import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 export const TemplateCases = ({
   templateId,
@@ -26,11 +27,12 @@ export const TemplateCases = ({
   const { execute, isPending } = useAction(UpdateTemplateAction);
 
   return (
-    <div className="p-4 border rounded-md flex flex-col gap-8 h-fit w-[500px] shrink-0">
-      <div className="flex items-center justify-between">
+    <div className="w-full p-4 border rounded-md flex flex-col gap-4 h-fit">
+      <div className="mb-4 flex justify-between">
         <p className="text-3xl font-bold mb-4">Cases</p>
         <div className="flex gap-4">
           <Button
+            variant="outline"
             onClick={() =>
               execute({
                 id: templateId,
@@ -39,6 +41,7 @@ export const TemplateCases = ({
             }
           >
             Add Heat
+            <PlusCircledIcon className="w-4 ml-4" />
           </Button>
         </div>
       </div>
@@ -48,27 +51,49 @@ export const TemplateCases = ({
             key={heat.case1 + "-" + heat.case2}
             className="flex flex-col gap-4 p-4 border rounded-md"
           >
-            <p className="text-lg">Heat {i + 1}</p>
-            <CaseSelector
-              cases={cases}
-              selected={heat.case1}
-              onSelect={(case1) => {
-                const updated = [...heats];
-                updated[i].case1 = case1;
-                execute({ id: templateId, heats });
-              }}
-              disabled={isPending}
-            />
-            <CaseSelector
-              cases={cases}
-              selected={heat.case2}
-              onSelect={(case2) => {
-                const updated = [...heats];
-                updated[i].case2 = case2;
-                execute({ id: templateId, heats });
-              }}
-              disabled={isPending}
-            />
+            <div className="flex justify-between">
+              <p className="text-lg">Heat {i + 1}</p>
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() =>
+                  execute({
+                    id: templateId,
+                    heats: heats.filter((_, ix) => ix !== i),
+                  })
+                }
+              >
+                <MinusCircledIcon className="w-4" />
+              </Button>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground whitespace-nowrap">
+                Case 1
+              </p>
+              <CaseSelector
+                cases={cases}
+                selected={heat.case1}
+                onSelect={(case1) => {
+                  heats[i].case1 = case1;
+                  execute({ id: templateId, heats });
+                }}
+                disabled={isPending}
+              />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground whitespace-nowrap">
+                Case 2
+              </p>
+              <CaseSelector
+                cases={cases}
+                selected={heat.case2}
+                onSelect={(case2) => {
+                  heats[i].case2 = case2;
+                  execute({ id: templateId, heats });
+                }}
+                disabled={isPending}
+              />
+            </div>
           </div>
         );
       })}

@@ -1,7 +1,7 @@
 "use client";
 
 import { zOlympiadScore } from "@/lib/entities";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -14,7 +14,7 @@ import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
-import { SubmitResultsAction } from "@/lib/actions";
+import { SendJudgeUpdateAction, SubmitResultsAction } from "@/lib/actions";
 import { Checkbox } from "./ui/checkbox";
 import { useRouter } from "next/navigation";
 
@@ -40,6 +40,14 @@ export const OlympiadScores = ({
   const [team, setTeam] = useState({ teamA: "", teamB: "" });
   const [score, setScore] = useState({ teamA: DEFAULT, teamB: DEFAULT });
   const [honorable, setHonorable] = useState({ teamA: false, teamB: false });
+
+  useEffect(() => {
+    SendJudgeUpdateAction({
+      eventId,
+      heat,
+      round: 3,
+    });
+  }, [eventId, heat]);
 
   const update_score = (
     side: "teamA" | "teamB",
@@ -89,11 +97,11 @@ export const OlympiadScores = ({
           )}
         </Button>
       </div>
-      <div className="flex gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         {(["teamA", "teamB"] as const).map((side) => (
           <div
             key={side}
-            className="w-full flex flex-col gap-4 pr-4 border-r last:pr-0 last:border-none"
+            className="w-full flex flex-col gap-4 last:pt-4 last:border-t lg:pr-4 lg:border-r lg:last:pt-0 lg:last:border-t-0 lg:last:pr-0 lg:last:border-none"
           >
             <TeamSelector
               label={side === "teamA" ? "Team A" : "Team B"}

@@ -18,15 +18,13 @@ import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
 import { InferSelectModel } from "drizzle-orm";
 import { ResultsTable } from "@/lib/schema";
 
-export const TemplateEvents = ({
+export const EventTeams = ({
   eventId,
-  eventName,
   teams,
   heats,
   results,
 }: {
   eventId: number;
-  eventName: string;
   teams: string[];
   heats: zOlympiadHeats;
   results: InferSelectModel<typeof ResultsTable>[];
@@ -43,8 +41,8 @@ export const TemplateEvents = ({
 
   return (
     <div className="w-full flex flex-col gap-4 p-4 border rounded-md">
-      <div className="flex justify-between">
-        <p className="text-xl font-semibold">{eventName}</p>
+      <div className="mb-4 flex justify-between">
+        <p className="text-xl font-bold">Teams</p>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild disabled={isPending}>
             <Button size="sm" variant="outline">
@@ -81,8 +79,8 @@ export const TemplateEvents = ({
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mt-4 flex flex-col gap-2">
-        <div className="pl-2 pr-4 text-xs text-muted-foreground flex items-center justify-between">
+      <div className="flex flex-col gap-2">
+        <div className="px-4 border border-transparent text-xs text-muted-foreground flex items-center justify-between">
           Team Name
           <div className="flex items-center gap-4">
             {heats.map((_, i) => (
@@ -90,43 +88,48 @@ export const TemplateEvents = ({
                 Heat {i + 1}
               </p>
             ))}
-            <p className="w-16">Total</p>
+            <p className="w-20">Total</p>
           </div>
         </div>
-        {teams.map((team) => (
-          <div
-            key={team}
-            className="p-4 border rounded-md flex items-center justify-between"
-          >
-            {team}
-            <div className="flex items-center gap-4">
-              {heats.map((_, i) => {
-                const result = results.find(
-                  (r) => r.team === team && r.heat === i + 1
-                );
-                return (
-                  <p key={i} className="w-16 pr-4 border-r flex items-center">
-                    {total_score(result?.score)}
-                    {result?.honorable && (
-                      <StarFilledIcon className="w-4 ml-2 text-yellow-500" />
-                    )}
-                  </p>
-                );
-              })}
+        {teams.map((team) => {
+          const team_results = results.filter((r) => r.team === team);
+          return (
+            <div
+              key={team}
+              className="px-4 py-2 border rounded-md flex items-center justify-between"
+            >
+              {team}
+              <div className="flex items-center gap-4">
+                {heats.map((_, i) => {
+                  const result = team_results.find((r) => r.heat === i + 1);
+                  return (
+                    <p key={i} className="w-16 pr-4 border-r flex items-center">
+                      {total_score(result?.score)}
+                      {result?.honorable && (
+                        <StarFilledIcon className="w-4 ml-2 text-yellow-500" />
+                      )}
+                    </p>
+                  );
+                })}
 
-              {/* total score */}
-              <p className="w-16">
-                {results
-                  .filter((r) => r.team === team)
-                  .map(({ score }) => total_score(score))
-                  .reduce((sum, num) => (sum += num), 0)}
-                <span className="text-muted-foreground text-sm">
-                  /{heats.length * 60}
-                </span>
-              </p>
+                {/* total score */}
+                <div className="w-20 flex items-center justify-between">
+                  <p>
+                    {team_results
+                      .map(({ score }) => total_score(score))
+                      .reduce((sum, num) => (sum += num), 0)}
+                    <span className="text-muted-foreground text-sm">
+                      /{heats.length * 60}
+                    </span>
+                  </p>
+                  {team_results.some((r) => r.honorable === true) && (
+                    <StarFilledIcon className="w-4 text-yellow-500" />
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

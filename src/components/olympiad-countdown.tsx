@@ -23,7 +23,7 @@ export const OlympiadCountdown = ({ duration }: { duration: number }) => {
   const seconds = time - minutes * 60;
 
   return (
-    <div className="w-[500px]">
+    <div className="max-w-[500px]">
       <div className="text-[12em] flex items-center justify-end leading-[1]">
         <p className="w-36 text-right">{minutes}</p>
         <p>:</p>

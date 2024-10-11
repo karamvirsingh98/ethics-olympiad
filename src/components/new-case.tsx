@@ -31,6 +31,7 @@ export const NewCase = () => {
   const { execute, isPending } = useAction(AddOrUpdateCaseAction, {
     onSettled: () => {
       setState({ title: "", content: "" });
+      setLevel(undefined);
       setOpen(false);
     },
   });
@@ -48,7 +49,11 @@ export const NewCase = () => {
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4">
           <div>
-            <p className="pb-1">Case Name</p>
+            <p className="p-1 text-sm text-muted-foreground">Case Level</p>
+            <LevelSelector value={level} onChange={setLevel} />
+          </div>
+          <div>
+            <p className="p-1 text-sm text-muted-foreground">Case Name</p>
             <Input
               value={title}
               onChange={(e) =>
@@ -57,7 +62,7 @@ export const NewCase = () => {
             />
           </div>
           <div>
-            <p className="pb-1">Case Content</p>
+            <p className="p-1 text-sm text-muted-foreground">Case Content</p>
             <Textarea
               value={content}
               className="h-[500px]"
@@ -66,18 +71,12 @@ export const NewCase = () => {
               }
             />
           </div>
-          <div>
-            <p className="pb-1">Template Level</p>
-            <LevelSelector value={level} onChange={setLevel} />
-          </div>
         </div>
         <DialogFooter>
           <Button
             className="gap-4"
             disabled={isPending}
-            onClick={() =>
-              level && execute({ userId: 0, title, content, level })
-            }
+            onClick={() => level && execute({ title, content, level })}
           >
             Submit
             {isPending ? (
