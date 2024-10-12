@@ -25,7 +25,7 @@ import { OlympiadScores } from "./olympiad-scores";
 
 import { usePusher } from "@/lib/hooks";
 
-const DEFAULT_STATE = { heat: 0, round: 0, stage: 0 };
+const DEFAULT_STATE = { heat: 0, round: 0, stage: 0, time: 0 };
 
 export const Olympiad = ({
   judge,
@@ -42,19 +42,19 @@ export const Olympiad = ({
   results: InferSelectModel<typeof ResultsTable>[];
   heats: zOlympiadHeats;
 }) => {
-  const [{ heat, round, stage }, set] = useState(DEFAULT_STATE);
+  const [{ heat, round, stage, time }, set] = useState(DEFAULT_STATE);
 
-  const [time, setTime] = useState(0);
+  //   const [time, setTime] = useState(0);
   const [started, setStarted] = useState(false);
 
-  useEffect(() => {
-    if (stage >= 1) setTime(event.timers[stage - 1] * 60);
-  }, [event.timers, stage]);
+  //   useEffect(() => {
+  //     setTime(stage ? event.timers[stage - 1] * 60 : 0);
+  //   }, [event.timers, stage]);
 
   useEffect(() => {
     if (started) {
       const interval = setInterval(() => {
-        if (time) setTime((t) => t - 1);
+        if (time) set((s) => ({ ...s, time: s.time - 1 }));
         else setStarted(false);
       }, 1000);
       return () => {
@@ -73,6 +73,7 @@ export const Olympiad = ({
       stage,
       time,
     };
+    console.log(update);
     pusher.send_event(
       `client-event-${event.id}-judge-update`,
       update,
@@ -117,7 +118,9 @@ export const Olympiad = ({
                   <Button
                     variant="outline"
                     disabled={scored}
-                    onClick={() => set({ heat: i + 1, round: 3, stage: 0 })}
+                    onClick={() =>
+                      set({ heat: i + 1, round: 3, stage: 0, time })
+                    }
                   >
                     {scored ? "Scores Submitted" : "Submit Scores"}
                     {scored ? (
@@ -126,7 +129,9 @@ export const Olympiad = ({
                       <StarIcon className="w-4 ml-4" />
                     )}
                   </Button>
-                  <Button onClick={() => set({ heat: i + 1, round: 1, stage })}>
+                  <Button
+                    onClick={() => set({ heat: i + 1, round: 1, stage, time })}
+                  >
                     Start <CaretRightIcon className="w-4 ml-4" />
                   </Button>
                 </div>
@@ -142,7 +147,11 @@ export const Olympiad = ({
             <p className="text-3xl font-bold">
               {cases.find((c) => c.id === caseId)?.title}
             </p>
-            <Button onClick={() => set({ heat, round, stage: 1 })}>
+            <Button
+              onClick={() =>
+                set({ heat, round, stage: 1, time: event.timers[0] * 60 })
+              }
+            >
               Start Round
             </Button>
           </div>
@@ -161,7 +170,14 @@ export const Olympiad = ({
             <Button
               variant="outline"
               className="w-36 justify-between"
-              onClick={() => set({ heat, round, stage: stage - 1 })}
+              onClick={() =>
+                set({
+                  heat,
+                  round,
+                  stage: stage - 1,
+                  time: stage <= 1 ? 0 : event.timers[stage - 2] * 60,
+                })
+              }
             >
               <CaretLeftIcon className="w-4" />
               Back
@@ -188,6 +204,7 @@ export const Olympiad = ({
                   heat,
                   round: stage === 7 ? round + 1 : round,
                   stage: stage === 7 ? 0 : stage + 1,
+                  time: stage === 7 ? 0 : event.timers[stage] * 60,
                 })
               }
             >
@@ -222,7 +239,9 @@ export const Olympiad = ({
                 {!started && time !== event.timers[stage - 1] * 60 && (
                   <Button
                     variant="secondary"
-                    onClick={() => setTime(event.timers[stage - 1] * 60)}
+                    onClick={() =>
+                      set((s) => ({ ...s, time: event.timers[stage - 1] * 60 }))
+                    }
                   >
                     Reset <ResetIcon className="w-4 ml-4" />
                   </Button>
