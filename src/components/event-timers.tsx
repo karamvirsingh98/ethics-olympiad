@@ -24,7 +24,7 @@ export const EventTimers = ({
             key={i}
             className="w-full pr-2 border-r last:pr-0 last:border-none"
           >
-            <p className="mb-2 text-sm text-muted-foreground">
+            <p className="mb-2 text-sm text-muted-foreground whitespace-nowrap">
               {OLYMPIAD_TIMER_LABELS[i]}
             </p>
             <div className="flex items-center justify-between gap-2">

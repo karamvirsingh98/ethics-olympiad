@@ -48,6 +48,12 @@ export const EventJudges = ({ eventId }: { eventId: number }) => {
                 <p className="text-xl font-bold">{j.stage}</p>
               </div>
             )}
+            {j.timer && (
+              <div className="pl-4 border-l flex items-center gap-2">
+                <p className="text-sm text-muted-foreground">STAGE</p>
+                <p className="text-xl font-bold">1:03</p>
+              </div>
+            )}
           </div>
         </div>
       ))}

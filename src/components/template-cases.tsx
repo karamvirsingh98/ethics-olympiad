@@ -32,7 +32,6 @@ export const TemplateCases = ({
         <p className="text-3xl font-bold mb-4">Cases</p>
         <div className="flex gap-4">
           <Button
-            variant="outline"
             onClick={() =>
               execute({
                 id: templateId,
@@ -49,10 +48,10 @@ export const TemplateCases = ({
         return (
           <div
             key={heat.case1 + "-" + heat.case2}
-            className="flex flex-col gap-4 p-4 border rounded-md"
+            className="p-4 border rounded-md"
           >
             <div className="flex justify-between">
-              <p className="text-lg">Heat {i + 1}</p>
+              <p className="text-lg mb-4 ">Heat {i + 1}</p>
               <Button
                 variant="destructive"
                 className="w-6 h-6"
@@ -67,33 +66,35 @@ export const TemplateCases = ({
                 <MinusCircledIcon className="w-4" />
               </Button>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground whitespace-nowrap">
-                Case 1
-              </p>
-              <CaseSelector
-                cases={cases}
-                selected={heat.case1}
-                onSelect={(case1) => {
-                  heats[i].case1 = case1;
-                  execute({ id: templateId, heats });
-                }}
-                disabled={isPending}
-              />
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground whitespace-nowrap">
-                Case 2
-              </p>
-              <CaseSelector
-                cases={cases}
-                selected={heat.case2}
-                onSelect={(case2) => {
-                  heats[i].case2 = case2;
-                  execute({ id: templateId, heats });
-                }}
-                disabled={isPending}
-              />
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-muted-foreground whitespace-nowrap">
+                  Case 1:
+                </p>
+                <CaseSelector
+                  cases={cases}
+                  selected={heat.case1}
+                  onSelect={(case1) => {
+                    heats[i].case1 = case1;
+                    execute({ id: templateId, heats });
+                  }}
+                  disabled={isPending}
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-muted-foreground whitespace-nowrap">
+                  Case 2:
+                </p>
+                <CaseSelector
+                  cases={cases}
+                  selected={heat.case2}
+                  onSelect={(case2) => {
+                    heats[i].case2 = case2;
+                    execute({ id: templateId, heats });
+                  }}
+                  disabled={isPending}
+                />
+              </div>
             </div>
           </div>
         );
