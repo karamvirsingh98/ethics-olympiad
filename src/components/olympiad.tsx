@@ -19,20 +19,23 @@ import {
   StarFilledIcon,
   StarIcon,
 } from "@radix-ui/react-icons";
-import { zOlympiadHeats } from "@/lib/entities";
+import { zJudgeUpdate, zOlympiadHeats } from "@/lib/entities";
 import { OLYMPIAD_TIMER_LABELS } from "@/lib/utils";
 import { OlympiadScores } from "./olympiad-scores";
-import { SendJudgeUpdateAction } from "@/lib/actions";
+
+import { usePusher } from "@/lib/hooks";
 
 const DEFAULT_STATE = { heat: 0, round: 0, stage: 0 };
 
 export const Olympiad = ({
+  judge,
   event,
   cases,
   questions,
   results,
   heats,
 }: {
+  judge: string;
   event: InferSelectModel<typeof EventsTable>;
   cases: InferSelectModel<typeof CasesTable>[];
   questions: InferSelectModel<typeof QuestionsTable>[];
@@ -60,15 +63,22 @@ export const Olympiad = ({
     }
   }, [started, time]);
 
+  const pusher = usePusher(event.id);
   useEffect(() => {
-    SendJudgeUpdateAction({
+    const update: zJudgeUpdate = {
       eventId: event.id,
+      judge,
       heat,
       round,
       stage,
       time,
-    });
-  }, [heat, event.id, round, stage, time]);
+    };
+    pusher.send_event(
+      `client-event-${event.id}-judge-update`,
+      update,
+      `private-olympiad-${event.id}`
+    );
+  }, [event.id, heat, judge, pusher, round, stage, time]);
 
   const caseId =
     !!heat && !!round && heats[heat - 1][round === 1 ? "case1" : "case2"];

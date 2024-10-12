@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
 import { InferSelectModel } from "drizzle-orm";
 import { ResultsTable } from "@/lib/schema";
-import { usePusherListener } from "@/lib/hooks";
+import { usePusher } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -41,12 +41,13 @@ export const EventTeams = ({
   const [sorting, setSorting] = useState("a-z");
 
   const router = useRouter();
-  const listener = usePusherListener();
+
+  const listener = usePusher(eventId);
   useEffect(() => {
     const handler = () => router.refresh();
-    listener.bind(`event-${eventId}-score-submission`, handler);
+    listener.bind(`client-event-${eventId}-score-submission`, handler);
     return () => {
-      listener.unbind(`event-${eventId}-score-submission`, handler);
+      listener.unbind(`client-event-${eventId}-score-submission`, handler);
     };
   });
 

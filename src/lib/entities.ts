@@ -31,6 +31,7 @@ export type zJudgeUpdate = z.infer<typeof zJudgeUpdate>;
 export const zJudgeUpdate = z.object({
   judge: z.string(),
   heat: z.number(),
+  eventId: z.number(),
   round: z.number().optional(),
   stage: z.number().optional(),
   time: z.number().optional(),

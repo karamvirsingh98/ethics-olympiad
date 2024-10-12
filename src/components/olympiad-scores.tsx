@@ -1,7 +1,7 @@
 "use client";
 
 import { zOlympiadScore } from "@/lib/entities";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -14,9 +14,10 @@ import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
-import { SendJudgeUpdateAction, SubmitResultsAction } from "@/lib/actions";
+import { SubmitResultsAction } from "@/lib/actions";
 import { Checkbox } from "./ui/checkbox";
 import { useRouter } from "next/navigation";
+import { usePusher } from "@/lib/hooks";
 
 const DEFAULT: zOlympiadScore = {
   centrality: 0,
@@ -41,14 +42,6 @@ export const OlympiadScores = ({
   const [score, setScore] = useState({ teamA: DEFAULT, teamB: DEFAULT });
   const [honorable, setHonorable] = useState({ teamA: false, teamB: false });
 
-  useEffect(() => {
-    SendJudgeUpdateAction({
-      eventId,
-      heat,
-      round: 3,
-    });
-  }, [eventId, heat]);
-
   const update_score = (
     side: "teamA" | "teamB",
     field: keyof zOlympiadScore,
@@ -59,9 +52,17 @@ export const OlympiadScores = ({
       [side]: { ...score[side], [field]: value },
     }));
 
+  const pusher = usePusher(eventId);
   const router = useRouter();
   const { execute, isPending } = useAction(SubmitResultsAction, {
-    onSuccess: () => router.push(`/olympiads/${eventId}`),
+    onSuccess: () => {
+      pusher.send_event(
+        `client-event-${eventId}-score-submission`,
+        "",
+        `private-olympiad-${eventId}`
+      );
+      router.push(`/olympiads/${eventId}`);
+    },
   });
 
   return (

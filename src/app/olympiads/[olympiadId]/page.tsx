@@ -45,6 +45,7 @@ export default async function OlympiadPage({
 
   return (
     <Olympiad
+      judge={judge}
       cases={cases}
       event={event}
       heats={template.heats}

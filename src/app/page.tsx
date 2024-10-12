@@ -23,7 +23,7 @@ export default async function Home() {
             <Link
               key={olympiad.id}
               href={`/olympiads/${olympiad.id}`}
-              className="p-4 border rounded-md"
+              className="p-4 border rounded-md hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all"
             >
               <p className="mb-4 text-lg font-bold">{olympiad.title}</p>
               <p className="text-sm text-muted-foreground">{template?.title}</p>

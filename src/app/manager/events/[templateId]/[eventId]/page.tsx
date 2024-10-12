@@ -50,14 +50,14 @@ export default async function EventPage({
           </div>
         </div>
       </div>
-      <div className="flex flex-col-reverse lg:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-4">
         <EventTeams
           eventId={eventId}
           teams={event.teams}
           heats={template.heats}
           results={results ?? []}
         />
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col-reverse lg:flex-col gap-4">
           <EventTimers eventId={eventId} timers={event.timers} />
           <EventJudges eventId={eventId} />
         </div>

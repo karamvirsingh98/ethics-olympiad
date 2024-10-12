@@ -2,19 +2,19 @@
 
 import { zJudgeUpdate } from "@/lib/entities";
 import { useEffect, useState } from "react";
-import { usePusherListener } from "@/lib/hooks";
+import { usePusher } from "@/lib/hooks";
 
 export const EventJudges = ({ eventId }: { eventId: number }) => {
   const [judges, setJudges] = useState<Record<string, zJudgeUpdate>>({});
 
-  const listener = usePusherListener();
+  const listener = usePusher(eventId);
 
   useEffect(() => {
     const handler = (data: zJudgeUpdate) =>
       setJudges({ ...judges, [data.judge]: data });
-    listener.bind(`event-${eventId}-judge-update`, handler);
+    listener.bind(`client-event-${eventId}-judge-update`, handler);
     return () => {
-      listener.unbind(`event-${eventId}-judge-update`, handler);
+      listener.unbind(`client-event-${eventId}-judge-update`, handler);
     };
   });
 

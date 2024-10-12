@@ -29,12 +29,12 @@ export default async function ManagerPage() {
   return (
     <>
       <h1 className="text-5xl font-bold">Upcoming Events</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid lg:grid-cols-3 gap-4">
         {events.map((event) => (
           <Link
             key={event.id}
             href={`/manager/events/${event.templateId}/${event.id}`}
-            className="p-4 border rounded-md hover:-translate-y-1 hover:bg-accent/25 transition-all"
+            className="p-4 border rounded-md hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all"
           >
             <p className="mb-4 text-lg font-semibold">{event.title}</p>
             <div className="flex items-center gap-4">

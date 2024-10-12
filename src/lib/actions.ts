@@ -15,8 +15,7 @@ import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { zJudgeUpdate, zOlympiadHeats, zOlympiadScore } from "./entities";
-import Pusher from "pusher";
+import { zOlympiadHeats, zOlympiadScore } from "./entities";
 import { cookies } from "next/headers";
 import { parse_jwt_payload, sign_jwt, verify_jwt } from "./jwt";
 
@@ -35,12 +34,12 @@ const authenticated_action_builder = unauthenticated_action_builder.use(
   }
 );
 
-const PusherSender = new Pusher({
-  appId: process.env.PUSHER_APP_ID,
-  secret: process.env.PUSHER_SECRET,
-  key: process.env.NEXT_PUBLIC_PUSHER_KEY,
-  cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-});
+// const PusherSender = new Pusher({
+//   appId: process.env.PUSHER_APP_ID,
+//   secret: process.env.PUSHER_SECRET,
+//   key: process.env.NEXT_PUBLIC_PUSHER_KEY,
+//   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+// });
 
 // ==================== AUTH ====================
 export const CreateUserAction = unauthenticated_action_builder
@@ -226,13 +225,6 @@ export const SubmitResultsAction = unauthenticated_action_builder
     const values = parsedInput.map((p) => ({ ...p, judge }));
     await db.insert(ResultsTable).values(values);
 
-    const { eventId } = parsedInput[0];
-    await PusherSender.trigger(
-      "ethics-olympiad",
-      `event-${eventId}-score-submission`,
-      judge
-    );
-
     revalidatePath("/olympiads");
   });
 
@@ -242,16 +234,3 @@ export const SubmitResultsAction = unauthenticated_action_builder
 //     await db.delete(ResultsTable).where(eq(ResultsTable.id, parsedInput.id));
 //     revalidatePath("/results");
 //   });
-
-// ==================== PUSHER ====================
-export const SendJudgeUpdateAction = unauthenticated_action_builder
-  .schema(zJudgeUpdate.omit({ judge: true }).extend({ eventId: z.number() }))
-  .action(async ({ parsedInput: { eventId, ...data } }) => {
-    const judge = cookies().get("judge-name")?.value;
-    if (!judge) return;
-    await PusherSender.trigger(
-      "ethics-olympiad",
-      `event-${eventId}-judge-update`,
-      { ...data, judge }
-    );
-  });

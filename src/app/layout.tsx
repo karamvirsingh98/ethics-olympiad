@@ -9,6 +9,7 @@ import { ProgressBar } from "@/components/progressbar";
 
 const font = Font({ subsets: ["latin"] });
 export const metadata: Metadata = { title: "Ethics Olympiad App" };
+export const runtime = "edge";
 
 export default async function RootLayout({
   children,

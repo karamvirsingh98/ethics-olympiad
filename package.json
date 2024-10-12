@@ -30,7 +30,6 @@
     "next-nprogress-bar": "^2.3.14",
     "next-safe-action": "^7.9.3",
     "next-themes": "^0.3.0",
-    "pusher": "^5.2.0",
     "pusher-js": "^8.4.0-rc2",
     "react": "^19.0.0-rc-09111202-20241011",
     "react-day-picker": "8.10.1",

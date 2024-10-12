@@ -54,7 +54,7 @@ export default async function TemplatePage({
               <Link
                 key={eventId}
                 href={`/manager/events/${templateId}/${event.id}`}
-                className="p-4 border rounded-md hover:-translate-y-1 hover:bg-accent/25 transition-all"
+                className="p-4 border rounded-md hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all"
               >
                 <p className="mb-4 text-lg font-semibold">{event.title}</p>
                 <div className="flex items-center gap-4">
