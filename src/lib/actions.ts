@@ -110,20 +110,20 @@ export const AddOrUpdateCaseAction = authenticated_action_builder
         set: { content: parsedInput.content, title: parsedInput.title },
       })
       .returning();
-    revalidatePath("/cases");
+    revalidatePath("/manager/cases");
     return { id };
   });
 
-export const DeleteCaseAction = authenticated_action_builder
-  .schema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput, ctx: { userId } }) => {
-    const c = await db.query.CasesTable.findFirst({
-      where: (table, { eq }) => eq(table.id, parsedInput.id),
-    });
-    if (c?.userId !== userId) throw new Error("not allowed");
-    await db.delete(CasesTable).where(eq(CasesTable.id, parsedInput.id));
-    revalidatePath("/cases");
-  });
+// export const DeleteCaseAction = authenticated_action_builder
+//   .schema(z.object({ id: z.number() }))
+//   .action(async ({ parsedInput, ctx: { userId } }) => {
+//     const c = await db.query.CasesTable.findFirst({
+//       where: (table, { eq }) => eq(table.id, parsedInput.id),
+//     });
+//     if (c?.userId !== userId) throw new Error("not allowed");
+//     await db.delete(CasesTable).where(eq(CasesTable.id, parsedInput.id));
+//     revalidatePath("/manager/cases");
+//   });
 
 // ==================== QUESTIONS ====================
 export const AddOrUpdateQuestion = authenticated_action_builder
@@ -136,7 +136,7 @@ export const AddOrUpdateQuestion = authenticated_action_builder
         target: QuestionsTable.id,
         set: { text: parsedInput.text },
       });
-    revalidatePath("/cases");
+    revalidatePath("/manager/cases");
   });
 
 // ==================== TEMPLATES ====================
@@ -148,7 +148,7 @@ export const CreateTemplateAction = authenticated_action_builder
   )
   .action(async ({ parsedInput, ctx: { userId } }) => {
     await db.insert(TemplatesTable).values({ ...parsedInput, userId });
-    revalidatePath("/templates");
+    revalidatePath("/manager/events");
   });
 
 export const UpdateTemplateAction = authenticated_action_builder
@@ -168,16 +168,16 @@ export const UpdateTemplateAction = authenticated_action_builder
       .update(TemplatesTable)
       .set(parsedInput)
       .where(eq(TemplatesTable.id, parsedInput.id));
-    revalidatePath("/templates/" + TemplatesTable.id);
+    revalidatePath("/manager/events");
   });
 
-export const DeleteTemplateAction = authenticated_action_builder
-  .schema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    await db.delete(EventsTable).where(eq(EventsTable.id, parsedInput.id));
-    revalidatePath("/templates");
-    redirect("/templates");
-  });
+// export const DeleteTemplateAction = authenticated_action_builder
+//   .schema(z.object({ id: z.number() }))
+//   .action(async ({ parsedInput }) => {
+//     await db.delete(EventsTable).where(eq(EventsTable.id, parsedInput.id));
+//     revalidatePath("/manager/events");
+//     redirect("/templates");
+//   });
 
 // ==================== EVENTS ====================
 export const CreateEventAction = authenticated_action_builder
@@ -189,7 +189,7 @@ export const CreateEventAction = authenticated_action_builder
   )
   .action(async ({ parsedInput }) => {
     await db.insert(EventsTable).values(parsedInput);
-    revalidatePath("/events");
+    revalidatePath(`/manager/events`);
   });
 
 export const UpdateEventAction = authenticated_action_builder
@@ -206,15 +206,15 @@ export const UpdateEventAction = authenticated_action_builder
       .update(EventsTable)
       .set(parsedInput)
       .where(eq(EventsTable.id, parsedInput.id));
-    revalidatePath("/manager/events");
+    revalidatePath(`/manager/events`);
   });
 
-export const DeleteEventAction = authenticated_action_builder
-  .schema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    await db.delete(EventsTable).where(eq(EventsTable.id, parsedInput.id));
-    revalidatePath("/events");
-  });
+// export const DeleteEventAction = authenticated_action_builder
+//   .schema(z.object({ id: z.number() }))
+//   .action(async ({ parsedInput }) => {
+//     await db.delete(EventsTable).where(eq(EventsTable.id, parsedInput.id));
+//     revalidatePath("/manager/events");
+//   });
 
 // ==================== RESULTS ====================
 export const SubmitResultsAction = unauthenticated_action_builder
@@ -236,12 +236,12 @@ export const SubmitResultsAction = unauthenticated_action_builder
     revalidatePath("/olympiads");
   });
 
-export const DeleteResultAction = authenticated_action_builder
-  .schema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    await db.delete(ResultsTable).where(eq(ResultsTable.id, parsedInput.id));
-    revalidatePath("/results");
-  });
+// export const DeleteResultAction = authenticated_action_builder
+//   .schema(z.object({ id: z.number() }))
+//   .action(async ({ parsedInput }) => {
+//     await db.delete(ResultsTable).where(eq(ResultsTable.id, parsedInput.id));
+//     revalidatePath("/results");
+//   });
 
 // ==================== PUSHER ====================
 export const SendJudgeUpdateAction = unauthenticated_action_builder
