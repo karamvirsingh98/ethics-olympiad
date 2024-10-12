@@ -49,7 +49,7 @@ export const OlympiadWindow = ({
         <div className="flex flex-col gap-4 lg:flex-row lg:gap-0 items-center">
           {OLYMPIAD_TIMER_LABELS.map((label, i) => (
             <Button
-              key={label}
+              key={label + i}
               className="w-32 pointer-events-none"
               variant={stage === i + 1 ? "secondary" : "ghost"}
             >

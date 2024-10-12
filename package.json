@@ -25,6 +25,7 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.34.1",
     "drizzle-zod": "^0.5.1",
+    "jotai": "^2.10.0",
     "next": "^15.0.0-rc.0",
     "next-nprogress-bar": "^2.3.14",
     "next-safe-action": "^7.9.3",

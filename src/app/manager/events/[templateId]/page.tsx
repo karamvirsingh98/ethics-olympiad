@@ -60,7 +60,7 @@ export default async function TemplatePage({
                 <div className="flex items-center gap-4">
                   <p className="text-sm text-muted-foreground flex items-center">
                     <CalendarIcon className="w-4 mr-2" />{" "}
-                    {new Date(event.date).toLocaleDateString()}
+                    {event.date.toLocaleDateString()}
                   </p>
                   <p className="pl-4 border-l text-sm text-muted-foreground flex items-center">
                     <LockClosedIcon className="w-4 mr-2" /> {event.password}

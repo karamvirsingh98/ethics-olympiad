@@ -42,7 +42,7 @@ export default async function EventPage({
         <div className="flex gap-4 text-sm text-muted-foreground">
           <div className="px-4 py-1 border rounded-md flex items-center">
             <CalendarIcon className="w-4 mr-2" />
-            {new Date(event.date).toLocaleDateString()}
+            {event.date.toLocaleDateString()}
           </div>
           <div className="px-4 py-1 border rounded-md flex items-center">
             <LockClosedIcon className="w-4 mr-2" />

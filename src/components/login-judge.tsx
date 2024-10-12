@@ -44,7 +44,7 @@ export const LoginJudge = ({ eventId }: { eventId: number }) => {
         <Button onClick={() => execute({ eventId, name, password })}>
           Login
           {isPending ? (
-            <ReloadIcon className="w-4" />
+            <ReloadIcon className="w-4 ml-4 animate-spin" />
           ) : (
             <EnterIcon className="w-4 ml-4" />
           )}

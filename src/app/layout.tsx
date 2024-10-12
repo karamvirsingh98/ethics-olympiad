@@ -20,7 +20,7 @@ export default async function RootLayout({
   const authenticated = await verify_jwt(token);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={font.className}>
         <ThemeProvider
           attribute="class"

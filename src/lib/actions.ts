@@ -35,6 +35,13 @@ const authenticated_action_builder = unauthenticated_action_builder.use(
   }
 );
 
+const PusherSender = new Pusher({
+  appId: process.env.PUSHER_APP_ID,
+  secret: process.env.PUSHER_SECRET,
+  key: process.env.NEXT_PUBLIC_PUSHER_KEY,
+  cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+});
+
 // ==================== AUTH ====================
 export const CreateUserAction = unauthenticated_action_builder
   .schema(createInsertSchema(UsersTable))
@@ -216,6 +223,13 @@ export const SubmitResultsAction = unauthenticated_action_builder
     const values = parsedInput.map((p) => ({ ...p, judge }));
     await db.insert(ResultsTable).values(values);
 
+    const { eventId } = parsedInput[0];
+    await PusherSender.trigger(
+      "ethics-olympiad",
+      `event-${eventId}-score-submission`,
+      judge
+    );
+
     revalidatePath("/olympiads");
   });
 
@@ -232,13 +246,9 @@ export const SendJudgeUpdateAction = unauthenticated_action_builder
   .action(async ({ parsedInput: { eventId, ...data } }) => {
     const judge = cookies().get("judge-name")?.value;
     if (!judge) return;
-    await new Pusher({
-      appId: process.env.PUSHER_APP_ID,
-      secret: process.env.PUSHER_SECRET,
-      key: process.env.NEXT_PUBLIC_PUSHER_KEY,
-      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-    }).trigger("ethics-olympiad", `event-${eventId}-judge-update`, {
-      ...data,
-      judge,
-    });
+    await PusherSender.trigger(
+      "ethics-olympiad",
+      `event-${eventId}-judge-update`,
+      { ...data, judge }
+    );
   });

@@ -1,24 +1,21 @@
 "use client";
 
 import { zJudgeUpdate } from "@/lib/entities";
-import { useEffect, useRef, useState } from "react";
-import Pusher from "pusher-js";
+import { useEffect, useState } from "react";
+import { usePusherListener } from "@/lib/hooks";
 
 export const EventJudges = ({ eventId }: { eventId: number }) => {
-  const pusher_ref = useRef<Pusher>();
   const [judges, setJudges] = useState<Record<string, zJudgeUpdate>>({});
 
+  const listener = usePusherListener();
+
   useEffect(() => {
-    if (!pusher_ref.current) {
-      pusher_ref.current = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
-        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-      });
-      pusher_ref.current
-        .subscribe("ethics-olympiad")
-        .bind(`event-${eventId}-judge-update`, (data: zJudgeUpdate) =>
-          setJudges({ ...judges, [data.judge]: data })
-        );
-    }
+    const handler = (data: zJudgeUpdate) =>
+      setJudges({ ...judges, [data.judge]: data });
+    listener.bind(`event-${eventId}-judge-update`, handler);
+    return () => {
+      listener.unbind(`event-${eventId}-judge-update`, handler);
+    };
   });
 
   return (

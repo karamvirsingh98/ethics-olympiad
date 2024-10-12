@@ -13,10 +13,12 @@ import {
 } from "./ui/dialog";
 import { PlusCircledIcon, StarFilledIcon } from "@radix-ui/react-icons";
 import { Textarea } from "./ui/textarea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
 import { InferSelectModel } from "drizzle-orm";
 import { ResultsTable } from "@/lib/schema";
+import { usePusherListener } from "@/lib/hooks";
+import { useRouter } from "next/navigation";
 
 export const EventTeams = ({
   eventId,
@@ -37,6 +39,16 @@ export const EventTeams = ({
       setOpen(false);
       setNewTeams(undefined);
     },
+  });
+
+  const router = useRouter();
+  const listener = usePusherListener();
+  useEffect(() => {
+    const handler = () => router.refresh();
+    listener.bind(`event-${eventId}-score-submission`, handler);
+    return () => {
+      listener.unbind(`event-${eventId}-score-submission`, handler);
+    };
   });
 
   return (
