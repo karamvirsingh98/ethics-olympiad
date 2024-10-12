@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 import { EnterIcon, ExitIcon } from "@radix-ui/react-icons";
 import { LogoutManagerAction } from "@/lib/actions";
 import { ThemeToggle } from "./theme/theme-toggle";
-import { Suspense } from "react";
 
 export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
   const path = usePathname();
