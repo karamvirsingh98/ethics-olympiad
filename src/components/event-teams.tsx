@@ -84,11 +84,11 @@ export const EventTeams = ({
           Team Name
           <div className="flex items-center gap-4">
             {heats.map((_, i) => (
-              <p key={i} className="w-16 pr-4 border-r">
+              <p key={i} className="w-14 pr-4 border-r">
                 Heat {i + 1}
               </p>
             ))}
-            <p className="w-20">Total</p>
+            <p className="w-16">Total</p>
           </div>
         </div>
         {teams
@@ -113,18 +113,18 @@ export const EventTeams = ({
                     return (
                       <p
                         key={i}
-                        className="w-16 pr-4 border-r flex items-center"
+                        className="w-14 pr-4 border-r flex items-center justify-between"
                       >
                         {total_score(result?.score)}
                         {result?.honorable && (
-                          <StarFilledIcon className="w-4 ml-2 text-yellow-500" />
+                          <StarFilledIcon className="w-3 text-yellow-500" />
                         )}
                       </p>
                     );
                   })}
 
                   {/* total score */}
-                  <div className="w-20 flex items-center justify-between">
+                  <div className="w-16 flex items-center justify-between">
                     <p>
                       {team_totals[team]}
                       <span className="text-muted-foreground text-sm">
@@ -132,7 +132,7 @@ export const EventTeams = ({
                       </span>
                     </p>
                     {team_results.some((r) => r.honorable === true) && (
-                      <StarFilledIcon className="w-4 text-yellow-500" />
+                      <StarFilledIcon className="w-3 text-yellow-500" />
                     )}
                   </div>
                 </div>

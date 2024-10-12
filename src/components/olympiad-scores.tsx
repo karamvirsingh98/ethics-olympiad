@@ -33,10 +33,12 @@ export const OlympiadScores = ({
   eventId,
   heat,
   teams,
+  submitted,
 }: {
   eventId: number;
   heat: number;
   teams: string[];
+  submitted: boolean;
 }) => {
   const [team, setTeam] = useState({ teamA: "", teamB: "" });
   const [score, setScore] = useState({ teamA: DEFAULT, teamB: DEFAULT });
@@ -71,6 +73,7 @@ export const OlympiadScores = ({
         <p className="px-2 text-3xl font-bold mb-12">Heat {heat} Scores</p>
         <Button
           disabled={
+            submitted ||
             isPending ||
             !team.teamA || //ensure team A is selected
             !team.teamB || // ensure team B is selected
@@ -90,7 +93,7 @@ export const OlympiadScores = ({
             )
           }
         >
-          Submit
+          {submitted ? "Already Submitted" : "Submit Scores"}
           {isPending ? (
             <ReloadIcon className="w-4 ml-4 animate-spin" />
           ) : (
@@ -110,7 +113,7 @@ export const OlympiadScores = ({
               value={team[side]}
               onChange={(team) => setTeam((t) => ({ ...t, [side]: team }))}
             />
-            <div className="px-4 py-2 border rounded-md bg-border/50 flex flex-col gap-4">
+            <div className="px-4 py-2 border rounded-md border-primary/25 flex flex-col gap-4">
               {(["clarity", "centrality", "thoughtfulness"] as const).map(
                 (field) => (
                   <ScoreDots
@@ -122,7 +125,7 @@ export const OlympiadScores = ({
                 )
               )}
             </div>
-            <div className="px-4 py-2 border rounded-md bg-border/50 flex flex-col gap-4">
+            <div className="px-4 py-2 border rounded-md border-primary/25 flex flex-col gap-4">
               {(["response", "judge"] as const).map((field) => (
                 <ScoreSlider
                   key={field}
@@ -133,7 +136,7 @@ export const OlympiadScores = ({
                 />
               ))}
             </div>
-            <div className="px-4 py-2 border rounded-md bg-border/50">
+            <div className="px-4 py-2 border rounded-md border-primary/25">
               <ScoreSlider
                 label={"commentary"}
                 score={score[side].commentary}
@@ -141,7 +144,7 @@ export const OlympiadScores = ({
                 max={10}
               />
             </div>
-            <div className="px-4 py-2 border rounded-md bg-border/50">
+            <div className="px-4 py-2 border rounded-md border-primary/25">
               <ScoreDots
                 label={"respectfulness"}
                 score={score[side].respectfulness}
@@ -150,7 +153,7 @@ export const OlympiadScores = ({
                 }
               />
             </div>
-            <div className="px-4 py-2 border rounded-md bg-border/50 flex items-center justify-between">
+            <div className="px-4 py-2 border rounded-md border-primary/25 flex items-center justify-between">
               <p>Honorable Mention</p>
               <Checkbox
                 className="bg-background"
@@ -161,7 +164,7 @@ export const OlympiadScores = ({
                 }
               />
             </div>
-            <div className="px-4 py-2 border rounded-md bg-border/50 flex items-center justify-between">
+            <div className="px-4 py-2 bg-primary/5 border rounded-md border-primary/25 flex items-center justify-between">
               <p className="text-xl font-bold">Total Score</p>
               <p className="text-xl font-bold">
                 {total_score(score[side])}
@@ -191,7 +194,7 @@ const TeamSelector = ({
   value: string;
   onChange: (value: string) => void;
 }) => (
-  <div className="px-4 py-2 bg-border/50 border rounded-md flex items-center justify-between">
+  <div className="px-4 py-2 bg-primary/5 border-primary/25 border rounded-md flex items-center justify-between">
     <p className="text-xl font-semibold">{label}</p>
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-72 bg-background">
