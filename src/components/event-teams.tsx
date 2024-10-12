@@ -38,16 +38,7 @@ export const EventTeams = ({
   heats: zOlympiadHeats;
   results: InferSelectModel<typeof ResultsTable>[];
 }) => {
-  const [open, setOpen] = useState(false);
   const [sorting, setSorting] = useState("a-z");
-
-  const [newTeams, setNewTeams] = useState<string[]>();
-  const { execute, isPending } = useAction(UpdateEventAction, {
-    onSuccess: () => {
-      setOpen(false);
-      setNewTeams(undefined);
-    },
-  });
 
   const router = useRouter();
   const listener = usePusherListener();
@@ -84,41 +75,7 @@ export const EventTeams = ({
               <SelectItem value="l-h">Scores Low to High</SelectItem>
             </SelectContent>
           </Select>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild disabled={isPending}>
-              <Button size="sm" variant="outline">
-                Add Teams <PlusCircledIcon className="w-4 ml-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add Teams</DialogTitle>
-              </DialogHeader>
-              <div className="py-4">
-                <Textarea
-                  value={newTeams}
-                  onChange={(e) => setNewTeams(e.target.value.split(","))}
-                />
-              </div>
-              <DialogFooter>
-                <Button
-                  disabled={!newTeams}
-                  onClick={() =>
-                    newTeams &&
-                    execute({
-                      id: eventId,
-                      teams: [
-                        ...teams,
-                        ...newTeams.filter((t) => !!t).map((t) => t.trim()),
-                      ],
-                    })
-                  }
-                >
-                  Confirm
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <AddTeams eventId={eventId} teams={teams} />
         </div>
       </div>
       <div className="flex flex-col gap-2">
@@ -146,7 +103,7 @@ export const EventTeams = ({
             return (
               <div
                 key={team}
-                className="px-4 py-2 border rounded-md flex items-center justify-between"
+                className="px-4 py-2 border rounded-md flex items-center justify-between odd:bg-accent/25"
               >
                 {team}
                 <div className="flex items-center gap-4">
@@ -189,4 +146,53 @@ export const EventTeams = ({
 const total_score = (score: zOlympiadScore | undefined) => {
   if (!score) return 0;
   return Object.values(score).reduce((sum, num) => (sum += num), 0);
+};
+
+const AddTeams = ({ eventId, teams }: { eventId: number; teams: string[] }) => {
+  const [open, setOpen] = useState(false);
+  const [newTeams, setNewTeams] = useState<string[]>();
+  const { execute, isPending } = useAction(UpdateEventAction, {
+    onSuccess: () => {
+      setOpen(false);
+      setNewTeams(undefined);
+    },
+  });
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild disabled={isPending}>
+        <Button size="sm" variant="outline">
+          Add Teams <PlusCircledIcon className="w-4 ml-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Add Teams</DialogTitle>
+        </DialogHeader>
+        <div className="py-4">
+          <Textarea
+            value={newTeams}
+            onChange={(e) => setNewTeams(e.target.value.split(","))}
+          />
+        </div>
+        <DialogFooter>
+          <Button
+            disabled={!newTeams}
+            onClick={() =>
+              newTeams &&
+              execute({
+                id: eventId,
+                teams: [
+                  ...teams,
+                  ...newTeams.filter((t) => !!t).map((t) => t.trim()),
+                ],
+              })
+            }
+          >
+            Confirm
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 };
