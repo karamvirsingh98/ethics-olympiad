@@ -247,7 +247,12 @@ export const Olympiad = ({
       )}
 
       {!!heat && round === 3 && (
-        <OlympiadScores eventId={event.id} heat={heat} teams={event.teams} />
+        <OlympiadScores
+          heat={heat}
+          eventId={event.id}
+          teams={event.teams}
+          submitted={results.some((r) => r.heat === heat)}
+        />
       )}
     </>
   );
