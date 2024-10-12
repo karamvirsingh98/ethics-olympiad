@@ -13,6 +13,7 @@ export const UsersTable = sqliteTable("users", {
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   role: text("role", { enum: zUserRole.options }).default("Manager"),
+  createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
 // Cases
@@ -22,6 +23,7 @@ export const CasesTable = sqliteTable("cases", {
   title: text("title").notNull(),
   content: text("content").notNull(),
   level: text("level", { enum: zOlympiadLevel.options }).notNull(),
+  createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
 // Questions
@@ -39,6 +41,7 @@ export const TemplatesTable = sqliteTable("templates", {
   title: text("title").notNull(),
   heats: text("heats", { mode: "json" }).$type<zOlympiadHeats>().notNull(),
   level: text("level", { enum: zOlympiadLevel.options }).notNull(),
+  createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
 // Events
@@ -50,6 +53,7 @@ export const EventsTable = sqliteTable("events", {
   password: text("password").notNull(),
   teams: text("teams", { mode: "json" }).$type<string[]>().notNull(),
   timers: text("timers", { mode: "json" }).$type<number[]>().notNull(),
+  createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
 // Judge Results
@@ -61,4 +65,5 @@ export const ResultsTable = sqliteTable("results", {
   team: text("team").notNull(),
   honorable: integer("honorable", { mode: "boolean" }).notNull(),
   score: text("score", { mode: "json" }).$type<zOlympiadScore>().notNull(),
+  createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
