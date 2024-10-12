@@ -8,7 +8,6 @@ import { verify_jwt } from "@/lib/jwt";
 import { ProgressBar } from "@/components/progressbar";
 
 const font = Font({ subsets: ["latin"] });
-
 export const metadata: Metadata = { title: "Ethics Olympiad App" };
 
 export default async function RootLayout({

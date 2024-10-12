@@ -28,35 +28,51 @@ export const EventJudges = ({ eventId }: { eventId: number }) => {
         >
           {j.judge}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <p className="text-sm text-muted-foreground">HEAT</p>
-              <p className="text-xl font-bold">{j.heat}</p>
-            </div>
-            {j.round && j.round === 3 ? (
+            {!!j.heat && (
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-muted-foreground">HEAT</p>
+                <p className="text-xl font-bold">{j.heat}</p>
+              </div>
+            )}
+            {j.round === 3 ? (
               <p className="pl-4 border-l text-muted-foreground">
                 CURRENTLY SCORING
               </p>
             ) : (
-              <div className="pl-4 border-l flex items-center gap-2">
-                <p className="text-sm text-muted-foreground">ROUND</p>
-                <p className="text-xl font-bold">{j.round}</p>
-              </div>
+              !!j.round && (
+                <div className="pl-4 border-l flex items-center gap-2">
+                  <p className="text-sm text-muted-foreground">ROUND</p>
+                  <p className="text-xl font-bold">{j.round}</p>
+                </div>
+              )
             )}
-            {j.stage && (
+            {!!j.stage && (
               <div className="pl-4 border-l flex items-center gap-2">
                 <p className="text-sm text-muted-foreground">STAGE</p>
                 <p className="text-xl font-bold">{j.stage}</p>
               </div>
             )}
-            {j.timer && (
+            {!!j.time && (
               <div className="pl-4 border-l flex items-center gap-2">
-                <p className="text-sm text-muted-foreground">STAGE</p>
-                <p className="text-xl font-bold">1:03</p>
+                <p className="text-sm text-muted-foreground">TIME</p>
+                <p className="text-xl font-bold w-12">
+                  <Time time={j.time} />
+                </p>
               </div>
             )}
           </div>
         </div>
       ))}
     </div>
+  );
+};
+
+const Time = ({ time }: { time: number }) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = time - minutes * 60;
+  return (
+    <>
+      {minutes}:{seconds < 10 ? "0" + seconds : seconds}
+    </>
   );
 };

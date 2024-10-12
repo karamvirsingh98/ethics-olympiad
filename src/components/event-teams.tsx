@@ -69,7 +69,7 @@ export const EventTeams = ({
   );
 
   return (
-    <div className="w-full flex flex-col gap-4 p-4 border rounded-md">
+    <div className="w-full flex flex-col gap-4 p-4 border rounded-md h-fit">
       <div className="mb-4 flex justify-between">
         <p className="text-xl font-bold">Teams</p>
         <div className="flex gap-2">

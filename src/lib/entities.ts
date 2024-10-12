@@ -33,5 +33,5 @@ export const zJudgeUpdate = z.object({
   heat: z.number(),
   round: z.number().optional(),
   stage: z.number().optional(),
-  timer: z.number().optional(),
+  time: z.number().optional(),
 });

@@ -1,28 +1,14 @@
-import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
-import { HomeIcon } from "@radix-ui/react-icons";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { OlympiadScores } from "@/components/olympiad-scores";
-import { OlympiadWindow } from "@/components/olympiad-window";
-import { OlympaidHeats } from "@/components/olympiad-heats";
 import { cookies } from "next/headers";
+import { Olympiad } from "@/components/olympiad";
 
 export default async function OlympiadPage({
   params,
-  searchParams,
 }: {
   params: { olympiadId: string };
-  searchParams: {
-    heat?: string;
-    round?: string;
-    stage?: string;
-  };
 }) {
   const olympiadId = Number(params.olympiadId);
-  const heat = Number(searchParams.heat);
-  const round = Number(searchParams.round);
-  const stage = Number(searchParams.stage);
 
   if (!olympiadId) return redirect("/olympiads");
 
@@ -57,70 +43,13 @@ export default async function OlympiadPage({
       and(eq(table.eventId, olympiadId), eq(table.judge, judge)),
   });
 
-  const caseId =
-    !!heat &&
-    !!round &&
-    template.heats[heat - 1][round === 1 ? "case1" : "case2"];
-
   return (
-    <>
-      <div className="px-4 flex justify-between">
-        <h1 className="text-5xl font-bold">{event.title}</h1>
-        {!!heat && (
-          <Link href={`/olympiads/${olympiadId}`}>
-            <Button variant="outline">
-              Home <HomeIcon className="w-4 ml-4" />
-            </Button>
-          </Link>
-        )}
-      </div>
-
-      {!heat && !round && !stage && (
-        <OlympaidHeats
-          olympiadId={olympiadId}
-          heats={template.heats}
-          cases={cases}
-          results={results}
-        />
-      )}
-
-      {!!heat && (round === 1 || round === 2) && !stage && (
-        <div className="p-4 border rounded-md flex flex-col gap-8">
-          <div className="flex items-center justify-between">
-            <p className="text-3xl font-bold">
-              {cases.find((c) => c.id === caseId)?.title}
-            </p>
-            <Link
-              href={`/olympiads/${olympiadId}?heat=${heat}&round=${round}&stage=1`}
-            >
-              <Button>Start Round</Button>
-            </Link>
-          </div>
-          <div className="p-2 pl-4 border rounded-md bg-border/50">
-            <p className="text-2xl whitespace-pre-line max-h-[60vh] pr-4 overflow-y-scroll">
-              {cases.find((c) => c.id === caseId)?.content}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {!!heat && (round === 1 || round === 2) && !!stage && (
-        <OlympiadWindow
-          olympiadId={olympiadId}
-          timers={event.timers}
-          question={
-            questions.find((q) => q.caseId === caseId)?.text ??
-            "--QUESTION NOT SET--"
-          }
-          heat={heat}
-          round={round}
-          stage={stage}
-        />
-      )}
-
-      {!!heat && round === 3 && (
-        <OlympiadScores eventId={olympiadId} heat={heat} teams={event.teams} />
-      )}
-    </>
+    <Olympiad
+      cases={cases}
+      event={event}
+      heats={template.heats}
+      questions={questions}
+      results={results}
+    />
   );
 }
