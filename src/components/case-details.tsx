@@ -26,7 +26,8 @@ export const CaseDetails = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState<string>();
+  const [content, setContent] = useState<string>();
   const [text, setText] = useState("");
 
   const reset = () => {
@@ -35,8 +36,8 @@ export const CaseDetails = ({
     setText("");
   };
 
-  const upd_case = useAction(AddOrUpdateCaseAction, { onSuccess: reset });
-  const upd_question = useAction(AddOrUpdateQuestion, { onSuccess: reset });
+  const update_case = useAction(AddOrUpdateCaseAction, { onSuccess: reset });
+  const update_question = useAction(AddOrUpdateQuestion, { onSuccess: reset });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -44,34 +45,47 @@ export const CaseDetails = ({
         <div className="text-lg font-bold text-start">{details.title}</div>
         <p className="text-sm text-muted-foreground">{details.level} Level</p>
       </DialogTrigger>
-      <DialogContent className="max-w-[60vw]">
+      <DialogContent className="max-w-[45vw]">
         <DialogHeader>
           <DialogTitle>Case Details</DialogTitle>
         </DialogHeader>
         <div className="py-8 flex flex-col gap-4">
-          <p className="px-2 text-2xl">{details.title}</p>
-          <div className="p-2 pl-4 border rounded-md bg-border/25">
-            <Textarea
-              className="text-lg h-[40vh] overflow-y-scroll border-none p-0 pr-4 focus-visible:ring-0"
-              value={content || details.content}
-              onChange={(e) => setContent(e.target.value)}
+          <div>
+            <p className="pl-2 text-sm text-muted-foreground">Title</p>
+            <Input
+              value={title || details.title || ""}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-
-          <div className="px-2">
-            <p className="text-muted-foreground">Question:</p>
+          <div>
+            <p className="pl-2 text-sm text-muted-foreground">Question</p>
             <Input
               value={text || question?.text || ""}
               onChange={(e) => setText(e.target.value)}
             />
           </div>
+          <div>
+            <p className="pl-2 text-sm text-muted-foreground">Content:</p>
+            <div className="p-2 pl-4 border rounded-md bg-accent/25">
+              <Textarea
+                className="h-[40vh] overflow-y-scroll border-none p-0 pr-4 focus-visible:ring-0"
+                value={content || details.content || ""}
+                onChange={(e) => setContent(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
         <DialogFooter>
           <Button
             onClick={() => {
-              if (content) upd_case.execute({ ...details, content });
+              if (title || content)
+                update_case.execute({
+                  ...details,
+                  title: title || details.title,
+                  content: content || details.content,
+                });
               if (text)
-                upd_question.execute(
+                update_question.execute(
                   question
                     ? { ...question, text }
                     : { caseId: details.id, text }

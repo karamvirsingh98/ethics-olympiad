@@ -55,7 +55,8 @@ export const TemplateCases = ({
               <p className="text-lg">Heat {i + 1}</p>
               <Button
                 variant="destructive"
-                size="sm"
+                className="w-6 h-6"
+                size="icon"
                 onClick={() =>
                   execute({
                     id: templateId,

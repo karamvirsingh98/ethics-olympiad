@@ -160,11 +160,23 @@ export const OlympiadScores = ({
                 }
               />
             </div>
+            <div className="px-4 py-2 border rounded-md bg-border/50 flex items-center justify-between">
+              <p className="text-xl font-bold">Total Score</p>
+              <p className="text-xl font-bold">
+                {total_score(score[side])}
+                <span className="text-sm text-muted-foreground">/60</span>
+              </p>
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
+};
+
+const total_score = (score: zOlympiadScore | undefined) => {
+  if (!score) return 0;
+  return Object.values(score).reduce((sum, num) => (sum += num), 0);
 };
 
 const TeamSelector = ({

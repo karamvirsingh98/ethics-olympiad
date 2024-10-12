@@ -17,7 +17,7 @@ import {
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
-import { AddOrUpdateCaseAction } from "@/lib/actions";
+import { AddOrUpdateCaseAction, AddOrUpdateQuestion } from "@/lib/actions";
 import { Textarea } from "./ui/textarea";
 import { LevelSelector } from "./level-selector";
 import { zOlympiadLevel } from "@/lib/entities";
@@ -25,25 +25,24 @@ import { zOlympiadLevel } from "@/lib/entities";
 export const NewCase = () => {
   const [open, setOpen] = useState(false);
 
-  const [{ title, content }, setState] = useState({ title: "", content: "" });
   const [level, setLevel] = useState<zOlympiadLevel>();
+  const [title, setTitle] = useState("");
+  const [question, setQuestion] = useState("");
+  const [content, setContent] = useState("");
 
-  const { execute, isPending } = useAction(AddOrUpdateCaseAction, {
-    onSettled: () => {
-      setState({ title: "", content: "" });
-      setLevel(undefined);
-      setOpen(false);
-    },
-  });
+  const add_case = useAction(AddOrUpdateCaseAction);
+  const add_question = useAction(AddOrUpdateQuestion);
+
+  const pending = add_case.isPending || add_question.isPending;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild disabled={isPending}>
+      <DialogTrigger asChild disabled={pending}>
         <Button>
           New Case <PlusCircledIcon className="w-4 ml-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[45vw]">
         <DialogHeader>
           <DialogTitle>Create New Case</DialogTitle>
         </DialogHeader>
@@ -54,32 +53,48 @@ export const NewCase = () => {
           </div>
           <div>
             <p className="p-1 text-sm text-muted-foreground">Case Name</p>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div>
+            <p className="p-1 text-sm text-muted-foreground">Case Question</p>
             <Input
-              value={title}
-              onChange={(e) =>
-                setState((s) => ({ ...s, title: e.target.value }))
-              }
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
             />
           </div>
           <div>
             <p className="p-1 text-sm text-muted-foreground">Case Content</p>
             <Textarea
               value={content}
-              className="h-[500px]"
-              onChange={(e) =>
-                setState((s) => ({ ...s, content: e.target.value }))
-              }
+              className="h-[30vh]"
+              onChange={(e) => setContent(e.target.value)}
             />
           </div>
         </div>
         <DialogFooter>
           <Button
             className="gap-4"
-            disabled={isPending}
-            onClick={() => level && execute({ title, content, level })}
+            disabled={pending}
+            onClick={async () => {
+              if (!level) return;
+              const caseId = (
+                await add_case.executeAsync({ title, content, level })
+              )?.data?.id;
+              if (!caseId) return;
+              await add_question.executeAsync({ caseId, text: question });
+
+              // cleanup
+              setLevel(undefined);
+              setTitle("");
+              setQuestion("");
+              setContent("");
+
+              // close the dialog
+              setOpen(false);
+            }}
           >
             Submit
-            {isPending ? (
+            {pending ? (
               <ReloadIcon className="w-4 animate-spin" />
             ) : (
               <CheckCircledIcon className="w-4" />

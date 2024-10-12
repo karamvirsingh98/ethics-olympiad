@@ -100,15 +100,18 @@ export const LoginJudgeAction = unauthenticated_action_builder
 // ==================== CASES ====================
 export const AddOrUpdateCaseAction = authenticated_action_builder
   .schema(createInsertSchema(CasesTable).omit({ userId: true }))
+  .outputSchema(z.object({ id: z.number() }))
   .action(async ({ parsedInput, ctx: { userId } }) => {
-    await db
+    const [{ id }] = await db
       .insert(CasesTable)
       .values({ ...parsedInput, userId })
       .onConflictDoUpdate({
         target: CasesTable.id,
-        set: { content: parsedInput.content },
-      });
+        set: { content: parsedInput.content, title: parsedInput.title },
+      })
+      .returning();
     revalidatePath("/cases");
+    return { id };
   });
 
 export const DeleteCaseAction = authenticated_action_builder
