@@ -18,11 +18,13 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { CreateEventAction } from "@/lib/actions";
+import { DatePicker } from "./ui/datepicker";
 
 export const NewEvent = ({ templateId }: { templateId: number }) => {
   const [open, setOpen] = useState(false);
 
   const [{ title, password }, setState] = useState({ title: "", password: "" });
+  const [date, setDate] = useState<Date>();
 
   const { execute, isPending } = useAction(CreateEventAction, {
     onSettled: () => {
@@ -44,7 +46,7 @@ export const NewEvent = ({ templateId }: { templateId: number }) => {
         </DialogHeader>
         <div className="py-4 flex flex-col gap-4">
           <div>
-            <p className="pb-1">Event Name</p>
+            <p className="pb-1 text-sm text-muted-foreground">Event Name</p>
             <Input
               value={title}
               onChange={(e) =>
@@ -53,7 +55,7 @@ export const NewEvent = ({ templateId }: { templateId: number }) => {
             />
           </div>
           <div>
-            <p className="pb-1">Event Password</p>
+            <p className="pb-1 text-sm text-muted-foreground">Event Password</p>
             <Input
               value={password}
               onChange={(e) =>
@@ -61,14 +63,23 @@ export const NewEvent = ({ templateId }: { templateId: number }) => {
               }
             />
           </div>
+          <div>
+            <p className="pb-1 text-sm text-muted-foreground">Event Date</p>
+            <DatePicker
+              date={date}
+              onSelect={(date) => !!date && setDate(date)}
+            />
+          </div>
         </div>
         <DialogFooter>
           <Button
             className="gap-4"
-            disabled={isPending}
+            disabled={isPending || !title || !password || !date}
             onClick={() =>
+              date &&
               execute({
                 templateId,
+                date,
                 title,
                 password,
                 teams: [],

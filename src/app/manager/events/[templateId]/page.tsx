@@ -4,6 +4,7 @@ import { TemplateCases } from "@/components/template-cases";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BackButton } from "@/components/back-button";
+import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
 
 export default async function TemplatePage({
   params,
@@ -57,11 +58,15 @@ export default async function TemplatePage({
               >
                 <p className="mb-4 text-lg font-semibold">{event.title}</p>
                 <div className="flex items-center gap-4">
-                  <p className="text-sm text-muted-foreground">
-                    {event.teams.length} Teams
+                  <p className="text-sm text-muted-foreground flex items-center">
+                    <CalendarIcon className="w-4 mr-2" />{" "}
+                    {new Date(event.date).toLocaleDateString()}
+                  </p>
+                  <p className="pl-4 border-l text-sm text-muted-foreground flex items-center">
+                    <LockClosedIcon className="w-4 mr-2" /> {event.password}
                   </p>
                   <p className="pl-4 border-l text-sm text-muted-foreground">
-                    Password: {event.password}
+                    {event.teams.length} Teams
                   </p>
                 </div>
               </Link>

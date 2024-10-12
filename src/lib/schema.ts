@@ -45,6 +45,7 @@ export const TemplatesTable = sqliteTable("templates", {
 export const EventsTable = sqliteTable("events", {
   id: integer("id").primaryKey(),
   templateId: integer("templateId").notNull(),
+  date: integer("date", { mode: "timestamp_ms" }).notNull(),
   title: text("title").notNull(),
   password: text("password").notNull(),
   teams: text("teams", { mode: "json" }).$type<string[]>().notNull(),
