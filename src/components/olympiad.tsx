@@ -43,13 +43,7 @@ export const Olympiad = ({
   heats: zOlympiadHeats;
 }) => {
   const [{ heat, round, stage, time }, set] = useState(DEFAULT_STATE);
-
-  //   const [time, setTime] = useState(0);
   const [started, setStarted] = useState(false);
-
-  //   useEffect(() => {
-  //     setTime(stage ? event.timers[stage - 1] * 60 : 0);
-  //   }, [event.timers, stage]);
 
   useEffect(() => {
     if (started) {
