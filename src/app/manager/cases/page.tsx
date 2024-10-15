@@ -1,8 +1,10 @@
-import { CaseDetails } from "@/components/case-details";
+import { CaseDetails } from "@/components/cases/case-details";
 import { LevelSelector } from "@/components/level-selector";
-import { NewCase } from "@/components/new-case";
+import { NewCase } from "@/components/cases/new-case";
 import { db } from "@/lib/db";
 import { zOlympiadLevel } from "@/lib/entities";
+import { parse_jwt_payload } from "@/lib/jwt";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
@@ -11,11 +13,16 @@ export default async function CasesPage({
 }: {
   searchParams: { level?: zOlympiadLevel };
 }) {
-  const cases = await db.query.CasesTable.findMany({
-    where: (table, { eq }) => (level ? eq(table.level, level) : undefined),
-  });
+  const token = cookies().get("auth-token")?.value;
+  if (!token) redirect("/");
 
-  const questions = await db.query.QuestionsTable.findMany();
+  const { userId } = parse_jwt_payload<{ userId: number }>(token);
+
+  const cases = await db.query.CasesTable.findMany({
+    where: (table, { and, eq }) =>
+      and(eq(table.userId, userId), level ? eq(table.level, level) : undefined),
+    with: { questions: { where: (table, { eq }) => eq(table.userId, userId) } },
+  });
 
   const update_level = async (level: zOlympiadLevel | "All") => {
     "use server";
@@ -38,7 +45,7 @@ export default async function CasesPage({
           <CaseDetails
             key={details.id}
             details={details}
-            question={questions.find((c) => c.caseId === details.id)}
+            question={details.questions[0]}
           />
         ))}
       </div>
