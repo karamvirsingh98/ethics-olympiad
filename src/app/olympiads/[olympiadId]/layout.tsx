@@ -1,4 +1,4 @@
-import { LoginJudge } from "@/components/login-judge";
+import { LoginJudge } from "@/components/login/login-judge";
 import { cookies } from "next/headers";
 import { ReactNode } from "react";
 

@@ -1,4 +1,4 @@
-import { LoginManager } from "@/components/login-manager";
+import { LoginManager } from "@/components/login/login-manager";
 import { verify_jwt } from "@/lib/jwt";
 import { cookies } from "next/headers";
 import { ReactNode } from "react";

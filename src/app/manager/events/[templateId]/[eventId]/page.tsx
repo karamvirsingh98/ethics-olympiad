@@ -1,7 +1,7 @@
 import { BackButton } from "@/components/back-button";
-import { EventJudges } from "@/components/event-judges";
-import { EventTeams } from "@/components/event-teams";
-import { EventTimers } from "@/components/event-timers";
+import { EventJudges } from "@/components/events/event-judges";
+import { EventTeams } from "@/components/events/event-teams";
+import { EventTimers } from "@/components/events/event-timers";
 import { db } from "@/lib/db";
 import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { redirect } from "next/navigation";
