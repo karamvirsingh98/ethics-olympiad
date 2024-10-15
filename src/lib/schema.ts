@@ -1,10 +1,16 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+  integer,
+  primaryKey,
+  sqliteTable,
+  text,
+} from "drizzle-orm/sqlite-core";
 import {
   zOlympiadHeats,
   zOlympiadLevel,
   zOlympiadScore,
   zUserRole,
 } from "./entities";
+import { relations } from "drizzle-orm";
 
 // Users
 export const UsersTable = sqliteTable("users", {
@@ -16,6 +22,13 @@ export const UsersTable = sqliteTable("users", {
   createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
+export const UserRelations = relations(UsersTable, ({ many }) => ({
+  cases: many(CasesTable),
+  questions: many(QuestionsTable),
+  events: many(EventsTable),
+  templates: many(TemplatesTable),
+}));
+
 // Cases
 export const CasesTable = sqliteTable("cases", {
   id: integer("id").primaryKey(),
@@ -24,15 +37,39 @@ export const CasesTable = sqliteTable("cases", {
   content: text("content").notNull(),
   level: text("level", { enum: zOlympiadLevel.options }).notNull(),
   createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
+  published: integer("published", { mode: "boolean" }).default(false).notNull(),
 });
 
+export const CasesRelations = relations(CasesTable, ({ one, many }) => ({
+  questions: many(QuestionsTable),
+  user: one(UsersTable, {
+    fields: [CasesTable.userId],
+    references: [UsersTable.id],
+  }),
+}));
+
 // Questions
-export const QuestionsTable = sqliteTable("questions", {
-  id: integer("id").primaryKey(),
-  userId: integer("userId").notNull(),
-  caseId: integer("caseId").notNull(),
-  text: text("text").notNull(),
-});
+export const QuestionsTable = sqliteTable(
+  "questions",
+  {
+    // id: integer("id").primaryKey(),
+    userId: integer("userId").notNull(),
+    caseId: integer("caseId").notNull(),
+    text: text("text").notNull(),
+  },
+  (table) => ({ pk: primaryKey({ columns: [table.userId, table.caseId] }) })
+);
+
+export const QuestionsRelations = relations(QuestionsTable, ({ one }) => ({
+  case: one(CasesTable, {
+    fields: [QuestionsTable.caseId],
+    references: [CasesTable.id],
+  }),
+  user: one(UsersTable, {
+    fields: [QuestionsTable.userId],
+    references: [UsersTable.id],
+  }),
+}));
 
 //  Templates
 export const TemplatesTable = sqliteTable("templates", {
@@ -43,6 +80,14 @@ export const TemplatesTable = sqliteTable("templates", {
   level: text("level", { enum: zOlympiadLevel.options }).notNull(),
   createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
+
+export const TemplateRelations = relations(TemplatesTable, ({ one, many }) => ({
+  events: many(EventsTable),
+  user: one(UsersTable, {
+    fields: [TemplatesTable.userId],
+    references: [UsersTable.id],
+  }),
+}));
 
 // Events
 export const EventsTable = sqliteTable("events", {
@@ -56,6 +101,14 @@ export const EventsTable = sqliteTable("events", {
   createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
+export const EventsRelations = relations(EventsTable, ({ one, many }) => ({
+  results: many(ResultsTable),
+  template: one(TemplatesTable, {
+    fields: [EventsTable.templateId],
+    references: [TemplatesTable.id],
+  }),
+}));
+
 // Judge Results
 export const ResultsTable = sqliteTable("results", {
   id: integer("id").primaryKey(),
@@ -67,3 +120,10 @@ export const ResultsTable = sqliteTable("results", {
   score: text("score", { mode: "json" }).$type<zOlympiadScore>().notNull(),
   createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
+
+export const ResultsRelations = relations(ResultsTable, ({ one }) => ({
+  event: one(EventsTable, {
+    fields: [ResultsTable.eventId],
+    references: [EventsTable.id],
+  }),
+}));
