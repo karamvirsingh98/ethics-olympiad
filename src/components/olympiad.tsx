@@ -208,8 +208,8 @@ export const Olympiad = ({
           </div>
           <div className="lg:px-8 min-h-[60vh] flex flex-col lg:flex-row lg:items-center justify-between">
             <p className="lg:max-w-[60%] text-5xl">
-              {questions.find((q) => q.id === caseId)?.text ??
-                "-- NO CASE SET --"}
+              {questions.find((q) => q.caseId === caseId)?.text ??
+                "-- NO QUESTION SET --"}
             </p>
             <div className="max-w-[500px]">
               <div className="text-[12em] flex items-center justify-end leading-[1]">
