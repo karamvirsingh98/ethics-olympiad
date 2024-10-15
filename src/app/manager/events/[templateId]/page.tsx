@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { NewEvent } from "@/components/new-event";
+import { NewEvent } from "@/components/events/new-event";
 import { TemplateCases } from "@/components/template-cases";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -20,13 +20,10 @@ export default async function TemplatePage({
 
   const template = await db.query.TemplatesTable.findFirst({
     where: (table, { eq }) => eq(table.id, templateId),
+    with: { events: true },
   });
 
   if (!template) return redirect("/manager/events");
-
-  const events = await db.query.EventsTable.findMany({
-    where: (table, { eq }) => eq(table.templateId, templateId),
-  });
 
   const cases = await db.query.CasesTable.findMany({
     where: (table, { eq }) => eq(table.level, template.level),
@@ -50,7 +47,7 @@ export default async function TemplatePage({
             <NewEvent templateId={templateId} />
           </div>
           <div className="grid gap-4">
-            {events.map((event) => (
+            {template.events.map((event) => (
               <Link
                 key={eventId}
                 href={`/manager/events/${templateId}/${event.id}`}
