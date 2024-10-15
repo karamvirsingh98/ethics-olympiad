@@ -8,14 +8,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import { cn } from "@/lib/utils";
-import { Slider } from "./ui/slider";
-import { Button } from "./ui/button";
+import { Slider } from "../ui/slider";
+import { Button } from "../ui/button";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
 import { SubmitResultsAction } from "@/lib/actions";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { useRouter } from "next/navigation";
 import { usePusher } from "@/lib/hooks";
 

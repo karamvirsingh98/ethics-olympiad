@@ -2,7 +2,7 @@
 
 import { UpdateEventAction } from "@/lib/actions";
 import { useAction } from "next-safe-action/hooks";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import { PlusCircledIcon, StarFilledIcon } from "@radix-ui/react-icons";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../ui/textarea";
 import { useEffect, useMemo, useState } from "react";
 import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
 import { InferSelectModel } from "drizzle-orm";
@@ -25,7 +25,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 
 export const EventTeams = ({
   eventId,

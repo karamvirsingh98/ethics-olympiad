@@ -7,10 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
 import { useAction } from "next-safe-action/hooks";
 import { AddOrUpdateCaseAction, AddOrUpdateQuestion } from "@/lib/actions";
 import { useState } from "react";

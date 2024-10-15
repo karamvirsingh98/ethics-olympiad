@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { EnterIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
 import { LoginManagerAction } from "@/lib/actions";
