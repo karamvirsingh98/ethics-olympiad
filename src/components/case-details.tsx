@@ -41,7 +41,7 @@ export const CaseDetails = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="p-4 border rounded-md flex flex-col items-start justify-between gap-4 hover:-translate-y-1 hover:bg-accent/25 transition-all">
+      <DialogTrigger className="p-4 border rounded-md flex flex-col items-start justify-between gap-4 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all">
         <div className="text-lg font-bold text-start">{details.title}</div>
         <p className="text-sm text-muted-foreground">{details.level} Level</p>
       </DialogTrigger>
