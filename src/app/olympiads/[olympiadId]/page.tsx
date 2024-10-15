@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { Olympiad } from "@/components/olympiad";
+import { Olympiad } from "@/components/olympiad/olympiad";
 
 export default async function OlympiadPage({
   params,
@@ -14,27 +14,31 @@ export default async function OlympiadPage({
 
   const event = await db.query.EventsTable.findFirst({
     where: (table, { eq }) => eq(table.id, olympiadId),
+    with: { template: true },
   });
 
   if (!event) return redirect("/olympiads");
 
-  const template = await db.query.TemplatesTable.findFirst({
-    where: (table, { eq }) => eq(table.id, event.templateId),
-  });
-
-  if (!template) return redirect("/olympiads");
-
-  const caseIds = template?.heats.reduce(
+  const caseIds = event.template?.heats.reduce(
     (arr, h) => [...arr, h.case1, h.case2],
     [] as number[]
   );
 
   const cases = await db.query.CasesTable.findMany({
     where: (table, { inArray }) => inArray(table.id, caseIds),
+    with: {
+      questions: {
+        where: (table, { eq }) => eq(table.userId, event.template.userId),
+      },
+    },
   });
 
   const questions = await db.query.QuestionsTable.findMany({
-    where: (table, { inArray }) => inArray(table.caseId, caseIds),
+    where: (table, { and, eq, inArray }) =>
+      and(
+        eq(table.userId, event.template.userId),
+        inArray(table.caseId, caseIds)
+      ),
   });
 
   const judge = cookies().get("judge-name")?.value ?? "";
@@ -48,7 +52,7 @@ export default async function OlympiadPage({
       judge={judge}
       cases={cases}
       event={event}
-      heats={template.heats}
+      heats={event.template.heats}
       questions={questions}
       results={results}
     />
