@@ -3,14 +3,14 @@
 import { zOlympiadHeats } from "@/lib/entities";
 import { CasesTable } from "@/lib/schema";
 import { InferSelectModel } from "drizzle-orm";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import { useAction } from "next-safe-action/hooks";
 import { UpdateTemplateAction } from "@/lib/actions";
 import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
