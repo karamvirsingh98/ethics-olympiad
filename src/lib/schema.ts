@@ -12,7 +12,8 @@ import {
 } from "./entities";
 import { relations } from "drizzle-orm";
 
-// Users
+// ==================== USERS ====================
+
 export const UsersTable = sqliteTable("users", {
   id: integer("id").primaryKey(),
   name: text("name").notNull(),
@@ -29,7 +30,8 @@ export const UserRelations = relations(UsersTable, ({ many }) => ({
   templates: many(TemplatesTable),
 }));
 
-// Cases
+// ==================== CASES ====================
+
 export const CasesTable = sqliteTable("cases", {
   id: integer("id").primaryKey(),
   userId: integer("userId").notNull(),
@@ -48,11 +50,11 @@ export const CasesRelations = relations(CasesTable, ({ one, many }) => ({
   }),
 }));
 
-// Questions
+// ==================== QUESTIONS ====================
+
 export const QuestionsTable = sqliteTable(
   "questions",
   {
-    // id: integer("id").primaryKey(),
     userId: integer("userId").notNull(),
     caseId: integer("caseId").notNull(),
     text: text("text").notNull(),
@@ -71,7 +73,8 @@ export const QuestionsRelations = relations(QuestionsTable, ({ one }) => ({
   }),
 }));
 
-//  Templates
+// ==================== TEMPLATES ====================
+
 export const TemplatesTable = sqliteTable("templates", {
   id: integer("id").primaryKey(),
   userId: integer("userId").notNull(),
@@ -89,7 +92,8 @@ export const TemplateRelations = relations(TemplatesTable, ({ one, many }) => ({
   }),
 }));
 
-// Events
+// ==================== EVENTS ====================
+
 export const EventsTable = sqliteTable("events", {
   id: integer("id").primaryKey(),
   templateId: integer("templateId").notNull(),
@@ -109,7 +113,8 @@ export const EventsRelations = relations(EventsTable, ({ one, many }) => ({
   }),
 }));
 
-// Judge Results
+// ==================== RESULTS ====================
+
 export const ResultsTable = sqliteTable("results", {
   id: integer("id").primaryKey(),
   eventId: integer("eventId").notNull(),

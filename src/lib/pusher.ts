@@ -2,20 +2,15 @@
 
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
-import Pusher from "pusher-js";
 import { PUSHER_FORMATS } from "./utils";
+import Pusher from "pusher-js";
 
 const pusher_atom = atom(
   new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
     authEndpoint: "/api/pusher-auth",
     authTransport: "ajax",
-    auth: {
-      headers: {
-        Accept: "application/json",
-        Authorization: "Bearer ",
-      },
-    },
+    auth: { headers: { Accept: "application/json", Authorization: "Bearer " } },
   })
 );
 

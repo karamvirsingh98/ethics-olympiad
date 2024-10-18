@@ -34,13 +34,6 @@ const authenticated_action_builder = unauthenticated_action_builder.use(
   }
 );
 
-// const PusherSender = new Pusher({
-//   appId: process.env.PUSHER_APP_ID,
-//   secret: process.env.PUSHER_SECRET,
-//   key: process.env.NEXT_PUBLIC_PUSHER_KEY,
-//   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-// });
-
 // ==================== AUTH ====================
 export const CreateUserAction = unauthenticated_action_builder
   .schema(createInsertSchema(UsersTable))
@@ -99,7 +92,6 @@ export const LoginJudgeAction = unauthenticated_action_builder
 // ==================== CASES ====================
 export const AddOrUpdateCaseAction = authenticated_action_builder
   .schema(createInsertSchema(CasesTable).omit({ userId: true }))
-  .outputSchema(z.object({ id: z.number() }))
   .action(async ({ parsedInput, ctx: { userId } }) => {
     const [{ id }] = await db
       .insert(CasesTable)
@@ -127,13 +119,13 @@ export const AddOrUpdateCaseAction = authenticated_action_builder
 // ==================== QUESTIONS ====================
 export const AddOrUpdateQuestion = authenticated_action_builder
   .schema(createInsertSchema(QuestionsTable).omit({ userId: true }))
-  .action(async ({ parsedInput, ctx: { userId } }) => {
+  .action(async ({ parsedInput: { caseId, text }, ctx: { userId } }) => {
     await db
       .insert(QuestionsTable)
-      .values({ ...parsedInput, userId })
+      .values({ userId, caseId, text })
       .onConflictDoUpdate({
-        target: QuestionsTable.id,
-        set: { text: parsedInput.text },
+        target: [QuestionsTable.caseId, QuestionsTable.userId],
+        set: { text },
       });
     revalidatePath("/manager/cases");
   });
