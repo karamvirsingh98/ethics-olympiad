@@ -2,7 +2,8 @@
 
 import { zJudgeUpdate } from "@/lib/entities";
 import { useEffect, useState } from "react";
-import { usePusher } from "@/lib/hooks";
+import { usePusher } from "@/lib/pusher";
+import { PUSHER_FORMATS } from "@/lib/utils";
 
 export const EventJudges = ({ eventId }: { eventId: number }) => {
   const [judges, setJudges] = useState<Record<string, zJudgeUpdate>>({});
@@ -12,9 +13,10 @@ export const EventJudges = ({ eventId }: { eventId: number }) => {
   useEffect(() => {
     const handler = (data: zJudgeUpdate) =>
       setJudges({ ...judges, [data.judge]: data });
-    listener.bind(`client-event-${eventId}-judge-update`, handler);
+
+    listener.bind(PUSHER_FORMATS.JUDGE_UPDATE(eventId), handler);
     return () => {
-      listener.unbind(`client-event-${eventId}-judge-update`, handler);
+      listener.unbind(PUSHER_FORMATS.JUDGE_UPDATE(eventId), handler);
     };
   });
 

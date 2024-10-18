@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
 import { InferSelectModel } from "drizzle-orm";
 import { ResultsTable } from "@/lib/schema";
-import { usePusher } from "@/lib/hooks";
+import { usePusher } from "@/lib/pusher";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { PUSHER_FORMATS } from "@/lib/utils";
 
 export const EventTeams = ({
   eventId,
@@ -45,9 +46,9 @@ export const EventTeams = ({
   const listener = usePusher(eventId);
   useEffect(() => {
     const handler = () => router.refresh();
-    listener.bind(`client-event-${eventId}-score-submission`, handler);
+    listener.bind(PUSHER_FORMATS.SCORE_SUBMISSION(eventId), handler);
     return () => {
-      listener.unbind(`client-event-${eventId}-score-submission`, handler);
+      listener.unbind(PUSHER_FORMATS.SCORE_SUBMISSION(eventId), handler);
     };
   });
 

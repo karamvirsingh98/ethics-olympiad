@@ -20,12 +20,13 @@ import {
   StarIcon,
 } from "@radix-ui/react-icons";
 import { zJudgeUpdate, zOlympiadHeats } from "@/lib/entities";
-import { OLYMPIAD_TIMER_LABELS } from "@/lib/utils";
+import { OLYMPIAD_TIMER_LABELS, PUSHER_FORMATS } from "@/lib/utils";
 import { OlympiadScores } from "./olympiad-scores";
 
-import { usePusher } from "@/lib/hooks";
+import { usePusher } from "@/lib/pusher";
 
 const DEFAULT_STATE = { heat: 0, round: 0, stage: 0, time: 0 };
+type OLYMPIAD_STATE = typeof DEFAULT_STATE;
 
 export const Olympiad = ({
   judge,
@@ -42,7 +43,10 @@ export const Olympiad = ({
   results: InferSelectModel<typeof ResultsTable>[];
   heats: zOlympiadHeats;
 }) => {
-  const [{ heat, round, stage, time }, set] = useState(DEFAULT_STATE);
+  const stored = localStorage.getItem(`olympiad-status-${event.id}`);
+  const parsed = stored ? (JSON.parse(stored) as OLYMPIAD_STATE) : undefined;
+
+  const [{ heat, round, stage, time }, set] = useState(parsed ?? DEFAULT_STATE);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
@@ -59,18 +63,18 @@ export const Olympiad = ({
 
   const pusher = usePusher(event.id);
   useEffect(() => {
-    const update: zJudgeUpdate = {
-      eventId: event.id,
-      judge,
-      heat,
-      round,
-      stage,
-      time,
-    };
+    const update: OLYMPIAD_STATE = { heat, round, stage, time };
+
+    // store update in localstorage for better resumability
+    const stringified = JSON.stringify(update);
+    localStorage.setItem(`olympiad-status-${event.id}`, stringified);
+
+    // broadcast judge update to any observing judge
+    const judgeUpdate: zJudgeUpdate = { ...update, eventId: event.id, judge };
     pusher.send_event(
-      `client-event-${event.id}-judge-update`,
-      update,
-      `private-olympiad-${event.id}`
+      PUSHER_FORMATS.JUDGE_UPDATE(event.id),
+      judgeUpdate,
+      PUSHER_FORMATS.OLYMPIAD_CHANNEL(event.id)
     );
   }, [event.id, heat, judge, pusher, round, stage, time]);
 
