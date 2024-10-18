@@ -1,4 +1,4 @@
-import { NewTemplate } from "@/components/new-template";
+import { NewTemplate } from "@/components/template/new-template";
 import { db } from "@/lib/db";
 import Link from "next/link";
 

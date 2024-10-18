@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { NewEvent } from "@/components/events/new-event";
-import { TemplateCases } from "@/components/template-cases";
+import { TemplateCases } from "@/components/template/template-cases";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BackButton } from "@/components/back-button";
