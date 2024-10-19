@@ -47,7 +47,7 @@ export const TemplateCases = ({
       {heats.map((heat, i) => {
         return (
           <div
-            key={heat.case1 + "-" + heat.case2}
+            key={i + "-" + heat.case1 + "-" + heat.case2}
             className="p-4 border rounded-md"
           >
             <div className="flex justify-between">
@@ -67,7 +67,7 @@ export const TemplateCases = ({
               </Button>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-8">
                 <p className="text-sm text-muted-foreground whitespace-nowrap">
                   Case 1:
                 </p>
@@ -81,7 +81,7 @@ export const TemplateCases = ({
                   disabled={isPending}
                 />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-8">
                 <p className="text-sm text-muted-foreground whitespace-nowrap">
                   Case 2:
                 </p>
