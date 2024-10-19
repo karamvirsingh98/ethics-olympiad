@@ -2,8 +2,8 @@ import { db } from "@/lib/db";
 import { parse_jwt_payload } from "@/lib/jwt";
 import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function ManagerPage() {
   const token = cookies().get("auth-token")?.value;
@@ -11,20 +11,15 @@ export default async function ManagerPage() {
 
   const { userId } = parse_jwt_payload<{ userId: number }>(token);
 
+  // selects events where user owns template, and event is upcoming
   const templates = await db.query.TemplatesTable.findMany({
+    columns: {},
     where: (table, { eq }) => eq(table.userId, userId),
+    with: { events: { where: (table, { gt }) => gt(table.date, new Date()) } },
   });
 
-  const events = await db.query.EventsTable.findMany({
-    where: (table, { and, gt, inArray }) =>
-      and(
-        inArray(
-          table.templateId,
-          templates.map((t) => t.id)
-        ),
-        gt(table.date, new Date())
-      ),
-  });
+  // maps selected events into a flat array of events
+  const events = templates.map((t) => t.events).flat();
 
   return (
     <>
