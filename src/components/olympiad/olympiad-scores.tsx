@@ -200,7 +200,7 @@ const TeamSelector = ({
       <SelectTrigger className="w-72 bg-background">
         <SelectValue placeholder="Select Team" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent align="end">
         {teams.map((team) => (
           <SelectItem key={team} value={team}>
             {team}
