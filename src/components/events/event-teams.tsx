@@ -11,7 +11,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { PlusCircledIcon, StarFilledIcon } from "@radix-ui/react-icons";
+import {
+  CheckCircledIcon,
+  PlusCircledIcon,
+  ReloadIcon,
+  StarFilledIcon,
+} from "@radix-ui/react-icons";
 import { Textarea } from "../ui/textarea";
 import { useEffect, useMemo, useState } from "react";
 import { zOlympiadHeats, zOlympiadScore } from "@/lib/entities";
@@ -173,13 +178,17 @@ const AddTeams = ({ eventId, teams }: { eventId: number; teams: string[] }) => {
         </DialogHeader>
         <div className="py-4">
           <Textarea
-            value={newTeams}
-            onChange={(e) => setNewTeams(e.target.value.split(","))}
+            value={newTeams?.join("\n")}
+            onChange={(e) => setNewTeams(e.target.value.split(/[,|\n]/))}
+            className="min-h-[30vh]"
+            placeholder={
+              "You can add one or more teams, but they must be separeted on new lines. For Example:\n\nXYZ School Team 1\nXYZ School Team 2\nABC School\netc."
+            }
           />
         </div>
         <DialogFooter>
           <Button
-            disabled={!newTeams}
+            disabled={!newTeams || isPending}
             onClick={() =>
               newTeams &&
               execute({
@@ -192,6 +201,11 @@ const AddTeams = ({ eventId, teams }: { eventId: number; teams: string[] }) => {
             }
           >
             Confirm
+            {isPending ? (
+              <ReloadIcon className="w-4 ml-4 animate-spin" />
+            ) : (
+              <CheckCircledIcon className="w-4 ml-4 " />
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
