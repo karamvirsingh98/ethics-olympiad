@@ -16,6 +16,7 @@ import { AddOrUpdateCaseAction, AddOrUpdateQuestion } from "@/lib/actions";
 import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { CasesTable, QuestionsTable } from "@/lib/schema";
+import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 
 export const CaseDetails = ({
   details,
@@ -77,6 +78,7 @@ export const CaseDetails = ({
         </div>
         <DialogFooter>
           <Button
+            disabled={!title && !content && !text}
             onClick={() => {
               if (title || content)
                 update_case.execute({
@@ -93,6 +95,11 @@ export const CaseDetails = ({
             }}
           >
             Save Changes
+            {update_case.isPending || update_question.isPending ? (
+              <ReloadIcon className="w-4 ml-4 animate-spin" />
+            ) : (
+              <CheckCircledIcon className="w-4 ml-4" />
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
