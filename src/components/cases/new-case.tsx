@@ -5,7 +5,7 @@ import {
   PlusCircledIcon,
   ReloadIcon,
 } from "@radix-ui/react-icons";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
@@ -13,13 +13,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
 import { useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { AddOrUpdateCaseAction, AddOrUpdateQuestion } from "@/lib/actions";
-import { Textarea } from "./ui/textarea";
-import { LevelSelector } from "./level-selector";
+import { Textarea } from "../ui/textarea";
+import { LevelSelector } from "../level-selector";
 import { zOlympiadLevel } from "@/lib/entities";
 
 export const NewCase = () => {

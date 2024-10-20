@@ -7,15 +7,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
 import { useAction } from "next-safe-action/hooks";
 import { AddOrUpdateCaseAction, AddOrUpdateQuestion } from "@/lib/actions";
 import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { CasesTable, QuestionsTable } from "@/lib/schema";
+import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 
 export const CaseDetails = ({
   details,
@@ -41,7 +42,7 @@ export const CaseDetails = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="p-4 border rounded-md flex flex-col items-start justify-between gap-4 hover:-translate-y-1 hover:bg-accent/25 transition-all">
+      <DialogTrigger className="p-4 border rounded-md flex flex-col items-start justify-between gap-4 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all">
         <div className="text-lg font-bold text-start">{details.title}</div>
         <p className="text-sm text-muted-foreground">{details.level} Level</p>
       </DialogTrigger>
@@ -77,6 +78,7 @@ export const CaseDetails = ({
         </div>
         <DialogFooter>
           <Button
+            disabled={!title && !content && !text}
             onClick={() => {
               if (title || content)
                 update_case.execute({
@@ -93,6 +95,11 @@ export const CaseDetails = ({
             }}
           >
             Save Changes
+            {update_case.isPending || update_question.isPending ? (
+              <ReloadIcon className="w-4 ml-4 animate-spin" />
+            ) : (
+              <CheckCircledIcon className="w-4 ml-4" />
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

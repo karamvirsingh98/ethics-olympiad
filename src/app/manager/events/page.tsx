@@ -1,9 +1,18 @@
-import { NewTemplate } from "@/components/new-template";
+import { NewTemplate } from "@/components/template/new-template";
 import { db } from "@/lib/db";
+import { parse_jwt_payload } from "@/lib/jwt";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function ManagerEventsPage() {
-  const templates = await db.query.TemplatesTable.findMany();
+  const token = cookies().get("auth-token")?.value;
+  if (!token) redirect("/");
+  const { userId } = parse_jwt_payload<{ userId: number }>(token);
+
+  const templates = await db.query.TemplatesTable.findMany({
+    where: (table, { eq }) => eq(table.userId, userId),
+  });
 
   return (
     <>

@@ -2,7 +2,7 @@
 
 import { UpdateEventAction } from "@/lib/actions";
 import { useAction } from "next-safe-action/hooks";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { OLYMPIAD_TIMER_LABELS } from "@/lib/utils";
 

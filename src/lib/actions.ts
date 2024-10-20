@@ -34,13 +34,6 @@ const authenticated_action_builder = unauthenticated_action_builder.use(
   }
 );
 
-// const PusherSender = new Pusher({
-//   appId: process.env.PUSHER_APP_ID,
-//   secret: process.env.PUSHER_SECRET,
-//   key: process.env.NEXT_PUBLIC_PUSHER_KEY,
-//   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-// });
-
 // ==================== AUTH ====================
 export const CreateUserAction = unauthenticated_action_builder
   .schema(createInsertSchema(UsersTable))
@@ -99,7 +92,6 @@ export const LoginJudgeAction = unauthenticated_action_builder
 // ==================== CASES ====================
 export const AddOrUpdateCaseAction = authenticated_action_builder
   .schema(createInsertSchema(CasesTable).omit({ userId: true }))
-  .outputSchema(z.object({ id: z.number() }))
   .action(async ({ parsedInput, ctx: { userId } }) => {
     const [{ id }] = await db
       .insert(CasesTable)
@@ -127,13 +119,13 @@ export const AddOrUpdateCaseAction = authenticated_action_builder
 // ==================== QUESTIONS ====================
 export const AddOrUpdateQuestion = authenticated_action_builder
   .schema(createInsertSchema(QuestionsTable).omit({ userId: true }))
-  .action(async ({ parsedInput, ctx: { userId } }) => {
+  .action(async ({ parsedInput: { caseId, text }, ctx: { userId } }) => {
     await db
       .insert(QuestionsTable)
-      .values({ ...parsedInput, userId })
+      .values({ userId, caseId, text })
       .onConflictDoUpdate({
-        target: QuestionsTable.id,
-        set: { text: parsedInput.text },
+        target: [QuestionsTable.caseId, QuestionsTable.userId],
+        set: { text },
       });
     revalidatePath("/manager/cases");
   });
@@ -188,7 +180,7 @@ export const CreateEventAction = authenticated_action_builder
   )
   .action(async ({ parsedInput }) => {
     await db.insert(EventsTable).values(parsedInput);
-    revalidatePath(`/manager/events`);
+    revalidatePath(`/manager/events/` + parsedInput.templateId);
   });
 
 export const UpdateEventAction = authenticated_action_builder
@@ -201,11 +193,13 @@ export const UpdateEventAction = authenticated_action_builder
       .required({ id: true })
   )
   .action(async ({ parsedInput }) => {
-    await db
+    const [{ templateId }] = await db
       .update(EventsTable)
       .set(parsedInput)
-      .where(eq(EventsTable.id, parsedInput.id));
-    revalidatePath(`/manager/events`);
+      .where(eq(EventsTable.id, parsedInput.id))
+      .returning({ templateId: EventsTable.templateId });
+
+    revalidatePath(`/manager/events/${templateId}/${parsedInput.id}`);
   });
 
 // export const DeleteEventAction = authenticated_action_builder
@@ -223,9 +217,12 @@ export const SubmitResultsAction = unauthenticated_action_builder
     if (!judge) throw new Error("judge not found");
 
     const values = parsedInput.map((p) => ({ ...p, judge }));
-    await db.insert(ResultsTable).values(values);
+    const [{ eventId }] = await db
+      .insert(ResultsTable)
+      .values(values)
+      .returning({ eventId: ResultsTable.eventId });
 
-    revalidatePath("/olympiads");
+    revalidatePath("/olympiads/" + eventId);
   });
 
 // export const DeleteResultAction = authenticated_action_builder

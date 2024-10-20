@@ -8,16 +8,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
-import { cn } from "@/lib/utils";
-import { Slider } from "./ui/slider";
-import { Button } from "./ui/button";
+} from "../ui/select";
+import { cn, PUSHER_FORMATS } from "@/lib/utils";
+import { Slider } from "../ui/slider";
+import { Button } from "../ui/button";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
 import { SubmitResultsAction } from "@/lib/actions";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { useRouter } from "next/navigation";
-import { usePusher } from "@/lib/hooks";
+import { usePusher } from "@/lib/pusher";
 
 const DEFAULT: zOlympiadScore = {
   centrality: 0,
@@ -59,9 +59,9 @@ export const OlympiadScores = ({
   const { execute, isPending } = useAction(SubmitResultsAction, {
     onSuccess: () => {
       pusher.send_event(
-        `client-event-${eventId}-score-submission`,
+        PUSHER_FORMATS.SCORE_SUBMISSION(eventId),
         "",
-        `private-olympiad-${eventId}`
+        PUSHER_FORMATS.OLYMPIAD_CHANNEL(eventId)
       );
       router.push(`/olympiads/${eventId}`);
     },
@@ -200,7 +200,7 @@ const TeamSelector = ({
       <SelectTrigger className="w-72 bg-background">
         <SelectValue placeholder="Select Team" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent align="end">
         {teams.map((team) => (
           <SelectItem key={team} value={team}>
             {team}

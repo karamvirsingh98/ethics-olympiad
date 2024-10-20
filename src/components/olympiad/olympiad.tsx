@@ -8,7 +8,7 @@ import {
 } from "@/lib/schema";
 import { InferSelectModel } from "drizzle-orm";
 import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   CaretLeftIcon,
   CaretRightIcon,
@@ -20,12 +20,13 @@ import {
   StarIcon,
 } from "@radix-ui/react-icons";
 import { zJudgeUpdate, zOlympiadHeats } from "@/lib/entities";
-import { OLYMPIAD_TIMER_LABELS } from "@/lib/utils";
+import { OLYMPIAD_TIMER_LABELS, PUSHER_FORMATS } from "@/lib/utils";
 import { OlympiadScores } from "./olympiad-scores";
 
-import { usePusher } from "@/lib/hooks";
+import { usePusher } from "@/lib/pusher";
 
 const DEFAULT_STATE = { heat: 0, round: 0, stage: 0, time: 0 };
+type OLYMPIAD_STATE = typeof DEFAULT_STATE;
 
 export const Olympiad = ({
   judge,
@@ -42,7 +43,10 @@ export const Olympiad = ({
   results: InferSelectModel<typeof ResultsTable>[];
   heats: zOlympiadHeats;
 }) => {
-  const [{ heat, round, stage, time }, set] = useState(DEFAULT_STATE);
+  const stored = localStorage.getItem(`olympiad-status-${event.id}`);
+  const parsed = stored ? (JSON.parse(stored) as OLYMPIAD_STATE) : undefined;
+
+  const [{ heat, round, stage, time }, set] = useState(parsed ?? DEFAULT_STATE);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
@@ -59,19 +63,18 @@ export const Olympiad = ({
 
   const pusher = usePusher(event.id);
   useEffect(() => {
-    const update: zJudgeUpdate = {
-      eventId: event.id,
-      judge,
-      heat,
-      round,
-      stage,
-      time,
-    };
-    console.log(update);
+    const update: OLYMPIAD_STATE = { heat, round, stage, time };
+
+    // store update in localstorage for better resumability
+    const stringified = JSON.stringify(update);
+    localStorage.setItem(`olympiad-status-${event.id}`, stringified);
+
+    // broadcast judge update to any observing judge
+    const judgeUpdate: zJudgeUpdate = { ...update, eventId: event.id, judge };
     pusher.send_event(
-      `client-event-${event.id}-judge-update`,
-      update,
-      `private-olympiad-${event.id}`
+      PUSHER_FORMATS.JUDGE_UPDATE(event.id),
+      judgeUpdate,
+      PUSHER_FORMATS.OLYMPIAD_CHANNEL(event.id)
     );
   }, [event.id, heat, judge, pusher, round, stage, time]);
 
@@ -159,57 +162,30 @@ export const Olympiad = ({
 
       {!!heat && (round === 1 || round === 2) && !!stage && (
         <div className="p-4 border rounded-md flex lg:flex-col gap-8">
-          <div className="flex flex-col pr-8 border-r lg:pr-0 lgborder-r-0 lg:flex-row items-center justify-between">
-            {/* back button */}
-            <Button
-              variant="outline"
-              className="w-36 justify-between"
-              onClick={() =>
-                set({
-                  heat,
-                  round,
-                  stage: stage - 1,
-                  time: stage <= 1 ? 0 : event.timers[stage - 2] * 60,
-                })
-              }
-            >
-              <CaretLeftIcon className="w-4" />
-              Back
-            </Button>
-
-            {/* labels */}
-            <div className="flex flex-col gap-4 lg:flex-row lg:gap-0 items-center">
-              {OLYMPIAD_TIMER_LABELS.map((label, i) => (
-                <Button
-                  key={label + i}
-                  className="w-32 pointer-events-none"
-                  variant={stage === i + 1 ? "secondary" : "ghost"}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
-
-            <Button
-              variant="outline"
-              className="w-36 justify-between"
-              onClick={() =>
-                set({
-                  heat,
-                  round: stage === 7 ? round + 1 : round,
-                  stage: stage === 7 ? 0 : stage + 1,
-                  time: stage === 7 ? 0 : event.timers[stage] * 60,
-                })
-              }
-            >
-              {stage === 7 ? (round === 2 ? "End Heat" : "Next Stage") : "Next"}
-              <CaretRightIcon className="w-4" />
-            </Button>
-          </div>
+          <OlympiadStages
+            round={round}
+            stage={stage}
+            onBack={() =>
+              set({
+                heat,
+                round,
+                stage: stage - 1,
+                time: stage <= 1 ? 0 : event.timers[stage - 2] * 60,
+              })
+            }
+            onNext={() =>
+              set({
+                heat,
+                round: stage === 7 ? round + 1 : round,
+                stage: stage === 7 ? 0 : stage + 1,
+                time: stage === 7 ? 0 : event.timers[stage] * 60,
+              })
+            }
+          />
           <div className="lg:px-8 min-h-[60vh] flex flex-col lg:flex-row lg:items-center justify-between">
             <p className="lg:max-w-[60%] text-5xl">
-              {questions.find((q) => q.id === caseId)?.text ??
-                "-- NO CASE SET --"}
+              {questions.find((q) => q.caseId === caseId)?.text ??
+                "-- NO QUESTION SET --"}
             </p>
             <div className="max-w-[500px]">
               <div className="text-[12em] flex items-center justify-end leading-[1]">
@@ -257,3 +233,41 @@ export const Olympiad = ({
     </>
   );
 };
+
+const OlympiadStages = ({
+  round,
+  stage,
+  onBack,
+  onNext,
+}: {
+  round: number;
+  stage: number;
+  onBack: () => void;
+  onNext: () => void;
+}) => (
+  <div className="flex flex-col pr-8 border-r lg:pr-0 lgborder-r-0 lg:flex-row items-center justify-between">
+    {/* back button */}
+    <Button variant="outline" className="w-36 justify-between" onClick={onBack}>
+      <CaretLeftIcon className="w-4" />
+      Back
+    </Button>
+
+    {/* labels */}
+    <div className="flex flex-col gap-4 lg:flex-row lg:gap-0 items-center">
+      {OLYMPIAD_TIMER_LABELS.map((label, i) => (
+        <Button
+          key={label + i}
+          className="w-32 pointer-events-none"
+          variant={stage === i + 1 ? "secondary" : "ghost"}
+        >
+          {label}
+        </Button>
+      ))}
+    </div>
+
+    <Button variant="outline" className="w-36 justify-between" onClick={onNext}>
+      {stage === 7 ? (round === 2 ? "End Heat" : "Next Stage") : "Next"}
+      <CaretRightIcon className="w-4" />
+    </Button>
+  </div>
+);
