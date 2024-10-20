@@ -13,6 +13,7 @@ import {
 } from "../ui/dialog";
 import {
   CheckCircledIcon,
+  CrossCircledIcon,
   PlusCircledIcon,
   ReloadIcon,
   StarFilledIcon,
@@ -66,6 +67,8 @@ export const EventTeams = ({
     [results]
   );
 
+  const { execute, isPending } = useAction(UpdateEventAction);
+
   return (
     <div className="w-full flex flex-col gap-4 p-4 border rounded-md h-fit">
       <div className="mb-4 flex justify-between">
@@ -86,17 +89,18 @@ export const EventTeams = ({
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <div className="px-4 border border-transparent text-xs text-muted-foreground flex items-center justify-between">
-          Team Name
+        <div className="px-4 pb-2 flex items-center justify-between text-sm text-muted-foreground">
+          <p className="pl-10">Team Name</p>
           <div className="flex items-center gap-4">
             {heats.map((_, i) => (
-              <p key={i} className="w-14 pr-4 border-r">
+              <p key={i} className="w-14 pr-4 border-r whitespace-nowrap">
                 Heat {i + 1}
               </p>
             ))}
-            <p className="w-16">Total</p>
+            <p className="w-16 text-right">Total</p>
           </div>
         </div>
+
         {teams
           .sort((a, b) => {
             if (sorting === "a-z") return a > b ? 1 : -1;
@@ -110,38 +114,29 @@ export const EventTeams = ({
             return (
               <div
                 key={team}
-                className="px-4 py-2 border rounded-md flex items-center justify-between odd:bg-accent/25"
+                className="pl-2 pr-4 py-2 border rounded-md flex items-center justify-between odd:bg-accent/25"
               >
-                {team}
                 <div className="flex items-center gap-4">
-                  {heats.map((_, i) => {
-                    const result = team_results.find((r) => r.heat === i + 1);
-                    return (
-                      <p
-                        key={i}
-                        className="w-14 pr-4 border-r flex items-center justify-between"
-                      >
-                        {total_score(result?.score)}
-                        {result?.honorable && (
-                          <StarFilledIcon className="w-3 text-yellow-500" />
-                        )}
-                      </p>
-                    );
-                  })}
-
-                  {/* total score */}
-                  <div className="w-16 flex items-center justify-between">
-                    <p>
-                      {team_totals[team]}
-                      <span className="text-muted-foreground text-sm">
-                        /{heats.length * 60}
-                      </span>
-                    </p>
-                    {team_results.some((r) => r.honorable === true) && (
-                      <StarFilledIcon className="w-3 text-yellow-500" />
-                    )}
-                  </div>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    disabled={isPending || team_results.length > 0}
+                    onClick={() =>
+                      execute({
+                        id: eventId,
+                        teams: teams.filter((t) => t !== team),
+                      })
+                    }
+                  >
+                    <CrossCircledIcon className="w-4" />
+                  </Button>
+                  {team}
                 </div>
+                <TeamScores
+                  heats={heats}
+                  results={team_results}
+                  total={team_totals[team]}
+                />
               </div>
             );
           })}
@@ -149,6 +144,40 @@ export const EventTeams = ({
     </div>
   );
 };
+
+const TeamScores = ({
+  heats,
+  results,
+  total,
+}: {
+  heats: zOlympiadHeats;
+  results: InferSelectModel<typeof ResultsTable>[];
+  total: number;
+}) => (
+  <div className="flex items-center gap-4">
+    {heats.map((_, i) => {
+      const result = results.find((r) => r.heat === i + 1);
+      return (
+        <p
+          key={i}
+          className="w-14 pr-4 border-r flex items-center justify-between"
+        >
+          {total_score(result?.score)}
+          {result?.honorable && (
+            <StarFilledIcon className="w-3 text-yellow-500" />
+          )}
+        </p>
+      );
+    })}
+    <div className="w-16 flex items-center justify-between">
+      <p>{total}</p>
+      <p className="text-sm text-muted-foreground">/{heats.length * 60}</p>
+      {results.some((r) => r.honorable === true) && (
+        <StarFilledIcon className="w-3 text-yellow-500" />
+      )}
+    </div>
+  </div>
+);
 
 const total_score = (score: zOlympiadScore | undefined) => {
   if (!score) return 0;
