@@ -180,7 +180,7 @@ export const CreateEventAction = authenticated_action_builder
   )
   .action(async ({ parsedInput }) => {
     await db.insert(EventsTable).values(parsedInput);
-    revalidatePath(`/manager/events`);
+    revalidatePath(`/manager/events/` + parsedInput.templateId);
   });
 
 export const UpdateEventAction = authenticated_action_builder
@@ -193,11 +193,13 @@ export const UpdateEventAction = authenticated_action_builder
       .required({ id: true })
   )
   .action(async ({ parsedInput }) => {
-    await db
+    const [{ templateId }] = await db
       .update(EventsTable)
       .set(parsedInput)
-      .where(eq(EventsTable.id, parsedInput.id));
-    revalidatePath(`/manager/events`);
+      .where(eq(EventsTable.id, parsedInput.id))
+      .returning({ templateId: EventsTable.templateId });
+
+    revalidatePath(`/manager/events/${templateId}/${parsedInput.id}`);
   });
 
 // export const DeleteEventAction = authenticated_action_builder
@@ -215,9 +217,12 @@ export const SubmitResultsAction = unauthenticated_action_builder
     if (!judge) throw new Error("judge not found");
 
     const values = parsedInput.map((p) => ({ ...p, judge }));
-    await db.insert(ResultsTable).values(values);
+    const [{ eventId }] = await db
+      .insert(ResultsTable)
+      .values(values)
+      .returning({ eventId: ResultsTable.eventId });
 
-    revalidatePath("/olympiads");
+    revalidatePath("/olympiads/" + eventId);
   });
 
 // export const DeleteResultAction = authenticated_action_builder
