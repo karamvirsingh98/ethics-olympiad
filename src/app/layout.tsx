@@ -9,9 +9,12 @@ import { cookies } from "next/headers";
 import { verify_jwt } from "@/lib/jwt";
 import { ProgressBar } from "@/components/progressbar";
 
-const font = Font({ subsets: ["latin"] });
 export const metadata: Metadata = { title: "Ethics Olympiad App" };
 export const runtime = "edge";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const font = Font({ subsets: ["latin"] });
 
 export default async function RootLayout({
   children,
