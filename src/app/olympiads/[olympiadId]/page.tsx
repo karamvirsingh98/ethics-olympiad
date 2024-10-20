@@ -9,15 +9,20 @@ export default async function OlympiadPage({
   params: { olympiadId: string };
 }) {
   const olympiadId = Number(params.olympiadId);
+  if (!olympiadId) return redirect("/");
 
-  if (!olympiadId) return redirect("/olympiads");
+  const judge = cookies().get("judge-name")?.value ?? "";
+  if (!judge) return redirect("/");
 
   const event = await db.query.EventsTable.findFirst({
     where: (table, { eq }) => eq(table.id, olympiadId),
-    with: { template: true },
+    with: {
+      template: true,
+      results: { where: (table, { eq }) => eq(table.judge, judge) },
+    },
   });
 
-  if (!event) return redirect("/olympiads");
+  if (!event) return redirect("/");
 
   const caseIds = event.template?.heats.reduce(
     (arr, h) => [...arr, h.case1, h.case2],
@@ -33,28 +38,14 @@ export default async function OlympiadPage({
     },
   });
 
-  const questions = await db.query.QuestionsTable.findMany({
-    where: (table, { and, eq, inArray }) =>
-      and(
-        eq(table.userId, event.template.userId),
-        inArray(table.caseId, caseIds)
-      ),
-  });
-
-  const judge = cookies().get("judge-name")?.value ?? "";
-  const results = await db.query.ResultsTable.findMany({
-    where: (table, { eq, and }) =>
-      and(eq(table.eventId, olympiadId), eq(table.judge, judge)),
-  });
-
   return (
     <Olympiad
       judge={judge}
       cases={cases}
       event={event}
       heats={event.template.heats}
-      questions={questions}
-      results={results}
+      results={event.results}
+      questions={cases.map((c) => c.questions[0])}
     />
   );
 }

@@ -8,8 +8,10 @@ export default async function Home() {
   const token = cookies().get("auth-token")?.value;
   if (await verify_jwt(token)) redirect("/manager");
 
-  const templates = await db.query.TemplatesTable.findMany();
-  const olympiads = await db.query.EventsTable.findMany();
+  const olympiads = await db.query.EventsTable.findMany({
+    columns: { id: true, title: true },
+    with: { template: { columns: { title: true, level: true } } },
+  });
 
   return (
     <>
@@ -17,22 +19,21 @@ export default async function Home() {
         Welcome to the Ethics Olympiad App!
       </h1>
       <div className="grid lg:grid-cols-3 gap-4">
-        {olympiads.map((olympiad) => {
-          const template = templates.find((t) => t.id === olympiad.templateId);
-          return (
-            <Link
-              key={olympiad.id}
-              href={`/olympiads/${olympiad.id}`}
-              className="p-4 border rounded-md hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all"
-            >
-              <p className="mb-4 text-lg font-bold">{olympiad.title}</p>
-              <p className="text-sm text-muted-foreground">{template?.title}</p>
-              <p className="text-sm text-muted-foreground">
-                {template?.level} Level
-              </p>
-            </Link>
-          );
-        })}
+        {olympiads.map((olympiad) => (
+          <Link
+            key={olympiad.id}
+            href={`/olympiads/${olympiad.id}`}
+            className="p-4 border rounded-md hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all"
+          >
+            <p className="mb-4 text-lg font-bold">{olympiad.title}</p>
+            <p className="text-sm text-muted-foreground">
+              {olympiad.template.title}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {olympiad.template.level} Level
+            </p>
+          </Link>
+        ))}
       </div>
     </>
   );
