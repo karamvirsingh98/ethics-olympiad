@@ -13,7 +13,7 @@ import {
 } from "../ui/select";
 import { useAction } from "next-safe-action/hooks";
 import { UpdateTemplateAction } from "@/lib/actions";
-import { MinusCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import { CrossCircledIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 
 export const TemplateCases = ({
   templateId,
@@ -48,12 +48,12 @@ export const TemplateCases = ({
         return (
           <div
             key={i + "-" + heat.case1 + "-" + heat.case2}
-            className="p-4 border rounded-md"
+            className="border rounded-md"
           >
-            <div className="flex justify-between">
-              <p className="text-lg mb-4 ">Heat {i + 1}</p>
+            <div className="bg-primary/5 p-4 border-b flex justify-between">
+              <p className="font-bold">Heat {i + 1}</p>
               <Button
-                variant="destructive"
+                variant="ghost"
                 className="w-6 h-6"
                 size="icon"
                 onClick={() =>
@@ -63,12 +63,12 @@ export const TemplateCases = ({
                   })
                 }
               >
-                <MinusCircledIcon className="w-4" />
+                <CrossCircledIcon className="w-4 stroke-red-500" />
               </Button>
             </div>
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-8">
-                <p className="text-sm text-muted-foreground whitespace-nowrap">
+            <div className="p-4 grid grid-cols-2 gap-4">
+              <div>
+                <p className="pl-2 pb-2 text-xs text-muted-foreground whitespace-nowrap">
                   Case 1:
                 </p>
                 <CaseSelector
@@ -81,8 +81,8 @@ export const TemplateCases = ({
                   disabled={isPending}
                 />
               </div>
-              <div className="flex items-center gap-8">
-                <p className="text-sm text-muted-foreground whitespace-nowrap">
+              <div>
+                <p className="pl-2 pb-2 text-xs text-muted-foreground whitespace-nowrap">
                   Case 2:
                 </p>
                 <CaseSelector
