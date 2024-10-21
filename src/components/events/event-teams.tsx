@@ -88,19 +88,18 @@ export const EventTeams = ({
           <AddTeams eventId={eventId} teams={teams} />
         </div>
       </div>
-      <div className="flex flex-col gap-2">
-        <div className="px-4 pb-2 flex items-center justify-between text-sm text-muted-foreground">
-          <p className="pl-10">Team Name</p>
+      <div className="relative flex flex-col gap-4 max-h-[60vh] overflow-y-scroll pr-2">
+        <div className="px-4 py-2 flex items-center justify-between text-sm text-muted-foreground sticky top-0 bg-accent z-10">
+          <p>Team</p>
           <div className="flex items-center gap-4">
             {heats.map((_, i) => (
-              <p key={i} className="w-14 pr-4 border-r whitespace-nowrap">
+              <p key={i} className="w-16 pr-4 border-r whitespace-nowrap">
                 Heat {i + 1}
               </p>
             ))}
             <p className="w-16 text-right">Total</p>
           </div>
         </div>
-
         {teams
           .sort((a, b) => {
             if (sorting === "a-z") return a > b ? 1 : -1;
@@ -114,7 +113,7 @@ export const EventTeams = ({
             return (
               <div
                 key={team}
-                className="pl-2 pr-4 py-2 border rounded-md flex items-center justify-between odd:bg-accent/25"
+                className="pl-2 pr-4 py-2 border rounded-md flex items-center justify-between gap-8 odd:bg-accent/25"
               >
                 <div className="flex items-center gap-4">
                   <Button
@@ -130,7 +129,7 @@ export const EventTeams = ({
                   >
                     <CrossCircledIcon className="w-4" />
                   </Button>
-                  {team}
+                  <p className="text-sm  max-w-64">{team}</p>
                 </div>
                 <TeamScores
                   heats={heats}
@@ -160,7 +159,7 @@ const TeamScores = ({
       return (
         <p
           key={i}
-          className="w-14 pr-4 border-r flex items-center justify-between"
+          className="w-16 pr-4 border-r flex items-center justify-between"
         >
           {total_score(result?.score)}
           {result?.honorable && (
