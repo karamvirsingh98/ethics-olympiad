@@ -1,4 +1,5 @@
 import { BackButton } from "@/components/back-button";
+import { LocaleDateString } from "@/components/date-formatters";
 import { EventJudges } from "@/components/events/event-judges";
 import { EventTeams } from "@/components/events/event-teams";
 import { EventTimers } from "@/components/events/event-timers";
@@ -29,7 +30,7 @@ export default async function EventPage({
         <div className="flex gap-4 text-sm text-muted-foreground">
           <div className="px-4 py-1 border rounded-md flex items-center">
             <CalendarIcon className="mr-4" />
-            {event.date.toLocaleDateString()}
+            <LocaleDateString date={event.date} />
           </div>
           <div className="px-4 py-1 border rounded-md flex items-center">
             <LockClosedIcon className="mr-4" />

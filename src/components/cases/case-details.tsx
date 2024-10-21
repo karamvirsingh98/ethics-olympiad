@@ -17,6 +17,7 @@ import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { CasesTable, QuestionsTable } from "@/lib/schema";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { LocaleDateString } from "../date-formatters";
 
 export const CaseDetails = ({
   details,
@@ -46,7 +47,9 @@ export const CaseDetails = ({
         <div className="text-lg font-bold text-start">{details.title}</div>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <p className="pr-4 border-r">{details.level} Level</p>
-          <p>Created: {details.createdAt.toLocaleDateString()}</p>
+          <p>
+            Created: <LocaleDateString date={details.createdAt} />
+          </p>
         </div>
       </DialogTrigger>
       <DialogContent className="max-w-[45vw]">

@@ -2,9 +2,10 @@ import { db } from "@/lib/db";
 import { NewEvent } from "@/components/events/new-event";
 import { TemplateCases } from "@/components/template/template-cases";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { BackButton } from "@/components/back-button";
 import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
+import { LocaleDateString } from "@/components/date-formatters";
+import Link from "next/link";
 
 export default async function TemplatePage({
   params,
@@ -57,7 +58,7 @@ export default async function TemplatePage({
                 <div className="flex items-center gap-4">
                   <p className="text-sm text-muted-foreground flex items-center">
                     <CalendarIcon className="w-4 mr-2" />{" "}
-                    {event.date.toLocaleDateString()}
+                    <LocaleDateString date={event.date} />
                   </p>
                   <p className="pl-4 border-l text-sm text-muted-foreground flex items-center">
                     <LockClosedIcon className="w-4 mr-2" /> {event.password}
