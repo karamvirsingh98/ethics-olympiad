@@ -17,6 +17,7 @@ import { useState } from "react";
 import { InferSelectModel } from "drizzle-orm";
 import { CasesTable, QuestionsTable } from "@/lib/schema";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { LocaleDateString } from "../date-formatters";
 
 export const CaseDetails = ({
   details,
@@ -44,7 +45,12 @@ export const CaseDetails = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="p-4 border rounded-md flex flex-col items-start justify-between gap-4 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all">
         <div className="text-lg font-bold text-start">{details.title}</div>
-        <p className="text-sm text-muted-foreground">{details.level} Level</p>
+        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <p className="pr-4 border-r">{details.level} Level</p>
+          <p>
+            Created: <LocaleDateString date={details.createdAt} />
+          </p>
+        </div>
       </DialogTrigger>
       <DialogContent className="max-w-[45vw]">
         <DialogHeader>
@@ -69,7 +75,7 @@ export const CaseDetails = ({
             <p className="pl-2 text-sm text-muted-foreground">Content:</p>
             <div className="p-2 pl-4 border rounded-md bg-accent/25">
               <Textarea
-                className="h-[40vh] overflow-y-scroll border-none p-0 pr-4 focus-visible:ring-0"
+                className="h-[40vh] overflow-y-scroll border-none p-0 pr-4 focus-visible:ring-0 shadow-none"
                 value={content || details.content || ""}
                 onChange={(e) => setContent(e.target.value)}
               />

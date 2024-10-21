@@ -4,6 +4,7 @@ import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { LocaleDateString } from "@/components/date-formatters";
 
 export default async function ManagerPage() {
   const token = cookies().get("auth-token")?.value;
@@ -35,7 +36,7 @@ export default async function ManagerPage() {
             <div className="flex items-center gap-4">
               <p className="text-sm text-muted-foreground flex items-center">
                 <CalendarIcon className="w-4 mr-2" />{" "}
-                {event.date.toLocaleDateString()}
+                <LocaleDateString date={event.date} />
               </p>
               <p className="pl-4 border-l text-sm text-muted-foreground flex items-center">
                 <LockClosedIcon className="w-4 mr-2" /> {event.password}

@@ -38,8 +38,12 @@ export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
         <div className="flex gap-2">
           <ThemeToggle />
           {authenticated ? (
-            <Button variant="outline" onClick={() => LogoutManagerAction()}>
-              Log Out <ExitIcon className="w-4 ml-4" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => LogoutManagerAction()}
+            >
+              <ExitIcon />
             </Button>
           ) : (
             path === "/" && (

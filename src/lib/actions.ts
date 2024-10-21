@@ -159,7 +159,8 @@ export const UpdateTemplateAction = authenticated_action_builder
       .update(TemplatesTable)
       .set(parsedInput)
       .where(eq(TemplatesTable.id, parsedInput.id));
-    revalidatePath("/manager/events");
+
+    revalidatePath("/manager/events/" + parsedInput.id);
   });
 
 // export const DeleteTemplateAction = authenticated_action_builder
@@ -192,7 +193,15 @@ export const UpdateEventAction = authenticated_action_builder
       .partial()
       .required({ id: true })
   )
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx: { userId } }) => {
+    const event = await db.query.EventsTable.findFirst({
+      where: (table, { eq }) => eq(table.id, parsedInput.id),
+      columns: { id: true },
+      with: { template: { columns: { userId: true } } },
+    });
+
+    if (event?.template.userId !== userId) throw new Error("not allowed");
+
     const [{ templateId }] = await db
       .update(EventsTable)
       .set(parsedInput)

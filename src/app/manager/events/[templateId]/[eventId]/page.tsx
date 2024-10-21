@@ -1,10 +1,10 @@
 import { BackButton } from "@/components/back-button";
+import { LocaleDateString } from "@/components/date-formatters";
 import { EventJudges } from "@/components/events/event-judges";
 import { EventTeams } from "@/components/events/event-teams";
 import { EventTimers } from "@/components/events/event-timers";
 import { db } from "@/lib/db";
 import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
-import { redirect } from "next/navigation";
 
 export default async function EventPage({
   params,
@@ -12,25 +12,13 @@ export default async function EventPage({
   params: { eventId: string; templateId: string };
 }) {
   const eventId = Number(params.eventId);
-  const templateId = Number(params.templateId);
-
-  if (!eventId) redirect("/manager/events/" + params.templateId);
 
   const event = await db.query.EventsTable.findFirst({
     where: (table, { eq }) => eq(table.id, eventId),
+    with: { template: true, results: true },
   });
 
-  if (!event) redirect("/manager/events/" + params.templateId);
-
-  const template = await db.query.TemplatesTable.findFirst({
-    where: (table, { eq }) => eq(table.id, templateId),
-  });
-
-  if (!template) redirect("/manager/events");
-
-  const results = await db.query.ResultsTable.findMany({
-    where: (table, { eq }) => eq(table.eventId, eventId),
-  });
+  if (!event) return null;
 
   return (
     <>
@@ -41,11 +29,11 @@ export default async function EventPage({
         </div>
         <div className="flex gap-4 text-sm text-muted-foreground">
           <div className="px-4 py-1 border rounded-md flex items-center">
-            <CalendarIcon className="w-4 mr-2" />
-            {event.date.toLocaleDateString()}
+            <CalendarIcon className="mr-4" />
+            <LocaleDateString date={event.date} />
           </div>
           <div className="px-4 py-1 border rounded-md flex items-center">
-            <LockClosedIcon className="w-4 mr-2" />
+            <LockClosedIcon className="mr-4" />
             {event.password}
           </div>
         </div>
@@ -54,8 +42,8 @@ export default async function EventPage({
         <EventTeams
           eventId={eventId}
           teams={event.teams}
-          heats={template.heats}
-          results={results ?? []}
+          results={event.results}
+          heats={event.template.heats}
         />
         <div className="w-full flex flex-col-reverse lg:flex-col gap-4">
           <EventTimers eventId={eventId} timers={event.timers} />
