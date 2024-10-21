@@ -39,7 +39,7 @@ export const NewCase = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild disabled={pending}>
         <Button>
-          New Case <PlusCircledIcon className="w-4 ml-4" />
+          Create Case <PlusCircledIcon className="w-4 ml-4" />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-[45vw]">
@@ -74,7 +74,7 @@ export const NewCase = () => {
         <DialogFooter>
           <Button
             className="gap-4"
-            disabled={pending}
+            disabled={pending || !level || !title || !content || !question}
             onClick={async () => {
               if (!level) return;
               const caseId = (
