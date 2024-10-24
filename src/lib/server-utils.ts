@@ -12,7 +12,7 @@ export const parseTokenFromCookies = () => {
   return parse_jwt_payload<{ userId: number; role: zUserRole }>(token);
 };
 
-export const signJwtAndSetCookie = async (id: number, role: zUserRole) => {
-  const token = await sign_jwt({ id, role });
+export const signJwtAndSetCookie = async (userId: number, role: zUserRole) => {
+  const token = await sign_jwt({ userId, role });
   cookies().set("auth-token", token);
 };

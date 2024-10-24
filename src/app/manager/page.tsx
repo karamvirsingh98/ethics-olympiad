@@ -1,16 +1,11 @@
 import { db } from "@/lib/db";
-import { parse_jwt_payload } from "@/lib/jwt";
 import { CalendarIcon, LockClosedIcon } from "@radix-ui/react-icons";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LocaleDateString } from "@/components/date-formatters";
+import { parseTokenFromCookies } from "@/lib/server-utils";
 
 export default async function ManagerPage() {
-  const token = cookies().get("auth-token")?.value;
-  if (!token) redirect("/");
-
-  const { userId } = parse_jwt_payload<{ userId: number }>(token);
+  const { userId } = parseTokenFromCookies();
 
   // selects events where user owns template, and event is upcoming
   const templates = await db.query.TemplatesTable.findMany({

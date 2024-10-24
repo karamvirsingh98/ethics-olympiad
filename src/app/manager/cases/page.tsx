@@ -3,20 +3,17 @@ import { LevelSelector } from "@/components/level-selector";
 import { NewCase } from "@/components/cases/new-case";
 import { db } from "@/lib/db";
 import { zOlympiadLevel } from "@/lib/entities";
-import { parse_jwt_payload } from "@/lib/jwt";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { parseTokenFromCookies } from "@/lib/server-utils";
 
 export default async function CasesPage({
   searchParams: { level },
 }: {
   searchParams: { level?: zOlympiadLevel };
 }) {
-  const token = cookies().get("auth-token")?.value;
-  if (!token) redirect("/");
-  const { userId } = parse_jwt_payload<{ userId: number }>(token);
+  const { userId } = parseTokenFromCookies();
 
   const update_level = async (level: zOlympiadLevel | "All") => {
     "use server";

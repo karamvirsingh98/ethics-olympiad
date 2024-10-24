@@ -25,7 +25,7 @@ export default async function AdminPage({
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-5xl font-bold">Users</h1>
+        <h1 className="text-5xl font-bold">User Management</h1>
         <div className="flex gap-4">
           <Suspense key={role}>
             <RoleSelector
@@ -45,11 +45,11 @@ export default async function AdminPage({
           <p className="px-2 text-xl text-muted-foreground mb-2">
             Pending Invitations
           </p>
-          <div className="grid grid-cols-3 gap-4">
-            {invites.map((user) => (
-              <div key={user.id} className="p-4 border rounded-md">
-                <p>{user.email}</p>
-                <p>{user.role}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {invites.map((invite) => (
+              <div key={invite.id} className="p-4 border rounded-md">
+                <p className="mb-4">{invite.email}</p>
+                <p className="text-sm text-muted-foreground">{invite.role}</p>
               </div>
             ))}
           </div>
@@ -57,7 +57,7 @@ export default async function AdminPage({
       )}
       <div>
         <p className="px-2 text-xl text-muted-foreground mb-2">All Users</p>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {users.map((user) => (
             <div key={user.id} className="p-4 border rounded-md">
               <p className="mb-4">{user.name}</p>

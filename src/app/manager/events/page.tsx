@@ -2,9 +2,8 @@ import { LevelSelector } from "@/components/level-selector";
 import { NewTemplate } from "@/components/template/new-template";
 import { db } from "@/lib/db";
 import { zOlympiadLevel } from "@/lib/entities";
-import { parse_jwt_payload } from "@/lib/jwt";
+import { parseTokenFromCookies } from "@/lib/server-utils";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -14,9 +13,7 @@ export default async function ManagerEventsPage({
 }: {
   searchParams: { level?: zOlympiadLevel };
 }) {
-  const token = cookies().get("auth-token")?.value;
-  if (!token) redirect("/");
-  const { userId } = parse_jwt_payload<{ userId: number }>(token);
+  const { userId } = parseTokenFromCookies();
 
   const update_level = async (level: zOlympiadLevel | "All") => {
     "use server";
@@ -28,7 +25,7 @@ export default async function ManagerEventsPage({
       <div className="flex items-center justify-between">
         <h1 className="text-5xl font-bold">Templates</h1>
         <div className="flex gap-4">
-          <LevelSelector value={level} onChange={update_level} showAll />
+          <LevelSelector showAll value={level} onChange={update_level} />
           <NewTemplate />
         </div>
       </div>
