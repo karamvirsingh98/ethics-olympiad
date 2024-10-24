@@ -88,7 +88,7 @@ export const EventTeams = ({
           <AddTeams eventId={eventId} teams={teams} />
         </div>
       </div>
-      <div className="relative flex flex-col gap-4 max-h-[60vh] overflow-y-scroll pr-2">
+      <div className="relative flex flex-col gap-2 max-h-[60vh] overflow-y-scroll pr-2">
         <div className="px-4 py-2 flex items-center justify-between text-sm text-muted-foreground sticky top-0 bg-accent z-10">
           <p>Team</p>
           <div className="flex items-center gap-4">
@@ -113,7 +113,7 @@ export const EventTeams = ({
             return (
               <div
                 key={team}
-                className="pl-2 pr-4 py-2 border rounded-md flex items-center justify-between gap-8 odd:bg-accent/25"
+                className="pl-2 pr-4 py-2 border rounded-md flex items-center justify-between gap-8 odd:bg-accent/50"
               >
                 <div className="flex items-center gap-4">
                   <Button

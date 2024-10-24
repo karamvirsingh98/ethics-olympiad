@@ -59,6 +59,7 @@ export const LoginManagerAction = unauthenticated_action_builder
     if (user.password !== password) throw new Error("incorrect password");
 
     cookies().set("auth-token", await sign_jwt({ userId: user.id }));
+
     redirect("/manager");
   });
 
@@ -93,6 +94,14 @@ export const LoginJudgeAction = unauthenticated_action_builder
 export const AddOrUpdateCaseAction = authenticated_action_builder
   .schema(createInsertSchema(CasesTable).omit({ userId: true }))
   .action(async ({ parsedInput, ctx: { userId } }) => {
+    if (parsedInput.id) {
+      const stored = await db.query.CasesTable.findFirst({
+        columns: { userId: true },
+        where: (table, { eq }) => eq(table.id, parsedInput.id!),
+      });
+      if (stored?.userId !== userId) throw new Error("not allowed");
+    }
+
     const [{ id }] = await db
       .insert(CasesTable)
       .values({ ...parsedInput, userId })
@@ -101,7 +110,9 @@ export const AddOrUpdateCaseAction = authenticated_action_builder
         set: { content: parsedInput.content, title: parsedInput.title },
       })
       .returning();
+
     revalidatePath("/manager/cases");
+
     return { id };
   });
 
@@ -195,9 +206,9 @@ export const UpdateEventAction = authenticated_action_builder
   )
   .action(async ({ parsedInput, ctx: { userId } }) => {
     const event = await db.query.EventsTable.findFirst({
-      where: (table, { eq }) => eq(table.id, parsedInput.id),
-      columns: { id: true },
+      columns: {},
       with: { template: { columns: { userId: true } } },
+      where: (table, { eq }) => eq(table.id, parsedInput.id),
     });
 
     if (event?.template.userId !== userId) throw new Error("not allowed");
