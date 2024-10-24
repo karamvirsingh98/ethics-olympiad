@@ -19,7 +19,7 @@ export const UsersTable = sqliteTable("users", {
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
-  role: text("role", { enum: zUserRole.options }).default("Manager"),
+  role: text("role", { enum: zUserRole.options }).default("Manager").notNull(),
   createdAt: integer({ mode: "timestamp_ms" }).default(new Date()).notNull(),
 });
 
@@ -132,3 +132,11 @@ export const ResultsRelations = relations(ResultsTable, ({ one }) => ({
     references: [EventsTable.id],
   }),
 }));
+
+// ==================== INVITATIONS ====================
+
+export const InvitationsTable = sqliteTable("invitations", {
+  id: integer("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  role: text("role", { enum: zUserRole.options }).notNull(),
+});

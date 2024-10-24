@@ -1,12 +1,13 @@
 import { db } from "@/lib/db";
-import { verify_jwt } from "@/lib/jwt";
-import { cookies } from "next/headers";
+import { parseTokenFromCookies } from "@/lib/server-utils";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const token = cookies().get("auth-token")?.value;
-  if (await verify_jwt(token)) redirect("/manager");
+  try {
+    parseTokenFromCookies();
+    redirect("/manager");
+  } catch {}
 
   const olympiads = await db.query.EventsTable.findMany({
     columns: { id: true, title: true },

@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { CreateTemplateAction } from "@/lib/actions";
 import { LevelSelector } from "../level-selector";
@@ -24,15 +24,22 @@ import { zOlympiadLevel } from "@/lib/entities";
 export const NewTemplate = () => {
   const [open, setOpen] = useState(false);
 
-  const [title, setState] = useState("");
+  const [title, setTitle] = useState("");
   const [level, setLevel] = useState<zOlympiadLevel>();
 
   const { execute, isPending } = useAction(CreateTemplateAction, {
     onSettled: () => {
-      setState("");
+      setTitle("");
       setOpen(false);
     },
   });
+
+  useEffect(() => {
+    if (!open) {
+      setTitle("");
+      setLevel(undefined);
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -48,7 +55,7 @@ export const NewTemplate = () => {
         <div className="py-4 flex flex-col gap-4">
           <div>
             <p className="pb-1">Template Name</p>
-            <Input value={title} onChange={(e) => setState(e.target.value)} />
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div>
             <p className="pb-1">Template Level</p>

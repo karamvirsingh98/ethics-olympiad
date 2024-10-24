@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { CreateEventAction } from "@/lib/actions";
 import { DatePicker } from "../ui/datepicker";
@@ -27,11 +27,15 @@ export const NewEvent = ({ templateId }: { templateId: number }) => {
   const [date, setDate] = useState<Date>();
 
   const { execute, isPending } = useAction(CreateEventAction, {
-    onSettled: () => {
-      setState({ title: "", password: "" });
-      setOpen(false);
-    },
+    onSettled: () => setOpen(false),
   });
+
+  useEffect(() => {
+    if (!open) {
+      setState({ title: "", password: "" });
+      setDate(undefined);
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

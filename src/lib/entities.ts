@@ -6,7 +6,7 @@ export const zOlympiadHeats = z.array(
 );
 
 export type zUserRole = z.infer<typeof zUserRole>;
-export const zUserRole = z.enum(["Admin", "Manager"]);
+export const zUserRole = z.enum(["Admin", "Manager", "Judge"]);
 
 export type zOlympiadLevel = z.infer<typeof zOlympiadLevel>;
 export const zOlympiadLevel = z.enum([

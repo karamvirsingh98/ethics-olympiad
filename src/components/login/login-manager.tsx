@@ -5,13 +5,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { EnterIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { useAction } from "next-safe-action/hooks";
-import { LoginManagerAction } from "@/lib/actions";
+import { LoginAction } from "@/lib/actions";
 
 export const LoginManager = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { execute, isPending } = useAction(LoginManagerAction, {
+  const { execute, isPending } = useAction(LoginAction, {
     onError: () => {
       alert("Invalid login credentials");
       setEmail("");

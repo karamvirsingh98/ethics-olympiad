@@ -5,6 +5,7 @@ import { createSelectSchema, createInsertSchema } from "drizzle-zod";
 import {
   CasesTable,
   EventsTable,
+  InvitationsTable,
   QuestionsTable,
   ResultsTable,
   TemplatesTable,
@@ -17,38 +18,27 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { zOlympiadHeats, zOlympiadScore } from "./entities";
 import { cookies } from "next/headers";
-import { parse_jwt_payload, sign_jwt, verify_jwt } from "./jwt";
+import { parseTokenFromCookies, signJwtAndSetCookie } from "./server-utils";
 
 const unauthenticated_action_builder = createSafeActionClient();
 const authenticated_action_builder = unauthenticated_action_builder.use(
-  async ({ next }) => {
-    const token = cookies().get("auth-token")?.value;
-    if (!token) throw new Error();
-
-    const verified = await verify_jwt(token);
-    if (!verified) throw new Error();
-
-    const { userId } = parse_jwt_payload<{ userId: number }>(token);
-
-    return next({ ctx: { userId } });
-  }
+  async ({ next }) => next({ ctx: parseTokenFromCookies() })
 );
 
 // ==================== AUTH ====================
 export const CreateUserAction = unauthenticated_action_builder
   .schema(createInsertSchema(UsersTable))
   .action(async ({ parsedInput }) => {
-    const [{ id }] = await db
+    const [{ id, role }] = await db
       .insert(UsersTable)
       .values(parsedInput)
-      .returning();
+      .returning({ id: UsersTable.id, role: UsersTable.role });
 
-    cookies().set("auth-token", await sign_jwt({ userId: id }));
-
-    redirect("/manager");
+    await signJwtAndSetCookie(id, role);
+    redirect("/" + role?.toLowerCase());
   });
 
-export const LoginManagerAction = unauthenticated_action_builder
+export const LoginAction = unauthenticated_action_builder
   .schema(createSelectSchema(UsersTable).pick({ email: true, password: true }))
   .action(async ({ parsedInput: { email, password } }) => {
     const user = await db.query.UsersTable.findFirst({
@@ -58,17 +48,14 @@ export const LoginManagerAction = unauthenticated_action_builder
     if (!user) throw new Error("user not found");
     if (user.password !== password) throw new Error("incorrect password");
 
-    cookies().set("auth-token", await sign_jwt({ userId: user.id }));
-
-    redirect("/manager");
+    await signJwtAndSetCookie(user.id, user.role);
+    redirect("/" + user.role?.toLowerCase());
   });
 
-export const LogoutManagerAction = unauthenticated_action_builder.action(
-  async () => {
-    cookies().delete("auth-token");
-    redirect("/");
-  }
-);
+export const LogoutAction = authenticated_action_builder.action(async () => {
+  cookies().delete("auth-token");
+  redirect("/");
+});
 
 export const LoginJudgeAction = unauthenticated_action_builder
   .schema(
@@ -251,3 +238,11 @@ export const SubmitResultsAction = unauthenticated_action_builder
 //     await db.delete(ResultsTable).where(eq(ResultsTable.id, parsedInput.id));
 //     revalidatePath("/results");
 //   });
+
+// ==================== RESULTS ====================
+export const SendInvitationAction = authenticated_action_builder
+  .schema(createInsertSchema(InvitationsTable))
+  .action(async ({ parsedInput }) => {
+    await db.insert(InvitationsTable).values(parsedInput);
+    revalidatePath("/admin");
+  });

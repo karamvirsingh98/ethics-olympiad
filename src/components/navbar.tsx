@@ -5,20 +5,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { EnterIcon, ExitIcon } from "@radix-ui/react-icons";
-import { LogoutManagerAction } from "@/lib/actions";
+import { LogoutAction } from "@/lib/actions";
 import { ThemeToggle } from "./theme/theme-toggle";
+import { zUserRole } from "@/lib/entities";
 
-export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
+export const Navbar = ({ role }: { role: zUserRole | undefined }) => {
   const path = usePathname();
 
   return (
     <div className="sticky top-0 border-b bg-background z-50">
       <div className="container h-16 flex items-center justify-between">
         <div className="flex items-center gap-16">
-          <Link href={authenticated ? "/manager" : "/"} className="text-xl">
+          <Link href={"/" + (role ?? "").toLowerCase()} className="text-xl">
             Ethics Olympiad
           </Link>
-          {authenticated && (
+          {role === "Manager" && (
             <div className="flex items-center gap-4">
               <Link
                 href={"/manager/events"}
@@ -37,19 +38,15 @@ export const Navbar = ({ authenticated }: { authenticated: boolean }) => {
         </div>
         <div className="flex gap-2">
           <ThemeToggle />
-          {authenticated ? (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => LogoutManagerAction()}
-            >
+          {role ? (
+            <Button variant="ghost" size="icon" onClick={() => LogoutAction()}>
               <ExitIcon />
             </Button>
           ) : (
             path === "/" && (
-              <Link href={`/manager`}>
+              <Link href={`/login`}>
                 <Button>
-                  Manager Login <EnterIcon className="w-4 ml-4" />
+                  Login <EnterIcon className="w-4 ml-4" />
                 </Button>
               </Link>
             )

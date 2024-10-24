@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAction } from "next-safe-action/hooks";
 import { AddOrUpdateCaseAction, AddOrUpdateQuestion } from "@/lib/actions";
 import { Textarea } from "../ui/textarea";
@@ -34,6 +34,15 @@ export const NewCase = () => {
   const add_question = useAction(AddOrUpdateQuestion);
 
   const pending = add_case.isPending || add_question.isPending;
+
+  useEffect(() => {
+    if (!open) {
+      setLevel(undefined);
+      setTitle("");
+      setQuestion("");
+      setContent("");
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
