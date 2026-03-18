@@ -1,7 +1,10 @@
 import "./globals.css";
 
+import { Loader2 } from "lucide-react";
 import type { Metadata } from "next";
 import { Chivo_Mono, Outfit } from "next/font/google";
+import Image from "next/image";
+import { Suspense } from "react";
 
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { cn } from "@/lib/utils";
@@ -44,7 +47,20 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <Suspense
+              fallback={
+                <div className="w-screen h-screen bg-background relative">
+                  <Image
+                    src="/hero.png"
+                    alt="Logo"
+                    fill
+                    className="object-cover opacity-10 animate-pulse"
+                  />
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
           </ThemeProvider>
         </body>
       </html>

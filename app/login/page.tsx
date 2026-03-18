@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, useState } from "react";
 
@@ -30,10 +31,16 @@ export default function LoginPage() {
   }, [email, password, execute]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Card>
+    <div className="flex flex-col items-center justify-center h-screen relative">
+      <Image
+        src="/hero.png"
+        alt="Logo"
+        fill
+        className="object-cover opacity-10"
+      />
+      <Card className="z-10">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Login | Ethics Olympiad</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input

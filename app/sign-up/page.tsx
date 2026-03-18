@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle, Loader2 } from "lucide-react";
+import Image from "next/image";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 
@@ -32,10 +33,16 @@ export default function SignUpPage() {
   const { execute, isExecuting } = useAction(SIGNUP_ACTION);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Card>
+    <div className="flex flex-col items-center justify-center h-screen relative">
+      <Image
+        src="/hero.png"
+        alt="Logo"
+        fill
+        className="object-cover opacity-10"
+      />
+      <Card className="z-10">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Sign Up | Ethics Olympiad</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input
@@ -61,11 +68,13 @@ export default function SignUpPage() {
               <SelectValue placeholder="Select a role" className="capitalize" />
             </SelectTrigger>
             <SelectContent>
-              {userRoles.map((role) => (
-                <SelectItem key={role} value={role} className="capitalize">
-                  {role}
-                </SelectItem>
-              ))}
+              {userRoles
+                .filter((role) => role !== "admin")
+                .map((role) => (
+                  <SelectItem key={role} value={role} className="capitalize">
+                    {role}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </CardContent>
