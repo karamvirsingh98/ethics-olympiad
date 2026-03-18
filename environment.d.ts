@@ -1,19 +1,17 @@
-import "next";
-
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
+      // jwt
       JWT_SECRET: string;
 
       // database (turso)
-      DB_URI: string;
-      DB_TOKEN?: string;
+      TURSO_CONNECTION_URL: string;
+      TURSO_AUTH_TOKEN: string;
 
-      // ws provider (pusher)
-      NEXT_PUBLIC_PUSHER_KEY: string;
-      NEXT_PUBLIC_PUSHER_CLUSTER: string;
-      PUSHER_APP_ID: string;
-      PUSHER_SECRET: string;
+      // ws provider (ably)
+      ABLY_API_KEY: string;
     }
   }
 }
+
+export {};
