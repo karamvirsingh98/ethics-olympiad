@@ -84,7 +84,7 @@ export default function SignUpPage() {
               onClick={() => role && execute({ email, password, name, role })}
               disabled={isExecuting || !name || !email || !password || !role}
             >
-              Login
+              Sign Up
               {isExecuting ? (
                 <Loader2 className="animate-spin" />
               ) : (

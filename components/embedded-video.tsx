@@ -12,6 +12,10 @@ export const EmbeddedVideo = ({ url }: { url: string }) => {
   }
 
   return (
-    <iframe src={result.embedUrl} className="w-full aspect-video rounded-2xl" />
+    <iframe
+      src={result.embedUrl}
+      className="w-full aspect-video rounded-2xl"
+      title="Embedded video"
+    />
   );
 };

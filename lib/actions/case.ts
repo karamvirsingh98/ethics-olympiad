@@ -36,12 +36,6 @@ export const UPSERT_CASE_ACTION = managerActionClient
       })
       .returning({ id: casesTable.id });
 
-    console.log({
-      caseId: id,
-      userId: ctx.user.id,
-      question: parsedInput.question,
-    });
-
     await db
       .insert(questionsTable)
       .values({

@@ -58,7 +58,6 @@ export const EventJudges = ({
   });
 
   const { presenceData } = usePresenceListener(`event-${eventId}`);
-  console.log(presenceData);
 
   return (
     <Card>
@@ -96,7 +95,11 @@ export const EventJudges = ({
               <Circle
                 className={cn(
                   "size-3 stroke-transparent",
-                  present ? "fill-green-500" : "fill-accent"
+                  present
+                    ? "fill-green-500"
+                    : judgeState[judgeId]
+                    ? "fill-amber-500"
+                    : "fill-accent"
                 )}
               />
               <p className="font-mono">Round: {state?.round ?? "-"}</p>

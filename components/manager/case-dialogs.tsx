@@ -48,7 +48,7 @@ export const CaseDialog = ({
     caseData?.questions?.[0]?.text ?? ""
   );
 
-  const { execute, isExecuting } = useAction(UPSERT_CASE_ACTION, {
+  const { execute, isPending } = useAction(UPSERT_CASE_ACTION, {
     onSuccess: () => setOpen(false),
   });
 
@@ -152,14 +152,10 @@ export const CaseDialog = ({
                 question: { text: questionText },
               });
             }}
-            disabled={isExecuting}
+            disabled={isPending}
           >
             Save
-            {isExecuting ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <CheckCircle />
-            )}
+            {isPending ? <Loader2 className="animate-spin" /> : <CheckCircle />}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -170,7 +166,7 @@ export const CaseDialog = ({
 export const DeleteCaseDialog = ({ caseData }: { caseData: SelectCase }) => {
   const [input, setInput] = useState<string>("");
 
-  const { execute, isExecuting } = useAction(DELETE_CASE_ACTION);
+  const { execute, isPending } = useAction(DELETE_CASE_ACTION);
 
   return (
     <Dialog>
@@ -200,14 +196,10 @@ export const DeleteCaseDialog = ({ caseData }: { caseData: SelectCase }) => {
           <Button
             variant="destructive"
             onClick={() => execute({ id: caseData?.id })}
-            disabled={input !== caseData?.name || isExecuting}
+            disabled={input !== caseData?.name || isPending}
           >
             Confirm
-            {isExecuting ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <CheckCircle />
-            )}
+            {isPending ? <Loader2 className="animate-spin" /> : <CheckCircle />}
           </Button>
         </DialogFooter>
       </DialogContent>

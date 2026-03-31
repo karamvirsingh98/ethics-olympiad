@@ -5,7 +5,7 @@ import { getUserFromCookies } from "../user";
 
 export const baseActionClient = createSafeActionClient();
 
-export const authentictedActionClient = baseActionClient.use(
+export const authenticatedActionClient = baseActionClient.use(
   async ({ ctx, next }) => {
     const user = await getUserFromCookies();
     if (!user) throw new Error("Unauthorized");
@@ -14,7 +14,7 @@ export const authentictedActionClient = baseActionClient.use(
 );
 
 const createRoleBasedActionClient = (role: UserRole) =>
-  authentictedActionClient.use(async ({ ctx, next }) => {
+  authenticatedActionClient.use(async ({ ctx, next }) => {
     if (ctx.user.role !== role) throw new Error("Invalid Role");
     return next({ ctx });
   });

@@ -48,7 +48,7 @@ export const DELETE_OLYMPIAD_ACTION = managerActionClient
 export const UPSERT_EVENT_ACTION = managerActionClient
   .inputSchema(createInsertSchema(eventsTable))
   .action(async ({ parsedInput }) => {
-    await db
+    const [{ id }] = await db
       .insert(eventsTable)
       .values(parsedInput)
       .onConflictDoUpdate({
@@ -57,9 +57,10 @@ export const UPSERT_EVENT_ACTION = managerActionClient
           ...parsedInput,
           updatedAt: new Date(),
         },
-      });
+      })
+      .returning({ id: eventsTable.id });
 
-    return revalidatePath(`/manager/olympiads/${parsedInput.olympiadId}`);
+    return redirect(`/manager/olympiads/${parsedInput.olympiadId}/${id}`);
   });
 
 export const DELETE_EVENT_ACTION = managerActionClient
@@ -70,7 +71,7 @@ export const DELETE_EVENT_ACTION = managerActionClient
       .where(eq(eventsTable.id, parsedInput.id))
       .returning({ olympiadId: eventsTable.olympiadId });
 
-    return revalidatePath(`/manager/olympiads/${olympiadId}`);
+    return redirect(`/manager/olympiads/${olympiadId}`);
   });
 
 export const UPDATE_JUDGE_ACTION = managerActionClient
@@ -82,6 +83,13 @@ export const UPDATE_JUDGE_ACTION = managerActionClient
     })
   )
   .action(async ({ parsedInput }) => {
+    const event = await db.query.eventsTable.findFirst({
+      where: (table, { eq }) => eq(table.id, parsedInput.eventId),
+      with: { olympiad: { columns: { id: true } } },
+    });
+
+    if (!event) throw new Error("event not found");
+
     if (parsedInput.direction === "add") {
       await db.insert(judgesTable).values(
         parsedInput.judgeIds.map((judgeId) => ({
@@ -99,5 +107,8 @@ export const UPDATE_JUDGE_ACTION = managerActionClient
           )
         );
     }
-    return revalidatePath(`/manager/olympiads/${parsedInput.eventId}`);
+
+    return revalidatePath(
+      `/manager/olympiads/${event?.olympiadId}/${parsedInput.eventId}`
+    );
   });
