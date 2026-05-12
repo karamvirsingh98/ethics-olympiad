@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -57,22 +58,24 @@ export const Navbar = ({
               }
             />
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>
-                <p className="text-sm font-medium text-foreground">
-                  {user.name}
-                </p>
-                <p className="text-xs capitalize text-muted-foreground">
-                  {user.role}
-                </p>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => LOGOUT_ACTION()}
-              >
-                <LogOut />
-                Logout
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>
+                  <p className="text-sm font-medium text-foreground">
+                    {user.name}
+                  </p>
+                  <p className="text-xs capitalize text-muted-foreground">
+                    {user.role}
+                  </p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => LOGOUT_ACTION()}
+                >
+                  <LogOut />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
