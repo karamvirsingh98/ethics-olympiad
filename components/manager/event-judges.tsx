@@ -1,13 +1,7 @@
 "use client";
 
 import { useChannel, usePresenceListener } from "ably/react";
-import {
-  ChevronDown,
-  Circle,
-  Loader2,
-  MinusCircle,
-  PlusCircle,
-} from "lucide-react";
+import { Circle, Loader2, MinusCircle, PlusCircle } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 
@@ -22,20 +16,23 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "../ui/combobox";
+import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 
 export const EventJudges = ({
   eventId,
@@ -147,15 +144,22 @@ const AddJudges = ({
   onChange: (judgeIds: number[]) => void;
   loading: boolean;
 }) => {
+  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number[]>([]);
 
-  const filteredJudges = allJudges.filter(
+  const availableJudges = allJudges.filter(
     (judge) =>
       !assignedJudgeIds.includes(judge.id) && !selected.includes(judge.id)
   );
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        setOpen(o);
+        if (!o) setSelected([]);
+      }}
+    >
       <DialogTrigger
         render={
           <Button size="xs">
@@ -167,31 +171,40 @@ const AddJudges = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Judges</DialogTitle>
+          <DialogDescription>
+            Search for judges by name and add them to this event.
+          </DialogDescription>
         </DialogHeader>
-        <div className="py-8 space-y-2">
-          <DropdownMenu modal disabled={filteredJudges.length === 0}>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  className={"w-full justify-between mb-2"}
-                  variant="outline"
-                >
-                  Select Judge
-                  <ChevronDown />
-                </Button>
+        <div className="py-4 space-y-2">
+          <Combobox
+            items={availableJudges}
+            itemToStringLabel={(judge) => (judge as SelectUser).name}
+            onValueChange={(value) => {
+              const judge = value as SelectUser | null;
+              if (!judge) return;
+              if (selected.includes(judge.id)) return;
+              setSelected((prev) => [...prev, judge.id]);
+            }}
+          >
+            <ComboboxInput
+              placeholder={
+                availableJudges.length === 0
+                  ? "No more judges available"
+                  : "Search judges..."
               }
+              disabled={availableJudges.length === 0}
             />
-            <DropdownMenuContent>
-              {filteredJudges.map((judge) => (
-                <DropdownMenuItem
-                  key={judge.id}
-                  onClick={() => setSelected([...selected, judge.id])}
-                >
-                  {judge.name}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            <ComboboxContent>
+              <ComboboxEmpty>No judges found.</ComboboxEmpty>
+              <ComboboxList>
+                {(judge: SelectUser) => (
+                  <ComboboxItem key={judge.id} value={judge}>
+                    {judge.name}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
           {selected.map((judgeId) => {
             const judge = allJudges.find((j) => j.id === judgeId);
             if (!judge) return null;
@@ -211,24 +224,17 @@ const AddJudges = ({
           })}
         </div>
         <DialogFooter>
-          <DialogClose
-            render={
-              <Button
-                onClick={() => {
-                  onChange(selected);
-                  setSelected([]);
-                }}
-                disabled={loading}
-              >
-                Add Judges
-                {loading ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <PlusCircle />
-                )}
-              </Button>
-            }
-          />
+          <Button
+            onClick={() => {
+              onChange(selected);
+              setSelected([]);
+              setOpen(false);
+            }}
+            disabled={loading || selected.length === 0}
+          >
+            Add Judges
+            {loading ? <Loader2 className="animate-spin" /> : <PlusCircle />}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -255,7 +261,10 @@ const RemoveJudge = ({
       />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Remove Team</DialogTitle>
+          <DialogTitle>Remove Judge</DialogTitle>
+          <DialogDescription>
+            Removing a judge will affect the schedule and existing scores.
+          </DialogDescription>
         </DialogHeader>
         <div className="py-8 space-y-4">
           <p>

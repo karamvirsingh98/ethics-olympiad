@@ -13,7 +13,9 @@ const createClient = () =>
         const { token } = await response.json();
         callback(null, token);
       } catch (e) {
-        callback(e as Error, null);
+        // ably's authCallback expects an ErrorInfo-like value or string; fall
+        // back to the message so we don't drop the original error.
+        callback(e instanceof Error ? e.message : "ably-auth failed", null);
       }
     },
   });

@@ -31,8 +31,10 @@ export const UPSERT_OLYMPIAD_ACTION = managerActionClient
       })
       .returning({ id: olympiadsTable.id });
 
+    revalidatePath("/manager/olympiads");
+    revalidatePath(`/manager/olympiads/${id}`);
+
     if (!parsedInput.id) return redirect(`/manager/olympiads/${id}`);
-    else return revalidatePath(`/manager/olympiads/${id}`);
   });
 
 export const DELETE_OLYMPIAD_ACTION = managerActionClient
@@ -41,6 +43,9 @@ export const DELETE_OLYMPIAD_ACTION = managerActionClient
     await db
       .delete(olympiadsTable)
       .where(eq(olympiadsTable.id, parsedInput.id));
+
+    revalidatePath("/manager/olympiads");
+    revalidatePath(`/manager/olympiads/${parsedInput.id}`);
 
     return redirect("/manager/olympiads");
   });
@@ -60,7 +65,13 @@ export const UPSERT_EVENT_ACTION = managerActionClient
       })
       .returning({ id: eventsTable.id });
 
-    return redirect(`/manager/olympiads/${parsedInput.olympiadId}/${id}`);
+    revalidatePath(`/manager/olympiads/${parsedInput.olympiadId}`);
+    revalidatePath(`/manager/olympiads/${parsedInput.olympiadId}/${id}`);
+    revalidatePath(`/events/${id}`);
+
+    if (!parsedInput.id) {
+      return redirect(`/manager/olympiads/${parsedInput.olympiadId}/${id}`);
+    }
   });
 
 export const DELETE_EVENT_ACTION = managerActionClient
@@ -70,6 +81,10 @@ export const DELETE_EVENT_ACTION = managerActionClient
       .delete(eventsTable)
       .where(eq(eventsTable.id, parsedInput.id))
       .returning({ olympiadId: eventsTable.olympiadId });
+
+    revalidatePath(`/manager/olympiads/${olympiadId}`);
+    revalidatePath(`/manager/olympiads/${olympiadId}/${parsedInput.id}`);
+    revalidatePath(`/events/${parsedInput.id}`);
 
     return redirect(`/manager/olympiads/${olympiadId}`);
   });
@@ -108,7 +123,8 @@ export const UPDATE_JUDGE_ACTION = managerActionClient
         );
     }
 
-    return revalidatePath(
-      `/manager/olympiads/${event?.olympiadId}/${parsedInput.eventId}`
+    revalidatePath(
+      `/manager/olympiads/${event.olympiadId}/${parsedInput.eventId}`
     );
+    revalidatePath(`/events/${parsedInput.eventId}`);
   });

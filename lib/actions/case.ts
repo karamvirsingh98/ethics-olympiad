@@ -24,32 +24,34 @@ export const UPSERT_CASE_ACTION = managerActionClient
     })
   )
   .action(async ({ ctx, parsedInput }) => {
-    const [{ id }] = await db
-      .insert(casesTable)
-      .values({ ...parsedInput.case, ownerId: ctx.user.id })
-      .onConflictDoUpdate({
-        target: casesTable.id,
-        set: {
-          ...parsedInput.case,
-          updatedAt: new Date(),
-        },
-      })
-      .returning({ id: casesTable.id });
+    await db.transaction(async (tx) => {
+      const [{ id }] = await tx
+        .insert(casesTable)
+        .values({ ...parsedInput.case, ownerId: ctx.user.id })
+        .onConflictDoUpdate({
+          target: casesTable.id,
+          set: {
+            ...parsedInput.case,
+            updatedAt: new Date(),
+          },
+        })
+        .returning({ id: casesTable.id });
 
-    await db
-      .insert(questionsTable)
-      .values({
-        ...parsedInput.question,
-        caseId: id,
-        ownerId: ctx.user.id,
-      })
-      .onConflictDoUpdate({
-        target: [questionsTable.caseId, questionsTable.ownerId],
-        set: {
+      await tx
+        .insert(questionsTable)
+        .values({
           ...parsedInput.question,
-          updatedAt: new Date(),
-        },
-      });
+          caseId: id,
+          ownerId: ctx.user.id,
+        })
+        .onConflictDoUpdate({
+          target: [questionsTable.caseId, questionsTable.ownerId],
+          set: {
+            ...parsedInput.question,
+            updatedAt: new Date(),
+          },
+        });
+    });
 
     return revalidatePath("/manager/cases");
   });

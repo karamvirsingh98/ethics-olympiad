@@ -1,78 +1,81 @@
 "use client";
 
-import { CheckCircle, Loader2, PlusCircle } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
+import { PlusCircle } from "lucide-react";
+import z from "zod";
 
 import { UPSERT_EVENT_ACTION } from "@/lib/actions/olympiads";
 
 import { Button } from "../ui/button";
 import { DatePicker } from "../ui/datepicker";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { FormDialog } from "../ui/form-dialog";
 import { Input } from "../ui/input";
 
+const schema = z.object({
+  name: z.string().min(1, "Event name is required"),
+  happensAt: z.date({ message: "Pick a date" }),
+});
+
+type FormValues = z.infer<typeof schema>;
+
 export const CreateEvent = ({ olympiadId }: { olympiadId: number }) => {
-  const [open, setOpen] = useState(false);
-
-  const [name, setName] = useState("");
-
-  const [happensAt, setHappensAt] = useState<Date>();
-
-  const { execute, isExecuting } = useAction(UPSERT_EVENT_ACTION, {
-    onSuccess: () => setOpen(false),
-  });
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button size="xs" disabled={isExecuting} onClick={() => {}}>
-            Add Event
-            {isExecuting ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <PlusCircle />
+    <FormDialog
+      schema={schema}
+      defaultValues={{ name: "", happensAt: undefined as unknown as Date }}
+      action={UPSERT_EVENT_ACTION}
+      title="Create Event"
+      description="Add a new event under this olympiad."
+      submitLabel="Submit"
+      toInput={(values: FormValues) => ({
+        name: values.name,
+        olympiadId,
+        teams: [],
+        happensAt: values.happensAt,
+      })}
+      trigger={
+        <Button size="xs">
+          Add Event
+          <PlusCircle />
+        </Button>
+      }
+    >
+      {(form) => (
+        <>
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Event Name</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </Button>
-        }
-      ></DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create Event</DialogTitle>
-        </DialogHeader>
-        <div className="py-8 space-y-4">
-          <div>
-            <p>Event Name</p>
-            <Input value={name} onChange={(e) => setName(e.target.value)} />
-          </div>
-          <div>
-            <p>Event Date</p>
-            <DatePicker date={happensAt} setDate={setHappensAt} />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            disabled={!happensAt}
-            onClick={() =>
-              happensAt && execute({ name, olympiadId, teams: [], happensAt })
-            }
-          >
-            Submit
-            {isExecuting ? (
-              <Loader2 className="animate-spin" />
-            ) : (
-              <CheckCircle />
+          />
+          <FormField
+            control={form.control}
+            name="happensAt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Event Date</FormLabel>
+                <FormControl>
+                  <DatePicker date={field.value} setDate={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          />
+        </>
+      )}
+    </FormDialog>
   );
 };

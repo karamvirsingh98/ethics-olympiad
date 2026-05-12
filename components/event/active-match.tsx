@@ -130,11 +130,11 @@ const CaseDisplay = ({
         </Button>
       </div>
       {revealed ? (
-        <p className="grid place-items-center h-full">
+        <div className="grid place-items-center h-full">
           <p className="text-4xl max-w-2xl text-center">
             {currentCase?.questions?.[0]?.text}
           </p>
-        </p>
+        </div>
       ) : (
         <div className="h-full overflow-y-auto pb-16 text-lg whitespace-pre-line">
           {currentCase?.isVideo ? (
