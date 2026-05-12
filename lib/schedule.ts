@@ -5,14 +5,19 @@ export type Match = {
   teamB: string | undefined;
 };
 
-type Schedule = Array<Match>;
+export type ScheduleResult = {
+  schedule: Match[];
+  // One entry per heat that has teams not present in any complete (teamA +
+  // teamB) match. Empty array means every team is paired in every heat.
+  unscheduled: Array<{ heat: number; teams: string[] }>;
+};
 
 export const computeSchedule = <Team extends string, JudgeId extends number>(
   heats: number,
   teams: Team[],
   judges: JudgeId[]
-): Schedule => {
-  const schedule: Schedule = [];
+): ScheduleResult => {
+  const schedule: Match[] = [];
 
   const judgeMap = new Map<JudgeId, Set<Team>>();
   const teamMap = new Map<Team, Set<Team>>();
@@ -61,5 +66,24 @@ export const computeSchedule = <Team extends string, JudgeId extends number>(
     });
   }
 
-  return schedule;
+  // Compute teams left out per heat. A team only counts as scheduled if it
+  // appears in a complete (teamA + teamB) match — a teamA-without-opponent
+  // pairing means both that judge and that team have nothing to do.
+  const unscheduled: ScheduleResult["unscheduled"] = [];
+  for (let h = 1; h <= heats; h++) {
+    const scheduled = new Set<string>();
+    for (const m of schedule) {
+      if (m.heat !== h) continue;
+      if (m.teamA !== undefined && m.teamB !== undefined) {
+        scheduled.add(m.teamA);
+        scheduled.add(m.teamB);
+      }
+    }
+    const leftOut = teams.filter((t) => !scheduled.has(t));
+    if (leftOut.length > 0) {
+      unscheduled.push({ heat: h, teams: leftOut });
+    }
+  }
+
+  return { schedule, unscheduled };
 };

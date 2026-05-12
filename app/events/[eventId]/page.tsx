@@ -49,7 +49,7 @@ export default async function EventPage({
     },
   });
 
-  const schedule = computeSchedule(
+  const { schedule } = computeSchedule(
     event.olympiad.heats.length,
     event.teams,
     event.judges.map(({ judgeId }) => judgeId)

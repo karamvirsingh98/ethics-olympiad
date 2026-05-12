@@ -52,10 +52,14 @@ export const EventTeams = ({
 }) => {
   const { execute, isExecuting } = useAction(UPSERT_EVENT_ACTION);
 
-  const schedule = computeSchedule(
+  const { schedule, unscheduled } = computeSchedule(
     numHeats,
     event.teams,
     event.judges.map(({ judge }) => judge.id)
+  );
+
+  const unscheduledByHeat = new Map<number, Set<string>>(
+    unscheduled.map(({ heat, teams }) => [heat, new Set(teams)])
   );
 
   return (
@@ -95,9 +99,25 @@ export const EventTeams = ({
               style={{ gridTemplateColumns: `repeat(${numHeats + 1}, 1fr)` }}
             >
               {Array.from({ length: numHeats }).map((_, i) => {
+                const heat = i + 1;
+                const isUnscheduled =
+                  unscheduledByHeat.get(heat)?.has(team) ?? false;
+
+                if (isUnscheduled) {
+                  return (
+                    <p
+                      key={i}
+                      className="text-muted-foreground/40 italic"
+                      title="Not scheduled this heat"
+                    >
+                      —
+                    </p>
+                  );
+                }
+
                 const match = schedule.find(
                   (s) =>
-                    s.heat === i + 1 && (s.teamA === team || s.teamB === team)
+                    s.heat === heat && (s.teamA === team || s.teamB === team)
                 );
 
                 const score = event.scores.find(

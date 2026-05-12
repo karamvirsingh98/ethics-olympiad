@@ -17,7 +17,13 @@ export default async function OlympiadPage({
 
   const olympiad = await db.query.olympiadsTable.findFirst({
     where: (table, { eq }) => eq(table.id, parseInt(olympiadId)),
-    with: { events: true },
+    with: {
+      events: {
+        with: {
+          judges: { columns: { judgeId: true } },
+        },
+      },
+    },
   });
 
   if (!olympiad) return redirect("/manager/olympiads");
@@ -41,7 +47,11 @@ export default async function OlympiadPage({
       </div>
       <div className="grid grid-cols-2 gap-6 mt-12">
         <OlympiadHeats olympiad={olympiad} cases={cases} />
-        <OlympiadEvents olympiadId={olympiad.id} events={olympiad.events} />
+        <OlympiadEvents
+          olympiadId={olympiad.id}
+          events={olympiad.events}
+          heatCount={olympiad.heats.length}
+        />
       </div>
     </>
   );

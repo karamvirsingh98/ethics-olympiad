@@ -1,7 +1,7 @@
 "use client";
 
 import { useChannel, usePresenceListener } from "ably/react";
-import { Circle, Loader2, MinusCircle, PlusCircle } from "lucide-react";
+import { Circle, Loader2, MinusCircle, PlusCircle, Users } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 
@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { EmptyState } from "../ui/empty-state";
 import {
   Combobox,
   ComboboxContent,
@@ -71,6 +72,14 @@ export const EventJudges = ({
         />
       </CardHeader>
       <CardContent>
+        {assignedJudges.length === 0 && (
+          <EmptyState
+            icon={Users}
+            title="No judges yet"
+            description="Add judges using the button above so they can join this event and submit scores."
+            className="py-8"
+          />
+        )}
         {assignedJudges.map(({ judgeId }) => {
           const judge = allJudges.find((j) => j.id === judgeId);
           if (!judge) return null;
