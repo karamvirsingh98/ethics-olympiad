@@ -1,35 +1,48 @@
-import { relations } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { relations, sql } from "drizzle-orm";
+import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { olympiadLevels } from "../enums";
 import { questionsTable } from "./questions";
 import { usersTable } from "./users";
 
-export const casesTable = sqliteTable("cases", {
-  id: integer("id").primaryKey(),
+export const casesTable = sqliteTable(
+  "cases",
+  {
+    id: integer("id").primaryKey(),
 
-  name: text("name").notNull(),
+    name: text("name").notNull(),
 
-  bodytext: text("bodytext").notNull(),
+    bodytext: text("bodytext").notNull(),
 
-  level: text("level", { enum: olympiadLevels }).notNull(),
+    level: text("level", { enum: olympiadLevels }).notNull(),
 
-  isVideo: integer("video", { mode: "boolean" }).notNull().default(false),
+    isVideo: integer("video", { mode: "boolean" }).notNull().default(false),
 
-  isPublic: integer("public", { mode: "boolean" }).notNull().default(false),
+    isPublic: integer("public", { mode: "boolean" }).notNull().default(false),
 
-  ownerId: integer("owner_id")
-    .references(() => usersTable.id, { onDelete: "cascade" })
-    .notNull(),
+    ownerId: integer("owner_id")
+      .references(() => usersTable.id, { onDelete: "cascade" })
+      .notNull(),
 
-  createdAt: integer("created_at", { mode: "timestamp_ms" })
-    .notNull()
-    .default(new Date()),
+    createdAt: integer("created_at", { mode: "timestamp_ms" })
+      .notNull()
+      .default(new Date()),
 
-  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
-    .notNull()
-    .default(new Date()),
-});
+    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+      .notNull()
+      .default(new Date()),
+  },
+  (table) => [
+    check(
+      "cases_level_check",
+      sql`${table.level} IN (${sql.join(
+        olympiadLevels.map((l) => sql`${l}`),
+        sql`, `
+      )})`
+    ),
+  ]
+);
 
 export const casesRelations = relations(casesTable, ({ one, many }) => ({
   owner: one(usersTable, {
@@ -38,6 +51,9 @@ export const casesRelations = relations(casesTable, ({ one, many }) => ({
   }),
   questions: many(questionsTable),
 }));
+
+export const insertCaseSchema = createInsertSchema(casesTable);
+export const selectCaseSchema = createSelectSchema(casesTable);
 
 export type InsertCase = Omit<typeof casesTable.$inferInsert, "ownerId">;
 export type SelectCase = typeof casesTable.$inferSelect;

@@ -5,6 +5,7 @@ import {
   sqliteTable,
   text,
 } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { casesTable } from "./cases";
 import { usersTable } from "./users";
@@ -43,6 +44,9 @@ export const questionsRelations = relations(questionsTable, ({ one }) => ({
     references: [casesTable.id],
   }),
 }));
+
+export const insertQuestionSchema = createInsertSchema(questionsTable);
+export const selectQuestionSchema = createSelectSchema(questionsTable);
 
 export type InsertQuestion = Omit<
   typeof questionsTable.$inferInsert,
