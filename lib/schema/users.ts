@@ -30,11 +30,12 @@ export const usersTable = sqliteTable(
       .default(new Date()),
   },
   (table) => [
+    // SQLite forbids bound parameters in CHECK clauses, so the IN list is
+    // embedded as raw SQL. Safe: userRoles is a compile-time const array.
     check(
       "users_role_check",
-      sql`${table.role} IN (${sql.join(
-        userRoles.map((r) => sql`${r}`),
-        sql`, `
+      sql`${table.role} IN (${sql.raw(
+        userRoles.map((r) => `'${r}'`).join(", ")
       )})`
     ),
   ]

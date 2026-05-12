@@ -34,11 +34,12 @@ export const casesTable = sqliteTable(
       .default(new Date()),
   },
   (table) => [
+    // SQLite forbids bound parameters in CHECK clauses, so the IN list is
+    // embedded as raw SQL. Safe: olympiadLevels is a compile-time const array.
     check(
       "cases_level_check",
-      sql`${table.level} IN (${sql.join(
-        olympiadLevels.map((l) => sql`${l}`),
-        sql`, `
+      sql`${table.level} IN (${sql.raw(
+        olympiadLevels.map((l) => `'${l}'`).join(", ")
       )})`
     ),
   ]
