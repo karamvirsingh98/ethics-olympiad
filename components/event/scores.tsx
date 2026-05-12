@@ -52,7 +52,7 @@ export const Scores = ({
 
   //   const pusher = usePusher(eventId);
   //   const router = useRouter();
-  const { execute, isPending } = useAction(SUBMIT_SCORES_ACTION);
+  const { execute, isExecuting } = useAction(SUBMIT_SCORES_ACTION);
 
   return (
     <Card>
@@ -61,7 +61,7 @@ export const Scores = ({
         <CardAction>
           <Button
             disabled={
-              isPending ||
+              isExecuting ||
               !team.teamA || //ensure team A is selected
               !team.teamB || // ensure team B is selected
               !Object.values(score.teamA).every((v) => !!v) || // ensure every field of team A score is non 0
@@ -79,7 +79,7 @@ export const Scores = ({
             }
           >
             Submit Scores
-            {isPending ? <Loader2 className="animate-spin" /> : <CheckCircle />}
+            {isExecuting ? <Loader2 className="animate-spin" /> : <CheckCircle />}
           </Button>
         </CardAction>
       </CardHeader>

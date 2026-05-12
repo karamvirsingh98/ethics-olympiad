@@ -54,14 +54,18 @@ export const SIGNUP_ACTION = baseActionClient
   .action(async ({ parsedInput }) => {
     const { password, ...input } = parsedInput;
 
-    const [user] = await db
-      .insert(usersTable)
-      .values({ ...input, role: "manager" })
-      .returning();
-
     const hash = await hash_password(password);
 
-    await db.insert(passwordsTable).values({ userId: user.id, hash });
+    const user = await db.transaction(async (tx) => {
+      const [createdUser] = await tx
+        .insert(usersTable)
+        .values({ ...input, role: "manager" })
+        .returning();
+
+      await tx.insert(passwordsTable).values({ userId: createdUser.id, hash });
+
+      return createdUser;
+    });
 
     const jwt = await sign_jwt({ id: user.id });
     (await cookies()).set("jwt", jwt, JWT_COOKIE_OPTIONS);

@@ -1,9 +1,19 @@
-import { createSafeActionClient } from "next-safe-action";
+import {
+  createSafeActionClient,
+  DEFAULT_SERVER_ERROR_MESSAGE,
+} from "next-safe-action";
 
 import { UserRole } from "../enums";
 import { getUserFromCookies } from "../user";
 
-export const baseActionClient = createSafeActionClient();
+export class ActionError extends Error {}
+
+export const baseActionClient = createSafeActionClient({
+  handleServerError: (e) => {
+    console.error(e);
+    return e instanceof ActionError ? e.message : DEFAULT_SERVER_ERROR_MESSAGE;
+  },
+});
 
 export const authenticatedActionClient = baseActionClient.use(
   async ({ ctx, next }) => {
