@@ -18,6 +18,7 @@ export const GET = async () => {
     apiKey,
     clientId: user.id.toString(),
     expiresInSeconds: 3600,
+    capability: '{"event-*":["publish","subscribe","presence"]}',
   });
 
   return NextResponse.json({ token });

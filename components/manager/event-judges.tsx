@@ -51,9 +51,10 @@ export const EventJudges = ({
   const [judgeState, setJudgeState] = useState<Record<number, JudgeState>>({});
 
   useChannel(`event-${eventId}`, (message) => {
+    if (!message.clientId) return;
     setJudgeState((state) => ({
       ...state,
-      [Number(message.name)]: JSON.parse(message.data),
+      [Number(message.clientId)]: JSON.parse(message.data),
     }));
   });
 

@@ -7,9 +7,14 @@ import { useState } from "react";
 const createClient = () =>
   new Realtime({
     authCallback: async (_, callback) => {
-      const response = await fetch("/api/ably-auth").then((res) => res.json());
-      const token = response.token;
-      callback(null, token);
+      try {
+        const response = await fetch("/api/ably-auth");
+        if (!response.ok) throw new Error(`ably-auth ${response.status}`);
+        const { token } = await response.json();
+        callback(null, token);
+      } catch (e) {
+        callback(e as Error, null);
+      }
     },
   });
 
