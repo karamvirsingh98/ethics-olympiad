@@ -5,7 +5,7 @@ const scryptAsync = promisify(scrypt) as (
   password: string | Buffer,
   salt: string | Buffer,
   keylen: number,
-  options: { N: number; r: number; p: number }
+  options: { N: number; r: number; p: number; maxmem?: number }
 ) => Promise<Buffer>;
 
 // Tunable parameters. Stored alongside the hash so we can adjust later.
@@ -14,6 +14,10 @@ const SCRYPT_R = 8;
 const SCRYPT_P = 1;
 const SCRYPT_KEYLEN = 64;
 const SALT_BYTES = 16;
+
+// scrypt memory footprint is roughly 128 * N * r bytes (~33.5 MB at our
+// params). Node's default maxmem is 32 MB so we bump the ceiling.
+const SCRYPT_MAXMEM = 64 * 1024 * 1024;
 
 const SCHEME = "scrypt";
 
@@ -27,6 +31,7 @@ export const hash_password = async (password: string): Promise<string> => {
     N: SCRYPT_N,
     r: SCRYPT_R,
     p: SCRYPT_P,
+    maxmem: SCRYPT_MAXMEM,
   });
   return [
     SCHEME,
@@ -73,6 +78,7 @@ export const verify_password = async (
     N,
     r,
     p,
+    maxmem: SCRYPT_MAXMEM,
   });
   if (derived.length !== expected.length) return false;
   return timingSafeEqual(derived, expected);

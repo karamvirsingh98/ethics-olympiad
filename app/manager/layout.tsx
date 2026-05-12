@@ -16,6 +16,7 @@ export default async function ManagerLayout({
     <>
       <Navbar
         base="/manager"
+        user={user}
         links={[
           { label: "Home", href: "/manager" },
           { label: "Olympiads", href: "/manager/olympiads" },

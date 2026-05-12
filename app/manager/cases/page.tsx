@@ -1,3 +1,4 @@
+import { BookOpen } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense, use } from "react";
 
@@ -15,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { db } from "@/lib/db";
 import { OlympiadLevel } from "@/lib/enums";
@@ -69,8 +71,20 @@ const CaseList = ({
   cases,
 }: {
   cases: Promise<(SelectCase & { questions: SelectQuestion[] })[]>;
-}) =>
-  use(cases).map((caseData) => (
+}) => {
+  const data = use(cases);
+
+  if (data.length === 0) {
+    return (
+      <EmptyState
+        icon={BookOpen}
+        title="No cases yet"
+        description="Cases are the prompts judges review during heats. Create one to get started."
+      />
+    );
+  }
+
+  return data.map((caseData) => (
     <Card key={caseData.id}>
       <CardHeader>
         <CardTitle className="line-clamp-1">{caseData.name}</CardTitle>
@@ -90,3 +104,4 @@ const CaseList = ({
       </CardFooter>
     </Card>
   ));
+};

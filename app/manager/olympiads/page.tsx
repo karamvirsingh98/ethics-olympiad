@@ -1,3 +1,4 @@
+import { Trophy } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense, use } from "react";
@@ -11,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { db } from "@/lib/db";
 import { OlympiadLevel } from "@/lib/enums";
@@ -63,8 +65,20 @@ const OlympiadsList = ({
   olympiads,
 }: {
   olympiads: Promise<(SelectOlympiad & { events: { id: number }[] })[]>;
-}) =>
-  use(olympiads).map((olympiad) => (
+}) => {
+  const data = use(olympiads);
+
+  if (data.length === 0) {
+    return (
+      <EmptyState
+        icon={Trophy}
+        title="No olympiads yet"
+        description="Create your first olympiad to organize heats, cases, and events."
+      />
+    );
+  }
+
+  return data.map((olympiad) => (
     <Link href={`/manager/olympiads/${olympiad.id}`} key={olympiad.id}>
       <Card>
         <CardHeader>
@@ -84,3 +98,4 @@ const OlympiadsList = ({
       </Card>
     </Link>
   ));
+};

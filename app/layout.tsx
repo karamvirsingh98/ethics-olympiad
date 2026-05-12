@@ -1,12 +1,12 @@
 import "./globals.css";
 
-import { Loader2 } from "lucide-react";
 import type { Metadata } from "next";
 import { Chivo_Mono, Outfit } from "next/font/google";
 import Image from "next/image";
 import { Suspense } from "react";
 
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
@@ -61,6 +61,7 @@ export default function RootLayout({
             >
               {children}
             </Suspense>
+            <Toaster richColors />
           </ThemeProvider>
         </body>
       </html>

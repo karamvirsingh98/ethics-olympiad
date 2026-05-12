@@ -13,7 +13,7 @@ import {
 } from "../passwords";
 import { passwordsTable } from "../schema/passwords";
 import { insertUserSchema, usersTable } from "../schema/users";
-import { baseActionClient } from ".";
+import { ActionError, baseActionClient } from ".";
 
 const JWT_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -36,7 +36,7 @@ export const LOGIN_ACTION = baseActionClient
     const storedHash = user?.password?.hash ?? DUMMY_PASSWORD_HASH;
     const ok = await verify_password(parsedInput.password, storedHash);
 
-    if (!user || !ok) throw new Error("Invalid credentials");
+    if (!user || !ok) throw new ActionError("Email or password is incorrect");
 
     const jwt = await sign_jwt({ id: user.id });
     (await cookies()).set("jwt", jwt, JWT_COOKIE_OPTIONS);

@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { CalendarDays, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense, use } from "react";
@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { db } from "@/lib/db";
 import { SelectEvent, SelectOlympiad } from "@/lib/schema";
@@ -54,6 +55,16 @@ const EventsList = ({
   const mapped = use(events).flatMap((olympiad) =>
     olympiad.events.map((ev) => ({ ...ev, olympiadName: olympiad.name }))
   );
+
+  if (mapped.length === 0) {
+    return (
+      <EmptyState
+        icon={CalendarDays}
+        title="No upcoming events"
+        description="Schedule an event from one of your olympiads and it will show up here."
+      />
+    );
+  }
 
   return mapped.map((event) => (
     <Card key={event.id}>

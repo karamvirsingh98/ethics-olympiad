@@ -17,7 +17,7 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col h-full">
-      <Navbar base="/" links={[]} />
+      <Navbar base="/" user={user} links={[]} />
       <div className="container mx-auto px-4 py-8 flex-1 min-h-0">
         <Card>
           <CardHeader>

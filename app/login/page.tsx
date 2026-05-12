@@ -2,8 +2,10 @@
 
 import { CheckCircle, Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useAction } from "next-safe-action/hooks";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +21,12 @@ import { LOGIN_ACTION } from "@/lib/actions/auth";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { execute, isExecuting } = useAction(LOGIN_ACTION);
+  const { execute, isExecuting } = useAction(LOGIN_ACTION, {
+    onError: ({ error }) =>
+      toast.error(
+        error.serverError ?? "Couldn't sign you in. Please try again."
+      ),
+  });
 
   useEffect(() => {
     const listener = (ev: KeyboardEvent) => {
@@ -56,20 +63,24 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </CardContent>
-        <CardFooter>
-          <div className="ml-auto">
-            <Button
-              onClick={() => execute({ email, password })}
-              disabled={isExecuting}
-            >
-              Login
-              {isExecuting ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                <CheckCircle />
-              )}
-            </Button>
-          </div>
+        <CardFooter className="flex items-center justify-between gap-4">
+          <Link
+            href="/sign-up"
+            className="text-sm text-muted-foreground hover:text-primary hover:underline"
+          >
+            Don&apos;t have an account? Sign up
+          </Link>
+          <Button
+            onClick={() => execute({ email, password })}
+            disabled={isExecuting}
+          >
+            Login
+            {isExecuting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <CheckCircle />
+            )}
+          </Button>
         </CardFooter>
       </Card>
     </div>
