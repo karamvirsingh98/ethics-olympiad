@@ -1,29 +1,44 @@
 "use server";
 
-import { eq } from "drizzle-orm";
-import { createInsertSchema } from "drizzle-zod";
+import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import z from "zod";
 
 import { db } from "../db";
-import { casesTable, questionsTable } from "../schema";
-import { managerActionClient } from ".";
+import {
+  casesTable,
+  insertCaseSchema,
+  insertQuestionSchema,
+  questionsTable,
+} from "../schema";
+import { ActionError, assertOwns, managerActionClient } from ".";
 
 export const UPSERT_CASE_ACTION = managerActionClient
   .inputSchema(
     z.object({
-      case: createInsertSchema(casesTable)
-        .omit({ ownerId: true })
+      case: insertCaseSchema
+        .omit({
+          id: true,
+          ownerId: true,
+          createdAt: true,
+          updatedAt: true,
+        })
         .extend({ id: z.number().optional() }),
-      question: createInsertSchema(questionsTable)
+      question: insertQuestionSchema
         .omit({
           ownerId: true,
           caseId: true,
+          createdAt: true,
+          updatedAt: true,
         })
         .extend({ id: z.number().optional() }),
     })
   )
   .action(async ({ ctx, parsedInput }) => {
+    if (parsedInput.case.id) {
+      await assertOwns(casesTable, parsedInput.case.id, ctx.user.id);
+    }
+
     await db.transaction(async (tx) => {
       const [{ id }] = await tx
         .insert(casesTable)
@@ -32,6 +47,7 @@ export const UPSERT_CASE_ACTION = managerActionClient
           target: casesTable.id,
           set: {
             ...parsedInput.case,
+            ownerId: ctx.user.id,
             updatedAt: new Date(),
           },
         })
@@ -58,7 +74,20 @@ export const UPSERT_CASE_ACTION = managerActionClient
 
 export const DELETE_CASE_ACTION = managerActionClient
   .inputSchema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    await db.delete(casesTable).where(eq(casesTable.id, parsedInput.id));
+  .action(async ({ ctx, parsedInput }) => {
+    const deleted = await db
+      .delete(casesTable)
+      .where(
+        and(
+          eq(casesTable.id, parsedInput.id),
+          eq(casesTable.ownerId, ctx.user.id)
+        )
+      )
+      .returning({ id: casesTable.id });
+
+    if (deleted.length !== 1) {
+      throw new ActionError("Not found or forbidden");
+    }
+
     return revalidatePath("/manager/cases");
   });

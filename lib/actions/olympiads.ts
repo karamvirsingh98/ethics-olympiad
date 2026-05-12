@@ -1,24 +1,32 @@
 "use server";
 
 import { and, eq, inArray } from "drizzle-orm";
-import { createInsertSchema } from "drizzle-zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { db } from "../db";
-import { eventsTable } from "../schema/events";
+import { eventsTable, insertEventSchema } from "../schema/events";
 import { judgesTable } from "../schema/judges";
-import { olympiadsTable } from "../schema/olympiads";
-import { managerActionClient } from ".";
+import { insertOlympiadSchema, olympiadsTable } from "../schema/olympiads";
+import { ActionError, assertOwns, managerActionClient } from ".";
 
 export const UPSERT_OLYMPIAD_ACTION = managerActionClient
   .inputSchema(
-    createInsertSchema(olympiadsTable)
-      .omit({ ownerId: true })
+    insertOlympiadSchema
+      .omit({
+        id: true,
+        ownerId: true,
+        createdAt: true,
+        updatedAt: true,
+      })
       .extend({ id: z.number().optional() })
   )
   .action(async ({ ctx, parsedInput }) => {
+    if (parsedInput.id) {
+      await assertOwns(olympiadsTable, parsedInput.id, ctx.user.id);
+    }
+
     const [{ id }] = await db
       .insert(olympiadsTable)
       .values({ ...parsedInput, ownerId: ctx.user.id })
@@ -26,6 +34,7 @@ export const UPSERT_OLYMPIAD_ACTION = managerActionClient
         target: olympiadsTable.id,
         set: {
           ...parsedInput,
+          ownerId: ctx.user.id,
           updatedAt: new Date(),
         },
       })
@@ -39,10 +48,20 @@ export const UPSERT_OLYMPIAD_ACTION = managerActionClient
 
 export const DELETE_OLYMPIAD_ACTION = managerActionClient
   .inputSchema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    await db
+  .action(async ({ ctx, parsedInput }) => {
+    const deleted = await db
       .delete(olympiadsTable)
-      .where(eq(olympiadsTable.id, parsedInput.id));
+      .where(
+        and(
+          eq(olympiadsTable.id, parsedInput.id),
+          eq(olympiadsTable.ownerId, ctx.user.id)
+        )
+      )
+      .returning({ id: olympiadsTable.id });
+
+    if (deleted.length !== 1) {
+      throw new ActionError("Not found or forbidden");
+    }
 
     revalidatePath("/manager/olympiads");
     revalidatePath(`/manager/olympiads/${parsedInput.id}`);
@@ -51,8 +70,27 @@ export const DELETE_OLYMPIAD_ACTION = managerActionClient
   });
 
 export const UPSERT_EVENT_ACTION = managerActionClient
-  .inputSchema(createInsertSchema(eventsTable))
-  .action(async ({ parsedInput }) => {
+  .inputSchema(
+    insertEventSchema
+      .omit({ id: true, createdAt: true, updatedAt: true })
+      .extend({ id: z.number().optional() })
+  )
+  .action(async ({ ctx, parsedInput }) => {
+    await assertOwns(olympiadsTable, parsedInput.olympiadId, ctx.user.id);
+
+    if (parsedInput.id) {
+      const [existing] = await db
+        .select({ olympiadId: eventsTable.olympiadId })
+        .from(eventsTable)
+        .where(eq(eventsTable.id, parsedInput.id))
+        .limit(1);
+
+      if (!existing) throw new ActionError("Not found");
+      if (existing.olympiadId !== parsedInput.olympiadId) {
+        throw new ActionError("Forbidden");
+      }
+    }
+
     const [{ id }] = await db
       .insert(eventsTable)
       .values(parsedInput)
@@ -76,17 +114,24 @@ export const UPSERT_EVENT_ACTION = managerActionClient
 
 export const DELETE_EVENT_ACTION = managerActionClient
   .inputSchema(z.object({ id: z.number() }))
-  .action(async ({ parsedInput }) => {
-    const [{ olympiadId }] = await db
-      .delete(eventsTable)
+  .action(async ({ ctx, parsedInput }) => {
+    const [event] = await db
+      .select({ olympiadId: eventsTable.olympiadId })
+      .from(eventsTable)
       .where(eq(eventsTable.id, parsedInput.id))
-      .returning({ olympiadId: eventsTable.olympiadId });
+      .limit(1);
 
-    revalidatePath(`/manager/olympiads/${olympiadId}`);
-    revalidatePath(`/manager/olympiads/${olympiadId}/${parsedInput.id}`);
+    if (!event) throw new ActionError("Not found");
+
+    await assertOwns(olympiadsTable, event.olympiadId, ctx.user.id);
+
+    await db.delete(eventsTable).where(eq(eventsTable.id, parsedInput.id));
+
+    revalidatePath(`/manager/olympiads/${event.olympiadId}`);
+    revalidatePath(`/manager/olympiads/${event.olympiadId}/${parsedInput.id}`);
     revalidatePath(`/events/${parsedInput.id}`);
 
-    return redirect(`/manager/olympiads/${olympiadId}`);
+    return redirect(`/manager/olympiads/${event.olympiadId}`);
   });
 
 export const UPDATE_JUDGE_ACTION = managerActionClient
@@ -97,13 +142,15 @@ export const UPDATE_JUDGE_ACTION = managerActionClient
       direction: z.enum(["add", "remove"]),
     })
   )
-  .action(async ({ parsedInput }) => {
+  .action(async ({ ctx, parsedInput }) => {
     const event = await db.query.eventsTable.findFirst({
       where: (table, { eq }) => eq(table.id, parsedInput.eventId),
       with: { olympiad: { columns: { id: true } } },
     });
 
-    if (!event) throw new Error("event not found");
+    if (!event) throw new ActionError("Not found");
+
+    await assertOwns(olympiadsTable, event.olympiadId, ctx.user.id);
 
     if (parsedInput.direction === "add") {
       await db.insert(judgesTable).values(

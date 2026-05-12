@@ -1,5 +1,6 @@
-import { relations } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { relations, sql } from "drizzle-orm";
+import { check, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { olympiadLevels } from "../enums";
 import { eventsTable } from "./events";
@@ -10,27 +11,39 @@ export type OlympiadHeat = {
   case2: number | null;
 };
 
-export const olympiadsTable = sqliteTable("olympiads", {
-  id: integer("id").primaryKey(),
+export const olympiadsTable = sqliteTable(
+  "olympiads",
+  {
+    id: integer("id").primaryKey(),
 
-  name: text("name").notNull(),
+    name: text("name").notNull(),
 
-  level: text("level", { enum: olympiadLevels }).notNull(),
+    level: text("level", { enum: olympiadLevels }).notNull(),
 
-  heats: text("heats", { mode: "json" }).notNull().$type<OlympiadHeat[]>(),
+    heats: text("heats", { mode: "json" }).notNull().$type<OlympiadHeat[]>(),
 
-  ownerId: integer("owner_id")
-    .references(() => usersTable.id, { onDelete: "cascade" })
-    .notNull(),
+    ownerId: integer("owner_id")
+      .references(() => usersTable.id, { onDelete: "cascade" })
+      .notNull(),
 
-  createdAt: integer("created_at", { mode: "timestamp_ms" })
-    .notNull()
-    .default(new Date()),
+    createdAt: integer("created_at", { mode: "timestamp_ms" })
+      .notNull()
+      .default(new Date()),
 
-  updatedAt: integer("updated_at", { mode: "timestamp_ms" })
-    .notNull()
-    .default(new Date()),
-});
+    updatedAt: integer("updated_at", { mode: "timestamp_ms" })
+      .notNull()
+      .default(new Date()),
+  },
+  (table) => [
+    check(
+      "olympiads_level_check",
+      sql`${table.level} IN (${sql.join(
+        olympiadLevels.map((l) => sql`${l}`),
+        sql`, `
+      )})`
+    ),
+  ]
+);
 
 export const olympiadsRelations = relations(
   olympiadsTable,
@@ -42,6 +55,9 @@ export const olympiadsRelations = relations(
     events: many(eventsTable),
   })
 );
+
+export const insertOlympiadSchema = createInsertSchema(olympiadsTable);
+export const selectOlympiadSchema = createSelectSchema(olympiadsTable);
 
 export type InsertOlympiad = Omit<
   typeof olympiadsTable.$inferInsert,

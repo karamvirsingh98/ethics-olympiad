@@ -1,5 +1,6 @@
 import { relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { judgesTable } from "./judges";
 import { olympiadsTable } from "./olympiads";
@@ -35,6 +36,9 @@ export const eventsRelations = relations(eventsTable, ({ one, many }) => ({
   judges: many(judgesTable),
   scores: many(scoresTable),
 }));
+
+export const insertEventSchema = createInsertSchema(eventsTable);
+export const selectEventSchema = createSelectSchema(eventsTable);
 
 export type InsertEvent = typeof eventsTable.$inferInsert;
 export type SelectEvent = typeof eventsTable.$inferSelect;

@@ -5,6 +5,7 @@ import {
   sqliteTable,
   text,
 } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 import { usersTable } from "./users";
 
@@ -34,6 +35,9 @@ export const passwordsRelations = relations(passwordsTable, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
+
+export const insertPasswordSchema = createInsertSchema(passwordsTable);
+export const selectPasswordSchema = createSelectSchema(passwordsTable);
 
 export type InsertPassword = typeof passwordsTable.$inferInsert;
 export type SelectPassword = typeof passwordsTable.$inferSelect;

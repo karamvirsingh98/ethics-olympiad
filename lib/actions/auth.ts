@@ -1,6 +1,5 @@
 "use server";
 
-import { createInsertSchema } from "drizzle-zod";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import z from "zod";
@@ -13,7 +12,7 @@ import {
   verify_password,
 } from "../passwords";
 import { passwordsTable } from "../schema/passwords";
-import { usersTable } from "../schema/users";
+import { insertUserSchema, usersTable } from "../schema/users";
 import { baseActionClient } from ".";
 
 const JWT_COOKIE_OPTIONS = {
@@ -47,7 +46,7 @@ export const LOGIN_ACTION = baseActionClient
 
 export const SIGNUP_ACTION = baseActionClient
   .inputSchema(
-    createInsertSchema(usersTable)
+    insertUserSchema
       .omit({ id: true, role: true, createdAt: true, updatedAt: true })
       .extend({ password: z.string() })
   )
