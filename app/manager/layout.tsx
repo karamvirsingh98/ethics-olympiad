@@ -1,10 +1,17 @@
-import { Navbar } from "@/components/navbar";
+import { redirect } from "next/navigation";
 
-export default function ManagerLayout({
+import { Navbar } from "@/components/navbar";
+import { getUserFromCookies } from "@/lib/user";
+
+export default async function ManagerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = await getUserFromCookies();
+  if (!user) redirect("/login");
+  if (user.role === "judge") redirect("/events");
+
   return (
     <>
       <Navbar

@@ -14,21 +14,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { SIGNUP_ACTION } from "@/lib/actions/auth";
-import { UserRole, userRoles } from "@/lib/enums";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<UserRole | null>(null);
 
   const { execute, isExecuting } = useAction(SIGNUP_ACTION);
 
@@ -63,26 +54,12 @@ export default function SignUpPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Select value={role} onValueChange={setRole}>
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a role" className="capitalize" />
-            </SelectTrigger>
-            <SelectContent>
-              {userRoles
-                .filter((role) => role !== "admin")
-                .map((role) => (
-                  <SelectItem key={role} value={role} className="capitalize">
-                    {role}
-                  </SelectItem>
-                ))}
-            </SelectContent>
-          </Select>
         </CardContent>
         <CardFooter>
           <div className="ml-auto">
             <Button
-              onClick={() => role && execute({ email, password, name, role })}
-              disabled={isExecuting || !name || !email || !password || !role}
+              onClick={() => execute({ email, password, name })}
+              disabled={isExecuting || !name || !email || !password}
             >
               Sign Up
               {isExecuting ? (
