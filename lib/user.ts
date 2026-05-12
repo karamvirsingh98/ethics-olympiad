@@ -2,7 +2,12 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 
 import { db } from "./db";
-import { parse_jwt_payload, verify_jwt } from "./jwt";
+import { verify_jwt } from "./jwt";
+
+const parse_jwt_payload = <T>(jwt: string) => {
+  const [, payload] = jwt.split(".");
+  return JSON.parse(Buffer.from(payload, "base64url").toString()) as T;
+};
 
 export const getUserFromCookies = cache(async () => {
   const jwt = (await cookies()).get("jwt")?.value;
